@@ -18,7 +18,7 @@ fun QrezzyNavHost() {
 
     NavHost(
         navController = navController,
-        startDestination = QrezzyDestination.Scanner.route,
+        startDestination = QrezzyDestination.Splash.route,
     ) {
 
         composable(QrezzyDestination.Splash.route) {
