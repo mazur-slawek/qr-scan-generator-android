@@ -148,7 +148,7 @@ fun QrezzyButton(
 }
 
 private object QrezzyButtonDefaults {
-    val ContainerHeight = 62.dp
+    val ContainerHeight = 60.dp
     val ShadowOffsetX = 5.dp
     val ShadowOffsetY = 5.5.dp
     val ShadowElevation = 8.dp

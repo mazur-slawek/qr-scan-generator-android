@@ -5,6 +5,8 @@ sealed class QrezzyDestination(
 ) {
     data object Splash : QrezzyDestination("splash")
 
+    data object Home : QrezzyDestination("home")
+
     data object Onboarding : QrezzyDestination("onboarding")
 
     data object Scanner : QrezzyDestination("scanner")

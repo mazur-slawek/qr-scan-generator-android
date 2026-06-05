@@ -1,5 +1,21 @@
 <resources>
     <string name="app_name">QREZZY</string>
-    
+
     <string name="button_get_started">Get started</string>
+
+
+    <string name="onboarding_scan_title">Scan anything</string>
+    <string name="onboarding_scan_description">Quickly scan QR codes and get the information in seconds.</string>
+
+    <string name="onboarding_generate_title">Create your QR</string>
+    <string name="onboarding_generate_description">Generate QR codes for URLs, Wi-Fi networks, contacts and more in just a few taps.</string>
+
+    <string name="onboarding_history_title">Keep track</string>
+    <string name="onboarding_history_description">All your scanned and generated QR codes are saved in your history.</string>
+
+    <string name="onboarding_share_title">Share easily</string>
+    <string name="onboarding_share_description">Share your QR codes with anyone, anytime, anywhere.</string>
+
+    <string name="onboarding_summary_title">You\'re all set!</string>
+    <string name="onboarding_summary_description">Scan, create and share QR codes with one simple app.</string>
 </resources>

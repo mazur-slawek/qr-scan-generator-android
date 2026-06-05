@@ -12,10 +12,6 @@ import software.mazur.qrezzy.feature.scanner.ScannerScreen
 import software.mazur.qrezzy.feature.settings.SettingsScreen
 import software.mazur.qrezzy.feature.splash.SplashScreen
 
-object QrezzyDestinations {
-    const val SPLASH = "splash"
-    const val HOME = "home"
-}
 
 @Composable
 fun QrezzyNavHost() {
@@ -25,11 +21,11 @@ fun QrezzyNavHost() {
         navController = navController,
         startDestination = QrezzyDestination.Splash.route,
     ) {
-        composable(QrezzyDestinations.SPLASH) {
+        composable(QrezzyDestination.Splash.route) {
             SplashScreen(
                 onGetStartedClick = {
-                    navController.navigate(QrezzyDestinations.HOME) {
-                        popUpTo(QrezzyDestinations.SPLASH) {
+                    navController.navigate(QrezzyDestination.Onboarding.route) {
+                        popUpTo(QrezzyDestination.Splash.route) {
                             inclusive = true
                         }
                     }
@@ -38,10 +34,18 @@ fun QrezzyNavHost() {
         }
 
         composable(QrezzyDestination.Onboarding.route) {
-            OnboardingScreen()
+            OnboardingScreen(
+                onGetStartedClick = {
+                    navController.navigate(QrezzyDestination.Home.route) {
+                        popUpTo(QrezzyDestination.Splash.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
         }
 
-        composable(QrezzyDestinations.HOME) {
+        composable(QrezzyDestination.Home.route) {
             HomeScreen()
         }
 
