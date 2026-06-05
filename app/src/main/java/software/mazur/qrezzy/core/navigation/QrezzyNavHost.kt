@@ -13,14 +13,12 @@ import software.mazur.qrezzy.feature.splash.SplashScreen
 
 @Composable
 fun QrezzyNavHost() {
-
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
         startDestination = QrezzyDestination.Splash.route,
     ) {
-
         composable(QrezzyDestination.Splash.route) {
             SplashScreen()
         }

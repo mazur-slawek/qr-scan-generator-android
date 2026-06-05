@@ -4,20 +4,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
-private val LightColorScheme = lightColorScheme(
-    primary = QrezzyMint,
-    secondary = QrezzyYellow,
-    tertiary = QrezzyPink,
-    background = Background,
-    surface = Surface
-)
+private val LightColorScheme =
+    lightColorScheme(
+        primary = QrezzyMint,
+        secondary = QrezzyYellow,
+        tertiary = QrezzyPink,
+        background = Background,
+        surface = Surface,
+    )
 
 @Composable
 fun QREZZYTheme(
 //    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
-
 // TODO: Add dark theme support when the light design system is completed.
 //    val colorScheme = when {
 //        darkTheme -> DarkColorScheme
@@ -27,6 +27,6 @@ fun QREZZYTheme(
     MaterialTheme(
         colorScheme = LightColorScheme,
         typography = Typography,
-        content = content
+        content = content,
     )
 }

@@ -1,0 +1,31 @@
+build:
+  maxIssues: 20
+
+style:
+  MagicNumber:
+    active: false
+  MaxLineLength:
+    active: true
+    maxLineLength: 140
+
+complexity:
+  LongMethod:
+    active: true
+    threshold: 120
+  LongParameterList:
+    active: false
+
+comments:
+  UndocumentedPublicClass:
+    active: false
+  UndocumentedPublicFunction:
+    active: false
+
+naming:
+  FunctionNaming:
+    active: true
+    functionPattern: '[a-z][a-zA-Z0-9]*'
+    ignoreAnnotated:
+      - Composable
+  MatchingDeclarationName:
+    active: false

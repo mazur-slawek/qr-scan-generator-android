@@ -27,9 +27,7 @@ import software.mazur.qrezzy.R
 import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
-fun QrezzyBranding(
-    modifier: Modifier = Modifier,
-) {
+fun QrezzyBranding(modifier: Modifier = Modifier) {
     val visibleLetterCount = remember { mutableIntStateOf(QrezzyBrandingConfig.INITIAL_VISIBLE_LETTER_COUNT) }
 
     val showSlogan = remember { mutableStateOf(false) }
@@ -50,9 +48,10 @@ fun QrezzyBranding(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
-        val letterWidth = calculateLetterWidth(
-            availableWidth = maxWidth,
-        )
+        val letterWidth =
+            calculateLetterWidth(
+                availableWidth = maxWidth,
+            )
 
         val sloganWidth = maxWidth * QrezzyBrandingConfig.SLOGAN_WIDTH_FACTOR
 
@@ -78,37 +77,41 @@ fun QrezzyBranding(
                 QrezzyLogoLetter(
                     resId = R.drawable.logo_e,
                     width = letterWidth,
-                    alpha = calculateLetterAlpha(
-                        visibleLetterCount = visibleLetterCount.intValue,
-                        requiredLetterCount = QrezzyBrandingConfig.LOGO_E_VISIBLE_COUNT,
-                    ),
+                    alpha =
+                        calculateLetterAlpha(
+                            visibleLetterCount = visibleLetterCount.intValue,
+                            requiredLetterCount = QrezzyBrandingConfig.LOGO_E_VISIBLE_COUNT,
+                        ),
                 )
 
                 QrezzyLogoLetter(
                     resId = R.drawable.logo_z_1,
                     width = letterWidth,
-                    alpha = calculateLetterAlpha(
-                        visibleLetterCount = visibleLetterCount.intValue,
-                        requiredLetterCount = QrezzyBrandingConfig.LOGO_FIRST_Z_VISIBLE_COUNT,
-                    ),
+                    alpha =
+                        calculateLetterAlpha(
+                            visibleLetterCount = visibleLetterCount.intValue,
+                            requiredLetterCount = QrezzyBrandingConfig.LOGO_FIRST_Z_VISIBLE_COUNT,
+                        ),
                 )
 
                 QrezzyLogoLetter(
                     resId = R.drawable.logo_z_2,
                     width = letterWidth,
-                    alpha = calculateLetterAlpha(
-                        visibleLetterCount = visibleLetterCount.intValue,
-                        requiredLetterCount = QrezzyBrandingConfig.LOGO_SECOND_Z_VISIBLE_COUNT,
-                    ),
+                    alpha =
+                        calculateLetterAlpha(
+                            visibleLetterCount = visibleLetterCount.intValue,
+                            requiredLetterCount = QrezzyBrandingConfig.LOGO_SECOND_Z_VISIBLE_COUNT,
+                        ),
                 )
 
                 QrezzyLogoLetter(
                     resId = R.drawable.logo_y,
                     width = letterWidth,
-                    alpha = calculateLetterAlpha(
-                        visibleLetterCount = visibleLetterCount.intValue,
-                        requiredLetterCount = QrezzyBrandingConfig.LOGO_Y_VISIBLE_COUNT,
-                    ),
+                    alpha =
+                        calculateLetterAlpha(
+                            visibleLetterCount = visibleLetterCount.intValue,
+                            requiredLetterCount = QrezzyBrandingConfig.LOGO_Y_VISIBLE_COUNT,
+                        ),
                 )
             }
 
@@ -132,16 +135,18 @@ private fun QrezzyLogoLetter(
 ) {
     val animatedAlpha by animateFloatAsState(
         targetValue = alpha,
-        animationSpec = tween(
-            durationMillis = QrezzyBrandingConfig.LETTER_FADE_DURATION_MS,
-        ),
+        animationSpec =
+            tween(
+                durationMillis = QrezzyBrandingConfig.LETTER_FADE_DURATION_MS,
+            ),
         label = "qrezzy_logo_letter_alpha",
     )
 
     Image(
-        modifier = Modifier
-            .width(width)
-            .alpha(animatedAlpha),
+        modifier =
+            Modifier
+                .width(width)
+                .alpha(animatedAlpha),
         painter = painterResource(id = resId),
         contentDescription = null,
         contentScale = ContentScale.FillBounds,
@@ -154,21 +159,24 @@ private fun QrezzySlogan(
     isVisible: Boolean,
 ) {
     val animatedAlpha by animateFloatAsState(
-        targetValue = if (isVisible) {
-            QrezzyBrandingConfig.VISIBLE_ALPHA
-        } else {
-            QrezzyBrandingConfig.INVISIBLE_ALPHA
-        },
-        animationSpec = tween(
-            durationMillis = QrezzyBrandingConfig.SLOGAN_FADE_DURATION_MS,
-        ),
+        targetValue =
+            if (isVisible) {
+                QrezzyBrandingConfig.VISIBLE_ALPHA
+            } else {
+                QrezzyBrandingConfig.INVISIBLE_ALPHA
+            },
+        animationSpec =
+            tween(
+                durationMillis = QrezzyBrandingConfig.SLOGAN_FADE_DURATION_MS,
+            ),
         label = "qrezzy_slogan_alpha",
     )
 
     Image(
-        modifier = Modifier
-            .width(width)
-            .alpha(animatedAlpha),
+        modifier =
+            Modifier
+                .width(width)
+                .alpha(animatedAlpha),
         painter = painterResource(id = R.drawable.slogan_scan_create_share),
         contentDescription = QrezzyBrandingConfig.SLOGAN_CONTENT_DESCRIPTION,
         contentScale = ContentScale.Fit,
@@ -181,12 +189,9 @@ private fun QrezzySlogan(
  * Dzięki ograniczeniu maksymalnej szerokości logo nie staje się
  * zbyt duże na większych ekranach.
  */
-private fun calculateLetterWidth(
-    availableWidth: Dp,
-): Dp {
-    return (availableWidth / QrezzyBrandingConfig.TOTAL_LETTER_COUNT)
+private fun calculateLetterWidth(availableWidth: Dp): Dp =
+    (availableWidth / QrezzyBrandingConfig.TOTAL_LETTER_COUNT)
         .coerceAtMost(QrezzyBrandingConfig.MAX_LETTER_WIDTH)
-}
 
 /**
  * Zwraca docelową przezroczystość litery logo.
@@ -194,13 +199,12 @@ private fun calculateLetterWidth(
 private fun calculateLetterAlpha(
     visibleLetterCount: Int,
     requiredLetterCount: Int,
-): Float {
-    return if (visibleLetterCount >= requiredLetterCount) {
+): Float =
+    if (visibleLetterCount >= requiredLetterCount) {
         QrezzyBrandingConfig.VISIBLE_ALPHA
     } else {
         QrezzyBrandingConfig.INVISIBLE_ALPHA
     }
-}
 
 /**
  * Stałe konfiguracyjne animowanego brandingu QREZZY.
