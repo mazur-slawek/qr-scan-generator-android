@@ -2,10 +2,10 @@ package software.mazur.qrezzy.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Mint = Color(0xFFB8F2D7)
-val Yellow = Color(0xFFFFE66D)
-val Pink = Color(0xFFFFA1C2)
-val Purple = Color(0xFFC9A4F4)
+val Mint = Color(0xFF25AD67)
+val Yellow = Color(0xFFFFDC61)
+val Pink = Color(0xFFF54081)
+val Purple = Color(0xFF7A3DE0)
 
 // Brand colors used across the QREZZY visual identity.
 val QrezzyMint = Color(0xFFB8F2D7)
