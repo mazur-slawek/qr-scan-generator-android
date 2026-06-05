@@ -8,11 +8,13 @@ import androidx.compose.ui.unit.sp
 val Typography = Typography(
     displayLarge = TextStyle(
         fontFamily = QrezzyFontFamily,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 28.sp,
+        lineHeight = 34.sp,
     ),
     headlineLarge = TextStyle(
         fontFamily = QrezzyFontFamily,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.SemiBold,
     ),
     titleLarge = TextStyle(
         fontFamily = QrezzyFontFamily,
@@ -20,7 +22,9 @@ val Typography = Typography(
     ),
     bodyLarge = TextStyle(
         fontFamily = QrezzyFontFamily,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Medium,
+        fontSize = 18.sp,
+        lineHeight = 24.sp,
     ),
     labelLarge = TextStyle(
         fontFamily = QrezzyFontFamily,
