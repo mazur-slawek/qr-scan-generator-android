@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,10 +28,9 @@ import software.mazur.qrezzy.R
 import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
-fun QrezzyBranding(modifier: Modifier = Modifier) {
-    val visibleLetterCount = remember { mutableIntStateOf(QrezzyBrandingConfig.INITIAL_VISIBLE_LETTER_COUNT) }
-
-    val showSlogan = remember { mutableStateOf(false) }
+fun QrezzyBranding() {
+    val visibleLetterCount = remember {mutableIntStateOf(QrezzyBrandingConfig.INITIAL_VISIBLE_LETTER_COUNT)}
+    val showSlogan = remember {mutableStateOf(false)}
 
     LaunchedEffect(Unit) {
         delay(QrezzyBrandingConfig.INITIAL_ANIMATION_DELAY_MS.milliseconds)
@@ -45,14 +45,12 @@ fun QrezzyBranding(modifier: Modifier = Modifier) {
     }
 
     BoxWithConstraints(
-        modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
         val letterWidth =
             calculateLetterWidth(
                 availableWidth = maxWidth,
             )
-
         val sloganWidth = maxWidth * QrezzyBrandingConfig.SLOGAN_WIDTH_FACTOR
 
         Column(
@@ -143,10 +141,9 @@ private fun QrezzyLogoLetter(
     )
 
     Image(
-        modifier =
-            Modifier
-                .width(width)
-                .alpha(animatedAlpha),
+        modifier = Modifier
+            .width(width)
+            .alpha(animatedAlpha),
         painter = painterResource(id = resId),
         contentDescription = null,
         contentScale = ContentScale.FillBounds,
@@ -176,7 +173,8 @@ private fun QrezzySlogan(
         modifier =
             Modifier
                 .width(width)
-                .alpha(animatedAlpha),
+                .alpha(animatedAlpha)
+                .padding(start = 10.dp),
         painter = painterResource(id = R.drawable.slogan_scan_create_share),
         contentDescription = QrezzyBrandingConfig.SLOGAN_CONTENT_DESCRIPTION,
         contentScale = ContentScale.Fit,
@@ -196,10 +194,7 @@ private fun calculateLetterWidth(availableWidth: Dp): Dp =
 /**
  * Zwraca docelową przezroczystość litery logo.
  */
-private fun calculateLetterAlpha(
-    visibleLetterCount: Int,
-    requiredLetterCount: Int,
-): Float =
+private fun calculateLetterAlpha(visibleLetterCount: Int, requiredLetterCount: Int): Float =
     if (visibleLetterCount >= requiredLetterCount) {
         QrezzyBrandingConfig.VISIBLE_ALPHA
     } else {
@@ -213,26 +208,19 @@ private object QrezzyBrandingConfig {
     const val TOTAL_LETTER_COUNT = 6
     const val INITIAL_VISIBLE_LETTER_COUNT = 2
     const val FIRST_ANIMATED_LETTER_INDEX = 3
-
     const val LOGO_E_VISIBLE_COUNT = 3
     const val LOGO_FIRST_Z_VISIBLE_COUNT = 4
     const val LOGO_SECOND_Z_VISIBLE_COUNT = 5
     const val LOGO_Y_VISIBLE_COUNT = 6
-
-    const val INITIAL_ANIMATION_DELAY_MS = 500
+    const val INITIAL_ANIMATION_DELAY_MS = 250
     const val LETTER_APPEAR_DELAY_MS = 180
-    const val SLOGAN_APPEAR_DELAY_MS = 300
-
+    const val SLOGAN_APPEAR_DELAY_MS = 100
     const val LETTER_FADE_DURATION_MS = 350
     const val SLOGAN_FADE_DURATION_MS = 600
-
     const val VISIBLE_ALPHA = 1f
     const val INVISIBLE_ALPHA = 0f
-
     const val SLOGAN_WIDTH_FACTOR = 0.65f
-
     val MAX_LETTER_WIDTH = 60.dp
     val SLOGAN_TOP_SPACING = 12.dp
-
     const val SLOGAN_CONTENT_DESCRIPTION = "Scan. Create. Share."
 }

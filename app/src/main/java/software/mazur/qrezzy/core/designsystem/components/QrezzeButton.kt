@@ -3,21 +3,19 @@ package software.mazur.qrezzy.core.designsystem.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +33,7 @@ import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 
 @Composable
 fun QrezzyButton(
-    title: String,
+    text: String,
     modifier: Modifier = Modifier,
     leftIcon: ImageVector? = null,
     rightIcon: ImageVector? = null,
@@ -97,7 +95,7 @@ fun QrezzyButton(
                     spotColor = Color.Black,
                 ),
         ) {
-            Row(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .border(
@@ -106,53 +104,47 @@ fun QrezzyButton(
                             alpha = QrezzyButtonDefaults.InnerHighlightAlpha,
                         ),
                         shape = ShapeDefaults.Medium,
-                    )
-                    .padding(
-                        horizontal = QrezzyButtonDefaults.HorizontalContentPadding,
                     ),
-                verticalAlignment = Alignment.CenterVertically,
             ) {
+                Text(
+                    text = text,
+                    maxLines = 1,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = QrezzyButtonDefaults.IconWidth + 15.dp)
+                        .align(Alignment.Center),
+                    textAlign = TextAlign.Center,
+                    autoSize = TextAutoSize.StepBased(
+                        minFontSize = QrezzyButtonDefaults.MinTextSize,
+                        maxFontSize = QrezzyButtonDefaults.MaxTextSize,
+                        stepSize = QrezzyButtonDefaults.TextSizeStep
+                    ),
+                )
                 leftIcon?.let {icon ->
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        modifier = Modifier.size(QrezzyButtonDefaults.LeftIconSize),
+                        modifier = Modifier
+                            .padding(start = 5.dp)
+                            .height(buttonHeight)
+                            .width(QrezzyButtonDefaults.IconWidth)
+                            .align(Alignment.TopStart),
                     )
                 }
-
-                QrezzyButtonText(
-                    text = title,
-                    modifier = Modifier.weight(QrezzyButtonDefaults.TitleWeight),
-                )
-
                 rightIcon?.let {icon ->
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        modifier = Modifier.size(QrezzyButtonDefaults.RightIconSize),
+                        modifier = Modifier
+                            .padding(end = 5.dp)
+                            .height(buttonHeight)
+                            .width(QrezzyButtonDefaults.IconWidth)
+                            .align(Alignment.TopEnd),
                     )
                 }
             }
         }
     }
-}
-
-@Composable
-private fun QrezzyButtonText(
-    text: String,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        modifier = modifier,
-        text = text,
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.labelLarge,
-        autoSize = TextAutoSize.StepBased(
-            minFontSize = QrezzyButtonDefaults.MinTextSize,
-            maxFontSize = QrezzyButtonDefaults.MaxTextSize,
-            stepSize = QrezzyButtonDefaults.TextSizeStep
-        ),
-    )
 }
 
 private object QrezzyButtonDefaults {
@@ -162,13 +154,10 @@ private object QrezzyButtonDefaults {
     val ShadowElevation = 8.dp
     val BorderWidth = 2.5.dp
     val InnerHighlightBorderWidth = 4.dp
-    val HorizontalContentPadding = 12.dp
-    val LeftIconSize = 32.dp
-    val RightIconSize = 42.dp
+    val IconWidth = 42.dp
     val MinTextSize = 12.sp
     val MaxTextSize = 18.sp
     val TextSizeStep = 1.sp
     const val DisabledAlpha = 0.5f
     const val InnerHighlightAlpha = 0.5f
-    const val TitleWeight = 1f
 }
