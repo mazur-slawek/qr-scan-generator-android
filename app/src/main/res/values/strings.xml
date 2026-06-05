@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">QREZZY</string>
+    
+    <string name="button_get_started">Get started</string>
 </resources>
