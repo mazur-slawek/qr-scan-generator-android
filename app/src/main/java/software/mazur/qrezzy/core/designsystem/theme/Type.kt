@@ -32,4 +32,9 @@ val Typography = Typography(
         fontSize = 18.sp,
         lineHeight = 24.sp,
     ),
+    labelSmall = TextStyle(
+        fontFamily = QrezzyFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp,
+    ),
 )

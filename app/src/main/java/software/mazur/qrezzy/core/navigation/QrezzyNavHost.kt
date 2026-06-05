@@ -37,7 +37,7 @@ fun QrezzyNavHost() {
             OnboardingScreen(
                 onGetStartedClick = {
                     navController.navigate(QrezzyDestination.Home.route) {
-                        popUpTo(QrezzyDestination.Splash.route) {
+                        popUpTo(QrezzyDestination.Onboarding.route) {
                             inclusive = true
                         }
                     }

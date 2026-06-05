@@ -18,4 +18,10 @@
 
     <string name="onboarding_summary_title">You\'re all set!</string>
     <string name="onboarding_summary_description">Scan, create and share QR codes with one simple app.</string>
+
+
+    <string name="navigation_tab_scan">Scan</string>
+    <string name="navigation_tab_generate">Generate</string>
+    <string name="navigation_tab_history">History</string>
+    <string name="navigation_tab_settings">Settings</string>
 </resources>
