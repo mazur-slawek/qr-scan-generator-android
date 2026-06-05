@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import software.mazur.qrezzy.core.designsystem.components.QrezzyBranding
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedBackground
+import software.mazur.qrezzy.core.designsystem.components.QrezzyBranding
 
 @Composable
 fun SplashScreen() {
@@ -17,7 +17,8 @@ fun SplashScreen() {
         contentAlignment = Alignment.Center,
     ) {
         QrezzyAnimatedBackground()
-        QrezzyBranding(modifier = Modifier.padding(horizontal = 16.dp)
+        QrezzyBranding(
+            modifier = Modifier.padding(horizontal = 16.dp),
         )
     }
 }
