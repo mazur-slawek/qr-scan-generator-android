@@ -24,7 +24,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -45,11 +44,12 @@ fun ScannerScreen() {
             ) == PackageManager.PERMISSION_GRANTED,
         )
     }
-    val cameraPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-    ) {isGranted ->
-        hasCameraPermission = isGranted
-    }
+    val cameraPermissionLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+        ) { isGranted ->
+            hasCameraPermission = isGranted
+        }
 
     LaunchedEffect(Unit) {
         if (!hasCameraPermission) {
@@ -67,24 +67,27 @@ fun ScannerScreen() {
 @Composable
 private fun CameraPreview() {
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
 
     AndroidView(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(32.dp),
-        factory = {previewContext ->
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(32.dp),
+        factory = { previewContext ->
             val previewView = PreviewView(previewContext)
             val cameraProviderFuture = ProcessCameraProvider.getInstance(previewContext)
 
             cameraProviderFuture.addListener(
                 {
                     val cameraProvider = cameraProviderFuture.get()
-                    val preview = Preview.Builder()
-                        .build()
-                        .also {cameraPreview ->
-                            cameraPreview.surfaceProvider = previewView.surfaceProvider
-                        }
+                    val preview =
+                        Preview
+                            .Builder()
+                            .build()
+                            .also { cameraPreview ->
+                                cameraPreview.surfaceProvider = previewView.surfaceProvider
+                            }
 
                     cameraProvider.unbindAll()
 
@@ -121,7 +124,6 @@ private fun CameraPermissionContent() {
         )
     }
 }
-
 
 private fun testMlKitBarcodeScanner() {
     val scanner = BarcodeScanning.getClient()

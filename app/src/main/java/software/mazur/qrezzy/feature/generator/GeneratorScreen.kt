@@ -9,17 +9,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.tooling.preview.Preview
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 
 @Composable
 fun GeneratorScreen() {
-    val qrBitmap = remember {
-        generateQrBitmap(
-            content = "https://github.com/mazur-slawek/qr-scan-generator-android",
+    val qrBitmap =
+        remember {
+            generateQrBitmap(
+                content = "https://github.com/mazur-slawek/qr-scan-generator-android",
             )
-    }
+        }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -32,23 +32,17 @@ fun GeneratorScreen() {
     }
 }
 
-@Preview
-@Composable
-private fun GeneratorScreenPreview() {
-    GeneratorScreen()
-
-}
-
 fun generateQrBitmap(
     content: String,
     size: Int = 800,
 ): Bitmap {
-    val bitMatrix = QRCodeWriter().encode(
-        content,
-        BarcodeFormat.QR_CODE,
-        size,
-        size,
-    )
+    val bitMatrix =
+        QRCodeWriter().encode(
+            content,
+            BarcodeFormat.QR_CODE,
+            size,
+            size,
+        )
 
     return Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888).apply {
         for (x in 0 until size) {
@@ -56,13 +50,13 @@ fun generateQrBitmap(
                 setPixel(
                     x,
                     y,
-                    if (bitMatrix[x, y]) android.graphics.Color.BLACK
-                    else android.graphics.Color.WHITE,
+                    if (bitMatrix[x, y]) {
+                        android.graphics.Color.BLACK
+                    } else {
+                        android.graphics.Color.WHITE
+                    },
                 )
-
             }
-
         }
     }
-
 }

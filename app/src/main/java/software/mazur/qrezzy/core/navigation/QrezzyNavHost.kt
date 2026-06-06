@@ -12,7 +12,6 @@ import software.mazur.qrezzy.feature.scanner.ScannerScreen
 import software.mazur.qrezzy.feature.settings.SettingsScreen
 import software.mazur.qrezzy.feature.splash.SplashScreen
 
-
 @Composable
 fun QrezzyNavHost() {
     val navController = rememberNavController()
@@ -29,7 +28,7 @@ fun QrezzyNavHost() {
                             inclusive = true
                         }
                     }
-                }
+                },
             )
         }
 
@@ -41,7 +40,7 @@ fun QrezzyNavHost() {
                             inclusive = true
                         }
                     }
-                }
+                },
             )
         }
 

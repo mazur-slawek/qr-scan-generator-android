@@ -41,105 +41,116 @@ fun QrezzyButton(
     onClick: () -> Unit,
 ) {
     BoxWithConstraints(
-        modifier = modifier
-            .height(QrezzyButtonDefaults.ContainerHeight)
-            .fillMaxWidth(),
+        modifier =
+            modifier
+                .height(QrezzyButtonDefaults.ContainerHeight)
+                .fillMaxWidth(),
         contentAlignment = Alignment.Center,
     ) {
         val buttonWidth = maxWidth - QrezzyButtonDefaults.ShadowOffsetX
         val buttonHeight = maxHeight - QrezzyButtonDefaults.ShadowOffsetY
 
         Spacer(
-            modifier = Modifier
-                .height(buttonHeight)
-                .width(buttonWidth)
-                .background(
-                    color = QrezzyPurple,
-                    shape = ShapeDefaults.Medium,
-                )
-                .border(
-                    width = QrezzyButtonDefaults.BorderWidth,
-                    color = Color.Black,
-                    shape = ShapeDefaults.Medium,
-                )
-                .align(Alignment.BottomEnd),
+            modifier =
+                Modifier
+                    .height(buttonHeight)
+                    .width(buttonWidth)
+                    .background(
+                        color = QrezzyPurple,
+                        shape = ShapeDefaults.Medium,
+                    ).border(
+                        width = QrezzyButtonDefaults.BorderWidth,
+                        color = Color.Black,
+                        shape = ShapeDefaults.Medium,
+                    ).align(Alignment.BottomEnd),
         )
 
         Button(
             onClick = onClick,
             enabled = enabled,
             shape = ShapeDefaults.Medium,
-            border = BorderStroke(
-                width = QrezzyButtonDefaults.BorderWidth,
-                color = Color.Black,
-            ),
+            border =
+                BorderStroke(
+                    width = QrezzyButtonDefaults.BorderWidth,
+                    color = Color.Black,
+                ),
             contentPadding = PaddingValues.Zero,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = QrezzyMint,
-                contentColor = TextPrimary,
-                disabledContainerColor = QrezzyMint.copy(
-                    alpha = QrezzyButtonDefaults.DisabledAlpha,
+            colors =
+                ButtonDefaults.buttonColors(
+                    containerColor = QrezzyMint,
+                    contentColor = TextPrimary,
+                    disabledContainerColor =
+                        QrezzyMint.copy(
+                            alpha = QrezzyButtonDefaults.DISABLED_ALPHA,
+                        ),
+                    disabledContentColor =
+                        TextPrimary.copy(
+                            alpha = QrezzyButtonDefaults.DISABLED_ALPHA,
+                        ),
                 ),
-                disabledContentColor = TextPrimary.copy(
-                    alpha = QrezzyButtonDefaults.DisabledAlpha,
-                ),
-            ),
-            modifier = Modifier
-                .height(buttonHeight)
-                .width(buttonWidth)
-                .align(Alignment.TopStart)
-                .shadow(
-                    elevation = QrezzyButtonDefaults.ShadowElevation,
-                    shape = ShapeDefaults.Medium,
-                    ambientColor = Color.Black,
-                    spotColor = Color.Black,
-                ),
+            modifier =
+                Modifier
+                    .height(buttonHeight)
+                    .width(buttonWidth)
+                    .align(Alignment.TopStart)
+                    .shadow(
+                        elevation = QrezzyButtonDefaults.ShadowElevation,
+                        shape = ShapeDefaults.Medium,
+                        ambientColor = Color.Black,
+                        spotColor = Color.Black,
+                    ),
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .border(
-                        width = QrezzyButtonDefaults.InnerHighlightBorderWidth,
-                        color = Color.White.copy(
-                            alpha = QrezzyButtonDefaults.InnerHighlightAlpha,
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .border(
+                            width = QrezzyButtonDefaults.InnerHighlightBorderWidth,
+                            color =
+                                Color.White.copy(
+                                    alpha = QrezzyButtonDefaults.INNER_HIGHLIGHT_ALPHA,
+                                ),
+                            shape = ShapeDefaults.Medium,
                         ),
-                        shape = ShapeDefaults.Medium,
-                    ),
             ) {
                 Text(
                     text = text,
                     maxLines = 1,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = QrezzyButtonDefaults.IconWidth + 15.dp)
-                        .align(Alignment.Center),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = QrezzyButtonDefaults.IconWidth + 15.dp)
+                            .align(Alignment.Center),
                     textAlign = TextAlign.Center,
-                    autoSize = TextAutoSize.StepBased(
-                        minFontSize = QrezzyButtonDefaults.MinTextSize,
-                        maxFontSize = QrezzyButtonDefaults.MaxTextSize,
-                        stepSize = QrezzyButtonDefaults.TextSizeStep
-                    ),
+                    autoSize =
+                        TextAutoSize.StepBased(
+                            minFontSize = QrezzyButtonDefaults.MinTextSize,
+                            maxFontSize = QrezzyButtonDefaults.MaxTextSize,
+                            stepSize = QrezzyButtonDefaults.TextSizeStep,
+                        ),
                 )
-                leftIcon?.let {icon ->
+                leftIcon?.let { icon ->
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        modifier = Modifier
-                            .padding(start = 5.dp)
-                            .height(buttonHeight)
-                            .width(QrezzyButtonDefaults.IconWidth)
-                            .align(Alignment.TopStart),
+                        modifier =
+                            Modifier
+                                .padding(start = 5.dp)
+                                .height(buttonHeight)
+                                .width(QrezzyButtonDefaults.IconWidth)
+                                .align(Alignment.TopStart),
                     )
                 }
-                rightIcon?.let {icon ->
+                rightIcon?.let { icon ->
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        modifier = Modifier
-                            .padding(end = 5.dp)
-                            .height(buttonHeight)
-                            .width(QrezzyButtonDefaults.IconWidth)
-                            .align(Alignment.TopEnd),
+                        modifier =
+                            Modifier
+                                .padding(end = 5.dp)
+                                .height(buttonHeight)
+                                .width(QrezzyButtonDefaults.IconWidth)
+                                .align(Alignment.TopEnd),
                     )
                 }
             }
@@ -158,6 +169,6 @@ private object QrezzyButtonDefaults {
     val MinTextSize = 12.sp
     val MaxTextSize = 18.sp
     val TextSizeStep = 1.sp
-    const val DisabledAlpha = 0.5f
-    const val InnerHighlightAlpha = 0.5f
+    const val DISABLED_ALPHA = 0.5f
+    const val INNER_HIGHLIGHT_ALPHA = 0.5f
 }

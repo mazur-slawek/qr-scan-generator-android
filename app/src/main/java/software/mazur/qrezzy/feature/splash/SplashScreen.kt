@@ -35,32 +35,36 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun SplashScreen(onGetStartedClick: () -> Unit) {
-    val isButtonVisible = remember {mutableStateOf(false)}
+    val isButtonVisible = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         delay(SplashScreenDefaults.BUTTON_APPEAR_DELAY_MS.milliseconds)
         isButtonVisible.value = true
     }
     val buttonAlpha by animateFloatAsState(
-        targetValue = if (isButtonVisible.value) {
-            SplashScreenDefaults.VISIBLE_ALPHA
-        } else {
-            SplashScreenDefaults.HIDDEN_ALPHA
-        },
-        animationSpec = tween(
-            durationMillis = SplashScreenDefaults.BUTTON_ANIMATION_DURATION_MS,
-        ),
+        targetValue =
+            if (isButtonVisible.value) {
+                SplashScreenDefaults.VISIBLE_ALPHA
+            } else {
+                SplashScreenDefaults.HIDDEN_ALPHA
+            },
+        animationSpec =
+            tween(
+                durationMillis = SplashScreenDefaults.BUTTON_ANIMATION_DURATION_MS,
+            ),
         label = SplashScreenAnimationLabels.BUTTON_ALPHA,
     )
     val buttonOffsetY by animateDpAsState(
-        targetValue = if (isButtonVisible.value) {
-            0.dp
-        } else {
-            SplashScreenDefaults.BUTTON_INITIAL_OFFSET_Y
-        },
-        animationSpec = tween(
-            durationMillis = SplashScreenDefaults.BUTTON_ANIMATION_DURATION_MS,
-        ),
+        targetValue =
+            if (isButtonVisible.value) {
+                0.dp
+            } else {
+                SplashScreenDefaults.BUTTON_INITIAL_OFFSET_Y
+            },
+        animationSpec =
+            tween(
+                durationMillis = SplashScreenDefaults.BUTTON_ANIMATION_DURATION_MS,
+            ),
         label = SplashScreenAnimationLabels.BUTTON_OFFSET_Y,
     )
 
@@ -71,16 +75,18 @@ fun SplashScreen(onGetStartedClick: () -> Unit) {
         QrezzyAnimatedBackground()
 
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = SplashScreenDefaults.CONTENT_HORIZONTAL_PADDING,
-                ),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = SplashScreenDefaults.CONTENT_HORIZONTAL_PADDING,
+                    ),
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
                 verticalArrangement = Arrangement.Center,
             ) {
                 Image(
@@ -96,10 +102,11 @@ fun SplashScreen(onGetStartedClick: () -> Unit) {
                 onClick = onGetStartedClick,
                 text = stringResource(id = R.string.button_get_started),
                 rightIcon = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
-                modifier = Modifier
-                    .alpha(buttonAlpha)
-                    .padding(bottom = SplashScreenDefaults.BUTTON_BOTTOM_PADDING)
-                    .offset(y = buttonOffsetY),
+                modifier =
+                    Modifier
+                        .alpha(buttonAlpha)
+                        .padding(bottom = SplashScreenDefaults.BUTTON_BOTTOM_PADDING)
+                        .offset(y = buttonOffsetY),
             )
         }
     }
