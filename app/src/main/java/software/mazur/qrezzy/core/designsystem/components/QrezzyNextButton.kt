@@ -28,31 +28,37 @@ fun QrezzyNextButton(
         onClick = onClick,
         enabled = enabled,
         modifier = modifier.size(QrezzyNextButtonDefaults.BUTTON_SIZE),
-        shape = ShapeDefaults.Large.copy(
-            all = CornerSize(QrezzyNextButtonDefaults.CORNER_RADIUS),
-        ),
-        border = BorderStroke(
-            width = QrezzyNextButtonDefaults.BORDER_WIDTH,
-            color = Color.Black,
-        ),
+        shape =
+            ShapeDefaults.Large.copy(
+                all = CornerSize(QrezzyNextButtonDefaults.CORNER_RADIUS),
+            ),
+        border =
+            BorderStroke(
+                width = QrezzyNextButtonDefaults.BORDER_WIDTH,
+                color = Color.Black,
+            ),
         contentPadding = PaddingValues.Zero,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = color,
-            contentColor = TextPrimary,
-            disabledContainerColor = color.copy(
-                alpha = QrezzyNextButtonDefaults.DISABLED_ALPHA,
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = color,
+                contentColor = TextPrimary,
+                disabledContainerColor =
+                    color.copy(
+                        alpha = QrezzyNextButtonDefaults.DISABLED_ALPHA,
+                    ),
+                disabledContentColor =
+                    TextPrimary.copy(
+                        alpha = QrezzyNextButtonDefaults.DISABLED_ALPHA,
+                    ),
             ),
-            disabledContentColor = TextPrimary.copy(
-                alpha = QrezzyNextButtonDefaults.DISABLED_ALPHA,
-            ),
-        ),
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            modifier = Modifier
-                .size(QrezzyNextButtonDefaults.ICON_SIZE)
-                .padding(QrezzyNextButtonDefaults.ICON_PADDING),
+            modifier =
+                Modifier
+                    .size(QrezzyNextButtonDefaults.ICON_SIZE)
+                    .padding(QrezzyNextButtonDefaults.ICON_PADDING),
         )
     }
 }

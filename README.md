@@ -14,6 +14,63 @@ QR scanner and generator Android app built with Kotlin and Jetpack Compose.
 - Clean Architecture
 - Material 3
 
+## Architecture & Setup
+
+The project follows modern Android development practices and is prepared for scalable feature
+growth.
+
+### Implemented Setup
+
+- Jetpack Compose for declarative UI
+- Navigation Compose for type-safe screen navigation
+- CameraX prepared for QR scanning functionality
+- ML Kit Barcode Scanning prepared for QR code detection
+- Kotlin Coroutines & Flow for asynchronous operations
+- Hilt for dependency injection
+- Room prepared for local persistence and scan history
+- Material 3 design system
+- Detekt and Ktlint for automated code quality checks
+
+### Dependency Injection
+
+Hilt is configured as the application's dependency injection framework.
+
+Benefits:
+
+- Simplified dependency management
+- Better separation of concerns
+- Easier testing and mocking
+- Scalable architecture for future features
+
+### Local Data Storage
+
+Room is used as the local database layer.
+
+Planned usage:
+
+- QR scan history
+- Generated QR history
+- User preferences and settings
+- Offline persistence
+
+### QR Scanning
+
+CameraX and ML Kit provide:
+
+- Modern camera integration
+- Fast QR code detection
+- Reliable barcode recognition
+- Lifecycle-aware camera management
+
+### Concurrency
+
+Coroutines and Flow are used for:
+
+- Background operations
+- Database access
+- Reactive UI updates
+- Structured concurrency
+
 ## Requirements
 
 - Android Studio (latest stable version)
@@ -28,9 +85,9 @@ legacy platform limitations.
 
 The project uses automated code quality tools:
 
-- Ktlint — code formatting and style checks
-- Detekt — static code analysis
-- EditorConfig — shared IDE formatting configuration
+- Ktlint - code formatting and style checks
+- Detekt - static code analysis
+- EditorConfig - shared IDE formatting configuration
 
 ### Run checks
 

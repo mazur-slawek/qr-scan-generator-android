@@ -49,12 +49,11 @@ import software.mazur.qrezzy.feature.onboarding.model.OnboardingItem
 import software.mazur.qrezzy.feature.onboarding.model.OnboardingItemType
 
 @Composable
-fun OnboardingScreen(
-    onGetStartedClick: () -> Unit = {},
-) {
-    val currentPageIndex = remember {
-        mutableIntStateOf(OnboardingDefaults.INITIAL_PAGE_INDEX)
-    }
+fun OnboardingScreen(onGetStartedClick: () -> Unit = {}) {
+    val currentPageIndex =
+        remember {
+            mutableIntStateOf(OnboardingDefaults.INITIAL_PAGE_INDEX)
+        }
     val currentItem = onboardingItems[currentPageIndex.intValue]
     val isLastPage = currentPageIndex.intValue == onboardingItems.lastIndex
 
@@ -75,28 +74,34 @@ fun OnboardingScreen(
                 targetState = currentPageIndex.intValue,
                 transitionSpec = {
                     slideInHorizontally(
-                        animationSpec = tween(
-                            durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
-                        ),
-                        initialOffsetX = {fullWidth -> fullWidth},
-                    ) + fadeIn(
-                        animationSpec = tween(
-                            durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
-                        ),
-                    ) togetherWith slideOutHorizontally(
-                        animationSpec = tween(
-                            durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
-                        ),
-                        targetOffsetX = {fullWidth -> -fullWidth},
-                    ) + fadeOut(
-                        animationSpec = tween(
-                            durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
-                        ),
-                    )
+                        animationSpec =
+                            tween(
+                                durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
+                            ),
+                        initialOffsetX = { fullWidth -> fullWidth },
+                    ) +
+                        fadeIn(
+                            animationSpec =
+                                tween(
+                                    durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
+                                ),
+                        ) togetherWith slideOutHorizontally(
+                            animationSpec =
+                                tween(
+                                    durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
+                                ),
+                            targetOffsetX = { fullWidth -> -fullWidth },
+                        ) +
+                        fadeOut(
+                            animationSpec =
+                                tween(
+                                    durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
+                                ),
+                        )
                 },
                 label = OnboardingDefaults.CONTENT_TRANSITION_LABEL,
                 modifier = Modifier.weight(OnboardingDefaults.CONTENT_WEIGHT),
-            ) {pageIndex ->
+            ) { pageIndex ->
                 OnboardingContent(
                     item = onboardingItems[pageIndex],
                     modifier = Modifier.fillMaxSize(),
@@ -129,9 +134,10 @@ private fun OnboardingContent(
         modifier = modifier,
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.Center),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Center),
         ) {
             Image(
                 modifier = Modifier.fillMaxWidth(),
@@ -155,9 +161,10 @@ private fun OnboardingContent(
             )
 
             Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = OnboardingDefaults.DESCRIPTION_HORIZONTAL_PADDING),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = OnboardingDefaults.DESCRIPTION_HORIZONTAL_PADDING),
                 text = stringResource(id = item.descriptionResId),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyLarge,
@@ -175,10 +182,11 @@ private fun OnboardingBottomSection(
     onGetStartedClick: () -> Unit,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = OnboardingDefaults.BOTTOM_SECTION_HORIZONTAL_PADDING)
-            .height(OnboardingDefaults.BOTTOM_SECTION_HEIGHT),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = OnboardingDefaults.BOTTOM_SECTION_HORIZONTAL_PADDING)
+                .height(OnboardingDefaults.BOTTOM_SECTION_HEIGHT),
         verticalAlignment = Alignment.Top,
     ) {
         if (isLastPage) {
@@ -212,9 +220,10 @@ private fun OnboardingNavigationSection(
         OnboardingPageIndicators(
             items = items,
             currentItem = currentItem,
-            modifier = Modifier
-                .height(OnboardingDefaults.NEXT_BUTTON_CONTAINER_HEIGHT)
-                .weight(OnboardingDefaults.INDICATORS_WEIGHT),
+            modifier =
+                Modifier
+                    .height(OnboardingDefaults.NEXT_BUTTON_CONTAINER_HEIGHT)
+                    .weight(OnboardingDefaults.INDICATORS_WEIGHT),
         )
 
         QrezzyNextButton(
@@ -236,78 +245,80 @@ private fun OnboardingPageIndicators(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-        items.forEach {item ->
+        items.forEach { item ->
             val isSelected = item == currentItem
 
             Spacer(
-                modifier = Modifier
-                    .padding(horizontal = OnboardingDefaults.INDICATOR_HORIZONTAL_PADDING)
-                    .size(
-                        if (isSelected) {
-                            OnboardingDefaults.SELECTED_INDICATOR_SIZE
-                        } else {
-                            OnboardingDefaults.DEFAULT_INDICATOR_SIZE
-                        },
-                    )
-                    .background(
-                        color = if (isSelected) {
-                            currentItem.accentColor
-                        } else {
-                            OnboardingDefaults.INACTIVE_INDICATOR_COLOR
-                        },
-                        shape = CircleShape,
-                    )
-                    .border(
-                        width = OnboardingDefaults.INDICATOR_BORDER_WIDTH,
-                        color = if (isSelected) {
-                            Color.Black
-                        } else {
-                            OnboardingDefaults.INACTIVE_INDICATOR_COLOR
-                        },
-                        shape = CircleShape,
-                    ),
+                modifier =
+                    Modifier
+                        .padding(horizontal = OnboardingDefaults.INDICATOR_HORIZONTAL_PADDING)
+                        .size(
+                            if (isSelected) {
+                                OnboardingDefaults.SELECTED_INDICATOR_SIZE
+                            } else {
+                                OnboardingDefaults.DEFAULT_INDICATOR_SIZE
+                            },
+                        ).background(
+                            color =
+                                if (isSelected) {
+                                    currentItem.accentColor
+                                } else {
+                                    OnboardingDefaults.INACTIVE_INDICATOR_COLOR
+                                },
+                            shape = CircleShape,
+                        ).border(
+                            width = OnboardingDefaults.INDICATOR_BORDER_WIDTH,
+                            color =
+                                if (isSelected) {
+                                    Color.Black
+                                } else {
+                                    OnboardingDefaults.INACTIVE_INDICATOR_COLOR
+                                },
+                            shape = CircleShape,
+                        ),
             )
         }
     }
 }
 
-private val onboardingItems = listOf(
-    OnboardingItem(
-        type = OnboardingItemType.SCAN,
-        accentColor = QrezzyMint,
-        iconResId = R.drawable.onboarding_scan_icon,
-        titleResId = R.string.onboarding_scan_title,
-        descriptionResId = R.string.onboarding_scan_description,
-    ),
-    OnboardingItem(
-        type = OnboardingItemType.EDIT,
-        accentColor = QrezzyYellow,
-        iconResId = R.drawable.onboarding_generate_icon,
-        titleResId = R.string.onboarding_generate_title,
-        descriptionResId = R.string.onboarding_generate_description,
-    ),
-    OnboardingItem(
-        type = OnboardingItemType.HISTORY,
-        accentColor = QrezzyPink,
-        iconResId = R.drawable.onboarding_history_icon,
-        titleResId = R.string.onboarding_history_title,
-        descriptionResId = R.string.onboarding_history_description,
-    ),
-    OnboardingItem(
-        type = OnboardingItemType.SHARE,
-        accentColor = QrezzyPurple,
-        iconResId = R.drawable.onboarding_share_icon,
-        titleResId = R.string.onboarding_share_title,
-        descriptionResId = R.string.onboarding_share_description,
-    ),
-    OnboardingItem(
-        type = OnboardingItemType.SUMMARY,
-        accentColor = QrezzyMint,
-        iconResId = R.drawable.onboarding_summary_icon,
-        titleResId = R.string.onboarding_summary_title,
-        descriptionResId = R.string.onboarding_summary_description,
-    ),
-)
+private val onboardingItems =
+    listOf(
+        OnboardingItem(
+            type = OnboardingItemType.SCAN,
+            accentColor = QrezzyMint,
+            iconResId = R.drawable.onboarding_scan_icon,
+            titleResId = R.string.onboarding_scan_title,
+            descriptionResId = R.string.onboarding_scan_description,
+        ),
+        OnboardingItem(
+            type = OnboardingItemType.EDIT,
+            accentColor = QrezzyYellow,
+            iconResId = R.drawable.onboarding_generate_icon,
+            titleResId = R.string.onboarding_generate_title,
+            descriptionResId = R.string.onboarding_generate_description,
+        ),
+        OnboardingItem(
+            type = OnboardingItemType.HISTORY,
+            accentColor = QrezzyPink,
+            iconResId = R.drawable.onboarding_history_icon,
+            titleResId = R.string.onboarding_history_title,
+            descriptionResId = R.string.onboarding_history_description,
+        ),
+        OnboardingItem(
+            type = OnboardingItemType.SHARE,
+            accentColor = QrezzyPurple,
+            iconResId = R.drawable.onboarding_share_icon,
+            titleResId = R.string.onboarding_share_title,
+            descriptionResId = R.string.onboarding_share_description,
+        ),
+        OnboardingItem(
+            type = OnboardingItemType.SUMMARY,
+            accentColor = QrezzyMint,
+            iconResId = R.drawable.onboarding_summary_icon,
+            titleResId = R.string.onboarding_summary_title,
+            descriptionResId = R.string.onboarding_summary_description,
+        ),
+    )
 
 private object OnboardingDefaults {
     const val INITIAL_PAGE_INDEX = 0

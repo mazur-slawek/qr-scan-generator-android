@@ -29,8 +29,8 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun QrezzyBranding() {
-    val visibleLetterCount = remember {mutableIntStateOf(QrezzyBrandingConfig.INITIAL_VISIBLE_LETTER_COUNT)}
-    val showSlogan = remember {mutableStateOf(false)}
+    val visibleLetterCount = remember { mutableIntStateOf(QrezzyBrandingConfig.INITIAL_VISIBLE_LETTER_COUNT) }
+    val showSlogan = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         delay(QrezzyBrandingConfig.INITIAL_ANIMATION_DELAY_MS.milliseconds)
@@ -141,9 +141,10 @@ private fun QrezzyLogoLetter(
     )
 
     Image(
-        modifier = Modifier
-            .width(width)
-            .alpha(animatedAlpha),
+        modifier =
+            Modifier
+                .width(width)
+                .alpha(animatedAlpha),
         painter = painterResource(id = resId),
         contentDescription = null,
         contentScale = ContentScale.FillBounds,
@@ -194,7 +195,10 @@ private fun calculateLetterWidth(availableWidth: Dp): Dp =
 /**
  * Zwraca docelową przezroczystość litery logo.
  */
-private fun calculateLetterAlpha(visibleLetterCount: Int, requiredLetterCount: Int): Float =
+private fun calculateLetterAlpha(
+    visibleLetterCount: Int,
+    requiredLetterCount: Int,
+): Float =
     if (visibleLetterCount >= requiredLetterCount) {
         QrezzyBrandingConfig.VISIBLE_ALPHA
     } else {

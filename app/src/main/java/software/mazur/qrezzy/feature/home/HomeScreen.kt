@@ -40,18 +40,18 @@ import software.mazur.qrezzy.feature.settings.SettingsScreen
 
 @Composable
 fun HomeScreen() {
-    val selectedTabIndex = remember {mutableIntStateOf(HomeScreenDefaults.INITIAL_TAB_INDEX)}
+    val selectedTabIndex = remember { mutableIntStateOf(HomeScreenDefaults.INITIAL_TAB_INDEX) }
 
     Scaffold(
         bottomBar = {
             QrezzyBottomNavigationBar(
                 selectedTab = HomeTab.entries[selectedTabIndex.intValue],
-                onTabSelected = {selectedTab ->
+                onTabSelected = { selectedTab ->
                     selectedTabIndex.intValue = selectedTab.ordinal
                 },
             )
         },
-    ) {innerPadding ->
+    ) { innerPadding ->
         Box(
             modifier = Modifier.padding(innerPadding),
         ) {
@@ -60,34 +60,38 @@ fun HomeScreen() {
             )
         }
     }
-
 }
 
 @Composable
-private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (HomeTab) -> Unit) {
+private fun QrezzyBottomNavigationBar(
+    selectedTab: HomeTab,
+    onTabSelected: (HomeTab) -> Unit,
+) {
     NavigationBar(
-        modifier = Modifier.shadow(
-            elevation = HomeScreenDefaults.NAVIGATION_BAR_SHADOW_ELEVATION,
-        ),
+        modifier =
+            Modifier.shadow(
+                elevation = HomeScreenDefaults.NAVIGATION_BAR_SHADOW_ELEVATION,
+            ),
         containerColor = HomeScreenDefaults.NAVIGATION_BAR_CONTAINER_COLOR,
         tonalElevation = HomeScreenDefaults.NAVIGATION_BAR_TONAL_ELEVATION,
     ) {
-        HomeTab.entries.forEach {tab ->
+        HomeTab.entries.forEach { tab ->
             val title = stringResource(id = tab.titleResId)
             val isSelect = selectedTab == tab
 
             NavigationBarItem(
                 selected = isSelect,
-                onClick = {onTabSelected(tab)},
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = tab.selectedIconColor,
-                    selectedTextColor = HomeScreenDefaults.SELECTED_TEXT_COLOR,
-                    indicatorColor = tab.indicatorColor,
-                    unselectedIconColor = HomeScreenDefaults.UNSELECTED_ICON_COLOR,
-                    unselectedTextColor = HomeScreenDefaults.UNSELECTED_TEXT_COLOR,
-                    disabledIconColor = HomeScreenDefaults.DISABLED_ICON_COLOR,
-                    disabledTextColor = HomeScreenDefaults.DISABLED_TEXT_COLOR,
-                ),
+                onClick = { onTabSelected(tab) },
+                colors =
+                    NavigationBarItemDefaults.colors(
+                        selectedIconColor = tab.selectedIconColor,
+                        selectedTextColor = HomeScreenDefaults.SELECTED_TEXT_COLOR,
+                        indicatorColor = tab.indicatorColor,
+                        unselectedIconColor = HomeScreenDefaults.UNSELECTED_ICON_COLOR,
+                        unselectedTextColor = HomeScreenDefaults.UNSELECTED_TEXT_COLOR,
+                        disabledIconColor = HomeScreenDefaults.DISABLED_ICON_COLOR,
+                        disabledTextColor = HomeScreenDefaults.DISABLED_TEXT_COLOR,
+                    ),
                 icon = {
                     Icon(
                         imageVector = tab.icon,
@@ -103,23 +107,24 @@ private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (Home
             )
         }
     }
-
 }
 
 @Composable
-private fun HomeScreenContent(
-    selectedTab: HomeTab,
-) {
+private fun HomeScreenContent(selectedTab: HomeTab) {
     when (selectedTab) {
-        HomeTab.SCAN     -> ScannerScreen()
+        HomeTab.SCAN -> ScannerScreen()
         HomeTab.GENERATE -> GeneratorScreen()
-        HomeTab.HISTORY  -> HistoryScreen()
+        HomeTab.HISTORY -> HistoryScreen()
         HomeTab.SETTINGS -> SettingsScreen()
     }
 }
 
-private enum class HomeTab(@StringRes val titleResId: Int, val icon: ImageVector, val indicatorColor: Color,
-                           val selectedIconColor: Color) {
+private enum class HomeTab(
+    @StringRes val titleResId: Int,
+    val icon: ImageVector,
+    val indicatorColor: Color,
+    val selectedIconColor: Color,
+) {
     SCAN(
         titleResId = R.string.navigation_tab_scan,
         icon = Icons.Rounded.QrCodeScanner,
