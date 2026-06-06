@@ -10,8 +10,12 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.FlashOff
+import androidx.compose.material.icons.outlined.FlashOn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,15 +27,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.google.mlkit.vision.barcode.BarcodeScanning
+import software.mazur.qrezzy.R
+import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
+import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
+import software.mazur.qrezzy.core.designsystem.theme.Purple
 
 @Composable
 fun ScannerScreen() {
+    val isTorchEnabled = remember {mutableStateOf(false)}
+
     LaunchedEffect(Unit) {
         testMlKitBarcodeScanner()
     }
@@ -47,7 +59,7 @@ fun ScannerScreen() {
     val cameraPermissionLauncher =
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.RequestPermission(),
-        ) { isGranted ->
+        ) {isGranted ->
             hasCameraPermission = isGranted
         }
 
@@ -57,10 +69,32 @@ fun ScannerScreen() {
         }
     }
 
-    if (hasCameraPermission) {
-        CameraPreview()
-    } else {
-        CameraPermissionContent()
+    Column {
+        QrezzyTopBar(
+            title = stringResource(R.string.navigation_title_scan),
+            rightButton = QrezzyTopBarButton(
+                icon = if (isTorchEnabled.value) {
+                    Icons.Outlined.FlashOn
+                } else {
+                    Icons.Outlined.FlashOff
+                },
+                iconTint = if (isTorchEnabled.value) {
+                    Purple
+                } else {
+                    Color.Gray
+                },
+                onClick = {isTorchEnabled.value = !isTorchEnabled.value}
+            ),
+        )
+        Box(
+            modifier = Modifier.weight(1f)
+        ) {
+            if (hasCameraPermission) {
+                CameraPreview()
+            } else {
+                CameraPermissionContent()
+            }
+        }
     }
 }
 
@@ -74,7 +108,7 @@ private fun CameraPreview() {
             Modifier
                 .fillMaxSize()
                 .padding(32.dp),
-        factory = { previewContext ->
+        factory = {previewContext ->
             val previewView = PreviewView(previewContext)
             val cameraProviderFuture = ProcessCameraProvider.getInstance(previewContext)
 
@@ -85,7 +119,7 @@ private fun CameraPreview() {
                         Preview
                             .Builder()
                             .build()
-                            .also { cameraPreview ->
+                            .also {cameraPreview ->
                                 cameraPreview.surfaceProvider = previewView.surfaceProvider
                             }
 

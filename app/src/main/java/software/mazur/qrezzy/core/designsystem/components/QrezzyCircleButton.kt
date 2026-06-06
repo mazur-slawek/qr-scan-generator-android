@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 
 @Composable
-fun QrezzyNextButton(
+fun QrezzyCircleButton(
     color: Color,
     icon: ImageVector,
     onClick: () -> Unit,
