@@ -2,6 +2,7 @@ package software.mazur.qrezzy.feature.scanner
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
@@ -28,9 +29,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import com.google.mlkit.vision.barcode.BarcodeScanning
 
 @Composable
 fun ScannerScreen() {
+    LaunchedEffect(Unit) {
+        testMlKitBarcodeScanner()
+    }
     val context = LocalContext.current
     var hasCameraPermission by remember {
         mutableStateOf(
@@ -115,4 +120,10 @@ private fun CameraPermissionContent() {
             style = MaterialTheme.typography.bodyLarge,
         )
     }
+}
+
+
+private fun testMlKitBarcodeScanner() {
+    val scanner = BarcodeScanning.getClient()
+    Log.d("QREZZY_ML_KIT", "ML Kit scanner created: $scanner")
 }
