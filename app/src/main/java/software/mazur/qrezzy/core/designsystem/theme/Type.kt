@@ -22,14 +22,16 @@ val Typography =
         titleLarge =
             TextStyle(
                 fontFamily = QrezzyFontFamily,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.Medium,
+                fontSize = 20.sp,
+                lineHeight = 24.sp,
             ),
         bodyLarge =
             TextStyle(
                 fontFamily = QrezzyFontFamily,
                 fontWeight = FontWeight.Medium,
                 fontSize = 18.sp,
-                lineHeight = 24.sp,
+                lineHeight = 22.sp,
             ),
         labelLarge =
             TextStyle(

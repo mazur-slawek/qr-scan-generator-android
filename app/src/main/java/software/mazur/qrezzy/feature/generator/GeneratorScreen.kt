@@ -3,14 +3,21 @@ package software.mazur.qrezzy.feature.generator
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.res.stringResource
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
+import software.mazur.qrezzy.R
+import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
+import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
 
 @Composable
 fun GeneratorScreen() {
@@ -21,14 +28,25 @@ fun GeneratorScreen() {
             )
         }
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        Image(
-            bitmap = qrBitmap.asImageBitmap(),
-            contentDescription = "QR Code",
+    Column {
+        QrezzyTopBar(
+            title = stringResource(R.string.navigation_title_generated),
+            rightButton = QrezzyTopBarButton(
+                icon = Icons.Outlined.Share,
+                iconTint = Color.Gray,
+                enabled = false,
+                onClick = {}
+            )
         )
+        Box(
+            modifier = Modifier.weight(1f),
+            contentAlignment = Alignment.Center,
+        ) {
+            Image(
+                bitmap = qrBitmap.asImageBitmap(),
+                contentDescription = "QR Code",
+            )
+        }
     }
 }
 

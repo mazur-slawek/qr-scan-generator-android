@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedBackground
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
-import software.mazur.qrezzy.core.designsystem.components.QrezzyNextButton
+import software.mazur.qrezzy.core.designsystem.components.QrezzyCircleButton
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
@@ -78,30 +78,30 @@ fun OnboardingScreen(onGetStartedClick: () -> Unit = {}) {
                             tween(
                                 durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
                             ),
-                        initialOffsetX = { fullWidth -> fullWidth },
+                        initialOffsetX = {fullWidth -> fullWidth},
                     ) +
-                        fadeIn(
-                            animationSpec =
-                                tween(
-                                    durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
-                                ),
-                        ) togetherWith slideOutHorizontally(
-                            animationSpec =
-                                tween(
-                                    durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
-                                ),
-                            targetOffsetX = { fullWidth -> -fullWidth },
-                        ) +
-                        fadeOut(
-                            animationSpec =
-                                tween(
-                                    durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
-                                ),
-                        )
+                            fadeIn(
+                                animationSpec =
+                                    tween(
+                                        durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
+                                    ),
+                            ) togetherWith slideOutHorizontally(
+                        animationSpec =
+                            tween(
+                                durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
+                            ),
+                        targetOffsetX = {fullWidth -> -fullWidth},
+                    ) +
+                            fadeOut(
+                                animationSpec =
+                                    tween(
+                                        durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
+                                    ),
+                            )
                 },
                 label = OnboardingDefaults.CONTENT_TRANSITION_LABEL,
                 modifier = Modifier.weight(OnboardingDefaults.CONTENT_WEIGHT),
-            ) { pageIndex ->
+            ) {pageIndex ->
                 OnboardingContent(
                     item = onboardingItems[pageIndex],
                     modifier = Modifier.fillMaxSize(),
@@ -226,7 +226,7 @@ private fun OnboardingNavigationSection(
                     .weight(OnboardingDefaults.INDICATORS_WEIGHT),
         )
 
-        QrezzyNextButton(
+        QrezzyCircleButton(
             color = currentItem.accentColor,
             icon = nextIcon,
             onClick = onNextClick,
@@ -245,7 +245,7 @@ private fun OnboardingPageIndicators(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-        items.forEach { item ->
+        items.forEach {item ->
             val isSelected = item == currentItem
 
             Spacer(
@@ -258,7 +258,8 @@ private fun OnboardingPageIndicators(
                             } else {
                                 OnboardingDefaults.DEFAULT_INDICATOR_SIZE
                             },
-                        ).background(
+                        )
+                        .background(
                             color =
                                 if (isSelected) {
                                     currentItem.accentColor
@@ -266,7 +267,8 @@ private fun OnboardingPageIndicators(
                                     OnboardingDefaults.INACTIVE_INDICATOR_COLOR
                                 },
                             shape = CircleShape,
-                        ).border(
+                        )
+                        .border(
                             width = OnboardingDefaults.INDICATOR_BORDER_WIDTH,
                             color =
                                 if (isSelected) {
