@@ -39,6 +39,9 @@ fun QrezzyButton(
     rightIcon: ImageVector? = null,
     enabled: Boolean = true,
     onClick: () -> Unit,
+    color: Color = QrezzyMint,
+    shadowColor: Color = QrezzyPurple,
+    disableElevation: Boolean = false
 ) {
     BoxWithConstraints(
         modifier =
@@ -56,13 +59,15 @@ fun QrezzyButton(
                     .height(buttonHeight)
                     .width(buttonWidth)
                     .background(
-                        color = QrezzyPurple,
+                        color = shadowColor,
                         shape = ShapeDefaults.Medium,
-                    ).border(
+                    )
+                    .border(
                         width = QrezzyButtonDefaults.BorderWidth,
                         color = Color.Black,
                         shape = ShapeDefaults.Medium,
-                    ).align(Alignment.BottomEnd),
+                    )
+                    .align(Alignment.BottomEnd),
         )
 
         Button(
@@ -77,16 +82,10 @@ fun QrezzyButton(
             contentPadding = PaddingValues.Zero,
             colors =
                 ButtonDefaults.buttonColors(
-                    containerColor = QrezzyMint,
+                    containerColor = color,
                     contentColor = TextPrimary,
-                    disabledContainerColor =
-                        QrezzyMint.copy(
-                            alpha = QrezzyButtonDefaults.DISABLED_ALPHA,
-                        ),
-                    disabledContentColor =
-                        TextPrimary.copy(
-                            alpha = QrezzyButtonDefaults.DISABLED_ALPHA,
-                        ),
+                    disabledContainerColor = QrezzyMint.copy(alpha = QrezzyButtonDefaults.DISABLED_ALPHA),
+                    disabledContentColor = TextPrimary.copy(alpha = QrezzyButtonDefaults.DISABLED_ALPHA),
                 ),
             modifier =
                 Modifier
@@ -94,7 +93,7 @@ fun QrezzyButton(
                     .width(buttonWidth)
                     .align(Alignment.TopStart)
                     .shadow(
-                        elevation = QrezzyButtonDefaults.ShadowElevation,
+                        elevation = if (disableElevation) 0.dp else QrezzyButtonDefaults.ShadowElevation,
                         shape = ShapeDefaults.Medium,
                         ambientColor = Color.Black,
                         spotColor = Color.Black,
@@ -106,10 +105,7 @@ fun QrezzyButton(
                         .fillMaxSize()
                         .border(
                             width = QrezzyButtonDefaults.InnerHighlightBorderWidth,
-                            color =
-                                Color.White.copy(
-                                    alpha = QrezzyButtonDefaults.INNER_HIGHLIGHT_ALPHA,
-                                ),
+                            color = Color.White.copy(alpha = QrezzyButtonDefaults.INNER_HIGHLIGHT_ALPHA),
                             shape = ShapeDefaults.Medium,
                         ),
             ) {
@@ -129,7 +125,7 @@ fun QrezzyButton(
                             stepSize = QrezzyButtonDefaults.TextSizeStep,
                         ),
                 )
-                leftIcon?.let { icon ->
+                leftIcon?.let {icon ->
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
@@ -141,7 +137,7 @@ fun QrezzyButton(
                                 .align(Alignment.TopStart),
                     )
                 }
-                rightIcon?.let { icon ->
+                rightIcon?.let {icon ->
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
