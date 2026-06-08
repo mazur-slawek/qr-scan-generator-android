@@ -6,7 +6,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -21,36 +20,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
+import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 
 @Composable
 fun QrezzySmallButton(
     icon: ImageVector,
-    iconTint: Color,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    iconTint: Color = TextPrimary,
+    containerColor: Color = Surface,
+    depthColor: Color = QrezzyMint,
 ) {
     BoxWithConstraints(
-        modifier = modifier.size(QrezzySmallButtonDefaults.BUTTON_SIZE),
+        modifier = modifier.size(QrezzySmallButtonDefaults.Container.size),
         contentAlignment = Alignment.Center,
     ) {
-        val foregroundWidth = maxWidth - QrezzySmallButtonDefaults.SHADOW_OFFSET
-        val foregroundHeight = maxHeight - QrezzySmallButtonDefaults.SHADOW_OFFSET
+        val foregroundWidth = maxWidth - QrezzySmallButtonDefaults.Depth.offset
+        val foregroundHeight = maxHeight - QrezzySmallButtonDefaults.Depth.offset
         val foregroundModifier = Modifier
             .width(foregroundWidth)
             .height(foregroundHeight)
 
-        Spacer(
+        Box(
             modifier = foregroundModifier
-                .background(
-                    color = QrezzySmallButtonDefaults.SHADOW_COLOR,
-                    shape = ShapeDefaults.Medium,
-                )
+                .background(color = depthColor, shape = ShapeDefaults.Medium)
                 .border(
-                    width = QrezzySmallButtonDefaults.SHADOW_BORDER_WIDTH,
-                    color = QrezzySmallButtonDefaults.BORDER_COLOR,
+                    width = QrezzySmallButtonDefaults.Depth.borderWidth,
+                    color = BorderPrimary,
                     shape = ShapeDefaults.Medium,
                 )
                 .align(Alignment.BottomEnd),
@@ -60,50 +60,47 @@ fun QrezzySmallButton(
             onClick = onClick,
             enabled = enabled,
             shape = ShapeDefaults.Medium,
-            border = BorderStroke(
-                width = QrezzySmallButtonDefaults.BORDER_WIDTH,
-                color = QrezzySmallButtonDefaults.BORDER_COLOR,
-            ),
+            border = BorderStroke(width = QrezzySmallButtonDefaults.Border.width, color = BorderPrimary),
             contentPadding = PaddingValues.Zero,
             colors = ButtonDefaults.buttonColors(
-                containerColor = QrezzySmallButtonDefaults.CONTAINER_COLOR,
+                containerColor = containerColor,
                 contentColor = TextPrimary,
-                disabledContainerColor = QrezzySmallButtonDefaults.CONTAINER_COLOR,
+                disabledContainerColor = containerColor,
+                disabledContentColor = TextPrimary,
             ),
             modifier = foregroundModifier.align(Alignment.TopStart),
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .border(
-                        width = QrezzySmallButtonDefaults.INNER_HIGHLIGHT_WIDTH,
-                        color = QrezzySmallButtonDefaults.INNER_HIGHLIGHT_COLOR,
-                        shape = ShapeDefaults.Medium,
-                    ),
+                modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
                     tint = iconTint,
-                    modifier = Modifier.size(QrezzySmallButtonDefaults.ICON_SIZE),
+                    modifier = Modifier.size(QrezzySmallButtonDefaults.Icon.size),
                 )
             }
         }
     }
+
 }
 
 private object QrezzySmallButtonDefaults {
-    val BUTTON_SIZE = 45.dp
-    val SHADOW_OFFSET = 2.5.dp
-    val BORDER_WIDTH = 1.5.dp
-    val SHADOW_BORDER_WIDTH = 1.dp
-    val INNER_HIGHLIGHT_WIDTH = 2.dp
-    val ICON_SIZE = 24.dp
-    val CONTAINER_COLOR = Color.White
-    val SHADOW_COLOR = QrezzyMint
-    val BORDER_COLOR = Color.Black
-    val INNER_HIGHLIGHT_COLOR = Color.White.copy(alpha = INNER_HIGHLIGHT_ALPHA)
-    const val DISABLED_ALPHA = 0.5f
-    private const val INNER_HIGHLIGHT_ALPHA = 0.5f
+    object Container {
+        val size = 45.dp
+    }
+
+    object Depth {
+        val offset = 2.5.dp
+        val borderWidth = 1.dp
+    }
+
+    object Border {
+        val width = 1.5.dp
+    }
+
+    object Icon {
+        val size = 24.dp
+    }
 }

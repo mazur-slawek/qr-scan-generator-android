@@ -7,12 +7,12 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -22,32 +22,36 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import software.mazur.qrezzy.R
+import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
+import software.mazur.qrezzy.core.designsystem.theme.Surface
 
 @Composable
 fun ScannerPreview(isScanning: Boolean, modifier: Modifier = Modifier, isTorchEnabled: Boolean) {
-    BoxWithConstraints(
-        modifier = modifier
-            .padding(horizontal = ScannerPreviewDefaults.HorizontalPadding)
-            .clip(ScannerPreviewDefaults.ContainerShape)
-            .background(ScannerPreviewDefaults.PlaceholderBackgroundColor)
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center,
+    Card(
+        modifier = modifier,
+        shape = ShapeDefaults.Medium,
+        colors = CardDefaults.cardColors(containerColor = Surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = ScannerPreviewDefaults.Container.elevation),
     ) {
-        if (isScanning) LiveCameraPreview(modifier = Modifier.matchParentSize(), isTorchEnabled = isTorchEnabled)
-
-        ScannerFocusIndicator(
-            isScanning = isScanning,
-            modifier = Modifier.width(maxWidth * ScannerPreviewDefaults.FocusIndicatorWidthRatio),
-        )
+        QrezzyAnimatedStars(modifier = Modifier.fillMaxSize()) {
+            BoxWithConstraints(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                if (isScanning) {
+                    LiveCameraPreview(modifier = Modifier.matchParentSize(), isTorchEnabled = isTorchEnabled)
+                }
+                ScannerFocusIndicator(
+                    modifier = Modifier.width(maxWidth * ScannerPreviewDefaults.FOCUS_INDICATOR_WIDTH_RATIO),
+                )
+            }
+        }
     }
 }
 
@@ -55,11 +59,11 @@ fun ScannerPreview(isScanning: Boolean, modifier: Modifier = Modifier, isTorchEn
 fun LiveCameraPreview(isTorchEnabled: Boolean, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
-    var camera by remember {mutableStateOf<Camera?>(null)}
+    var camera by remember { mutableStateOf<Camera?>(null) }
 
     AndroidView(
         modifier = modifier,
-        factory = {previewContext ->
+        factory = { previewContext ->
             val container = FrameLayout(previewContext).apply {
                 clipChildren = true
                 clipToPadding = true
@@ -81,9 +85,7 @@ fun LiveCameraPreview(isTorchEnabled: Boolean, modifier: Modifier = Modifier) {
                     val cameraProvider = cameraProviderFuture.get()
                     val preview = Preview.Builder()
                         .build()
-                        .also {cameraPreview ->
-                            cameraPreview.surfaceProvider = previewView.surfaceProvider
-                        }
+                        .also { cameraPreview -> cameraPreview.surfaceProvider = previewView.surfaceProvider }
 
                     cameraProvider.unbindAll()
 
@@ -95,7 +97,6 @@ fun LiveCameraPreview(isTorchEnabled: Boolean, modifier: Modifier = Modifier) {
                 },
                 ContextCompat.getMainExecutor(previewContext),
             )
-
             container
         },
     )
@@ -105,30 +106,24 @@ fun LiveCameraPreview(isTorchEnabled: Boolean, modifier: Modifier = Modifier) {
     DisposableEffect(Unit) {
         onDispose {
             camera?.cameraControl?.enableTorch(false)
-            ProcessCameraProvider
-                .getInstance(context)
-                .get()
-                .unbindAll()
+            ProcessCameraProvider.getInstance(context).get().unbindAll()
         }
     }
 }
 
 @Composable
-private fun ScannerFocusIndicator(isScanning: Boolean, modifier: Modifier = Modifier) {
+private fun ScannerFocusIndicator(modifier: Modifier = Modifier) {
     Image(
         modifier = modifier,
-        painter = painterResource(if (isScanning) R.drawable.scanner_preview_on else R.drawable.scanner_preview_off),
-        colorFilter = if (isScanning) null else ColorFilter.tint(ScannerPreviewDefaults.DisabledIndicatorTint),
-        alpha = if (isScanning) 1f else 0.8f,
         contentDescription = null,
+        painter = painterResource(R.drawable.qr_frame),
     )
 }
 
 private object ScannerPreviewDefaults {
-    val HorizontalPadding = 16.dp
-    val ContainerCornerRadius = 16.dp
-    val ContainerShape = RoundedCornerShape(ContainerCornerRadius)
-    val PlaceholderBackgroundColor = Color.LightGray
-    val DisabledIndicatorTint = Color.White
-    const val FocusIndicatorWidthRatio = 0.7f
+    object Container {
+        val elevation = 2.dp
+    }
+
+    const val FOCUS_INDICATOR_WIDTH_RATIO = 0.7f
 }

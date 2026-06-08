@@ -33,7 +33,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
-import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
+import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarAction
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
@@ -94,10 +94,10 @@ fun ScannerScreen() {
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
-    Column {
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         QrezzyTopBar(
             title = stringResource(R.string.navigation_title_scan),
-            rightButton = QrezzyTopBarButton(
+            rightAction = QrezzyTopBarAction(
                 icon = if (isTorchEnabled) Icons.Outlined.FlashOn else Icons.Outlined.FlashOff,
                 iconTint = if (isTorchEnabled) QrezzyPurpleDark else Color.Gray,
                 enabled = scannerState == ScannerScreenState.Scanning,
@@ -107,11 +107,11 @@ fun ScannerScreen() {
         Spacer(modifier = Modifier.height(16.dp))
         ScannerPreview(
             modifier = Modifier.weight(1f),
+            isTorchEnabled = isTorchEnabled,
             isScanning = scannerState == ScannerScreenState.Scanning,
-            isTorchEnabled = isTorchEnabled)
-        Spacer(modifier = Modifier.height(16.dp))
+        )
+        Spacer(modifier = Modifier.height(20.dp))
         QrezzyButton(
-            modifier = Modifier.padding(horizontal = 16.dp),
             onClick = {
                 when (scannerState) {
                     ScannerScreenState.Idle             -> {

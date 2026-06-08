@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -66,6 +67,7 @@ fun QrezzyTextInput(
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge.copy(
         color = TextPrimary,
         fontSize = QrezzyTextInputDefaults.Text.fontSize,
+        fontWeight = FontWeight.Medium,
         lineHeight = QrezzyTextInputDefaults.Text.lineHeight,
     ),
     visualTransformation: VisualTransformation = VisualTransformation.None,
