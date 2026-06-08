@@ -22,7 +22,7 @@
             android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@style/Theme.QREZZY"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

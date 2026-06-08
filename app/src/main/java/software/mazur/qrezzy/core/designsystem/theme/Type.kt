@@ -26,6 +26,18 @@ val Typography =
                 fontSize = 20.sp,
                 lineHeight = 24.sp,
             ),
+        bodySmall =
+            TextStyle(
+                fontFamily = QrezzyFontFamily,
+                fontWeight = FontWeight.Medium,
+                fontSize = 12.sp,
+            ),
+        bodyMedium =
+            TextStyle(
+                fontFamily = QrezzyFontFamily,
+                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp,
+            ),
         bodyLarge =
             TextStyle(
                 fontFamily = QrezzyFontFamily,
