@@ -3,7 +3,6 @@ package software.mazur.qrezzy.feature.generator.presentation
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,12 +20,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
-import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
+import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarAction
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.feature.generator.presentation.components.QrPreview
 import software.mazur.qrezzy.feature.generator.presentation.components.QrTypeForm
@@ -38,14 +38,14 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
     val qrBitmap = remember(uiState.qrContent) { viewModel.generateQrBitmap(uiState.qrContent) }
     val focusManager = LocalFocusManager.current
 
-    Column {
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         QrezzyTopBar(
             title = stringResource(R.string.navigation_title_generate),
-            rightButton = QrezzyTopBarButton(
+            rightAction = QrezzyTopBarAction(
                 enabled = uiState.canSave,
                 icon = Icons.Outlined.Visibility,
                 iconTint = if (uiState.canSave) QrezzyPurpleDark else Color.Gray,
-                onClick = {},
+                onClick = {}
             ),
         )
         LazyColumn(
@@ -55,12 +55,9 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
                 .imePadding()
                 .pointerInput(Unit) {
                     detectTapGestures(
-                        onTap = {
-                            focusManager.clearFocus()
-                        },
+                        onTap = { focusManager.clearFocus() }
                     )
                 },
-            contentPadding = PaddingValues(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             item {
@@ -73,7 +70,8 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
                 Text(
                     modifier = Modifier.padding(bottom = 10.dp),
                     text = "Select QR code type",
-                    style = MaterialTheme.typography.headlineLarge,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
                 )
                 QrTypeTabs(selectedType = uiState.selectedType, onTypeSelected = viewModel::onTypeSelected)
             }
@@ -81,7 +79,8 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
                 Text(
                     modifier = Modifier.padding(bottom = 10.dp),
                     text = "Enter data to generate a QR code",
-                    style = MaterialTheme.typography.headlineLarge,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
                 )
                 QrTypeForm(
                     selectedType = uiState.selectedType,

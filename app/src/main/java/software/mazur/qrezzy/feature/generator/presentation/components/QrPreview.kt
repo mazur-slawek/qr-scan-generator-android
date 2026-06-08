@@ -10,18 +10,18 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
+import software.mazur.qrezzy.core.designsystem.theme.Surface
 
 @Composable
 fun QrPreview(qrBitmap: Bitmap?, modifier: Modifier = Modifier) {
@@ -29,9 +29,9 @@ fun QrPreview(qrBitmap: Bitmap?, modifier: Modifier = Modifier) {
     val latestQrBitmap by rememberUpdatedState(qrBitmap)
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        shape = ShapeDefaults.Medium,
+        colors = CardDefaults.cardColors(containerColor = Surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = QrPreviewDefaults.Container.elevation),
     ) {
         QrezzyAnimatedStars(
             modifier = Modifier.fillMaxSize(),
@@ -53,9 +53,9 @@ fun QrPreview(qrBitmap: Bitmap?, modifier: Modifier = Modifier) {
                     },
                     contentAlignment = Alignment.Center,
                     label = "QrPreviewAnimation",
-                ) {visible ->
+                ) { visible ->
                     if (visible) {
-                        latestQrBitmap?.let {bitmap ->
+                        latestQrBitmap?.let { bitmap ->
                             Image(
                                 bitmap = bitmap.asImageBitmap(),
                                 contentDescription = "QR Code preview",
@@ -65,5 +65,11 @@ fun QrPreview(qrBitmap: Bitmap?, modifier: Modifier = Modifier) {
                 }
             }
         }
+    }
+}
+
+private object QrPreviewDefaults {
+    object Container {
+        val elevation = 2.dp
     }
 }

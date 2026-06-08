@@ -20,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -34,38 +35,32 @@ import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
-fun SplashScreen(onGetStartedClick: () -> Unit) {
-    val isButtonVisible = remember { mutableStateOf(false) }
+fun SplashScreen(
+    onGetStartedClick: () -> Unit,
+) {
+    var isButtonVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        delay(SplashScreenDefaults.BUTTON_APPEAR_DELAY_MS.milliseconds)
-        isButtonVisible.value = true
+        delay(SplashScreenDefaults.Animation.BUTTON_APPEAR_DELAY_MILLIS.milliseconds)
+        isButtonVisible = true
     }
     val buttonAlpha by animateFloatAsState(
-        targetValue =
-            if (isButtonVisible.value) {
-                SplashScreenDefaults.VISIBLE_ALPHA
-            } else {
-                SplashScreenDefaults.HIDDEN_ALPHA
-            },
-        animationSpec =
-            tween(
-                durationMillis = SplashScreenDefaults.BUTTON_ANIMATION_DURATION_MS,
-            ),
-        label = SplashScreenAnimationLabels.BUTTON_ALPHA,
+        targetValue = if (isButtonVisible) {
+            SplashScreenDefaults.Animation.VISIBLE_ALPHA
+        } else {
+            SplashScreenDefaults.Animation.HIDDEN_ALPHA
+        },
+        animationSpec = tween(durationMillis = SplashScreenDefaults.Animation.BUTTON_ANIMATION_DURATION_MILLIS),
+        label = SplashScreenDefaults.Animation.BUTTON_ALPHA_LEVEL,
     )
     val buttonOffsetY by animateDpAsState(
-        targetValue =
-            if (isButtonVisible.value) {
-                0.dp
-            } else {
-                SplashScreenDefaults.BUTTON_INITIAL_OFFSET_Y
-            },
-        animationSpec =
-            tween(
-                durationMillis = SplashScreenDefaults.BUTTON_ANIMATION_DURATION_MS,
-            ),
-        label = SplashScreenAnimationLabels.BUTTON_OFFSET_Y,
+        targetValue = if (isButtonVisible) {
+            SplashScreenDefaults.Animation.finalButtonOffsetY
+        } else {
+            SplashScreenDefaults.Animation.initialButtonOffsetY
+        },
+        animationSpec = tween(durationMillis = SplashScreenDefaults.Animation.BUTTON_ANIMATION_DURATION_MILLIS),
+        label = SplashScreenDefaults.Animation.BUTTON_OFFSET_Y_LABEL,
     )
 
     Box(
@@ -75,62 +70,58 @@ fun SplashScreen(onGetStartedClick: () -> Unit) {
         QrezzyAnimatedBackground()
 
         Column(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = SplashScreenDefaults.CONTENT_HORIZONTAL_PADDING,
-                    ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = SplashScreenDefaults.Layout.contentHorizontalPadding)
         ) {
             Column(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(SplashScreenDefaults.Layout.BRANDING_WEIGHT),
+                verticalArrangement = Arrangement.Center
             ) {
                 Image(
-                    modifier = Modifier.fillMaxWidth(),
                     painter = painterResource(id = R.drawable.qrezzy_logo),
                     contentDescription = SplashScreenDefaults.LOGO_CONTENT_DESCRIPTION,
+                    modifier = Modifier.fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(SplashScreenDefaults.BRANDING_SPACING))
+
+                Spacer(modifier = Modifier.height(SplashScreenDefaults.Layout.brandingSpacing))
+
                 QrezzyBranding()
             }
 
             QrezzyButton(
-                onClick = onGetStartedClick,
                 text = stringResource(id = R.string.button_get_started),
+                onClick = onGetStartedClick,
                 rightIcon = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
-                modifier =
-                    Modifier
-                        .alpha(buttonAlpha)
-                        .padding(bottom = SplashScreenDefaults.BUTTON_BOTTOM_PADDING)
-                        .offset(y = buttonOffsetY),
+                modifier = Modifier
+                    .alpha(buttonAlpha)
+                    .offset(y = buttonOffsetY)
+                    .padding(bottom = SplashScreenDefaults.Layout.buttonBottomPadding),
             )
         }
     }
 }
 
-/**
- * Stałe konfiguracyjne ekranu Splash.
- */
 private object SplashScreenDefaults {
-    const val BUTTON_APPEAR_DELAY_MS = 1_100
-    const val BUTTON_ANIMATION_DURATION_MS = 700
-    const val VISIBLE_ALPHA = 1f
-    const val HIDDEN_ALPHA = 0f
-    val CONTENT_HORIZONTAL_PADDING = 32.dp
-    val BRANDING_SPACING = 32.dp
-    val BUTTON_BOTTOM_PADDING = 70.dp
-    val BUTTON_INITIAL_OFFSET_Y = 32.dp
     const val LOGO_CONTENT_DESCRIPTION = "QREZZY logo"
-}
 
-/**
- * Identyfikatory animacji używane przez Compose Animation Inspector.
- */
-private object SplashScreenAnimationLabels {
-    const val BUTTON_ALPHA = "splash_button_alpha"
-    const val BUTTON_OFFSET_Y = "splash_button_offset_y"
+    object Layout {
+        const val BRANDING_WEIGHT = 1f
+        val contentHorizontalPadding = 16.dp
+        val brandingSpacing = 32.dp
+        val buttonBottomPadding = 70.dp
+    }
+
+    object Animation {
+        const val BUTTON_APPEAR_DELAY_MILLIS = 1_100
+        const val BUTTON_ANIMATION_DURATION_MILLIS = 700
+        const val VISIBLE_ALPHA = 1f
+        const val HIDDEN_ALPHA = 0f
+        val initialButtonOffsetY = 32.dp
+        val finalButtonOffsetY = 0.dp
+        const val BUTTON_ALPHA_LEVEL = "splash_button_alpha"
+        const val BUTTON_OFFSET_Y_LABEL = "splash_button_offset_y"
+    }
 }

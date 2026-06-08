@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
@@ -93,7 +94,11 @@ private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (Home
                         Icon(imageVector = tab.icon, contentDescription = title)
                     },
                     label = {
-                        Text(text = title, style = MaterialTheme.typography.labelSmall)
+                        Text(
+                            text = title,
+                            fontWeight = FontWeight.Medium,
+                            style = MaterialTheme.typography.bodySmall,
+                        )
                     },
                 )
             }

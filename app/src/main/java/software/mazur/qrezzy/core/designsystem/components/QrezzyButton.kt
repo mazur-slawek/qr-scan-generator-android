@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -110,6 +111,7 @@ fun QrezzyButton(
                         )
                         .align(Alignment.Center),
                     textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.SemiBold,
                     autoSize = TextAutoSize.StepBased(
                         minFontSize = QrezzyButtonDefaults.Text.minSize,
                         maxFontSize = QrezzyButtonDefaults.Text.maxSize,

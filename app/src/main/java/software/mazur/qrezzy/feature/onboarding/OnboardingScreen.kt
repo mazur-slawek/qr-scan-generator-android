@@ -26,40 +26,40 @@ import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedBackground
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyCircleButton
+import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellow
+import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 import software.mazur.qrezzy.feature.onboarding.model.OnboardingItem
 import software.mazur.qrezzy.feature.onboarding.model.OnboardingItemType
 
 @Composable
 fun OnboardingScreen(onGetStartedClick: () -> Unit = {}) {
-    val currentPageIndex =
-        remember {
-            mutableIntStateOf(OnboardingDefaults.INITIAL_PAGE_INDEX)
-        }
-    val currentItem = onboardingItems[currentPageIndex.intValue]
-    val isLastPage = currentPageIndex.intValue == onboardingItems.lastIndex
+    var currentPageIndex by rememberSaveable { mutableIntStateOf(OnboardingDefaults.initialPageIndex) }
+    val items = OnboardingDefaults.items
+    val currentItem = items[currentPageIndex]
+    val isLastPage = currentPageIndex == items.lastIndex
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
         key(currentItem.accentColor) {
             QrezzyAnimatedBackground(
                 leftColor = currentItem.accentColor,
@@ -67,57 +67,38 @@ fun OnboardingScreen(onGetStartedClick: () -> Unit = {}) {
             )
         }
 
-        Column(
-            modifier = Modifier.fillMaxSize(),
-        ) {
+        Column(modifier = Modifier.fillMaxSize()) {
             AnimatedContent(
-                targetState = currentPageIndex.intValue,
+                targetState = currentPageIndex,
                 transitionSpec = {
                     slideInHorizontally(
-                        animationSpec =
-                            tween(
-                                durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
-                            ),
-                        initialOffsetX = {fullWidth -> fullWidth},
-                    ) +
-                            fadeIn(
-                                animationSpec =
-                                    tween(
-                                        durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
-                                    ),
-                            ) togetherWith slideOutHorizontally(
-                        animationSpec =
-                            tween(
-                                durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
-                            ),
-                        targetOffsetX = {fullWidth -> -fullWidth},
-                    ) +
-                            fadeOut(
-                                animationSpec =
-                                    tween(
-                                        durationMillis = OnboardingDefaults.PAGE_TRANSITION_DURATION_MS,
-                                    ),
-                            )
+                        animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
+                        initialOffsetX = { fullWidth -> fullWidth },
+                    ) + fadeIn(
+                        animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
+                    ) togetherWith slideOutHorizontally(
+                        animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
+                        targetOffsetX = { fullWidth -> -fullWidth },
+                    ) + fadeOut(
+                        animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
+                    )
                 },
-                label = OnboardingDefaults.CONTENT_TRANSITION_LABEL,
-                modifier = Modifier.weight(OnboardingDefaults.CONTENT_WEIGHT),
-            ) {pageIndex ->
-                OnboardingContent(
-                    item = onboardingItems[pageIndex],
-                    modifier = Modifier.fillMaxSize(),
-                )
+                label = OnboardingDefaults.Animation.CONTENT_TRANSITION_LABEL,
+                modifier = Modifier.weight(OnboardingDefaults.Layout.CONTENT_WEIGHT),
+            ) { pageIndex ->
+                OnboardingContent(item = items[pageIndex], modifier = Modifier.fillMaxSize())
             }
 
-            Spacer(
-                modifier = Modifier.height(OnboardingDefaults.BOTTOM_SECTION_TOP_SPACING),
-            )
+            Spacer(modifier = Modifier.height(OnboardingDefaults.BottomSection.topSpacing))
 
             OnboardingBottomSection(
-                items = onboardingItems,
+                items = items,
                 currentItem = currentItem,
                 isLastPage = isLastPage,
                 onNextClick = {
-                    currentPageIndex.intValue += OnboardingDefaults.NEXT_PAGE_STEP
+                    if (currentPageIndex < items.lastIndex) {
+                        currentPageIndex += OnboardingDefaults.Navigation.NEXT_PAGE_STEP
+                    }
                 },
                 onGetStartedClick = onGetStartedClick,
             )
@@ -126,48 +107,39 @@ fun OnboardingScreen(onGetStartedClick: () -> Unit = {}) {
 }
 
 @Composable
-private fun OnboardingContent(
-    item: OnboardingItem,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier,
-    ) {
+private fun OnboardingContent(item: OnboardingItem, modifier: Modifier = Modifier) {
+    Box(modifier = modifier) {
         Column(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.Center),
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center),
         ) {
             Image(
-                modifier = Modifier.fillMaxWidth(),
                 painter = painterResource(id = item.iconResId),
                 contentDescription = null,
+                modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(
-                modifier = Modifier.height(OnboardingDefaults.IMAGE_TITLE_SPACING),
-            )
+            Spacer(modifier = Modifier.height(OnboardingDefaults.Content.imageTitleSpacing))
 
             Text(
-                modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = item.titleResId),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.displayLarge,
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(
-                modifier = Modifier.height(OnboardingDefaults.TITLE_DESCRIPTION_SPACING),
-            )
+            Spacer(modifier = Modifier.height(OnboardingDefaults.Content.titleDescriptionSpacing))
 
             Text(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = OnboardingDefaults.DESCRIPTION_HORIZONTAL_PADDING),
                 text = stringResource(id = item.descriptionResId),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Normal,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = OnboardingDefaults.Content.descriptionHorizontalPadding)
             )
         }
     }
@@ -181,19 +153,18 @@ private fun OnboardingBottomSection(
     onNextClick: () -> Unit,
     onGetStartedClick: () -> Unit,
 ) {
-    Row(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = OnboardingDefaults.BOTTOM_SECTION_HORIZONTAL_PADDING)
-                .height(OnboardingDefaults.BOTTOM_SECTION_HEIGHT),
-        verticalAlignment = Alignment.Top,
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(OnboardingDefaults.BottomSection.height)
+            .padding(horizontal = OnboardingDefaults.BottomSection.horizontalPadding),
     ) {
         if (isLastPage) {
             QrezzyButton(
-                onClick = onGetStartedClick,
                 text = stringResource(id = R.string.button_get_started),
+                onClick = onGetStartedClick,
                 rightIcon = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+                modifier = Modifier.align(Alignment.TopCenter),
             )
         } else {
             OnboardingNavigationSection(
@@ -201,6 +172,7 @@ private fun OnboardingBottomSection(
                 currentItem = currentItem,
                 nextIcon = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
                 onNextClick = onNextClick,
+                modifier = Modifier.align(Alignment.TopCenter),
             )
         }
     }
@@ -212,25 +184,20 @@ private fun OnboardingNavigationSection(
     currentItem: OnboardingItem,
     nextIcon: ImageVector,
     onNextClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Top,
     ) {
         OnboardingPageIndicators(
             items = items,
             currentItem = currentItem,
-            modifier =
-                Modifier
-                    .height(OnboardingDefaults.NEXT_BUTTON_CONTAINER_HEIGHT)
-                    .weight(OnboardingDefaults.INDICATORS_WEIGHT),
+            modifier = Modifier
+                .height(OnboardingDefaults.Navigation.nextButtonContainerHeight)
+                .weight(OnboardingDefaults.Layout.INDICATORS_WEIGHT),
         )
-
-        QrezzyCircleButton(
-            color = currentItem.accentColor,
-            icon = nextIcon,
-            onClick = onNextClick,
-        )
+        QrezzyCircleButton(color = currentItem.accentColor, icon = nextIcon, onClick = onNextClick)
     }
 }
 
@@ -245,46 +212,35 @@ private fun OnboardingPageIndicators(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-        items.forEach {item ->
+        items.forEach { item ->
             val isSelected = item == currentItem
-
-            Spacer(
-                modifier =
-                    Modifier
-                        .padding(horizontal = OnboardingDefaults.INDICATOR_HORIZONTAL_PADDING)
-                        .size(
-                            if (isSelected) {
-                                OnboardingDefaults.SELECTED_INDICATOR_SIZE
-                            } else {
-                                OnboardingDefaults.DEFAULT_INDICATOR_SIZE
-                            },
-                        )
-                        .background(
-                            color =
-                                if (isSelected) {
-                                    currentItem.accentColor
-                                } else {
-                                    OnboardingDefaults.INACTIVE_INDICATOR_COLOR
-                                },
-                            shape = CircleShape,
-                        )
-                        .border(
-                            width = OnboardingDefaults.INDICATOR_BORDER_WIDTH,
-                            color =
-                                if (isSelected) {
-                                    Color.Black
-                                } else {
-                                    OnboardingDefaults.INACTIVE_INDICATOR_COLOR
-                                },
-                            shape = CircleShape,
-                        ),
+            Box(
+                modifier = Modifier
+                    .padding(horizontal = OnboardingDefaults.Indicator.horizontalPadding)
+                    .size(
+                        if (isSelected) {
+                            OnboardingDefaults.Indicator.selectedSize
+                        } else {
+                            OnboardingDefaults.Indicator.defaultSize
+                        },
+                    )
+                    .background(
+                        color = if (isSelected) currentItem.accentColor else OnboardingDefaults.Indicator.inactiveColor,
+                        shape = CircleShape,
+                    )
+                    .border(
+                        width = OnboardingDefaults.Indicator.borderWidth,
+                        color = if (isSelected) BorderPrimary else OnboardingDefaults.Indicator.inactiveColor,
+                        shape = CircleShape,
+                    ),
             )
         }
     }
 }
 
-private val onboardingItems =
-    listOf(
+private object OnboardingDefaults {
+    const val initialPageIndex = 0
+    val items = listOf(
         OnboardingItem(
             type = OnboardingItemType.SCAN,
             accentColor = QrezzyMint,
@@ -322,23 +278,38 @@ private val onboardingItems =
         ),
     )
 
-private object OnboardingDefaults {
-    const val INITIAL_PAGE_INDEX = 0
-    const val NEXT_PAGE_STEP = 1
-    const val CONTENT_WEIGHT = 1f
-    const val INDICATORS_WEIGHT = 1f
-    val DESCRIPTION_HORIZONTAL_PADDING = 60.dp
-    val IMAGE_TITLE_SPACING = 32.dp
-    val TITLE_DESCRIPTION_SPACING = 16.dp
-    val BOTTOM_SECTION_TOP_SPACING = 16.dp
-    val BOTTOM_SECTION_HORIZONTAL_PADDING = 32.dp
-    val BOTTOM_SECTION_HEIGHT = 130.dp
-    val NEXT_BUTTON_CONTAINER_HEIGHT = 60.dp
-    val SELECTED_INDICATOR_SIZE = 20.dp
-    val DEFAULT_INDICATOR_SIZE = 15.dp
-    val INDICATOR_HORIZONTAL_PADDING = 10.dp
-    val INDICATOR_BORDER_WIDTH = 2.dp
-    val INACTIVE_INDICATOR_COLOR = Color.Gray
-    const val PAGE_TRANSITION_DURATION_MS = 450
-    const val CONTENT_TRANSITION_LABEL = "onboarding_content_transition"
+    object Layout {
+        const val CONTENT_WEIGHT = 1f
+        const val INDICATORS_WEIGHT = 1f
+    }
+
+    object Navigation {
+        const val NEXT_PAGE_STEP = 1
+        val nextButtonContainerHeight = 60.dp
+    }
+
+    object Content {
+        val descriptionHorizontalPadding = 60.dp
+        val imageTitleSpacing = 32.dp
+        val titleDescriptionSpacing = 16.dp
+    }
+
+    object BottomSection {
+        val topSpacing = 16.dp
+        val horizontalPadding = 16.dp
+        val height = 130.dp
+    }
+
+    object Indicator {
+        val selectedSize = 20.dp
+        val defaultSize = 15.dp
+        val horizontalPadding = 10.dp
+        val borderWidth = 2.dp
+        val inactiveColor = TextSecondary
+    }
+
+    object Animation {
+        const val DURATION_MILLIS = 450
+        const val CONTENT_TRANSITION_LABEL = "onboarding_content_transition"
+    }
 }
