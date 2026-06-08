@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
-import software.mazur.qrezzy.core.designsystem.theme.Purple
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 
 @Composable
 fun SettingsScreen() {
@@ -21,7 +21,7 @@ fun SettingsScreen() {
             title = stringResource(R.string.navigation_title_settings),
             rightButton = QrezzyTopBarButton(
                 icon = Icons.Default.Favorite,
-                iconTint = Purple,
+                iconTint = QrezzyPurpleDark,
                 onClick = {}
             )
         )

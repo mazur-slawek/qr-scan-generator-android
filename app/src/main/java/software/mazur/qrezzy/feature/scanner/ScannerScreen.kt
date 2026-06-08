@@ -34,10 +34,10 @@ import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
-import software.mazur.qrezzy.core.designsystem.theme.Purple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellow
 
 
@@ -58,7 +58,7 @@ fun ScannerScreen() {
         mutableStateOf(false)
     }
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()) {isGranted ->
+        contract = ActivityResultContracts.RequestPermission()) { isGranted ->
         scannerState = if (isGranted) ScannerScreenState.Scanning else ScannerScreenState.PermissionDenied
     }
     LaunchedEffect(Unit) {
@@ -68,7 +68,7 @@ fun ScannerScreen() {
     }
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner, scannerState) {
-        val observer = LifecycleEventObserver {_, event ->
+        val observer = LifecycleEventObserver { _, event ->
             when (event) {
                 Lifecycle.Event.ON_RESUME -> {
                     if (
@@ -99,9 +99,9 @@ fun ScannerScreen() {
             title = stringResource(R.string.navigation_title_scan),
             rightButton = QrezzyTopBarButton(
                 icon = if (isTorchEnabled) Icons.Outlined.FlashOn else Icons.Outlined.FlashOff,
-                iconTint = if (isTorchEnabled) Purple else Color.Gray,
+                iconTint = if (isTorchEnabled) QrezzyPurpleDark else Color.Gray,
                 enabled = scannerState == ScannerScreenState.Scanning,
-                onClick = {isTorchEnabled = !isTorchEnabled}
+                onClick = { isTorchEnabled = !isTorchEnabled }
             )
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -133,13 +133,13 @@ fun ScannerScreen() {
                 }
             },
             text = stringResource(scannerState.getActionText()),
-            disableElevation = true,
-            color = when (scannerState) {
+            elevation = 0.dp,
+            containerColor = when (scannerState) {
                 ScannerScreenState.Idle             -> QrezzyMint
                 ScannerScreenState.PermissionDenied -> QrezzyYellow
                 ScannerScreenState.Scanning         -> QrezzyPink
             },
-            shadowColor = when (scannerState) {
+            depthColor = when (scannerState) {
                 ScannerScreenState.Idle             -> QrezzyPurple
                 ScannerScreenState.PermissionDenied -> QrezzyMint
                 ScannerScreenState.Scanning         -> QrezzyYellow
