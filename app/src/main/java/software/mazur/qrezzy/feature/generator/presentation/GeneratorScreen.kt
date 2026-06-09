@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material.icons.outlined.FormatPaint
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,7 +43,7 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
             title = stringResource(R.string.navigation_title_generate),
             rightAction = QrezzyTopBarAction(
                 enabled = uiState.canSave,
-                icon = Icons.Outlined.Visibility,
+                icon = Icons.Outlined.FormatPaint,
                 iconTint = if (uiState.canSave) QrezzyPurpleDark else Color.Gray,
                 onClick = {}
             ),

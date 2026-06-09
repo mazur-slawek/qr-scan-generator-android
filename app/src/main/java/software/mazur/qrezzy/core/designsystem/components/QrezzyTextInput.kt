@@ -34,7 +34,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import software.mazur.qrezzy.core.designsystem.theme.BorderMedium
+import software.mazur.qrezzy.core.designsystem.theme.BorderSecondary
 import software.mazur.qrezzy.core.designsystem.theme.Error
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
@@ -79,7 +79,7 @@ fun QrezzyTextInput(
     val targetBorderColor = when {
         isError   -> errorColor
         isFocused -> focusedBorderColor
-        else      -> BorderMedium
+        else      -> BorderSecondary
     }
     val borderColor by animateColorAsState(
         targetValue = targetBorderColor,
@@ -117,7 +117,7 @@ fun QrezzyTextInput(
                     .background(color = depthColor, shape = ShapeDefaults.Medium)
                     .border(
                         width = QrezzyTextInputDefaults.Border.width,
-                        color = BorderMedium,
+                        color = BorderSecondary,
                         shape = ShapeDefaults.Medium,
                     )
                     .align(Alignment.BottomEnd),
@@ -200,7 +200,7 @@ private object QrezzyTextInputDefaults {
 
     object Border {
         val width = 1.5.dp
-        val focusedWidth = 2.dp
+        val focusedWidth = 1.7.dp
     }
 
     object Content {

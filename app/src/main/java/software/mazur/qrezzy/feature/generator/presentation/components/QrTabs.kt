@@ -1,6 +1,5 @@
 package software.mazur.qrezzy.feature.generator.presentation.components
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -23,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,15 +29,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
+import software.mazur.qrezzy.core.designsystem.theme.BorderSecondary
 import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 import software.mazur.qrezzy.feature.generator.model.QrType
 import software.mazur.qrezzy.feature.generator.model.icon
+import software.mazur.qrezzy.feature.generator.model.iconTintColor
+import software.mazur.qrezzy.feature.generator.model.iconTintColorDark
 import software.mazur.qrezzy.feature.generator.model.isSameTypeAs
 import software.mazur.qrezzy.feature.generator.model.label
 
@@ -53,7 +50,7 @@ fun QrTypeTabs(
         modifier = modifier
             .fillMaxWidth()
             .border(
-                color = BorderPrimary,
+                color = BorderSecondary,
                 shape = ShapeDefaults.Medium,
                 width = QrTypeTabsDefaults.Container.borderWidth,
             )
@@ -92,30 +89,21 @@ private fun QrTypeTabButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val colors = QrTypeTabColors.resolve(isSelected = isSelected)
     Button(
         onClick = onClick,
         modifier = modifier
             .size(size)
             .padding(QrTypeTabsDefaults.Tab.outerPadding)
             .border(
-                width = if (isSelected) {
-                    QrTypeTabsDefaults.Tab.selectedBorderWidth
-                } else {
-                    QrTypeTabsDefaults.Tab.unselectedBorderWidth
-                },
-                color = colors.borderColor,
+                width = if (isSelected) QrTypeTabsDefaults.Tab.selectedBorderWidth else 0.dp,
+                color = if (isSelected) type.iconTintColorDark else Color.Transparent,
                 shape = ShapeDefaults.Medium.copy(CornerSize(10.dp)),
             ),
         contentPadding = PaddingValues.Zero,
         shape = ShapeDefaults.Medium.copy(CornerSize(10.dp)),
-        border = BorderStroke(
-            width = QrTypeTabsDefaults.Tab.buttonBorderWidth,
-            color = Color.Transparent,
-        ),
         colors = ButtonDefaults.buttonColors(
-            containerColor = colors.containerColor,
-            contentColor = colors.contentColor
+            containerColor = if (isSelected) type.iconTintColor else Color.Transparent,
+            contentColor = type.iconTintColorDark
         ),
     ) {
         Column(
@@ -123,44 +111,21 @@ private fun QrTypeTabButton(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Icon(imageVector = type.icon, contentDescription = null, tint = colors.iconColor)
+            Icon(
+                imageVector = type.icon,
+                contentDescription = null,
+                tint = if (isSelected) TextPrimary else TextSecondary,
+            )
             Spacer(modifier = Modifier.height(QrTypeTabsDefaults.Tab.iconTextSpacing))
             Text(
                 text = type.label,
                 maxLines = QrTypeTabsDefaults.Tab.LABEL_MAX_LINES,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelLarge,
+                color = if (isSelected) TextPrimary else TextSecondary,
                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium
             )
-        }
-    }
-}
-
-@Immutable
-private data class QrTypeTabColors(
-    val containerColor: Color,
-    val contentColor: Color,
-    val iconColor: Color,
-    val borderColor: Color,
-) {
-    companion object {
-        fun resolve(isSelected: Boolean): QrTypeTabColors {
-            return if (isSelected) {
-                QrTypeTabColors(
-                    containerColor = QrezzyMint,
-                    contentColor = TextPrimary,
-                    iconColor = QrezzyPurpleDark,
-                    borderColor = QrezzyMintDark,
-                )
-            } else {
-                QrTypeTabColors(
-                    containerColor = Surface,
-                    contentColor = TextSecondary,
-                    iconColor = TextSecondary,
-                    borderColor = Color.Transparent,
-                )
-            }
         }
     }
 }
@@ -184,8 +149,6 @@ private object QrTypeTabsDefaults {
         val outerPadding = 1.dp
         val iconTextSpacing = 3.dp
         val selectedBorderWidth = 1.dp
-        val unselectedBorderWidth = 0.dp
-        val buttonBorderWidth = 0.dp
         const val LABEL_MAX_LINES = 1
     }
 }

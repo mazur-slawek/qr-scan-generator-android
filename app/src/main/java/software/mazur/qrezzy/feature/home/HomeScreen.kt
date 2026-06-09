@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ManageHistory
+import androidx.compose.material.icons.rounded.History
 import androidx.compose.material.icons.rounded.QrCode
 import androidx.compose.material.icons.rounded.QrCodeScanner
 import androidx.compose.material.icons.rounded.Settings
@@ -40,7 +40,6 @@ import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellow
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
 import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.core.designsystem.theme.TextDisabled
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
@@ -96,8 +95,8 @@ private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (Home
                     label = {
                         Text(
                             text = title,
-                            fontWeight = FontWeight.Medium,
                             style = MaterialTheme.typography.bodySmall,
+                            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium
                         )
                     },
                 )
@@ -138,7 +137,7 @@ private enum class HomeTab(
     ),
     HISTORY(
         titleResId = R.string.navigation_tab_history,
-        icon = Icons.Rounded.ManageHistory,
+        icon = Icons.Rounded.History,
         indicatorColor = QrezzyPink,
         selectedIconColor = QrezzyMintDark,
     ),
@@ -146,7 +145,7 @@ private enum class HomeTab(
         titleResId = R.string.navigation_tab_settings,
         icon = Icons.Rounded.Settings,
         indicatorColor = QrezzyPurple,
-        selectedIconColor = QrezzyYellowDark,
+        selectedIconColor = QrezzyYellow,
     ),
 }
 
