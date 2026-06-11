@@ -26,7 +26,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
-import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarAction
+import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.feature.generator.presentation.components.QrPreview
 import software.mazur.qrezzy.feature.generator.presentation.components.QrTypeForm
@@ -39,15 +39,14 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
     val focusManager = LocalFocusManager.current
 
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        QrezzyTopBar(
-            title = stringResource(R.string.navigation_title_generate),
-            rightAction = QrezzyTopBarAction(
-                enabled = uiState.canSave,
+        QrezzyTopBar(title = stringResource(R.string.navigation_title_generate)) {
+            QrezzyTopBarButton(
+                onClick = {},
+                enabled = !uiState.canSave,
                 icon = Icons.Outlined.FormatPaint,
                 iconTint = if (uiState.canSave) QrezzyPurpleDark else Color.Gray,
-                onClick = {}
-            ),
-        )
+            )
+        }
         LazyColumn(
             modifier = Modifier
                 .weight(1f)

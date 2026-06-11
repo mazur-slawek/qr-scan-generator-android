@@ -18,7 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Circle
-import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.rounded.CheckCircleOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -42,11 +42,10 @@ import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTabItem
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTabs
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
-import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarAction
+import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
 import software.mazur.qrezzy.core.designsystem.theme.BorderLight
 import software.mazur.qrezzy.core.designsystem.theme.Error
 import software.mazur.qrezzy.core.designsystem.theme.Surface
-import software.mazur.qrezzy.core.designsystem.theme.TextDisabled
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 import software.mazur.qrezzy.feature.generator.model.QrType
@@ -63,15 +62,14 @@ fun HistoryScreen() {
     Column(
         modifier = Modifier.padding(horizontal = HistoryScreenDefaults.Screen.horizontalPadding)
     ) {
-        QrezzyTopBar(
-            title = stringResource(R.string.navigation_title_history),
-            rightAction = QrezzyTopBarAction(
-                icon = Icons.Outlined.Delete,
-                iconTint = TextDisabled,
-                enabled = false,
+        QrezzyTopBar(title = stringResource(R.string.navigation_title_history)) {
+            QrezzyTopBarButton(
                 onClick = {},
-            ),
-        )
+                enabled = false,
+                text = "Zaznacz",
+                icon = Icons.Rounded.CheckCircleOutline,
+            )
+        }
         Spacer(modifier = Modifier.height(HistoryScreenDefaults.Screen.topBarTabsSpacing))
         QrezzyTabs(
             tabs = HistoryScreenDefaults.tabs,

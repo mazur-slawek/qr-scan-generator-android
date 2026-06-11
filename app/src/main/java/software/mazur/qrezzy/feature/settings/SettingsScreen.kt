@@ -12,20 +12,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
-import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarAction
+import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 
 @Composable
 fun SettingsScreen() {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        QrezzyTopBar(
-            title = stringResource(R.string.navigation_title_settings),
-            rightAction = QrezzyTopBarAction(
+        QrezzyTopBar(title = stringResource(R.string.navigation_title_settings)) {
+            QrezzyTopBarButton(
+                onClick = {},
+                enabled = false,
                 icon = Icons.Default.Favorite,
                 iconTint = QrezzyPurpleDark,
-                onClick = {}
             )
-        )
+        }
         Box(
             modifier = Modifier.weight(1f),
             contentAlignment = Alignment.Center,
