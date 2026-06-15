@@ -42,11 +42,15 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
         QrezzyTopBar(title = stringResource(R.string.navigation_title_generate)) {
             QrezzyTopBarButton(
                 onClick = {},
-                enabled = !uiState.canSave,
+                enabled = uiState.canSave,
                 icon = Icons.Outlined.FormatPaint,
                 iconTint = if (uiState.canSave) QrezzyPurpleDark else Color.Gray,
             )
         }
+        QrPreview(qrBitmap = qrBitmap, modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp, bottom = 10.dp)
+            .height(200.dp))
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
@@ -60,15 +64,9 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             item {
-                QrPreview(qrBitmap = qrBitmap, modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp, bottom = 10.dp)
-                    .height(200.dp))
-            }
-            item {
                 Text(
                     modifier = Modifier.padding(bottom = 10.dp),
-                    text = "Select QR code type",
+                    text = stringResource(R.string.generator_select_qr_type),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -77,7 +75,7 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
             item {
                 Text(
                     modifier = Modifier.padding(bottom = 10.dp),
-                    text = "Enter data to generate a QR code",
+                    text = stringResource(R.string.generator_enter_data),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -91,7 +89,7 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
                 QrezzyButton(
                     modifier = Modifier.padding(bottom = 16.dp, top = 10.dp),
                     elevation = 0.dp,
-                    text = "Save QR Code",
+                    text = stringResource(R.string.generator_save_qr_code),
                     enabled = uiState.canSave,
                     onClick = {},
                 )

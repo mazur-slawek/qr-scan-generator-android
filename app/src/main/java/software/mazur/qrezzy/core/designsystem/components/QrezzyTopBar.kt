@@ -67,9 +67,9 @@ private object QrezzyTopBarDefaults {
 
 @Composable
 fun QrezzyTopBarButton(
-    icon: ImageVector,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    icon: ImageVector? = null,
     text: String? = null,
     enabled: Boolean = true,
     iconTint: Color = TextPrimary,
@@ -79,7 +79,7 @@ fun QrezzyTopBarButton(
     Box(
         modifier = modifier
             .wrapContentWidth()
-            .alpha(if (enabled) 0.4f else 1f)
+            .alpha(if (enabled) 1f else 0.4f)
             .height(QrezzyTopBarButtonDefaults.Container.height),
     ) {
         Spacer(
@@ -130,16 +130,20 @@ fun QrezzyTopBarButton(
                         style = MaterialTheme.typography.labelLarge,
                         maxLines = QrezzyTopBarButtonDefaults.Text.MAX_LINES,
                     )
+                }
+                if (text != null && icon != null) {
                     Spacer(modifier = Modifier.width(QrezzyTopBarButtonDefaults.Content.iconTextSpacing))
                 }
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = iconTint,
-                    modifier = Modifier
-                        .width(QrezzyTopBarButtonDefaults.Icon.size)
-                        .height(QrezzyTopBarButtonDefaults.Icon.size),
-                )
+                icon?.let {
+                    Icon(
+                        imageVector = it,
+                        contentDescription = null,
+                        tint = iconTint,
+                        modifier = Modifier
+                            .width(QrezzyTopBarButtonDefaults.Icon.size)
+                            .height(QrezzyTopBarButtonDefaults.Icon.size),
+                    )
+                }
             }
         }
     }

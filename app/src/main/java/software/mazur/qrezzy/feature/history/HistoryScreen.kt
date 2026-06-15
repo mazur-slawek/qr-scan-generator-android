@@ -1,7 +1,6 @@
 package software.mazur.qrezzy.feature.history
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Circle
-import androidx.compose.material.icons.rounded.CheckCircleOutline
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -54,49 +54,107 @@ import software.mazur.qrezzy.feature.generator.model.iconTintColor
 import software.mazur.qrezzy.feature.generator.model.iconTintColorDark
 import software.mazur.qrezzy.feature.generator.model.label
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryScreen() {
     var selectedTab by remember { mutableStateOf(HistoryScreenDefaults.tabs.first()) }
+    var isDeleteModeEnabled by remember { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier.padding(horizontal = HistoryScreenDefaults.Screen.horizontalPadding)
+        modifier = Modifier.padding(
+            horizontal = HistoryScreenDefaults.Screen.horizontalPadding,
+        ),
     ) {
-        QrezzyTopBar(title = stringResource(R.string.navigation_title_history)) {
-            QrezzyTopBarButton(
-                onClick = {},
-                enabled = false,
-                text = "Zaznacz",
-                icon = Icons.Rounded.CheckCircleOutline,
-            )
-        }
+        HistoryTopBar(
+            isDeleteModeEnabled = isDeleteModeEnabled,
+            onEnterDeleteMode = { isDeleteModeEnabled = true },
+            onExitDeleteMode = { isDeleteModeEnabled = false },
+            onDeleteSelected = {},
+        )
+
         Spacer(modifier = Modifier.height(HistoryScreenDefaults.Screen.topBarTabsSpacing))
+
         QrezzyTabs(
             tabs = HistoryScreenDefaults.tabs,
             selectedTab = selectedTab,
             onSelect = { tab -> selectedTab = tab },
-            modifier = Modifier.padding(bottom = HistoryScreenDefaults.Screen.tabsBottomPadding)
+            modifier = Modifier.padding(
+                bottom = HistoryScreenDefaults.Screen.tabsBottomPadding,
+            ),
         )
-        LazyColumn(contentPadding = PaddingValues(bottom = HistoryScreenDefaults.List.bottomPadding)) {
-            HistoryScreenDefaults.sections.forEach { section ->
-                stickyHeader {
-                    HistorySectionHeader(text = section.date)
-                }
-                items(
-                    count = section.items.size,
-                    key = { index -> "${section.date}_$index" },
-                ) { index ->
-                    HistoryListItem(
-                        item = section.items[index],
-                    )
-                }
+
+        HistoryList(
+            sections = HistoryScreenDefaults.sections,
+            isDeleteModeEnabled = isDeleteModeEnabled,
+        )
+    }
+}
+
+@Composable
+private fun HistoryTopBar(
+    isDeleteModeEnabled: Boolean,
+    onEnterDeleteMode: () -> Unit,
+    onExitDeleteMode: () -> Unit,
+    onDeleteSelected: () -> Unit,
+) {
+    QrezzyTopBar(
+        title = stringResource(R.string.navigation_title_history),
+    ) {
+        if (isDeleteModeEnabled) {
+            QrezzyTopBarButton(
+                onClick = onExitDeleteMode,
+                icon = Icons.Outlined.Close,
+            )
+
+            Spacer(modifier = Modifier.width(HistoryScreenDefaults.TopBar.actionSpacing))
+
+            QrezzyTopBarButton(
+                onClick = onDeleteSelected,
+                icon = Icons.Outlined.DeleteForever,
+            )
+        } else {
+            QrezzyTopBarButton(
+                onClick = onEnterDeleteMode,
+                text = stringResource(R.string.history_select),
+            )
+        }
+    }
+}
+
+@Composable
+private fun HistoryList(
+    sections: List<HistorySectionUi>,
+    isDeleteModeEnabled: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(
+            bottom = HistoryScreenDefaults.List.bottomPadding,
+        ),
+    ) {
+        sections.forEach { section ->
+            stickyHeader {
+                HistorySectionHeader(text = section.date)
+            }
+
+            items(
+                count = section.items.size,
+                key = { index -> "${section.date}_$index" },
+            ) { index ->
+                HistoryListItem(
+                    item = section.items[index],
+                    isDeleteModeEnabled = isDeleteModeEnabled,
+                )
             }
         }
     }
 }
 
 @Composable
-private fun HistorySectionHeader(text: String, modifier: Modifier = Modifier) {
+private fun HistorySectionHeader(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
     Text(
         text = text,
         color = TextSecondary,
@@ -114,19 +172,33 @@ private fun HistorySectionHeader(text: String, modifier: Modifier = Modifier) {
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun HistoryListItem(item: HistoryItemUi, modifier: Modifier = Modifier) {
-    var select by remember { mutableStateOf(false) }
+private fun HistoryListItem(
+    item: HistoryItemUi,
+    isDeleteModeEnabled: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    var isSelected by remember { mutableStateOf(false) }
+
     Button(
-        onClick = { select = !select },
+        onClick = {
+            if (isDeleteModeEnabled) {
+                isSelected = !isSelected
+            }
+        },
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
+            .padding(vertical = HistoryScreenDefaults.Item.verticalPadding)
             .clip(shape = ShapeDefaults.Medium),
         shape = ShapeDefaults.Medium,
-        border = BorderStroke(width = 1.5.dp, color = BorderLight),
-        colors = ButtonDefaults.buttonColors(containerColor = Surface, contentColor = item.qrType.iconTintColorDark),
+        border = BorderStroke(
+            width = HistoryScreenDefaults.Item.borderWidth,
+            color = BorderLight,
+        ),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Surface,
+            contentColor = item.qrType.iconTintColorDark,
+        ),
         contentPadding = PaddingValues.Zero,
     ) {
         Row(
@@ -135,49 +207,97 @@ private fun HistoryListItem(item: HistoryItemUi, modifier: Modifier = Modifier) 
                 .padding(HistoryScreenDefaults.Item.contentPadding),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(
-                imageVector = item.qrType.icon,
-                contentDescription = item.qrType.label,
-                tint = TextPrimary,
-                modifier = modifier
-                    .border(
-                        width = HistoryScreenDefaults.Icon.borderWidth,
-                        color = item.qrType.iconTintColorDark,
-                        shape = ShapeDefaults.Small,
-                    )
-                    .shadow(elevation = HistoryScreenDefaults.Icon.elevation, shape = ShapeDefaults.Small)
-                    .background(color = item.qrType.iconTintColor, shape = ShapeDefaults.Small)
-                    .padding(HistoryScreenDefaults.Icon.padding),
-            )
+            HistoryItemIcon(qrType = item.qrType)
+
             Spacer(modifier = Modifier.width(HistoryScreenDefaults.Item.iconTextSpacing))
-            Column(modifier = Modifier.weight(HistoryScreenDefaults.Item.TEXT_WEIGHT)) {
-                Text(
-                    text = item.value,
-                    color = TextPrimary,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.SemiBold,
-                    maxLines = HistoryScreenDefaults.Item.TITLE_MAX_LINES,
-                )
-                Spacer(modifier = Modifier.height(HistoryScreenDefaults.Item.textSpacing))
-                Text(
-                    text = item.subtitle,
-                    color = TextSecondary,
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Medium,
-                    maxLines = HistoryScreenDefaults.Item.SUBTITLE_MAX_LINES,
-                )
-            }
-            Icon(
-                imageVector = if (select) Icons.Outlined.CheckCircle else Icons.Outlined.Circle,
-                tint = if (select) Error else TextSecondary,
-                contentDescription = null,
+
+            HistoryItemContent(
+                item = item,
+                modifier = Modifier.weight(HistoryScreenDefaults.Item.TEXT_WEIGHT),
             )
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowRight,
-                tint = TextSecondary,
-                contentDescription = null,
+
+            HistoryItemTrailingIcon(
+                isDeleteModeEnabled = isDeleteModeEnabled,
+                isSelected = isSelected,
             )
         }
+    }
+}
+
+@Composable
+private fun HistoryItemIcon(
+    qrType: QrType,
+    modifier: Modifier = Modifier,
+) {
+    Icon(
+        imageVector = qrType.icon,
+        contentDescription = qrType.label,
+        tint = TextPrimary,
+        modifier = modifier
+            .border(
+                width = HistoryScreenDefaults.Icon.borderWidth,
+                color = qrType.iconTintColorDark,
+                shape = ShapeDefaults.Small,
+            )
+            .shadow(
+                elevation = HistoryScreenDefaults.Icon.elevation,
+                shape = ShapeDefaults.Small,
+            )
+            .background(
+                color = qrType.iconTintColor,
+                shape = ShapeDefaults.Small,
+            )
+            .padding(HistoryScreenDefaults.Icon.padding),
+    )
+}
+
+@Composable
+private fun HistoryItemContent(
+    item: HistoryItemUi,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = item.value,
+            color = TextPrimary,
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.SemiBold,
+            maxLines = HistoryScreenDefaults.Item.TITLE_MAX_LINES,
+        )
+
+        Spacer(modifier = Modifier.height(HistoryScreenDefaults.Item.textSpacing))
+
+        Text(
+            text = item.subtitle,
+            color = TextSecondary,
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.Medium,
+            maxLines = HistoryScreenDefaults.Item.SUBTITLE_MAX_LINES,
+        )
+    }
+}
+
+@Composable
+private fun HistoryItemTrailingIcon(
+    isDeleteModeEnabled: Boolean,
+    isSelected: Boolean,
+) {
+    if (isDeleteModeEnabled) {
+        Icon(
+            imageVector = if (isSelected) {
+                Icons.Outlined.CheckCircle
+            } else {
+                Icons.Outlined.Circle
+            },
+            tint = if (isSelected) Error else TextSecondary,
+            contentDescription = null,
+        )
+    } else {
+        Icon(
+            imageVector = Icons.Default.KeyboardArrowRight,
+            tint = TextSecondary,
+            contentDescription = null,
+        )
     }
 }
 
@@ -196,9 +316,9 @@ private data class HistoryItemUi(
 
 private object HistoryScreenDefaults {
     val tabs = listOf(
-        QrezzyTabItem(key = 0, title = "All"),
-        QrezzyTabItem(key = 1, title = "Scanned"),
-        QrezzyTabItem(key = 2, title = "Generated"),
+        QrezzyTabItem(key = 0, titleResId = R.string.history_tab_all),
+        QrezzyTabItem(key = 1, titleResId = R.string.history_tab_scanned),
+        QrezzyTabItem(key = 2, titleResId = R.string.history_tab_generated),
     )
     val sections = listOf(
         HistorySectionUi(
@@ -236,6 +356,10 @@ private object HistoryScreenDefaults {
         val tabsBottomPadding = 2.dp
     }
 
+    object TopBar {
+        val actionSpacing = 8.dp
+    }
+
     object List {
         val bottomPadding = 16.dp
     }
@@ -248,9 +372,11 @@ private object HistoryScreenDefaults {
     }
 
     object Item {
+        val verticalPadding = 4.dp
         val contentPadding = 16.dp
         val iconTextSpacing = 16.dp
         val textSpacing = 2.dp
+        val borderWidth = 1.5.dp
         const val TEXT_WEIGHT = 1f
         const val TITLE_MAX_LINES = 1
         const val SUBTITLE_MAX_LINES = 1

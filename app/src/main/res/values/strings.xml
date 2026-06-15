@@ -31,7 +31,7 @@
     <string name="navigation_title_history">History</string>
     <string name="navigation_title_settings">Settings</string>
 
-    <string name="scanner_action_scan">Scan QR Code</string>
+    <string name="scanner_action_scan">Start Scanning</string>
     <string name="scanner_action_stop">Stop Scanning</string>
     <string name="scanner_action_open_settings">Open Settings</string>
 
@@ -40,4 +40,12 @@
     <string name="scanner_popup_permission_denied_title">Camera access required</string>
     <string name="scanner_popup_permission_denied_desc">Please allow camera access in Settings to scan QR codes.</string>
 
+    <string name="generator_select_qr_type">Select QR code type</string>
+    <string name="generator_enter_data">Enter data to generate a QR code</string>
+    <string name="generator_save_qr_code">Save QR Code</string>
+
+    <string name="history_select">Select</string>
+    <string name="history_tab_all">All</string>
+    <string name="history_tab_generated">Generated</string>
+    <string name="history_tab_scanned">Scanned</string>
 </resources>
