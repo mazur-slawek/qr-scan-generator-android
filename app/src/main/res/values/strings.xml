@@ -43,6 +43,7 @@
     <string name="generator_select_qr_type">Select QR code type</string>
     <string name="generator_enter_data">Enter data to generate a QR code</string>
     <string name="generator_save_qr_code">Save QR Code</string>
+    <string name="generator_qr_saved_message">QR code saved</string>
 
     <string name="history_select">Select</string>
     <string name="history_tab_all">All</string>
