@@ -5,5 +5,10 @@ import androidx.compose.runtime.Immutable
 @Immutable
 data class HistoryUiState(
     val sections: List<HistorySectionUi> = emptyList(),
-    val isInitialLoading: Boolean = true
-)
+    val isInitialLoading: Boolean = true,
+    val isDeleteModeEnabled: Boolean = false,
+    val selectedItemIds: Set<Long> = emptySet()
+) {
+    val canDeleteSelected: Boolean
+        get() = selectedItemIds.isNotEmpty()
+}
