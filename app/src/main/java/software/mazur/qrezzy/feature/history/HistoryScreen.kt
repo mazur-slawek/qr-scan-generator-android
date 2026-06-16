@@ -28,7 +28,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -106,9 +105,8 @@ fun HistoryScreen(onHistoryItemClick: (Long) -> Unit, viewModel: HistoryViewMode
             tabs = historyTabs,
             selectedTab = selectedTab,
             onSelect = { tab -> viewModel.onTabSelected(tab.key) },
-            modifier = Modifier
-                .alpha(if (uiState.isDeleteModeEnabled) 0.4f else 1f)
-                .padding(bottom = HistoryScreenDefaults.tabsBottomPadding)
+            modifier = Modifier.padding(bottom = HistoryScreenDefaults.tabsBottomPadding),
+            enabled = !uiState.isDeleteModeEnabled
         )
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

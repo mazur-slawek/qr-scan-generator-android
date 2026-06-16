@@ -18,6 +18,7 @@ import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,10 +39,11 @@ fun QrezzyTabs(
     tabs: List<QrezzyTabItem>,
     selectedTab: QrezzyTabItem,
     onSelect: (QrezzyTabItem) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.alpha(if (enabled) 1f else 0.4f),
         shape = ShapeDefaults.Medium,
         colors = CardDefaults.cardColors(containerColor = Surface),
         elevation = CardDefaults.cardElevation(defaultElevation = QrezzyTabsDefaults.Container.elevation),
@@ -57,6 +59,7 @@ fun QrezzyTabs(
                     text = stringResource(tab.titleResId),
                     isSelected = tab.key == selectedTab.key,
                     onClick = { onSelect(tab) },
+                    enabled = enabled
                 )
             }
         }
@@ -64,7 +67,13 @@ fun QrezzyTabs(
 }
 
 @Composable
-private fun QrezzyTabItem(text: String, isSelected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun QrezzyTabItem(
+    text: String,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
+) {
     Button(
         onClick = onClick,
         modifier = modifier
@@ -80,6 +89,7 @@ private fun QrezzyTabItem(text: String, isSelected: Boolean, onClick: () -> Unit
             containerColor = if (isSelected) QrezzyMint else Color.Transparent,
             contentColor = TextSecondary,
         ),
+        enabled = enabled
     ) {
         Text(
             text = text,
