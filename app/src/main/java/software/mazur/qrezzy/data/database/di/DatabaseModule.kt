@@ -1,4 +1,4 @@
-package software.mazur.qrezzy.core.database.di
+package software.mazur.qrezzy.data.database.di
 
 import android.content.Context
 import androidx.room.Room
@@ -7,8 +7,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import software.mazur.qrezzy.core.database.QrezzyDatabase
-import software.mazur.qrezzy.core.database.dao.QrHistoryDao
+import software.mazur.qrezzy.data.database.QrezzyDatabase
+import software.mazur.qrezzy.data.database.dao.QrHistoryDao
 import javax.inject.Singleton
 
 @Module

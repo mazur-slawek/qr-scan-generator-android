@@ -1,9 +1,9 @@
-package software.mazur.qrezzy.core.database
+package software.mazur.qrezzy.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import software.mazur.qrezzy.core.database.dao.QrHistoryDao
+import software.mazur.qrezzy.data.database.dao.QrHistoryDao
 import software.mazur.qrezzy.data.history.local.QrHistoryEntity
 
 @Database(

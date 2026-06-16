@@ -1,8 +1,5 @@
 package software.mazur.qrezzy.domain.history.model
 
-import software.mazur.qrezzy.data.history.local.QrHistorySource
-import software.mazur.qrezzy.data.history.local.QrHistoryType
-
 data class QrHistoryItem(
     val id: Long = 0,
     val source: QrHistorySource,

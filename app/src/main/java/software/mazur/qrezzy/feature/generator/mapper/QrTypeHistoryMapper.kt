@@ -1,6 +1,6 @@
 package software.mazur.qrezzy.feature.generator.mapper
 
-import software.mazur.qrezzy.data.history.local.QrHistoryType
+import software.mazur.qrezzy.domain.history.model.QrHistoryType
 import software.mazur.qrezzy.feature.generator.model.QrType
 
 fun QrType.toHistoryType(): QrHistoryType {

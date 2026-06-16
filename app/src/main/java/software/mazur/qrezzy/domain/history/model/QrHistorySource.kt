@@ -1,4 +1,4 @@
-package software.mazur.qrezzy.data.history.local
+package software.mazur.qrezzy.domain.history.model
 
 enum class QrHistorySource {
     GENERATED,

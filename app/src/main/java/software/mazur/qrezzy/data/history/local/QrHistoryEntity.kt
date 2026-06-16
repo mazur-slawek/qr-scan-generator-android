@@ -2,6 +2,8 @@ package software.mazur.qrezzy.data.history.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import software.mazur.qrezzy.domain.history.model.QrHistorySource
+import software.mazur.qrezzy.domain.history.model.QrHistoryType
 
 @Entity(tableName = QrHistoryEntity.TABLE_NAME)
 data class QrHistoryEntity(

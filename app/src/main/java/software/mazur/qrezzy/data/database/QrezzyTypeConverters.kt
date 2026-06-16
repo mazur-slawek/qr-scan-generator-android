@@ -1,8 +1,8 @@
-package software.mazur.qrezzy.core.database
+package software.mazur.qrezzy.data.database
 
 import androidx.room.TypeConverter
-import software.mazur.qrezzy.data.history.local.QrHistorySource
-import software.mazur.qrezzy.data.history.local.QrHistoryType
+import software.mazur.qrezzy.domain.history.model.QrHistorySource
+import software.mazur.qrezzy.domain.history.model.QrHistoryType
 
 class QrezzyTypeConverters {
     @TypeConverter
