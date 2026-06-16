@@ -52,7 +52,7 @@ fun QrezzyTopBar(title: String, onBackClick: (() -> Unit)? = null, content: @Com
             text = title,
             maxLines = QrezzyTopBarDefaults.TITLE_MAX_LINES,
             textAlign = TextAlign.Start,
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.weight(1f)
         )

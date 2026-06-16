@@ -42,10 +42,7 @@ import software.mazur.qrezzy.feature.history.components.HistoryListSectionHeader
 import software.mazur.qrezzy.feature.history.mapper.historyTabs
 
 @Composable
-fun HistoryScreen(
-    onHistoryItemClick: (Long) -> Unit,
-    viewModel: HistoryViewModel = hiltViewModel()
-) {
+fun HistoryScreen(onHistoryItemClick: (Long) -> Unit, viewModel: HistoryViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
     val selectedTab by viewModel.selectedTabItem.collectAsState()
 
