@@ -45,7 +45,7 @@ import software.mazur.qrezzy.core.designsystem.theme.TextDisabled
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 import software.mazur.qrezzy.feature.generator.presentation.GeneratorScreen
-import software.mazur.qrezzy.feature.history.HistoryScreen
+import software.mazur.qrezzy.feature.history.HistoryNavHost
 import software.mazur.qrezzy.feature.scanner.ScannerScreen
 import software.mazur.qrezzy.feature.settings.SettingsScreen
 
@@ -111,7 +111,7 @@ private fun QrezzyHomeScreenContent(modifier: Modifier, selectedTab: HomeTab) {
         when (selectedTab) {
             HomeTab.SCAN     -> ScannerScreen()
             HomeTab.GENERATE -> GeneratorScreen()
-            HomeTab.HISTORY  -> HistoryScreen()
+            HomeTab.HISTORY  -> HistoryNavHost()
             HomeTab.SETTINGS -> SettingsScreen()
         }
     }

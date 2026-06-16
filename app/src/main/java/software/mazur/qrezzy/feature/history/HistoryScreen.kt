@@ -42,7 +42,7 @@ import software.mazur.qrezzy.feature.history.components.HistoryListSectionHeader
 import software.mazur.qrezzy.feature.history.mapper.historyTabs
 
 @Composable
-fun HistoryScreen(viewModel: HistoryViewModel = hiltViewModel()) {
+fun HistoryScreen(onHistoryItemClick: (Long) -> Unit, viewModel: HistoryViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
     val selectedTab by viewModel.selectedTabItem.collectAsState()
 
@@ -131,7 +131,13 @@ fun HistoryScreen(viewModel: HistoryViewModel = hiltViewModel()) {
                                 item = item,
                                 isDeleteModeEnabled = uiState.isDeleteModeEnabled,
                                 isSelected = item.id in uiState.selectedItemIds,
-                                onClick = { viewModel.onHistoryItemClick(item.id) },
+                                onClick = {
+                                    if (uiState.isDeleteModeEnabled) {
+                                        viewModel.onHistoryItemClick(item.id)
+                                    } else {
+                                        onHistoryItemClick(item.id)
+                                    }
+                                }
                             )
                         }
                     }

@@ -5,7 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import software.mazur.qrezzy.feature.generator.presentation.GeneratorScreen
-import software.mazur.qrezzy.feature.history.HistoryScreen
+import software.mazur.qrezzy.feature.history.HistoryNavHost
 import software.mazur.qrezzy.feature.home.HomeScreen
 import software.mazur.qrezzy.feature.onboarding.OnboardingScreen
 import software.mazur.qrezzy.feature.scanner.ScannerScreen
@@ -57,7 +57,7 @@ fun QrezzyNavHost() {
         }
 
         composable(QrezzyDestination.History.route) {
-            HistoryScreen()
+            HistoryNavHost()
         }
 
         composable(QrezzyDestination.Settings.route) {
