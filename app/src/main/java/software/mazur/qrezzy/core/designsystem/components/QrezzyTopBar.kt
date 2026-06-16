@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -28,19 +30,24 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButtonDefaults.Content
 import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 
 @Composable
-fun QrezzyTopBar(title: String, content: @Composable (() -> Unit)? = null) {
+fun QrezzyTopBar(title: String, onBackClick: (() -> Unit)? = null, content: @Composable (() -> Unit)? = null) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(QrezzyTopBarDefaults.height),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        if (onBackClick != null) {
+            QrezzyTopBarButton(onClick = onBackClick, icon = Icons.Outlined.ArrowBack)
+            Spacer(modifier = Modifier.width(Content.padding))
+        }
         Text(
             text = title,
             maxLines = QrezzyTopBarDefaults.TITLE_MAX_LINES,
@@ -103,7 +110,7 @@ fun QrezzyTopBarButton(
             shape = ShapeDefaults.Medium,
             border = BorderStroke(width = QrezzyTopBarButtonDefaults.Border.width, color = BorderPrimary),
             contentPadding = PaddingValues(
-                horizontal = QrezzyTopBarButtonDefaults.Content.horizontalPadding,
+                horizontal = Content.padding,
             ),
             colors = ButtonDefaults.buttonColors(
                 containerColor = containerColor,
@@ -156,7 +163,7 @@ private object QrezzyTopBarButtonDefaults {
     }
 
     object Content {
-        val horizontalPadding = 12.dp
+        val padding = 12.dp
         val iconTextSpacing = 8.dp
     }
 
