@@ -1,8 +1,10 @@
-package software.mazur.qrezzy.feature.scanner
+package software.mazur.qrezzy.feature.scanner.components
 
+import android.graphics.Color
 import android.widget.FrameLayout
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -27,12 +29,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
 import software.mazur.qrezzy.core.designsystem.theme.Surface
+import software.mazur.qrezzy.feature.scanner.analyzer.QrCodeAnalyzer
 
 @Composable
-fun ScannerPreview(isScanning: Boolean, modifier: Modifier = Modifier, isTorchEnabled: Boolean) {
+fun ScannerPreview(
+    isScanning: Boolean,
+    isTorchEnabled: Boolean,
+    onQrCodeScanned: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Card(
         modifier = modifier,
         shape = ShapeDefaults.Medium,
@@ -45,7 +54,11 @@ fun ScannerPreview(isScanning: Boolean, modifier: Modifier = Modifier, isTorchEn
                 contentAlignment = Alignment.Center,
             ) {
                 if (isScanning) {
-                    LiveCameraPreview(modifier = Modifier.matchParentSize(), isTorchEnabled = isTorchEnabled)
+                    LiveCameraPreview(
+                        modifier = Modifier.matchParentSize(),
+                        onQrCodeScanned = onQrCodeScanned,
+                        isTorchEnabled = isTorchEnabled
+                    )
                 }
                 ScannerFocusIndicator(
                     modifier = Modifier.width(maxWidth * ScannerPreviewDefaults.FOCUS_INDICATOR_WIDTH_RATIO),
@@ -56,9 +69,13 @@ fun ScannerPreview(isScanning: Boolean, modifier: Modifier = Modifier, isTorchEn
 }
 
 @Composable
-fun LiveCameraPreview(isTorchEnabled: Boolean, modifier: Modifier = Modifier) {
+fun LiveCameraPreview(
+    isTorchEnabled: Boolean,
+    onQrCodeScanned: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val context = LocalContext.current
-    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
+    val lifecycleOwner = LocalLifecycleOwner.current
     var camera by remember { mutableStateOf<Camera?>(null) }
 
     AndroidView(
@@ -67,12 +84,12 @@ fun LiveCameraPreview(isTorchEnabled: Boolean, modifier: Modifier = Modifier) {
             val container = FrameLayout(previewContext).apply {
                 clipChildren = true
                 clipToPadding = true
-                setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                setBackgroundColor(Color.TRANSPARENT)
             }
             val previewView = PreviewView(previewContext).apply {
                 implementationMode = PreviewView.ImplementationMode.COMPATIBLE
                 scaleType = PreviewView.ScaleType.FILL_CENTER
-                setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                setBackgroundColor(Color.TRANSPARENT)
                 layoutParams = FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
                     FrameLayout.LayoutParams.MATCH_PARENT,
@@ -86,6 +103,15 @@ fun LiveCameraPreview(isTorchEnabled: Boolean, modifier: Modifier = Modifier) {
                     val preview = Preview.Builder()
                         .build()
                         .also { cameraPreview -> cameraPreview.surfaceProvider = previewView.surfaceProvider }
+                    val imageAnalysis = ImageAnalysis.Builder()
+                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                        .build()
+                        .also { analysis ->
+                            analysis.setAnalyzer(
+                                ContextCompat.getMainExecutor(previewContext),
+                                QrCodeAnalyzer(onQrCodeScanned)
+                            )
+                        }
 
                     cameraProvider.unbindAll()
 
@@ -93,6 +119,7 @@ fun LiveCameraPreview(isTorchEnabled: Boolean, modifier: Modifier = Modifier) {
                         lifecycleOwner,
                         CameraSelector.DEFAULT_BACK_CAMERA,
                         preview,
+                        imageAnalysis
                     )
                 },
                 ContextCompat.getMainExecutor(previewContext),

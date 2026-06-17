@@ -1,4 +1,4 @@
-package software.mazur.qrezzy.feature.scanner
+package software.mazur.qrezzy.feature.scanner.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
