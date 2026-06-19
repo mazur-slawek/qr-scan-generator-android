@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import software.mazur.qrezzy.domain.history.usecase.GetQrByIdUseCase
+import software.mazur.qrezzy.domain.qr.usecase.GetQrItemByIdUseCase
 import software.mazur.qrezzy.feature.generator.domain.GenerateQrBitmapUseCase
 import software.mazur.qrezzy.feature.history.HistoryRoute
 import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiEvent
@@ -23,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HistoryDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getQrHistoryByIdUseCase: GetQrByIdUseCase,
+    private val getQrHistoryByIdUseCase: GetQrItemByIdUseCase,
     private val generateQrBitmapUseCase: GenerateQrBitmapUseCase,
 ) : ViewModel() {
     private val historyId: Long = checkNotNull(savedStateHandle[HistoryRoute.Details.HISTORY_ID_ARG])

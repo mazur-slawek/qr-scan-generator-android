@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -35,9 +36,14 @@ import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
+import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 
 @Composable
-fun QrezzyTopBar(title: String, onBackClick: (() -> Unit)? = null, content: @Composable (() -> Unit)? = null) {
+fun QrezzyTopBar(
+    title: String,
+    subtitle: String? = null,
+    onBackClick: (() -> Unit)? = null,
+    content: @Composable (() -> Unit)? = null) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,14 +54,34 @@ fun QrezzyTopBar(title: String, onBackClick: (() -> Unit)? = null, content: @Com
             QrezzyTopBarButton(onClick = onBackClick, icon = Icons.Outlined.ArrowBack)
             Spacer(modifier = Modifier.width(Content.padding))
         }
-        Text(
-            text = title,
-            maxLines = QrezzyTopBarDefaults.TITLE_MAX_LINES,
-            textAlign = TextAlign.Start,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.weight(1f)
-        )
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = title,
+                maxLines = QrezzyTopBarDefaults.TITLE_MAX_LINES,
+                textAlign = TextAlign.Start,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold,
+                color = TextPrimary,
+                modifier = Modifier.fillMaxWidth()
+            )
+            subtitle?.let {
+                Text(
+                    text = subtitle,
+                    maxLines = QrezzyTopBarDefaults.TITLE_MAX_LINES,
+                    textAlign = TextAlign.Start,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Medium,
+                    color = TextSecondary,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+        Spacer(modifier = Modifier.width(Content.padding))
         content?.let {
             Row(
                 modifier = Modifier.height(QrezzyTopBarDefaults.height),

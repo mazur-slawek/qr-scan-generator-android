@@ -1,27 +1,27 @@
 package software.mazur.qrezzy.data.database
 
 import androidx.room.TypeConverter
-import software.mazur.qrezzy.domain.history.model.QrHistorySource
-import software.mazur.qrezzy.domain.history.model.QrHistoryType
+import software.mazur.qrezzy.domain.qr.model.QrSource
+import software.mazur.qrezzy.domain.qr.model.QrType
 
 class QrezzyTypeConverters {
     @TypeConverter
-    fun fromQrHistorySource(value: QrHistorySource): String {
+    fun fromQrHistorySource(value: QrSource): String {
         return value.name
     }
 
     @TypeConverter
-    fun toQrHistorySource(value: String): QrHistorySource {
-        return QrHistorySource.valueOf(value)
+    fun toQrHistorySource(value: String): QrSource {
+        return QrSource.valueOf(value)
     }
 
     @TypeConverter
-    fun fromQrHistoryType(value: QrHistoryType): String {
+    fun fromQrHistoryType(value: QrType): String {
         return value.name
     }
 
     @TypeConverter
-    fun toQrHistoryType(value: String): QrHistoryType {
-        return QrHistoryType.valueOf(value)
+    fun toQrHistoryType(value: String): QrType {
+        return QrType.valueOf(value)
     }
 }

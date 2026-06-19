@@ -3,21 +3,21 @@ package software.mazur.qrezzy.feature.generator.model
 import androidx.compose.runtime.Immutable
 
 @Immutable
-sealed interface QrType {
+sealed interface QrInput {
     data class Text(
         val text: String = "",
-    ) : QrType
+    ) : QrInput
 
     data class Url(
         val url: String = "",
-    ) : QrType
+    ) : QrInput
 
     data class Wifi(
         val ssid: String = "",
         val password: String = "",
         val encryption: WifiEncryption = WifiEncryption.WPA,
         val hidden: Boolean = false,
-    ) : QrType
+    ) : QrInput
 
     data class Contact(
         val firstName: String = "",
@@ -25,17 +25,17 @@ sealed interface QrType {
         val phone: String = "",
         val email: String = "",
         val company: String = "",
-    ) : QrType
+    ) : QrInput
 
     data class Email(
         val email: String = "",
         val subject: String = "",
         val body: String = "",
-    ) : QrType
+    ) : QrInput
 
     data class Phone(
         val phoneNumber: String = "",
-    ) : QrType
+    ) : QrInput
 }
 
 enum class WifiEncryption {
@@ -44,6 +44,25 @@ enum class WifiEncryption {
     NONE,
 }
 
-fun QrType.isSameTypeAs(other: QrType): Boolean {
+fun QrInput.isSameTypeAs(other: QrInput): Boolean {
     return this::class == other::class
+}
+
+enum class QrInputField {
+    Text,
+    Url,
+    Phone,
+
+    EmailAddress,
+    EmailSubject,
+    EmailBody,
+
+    WifiSsid,
+    WifiPassword,
+
+    ContactFirstName,
+    ContactLastName,
+    ContactPhone,
+    ContactEmail,
+    ContactCompany,
 }

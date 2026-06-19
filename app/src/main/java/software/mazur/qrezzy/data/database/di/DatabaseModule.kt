@@ -8,7 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import software.mazur.qrezzy.data.database.QrezzyDatabase
-import software.mazur.qrezzy.data.database.dao.QrHistoryDao
+import software.mazur.qrezzy.data.database.dao.QrDao
 import javax.inject.Singleton
 
 @Module
@@ -27,7 +27,7 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideQrHistoryDao(database: QrezzyDatabase): QrHistoryDao {
+    fun provideQrHistoryDao(database: QrezzyDatabase): QrDao {
         return database.qrHistoryDao()
     }
 }

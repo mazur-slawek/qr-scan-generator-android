@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import software.mazur.qrezzy.domain.history.model.QrHistoryItem
-import software.mazur.qrezzy.domain.history.usecase.DeleteQrUseCase
-import software.mazur.qrezzy.domain.history.usecase.ObserveQrHistoryUseCase
+import software.mazur.qrezzy.domain.qr.model.QrItem
+import software.mazur.qrezzy.domain.qr.usecase.DeleteQrItemsUseCase
+import software.mazur.qrezzy.domain.qr.usecase.ObserveQritemsUseCase
 import software.mazur.qrezzy.feature.history.mapper.toHistorySections
 import software.mazur.qrezzy.feature.history.mapper.toTabItem
 import software.mazur.qrezzy.feature.history.model.HistoryTab
@@ -21,13 +21,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    observeQrHistoryUseCase: ObserveQrHistoryUseCase,
-    private val deleteQrUseCase: DeleteQrUseCase,
+    observeQritemsUseCase: ObserveQritemsUseCase,
+    private val deleteQrItemsUseCase: DeleteQrItemsUseCase,
 ) : ViewModel() {
     private val selectedTab = MutableStateFlow(HistoryTab.ALL)
     private val deleteModeState = MutableStateFlow(DeleteModeState())
     val uiState = combine(
-        observeQrHistoryUseCase(),
+        observeQritemsUseCase(),
         selectedTab,
         deleteModeState,
     ) { historyItems, selectedTab, deleteModeState ->
@@ -85,12 +85,12 @@ class HistoryViewModel @Inject constructor(
         val selectedIds = deleteModeState.value.selectedItemIds
         if (selectedIds.isEmpty()) return
         viewModelScope.launch {
-            deleteQrUseCase(ids = selectedIds.toList())
+            deleteQrItemsUseCase(ids = selectedIds.toList())
             onExitDeleteMode()
         }
     }
 
-    private fun List<QrHistoryItem>.filterByTab(tab: HistoryTab): List<QrHistoryItem> {
+    private fun List<QrItem>.filterByTab(tab: HistoryTab): List<QrItem> {
         return tab.source?.let { source -> filter { item -> item.source == source } } ?: this
     }
 

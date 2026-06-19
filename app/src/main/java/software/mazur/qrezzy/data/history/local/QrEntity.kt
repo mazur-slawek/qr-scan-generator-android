@@ -2,15 +2,15 @@ package software.mazur.qrezzy.data.history.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import software.mazur.qrezzy.domain.history.model.QrHistorySource
-import software.mazur.qrezzy.domain.history.model.QrHistoryType
+import software.mazur.qrezzy.domain.qr.model.QrSource
+import software.mazur.qrezzy.domain.qr.model.QrType
 
-@Entity(tableName = QrHistoryEntity.TABLE_NAME)
-data class QrHistoryEntity(
+@Entity(tableName = QrEntity.TABLE_NAME)
+data class QrEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val source: QrHistorySource,
-    val type: QrHistoryType,
+    val source: QrSource,
+    val type: QrType,
 
     /**
      * Krótki tekst wyświetlany na liście historii.
@@ -34,11 +34,6 @@ data class QrHistoryEntity(
      * Timestamp utworzenia wpisu.
      */
     val createdAt: Long,
-
-    /**
-     * Oznaczenie jako ulubione.
-     */
-    val isFavorite: Boolean = false,
 ) {
     companion object {
         const val TABLE_NAME = "qr_history"

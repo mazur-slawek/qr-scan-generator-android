@@ -31,16 +31,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
+import software.mazur.qrezzy.core.designsystem.extensions.ui
 import software.mazur.qrezzy.core.designsystem.theme.BorderLight
 import software.mazur.qrezzy.core.designsystem.theme.Error
 import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
-import software.mazur.qrezzy.domain.history.model.QrHistorySource
-import software.mazur.qrezzy.feature.generator.model.icon
-import software.mazur.qrezzy.feature.generator.model.iconTintColor
-import software.mazur.qrezzy.feature.generator.model.iconTintColorDark
-import software.mazur.qrezzy.feature.generator.model.label
+import software.mazur.qrezzy.domain.qr.model.QrSource
 import software.mazur.qrezzy.feature.history.model.HistoryItemUi
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -67,7 +64,7 @@ fun HistoryListItem(
         ),
         colors = ButtonDefaults.buttonColors(
             containerColor = Surface,
-            contentColor = item.qrType.iconTintColorDark,
+            contentColor = item.qrType.ui.containerColor,
         ),
         contentPadding = PaddingValues.Zero,
     ) {
@@ -78,13 +75,13 @@ fun HistoryListItem(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                imageVector = item.qrType.icon,
-                contentDescription = item.qrType.label,
+                imageVector = item.qrType.ui.icon,
+                contentDescription = stringResource(item.qrType.ui.labelResId),
                 tint = TextPrimary,
                 modifier = Modifier
                     .border(
                         width = HistoryListItemDefaults.Icon.borderWidth,
-                        color = item.qrType.iconTintColorDark,
+                        color = item.qrType.ui.containerColor,
                         shape = ShapeDefaults.Small,
                     )
                     .shadow(
@@ -92,7 +89,7 @@ fun HistoryListItem(
                         shape = ShapeDefaults.Small,
                     )
                     .background(
-                        color = item.qrType.iconTintColor,
+                        color = item.qrType.ui.contentColor,
                         shape = ShapeDefaults.Small,
                     )
                     .padding(HistoryListItemDefaults.Icon.padding),
@@ -158,18 +155,15 @@ private fun HistoryItemUi.subtitle(): String {
 }
 
 @Composable
-private fun QrHistorySource.toDisplayName(): String {
+private fun QrSource.toDisplayName(): String {
     return when (this) {
-        QrHistorySource.GENERATED -> stringResource(R.string.history_source_generated)
-        QrHistorySource.SCANNED   -> stringResource(R.string.history_source_scanned)
+        QrSource.GENERATED -> stringResource(R.string.history_source_generated)
+        QrSource.SCANNED   -> stringResource(R.string.history_source_scanned)
     }
 }
 
 private fun Long.toHistoryTime(): String {
-    return SimpleDateFormat(
-        HistoryListItemDefaults.Date.TIME_FORMAT,
-        Locale.getDefault(),
-    ).format(Date(this))
+    return SimpleDateFormat(HistoryListItemDefaults.Date.TIME_FORMAT, Locale.getDefault()).format(Date(this))
 }
 
 private object HistoryListItemDefaults {

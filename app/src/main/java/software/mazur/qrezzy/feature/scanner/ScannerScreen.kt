@@ -1,10 +1,12 @@
 package software.mazur.qrezzy.feature.scanner
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
@@ -17,16 +19,15 @@ import androidx.compose.material.icons.outlined.FlashOn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -39,135 +40,170 @@ import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellow
-
-
-private enum class ScannerScreenState {
-    Idle,
-    Scanning,
-    PermissionDenied,
-}
+import software.mazur.qrezzy.feature.scanner.components.ScannedQrDialog
+import software.mazur.qrezzy.feature.scanner.components.ScannerPopup
+import software.mazur.qrezzy.feature.scanner.components.ScannerPreview
+import software.mazur.qrezzy.feature.scanner.model.ScannerUiEvent
+import software.mazur.qrezzy.feature.scanner.model.ScannerUiState.Mode
 
 @Composable
-fun ScannerScreen() {
+fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     val context = LocalContext.current
-    val cameraPermission = Manifest.permission.CAMERA
-    var scannerState by remember {
-        mutableStateOf(ScannerScreenState.Idle)
-    }
-    var isTorchEnabled by remember {
-        mutableStateOf(false)
-    }
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val uiState by viewModel.uiState.collectAsState()
+    val qrSavedMessage = stringResource(R.string.scanner_qr_saved)
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()) { isGranted ->
-        scannerState = if (isGranted) ScannerScreenState.Scanning else ScannerScreenState.PermissionDenied
+        contract = ActivityResultContracts.RequestPermission(),
+    ) { isGranted ->
+        if (isGranted) viewModel.onStartScanning() else viewModel.onPermissionDenied()
     }
+
     LaunchedEffect(Unit) {
         if (!context.hasCameraPermission()) {
-            cameraPermissionLauncher.launch(cameraPermission)
+            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
     }
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner, scannerState) {
+
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                ScannerUiEvent.QrSaved      ->
+                    Toast.makeText(context, qrSavedMessage, Toast.LENGTH_SHORT).show()
+
+                is ScannerUiEvent.ShowError ->
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    DisposableEffect(lifecycleOwner, uiState.mode) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
                 Lifecycle.Event.ON_RESUME -> {
-                    if (
-                        scannerState == ScannerScreenState.PermissionDenied &&
-                        context.hasCameraPermission()
-                    ) {
-                        scannerState = ScannerScreenState.Idle
+                    if (uiState.mode == Mode.PermissionDenied && context.hasCameraPermission()) {
+                        viewModel.onPermissionRestored()
                     }
                 }
 
                 Lifecycle.Event.ON_PAUSE  -> {
-                    if (scannerState == ScannerScreenState.Scanning) {
-                        scannerState = ScannerScreenState.Idle
-                        isTorchEnabled = false
+                    if (uiState.mode == Mode.Scanning) {
+                        viewModel.onStopScanning()
                     }
                 }
 
                 else                      -> Unit
             }
         }
+
         lifecycleOwner.lifecycle.addObserver(observer)
+
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+
+    if (uiState.isDialogVisible) {
+        ScannedQrDialog(
+            type = uiState.scannedType,
+            title = uiState.scannedTitle.orEmpty(),
+            content = uiState.scannedContent.orEmpty(),
+            onSaveClick = viewModel::onSaveScannedQrClick,
+            onCancelClick = viewModel::onCancelScannedQrClick,
+        )
+    }
+
+    Column(modifier = Modifier.padding(horizontal = ScannerScreenDefaults.horizontalPadding)) {
         QrezzyTopBar(title = stringResource(R.string.navigation_title_scan)) {
             QrezzyTopBarButton(
-                onClick = { isTorchEnabled = !isTorchEnabled },
-                enabled = scannerState == ScannerScreenState.Scanning,
-                icon = if (isTorchEnabled) Icons.Outlined.FlashOn else Icons.Outlined.FlashOff,
-                iconTint = if (isTorchEnabled) QrezzyPurpleDark else Color.Gray
+                onClick = viewModel::onTorchClick,
+                enabled = uiState.isScanning,
+                icon = if (uiState.isTorchEnabled) Icons.Outlined.FlashOn else Icons.Outlined.FlashOff,
+                iconTint = if (uiState.isTorchEnabled) QrezzyPurpleDark else Color.Gray
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
+
+        Spacer(modifier = Modifier.height(ScannerScreenDefaults.topBarPreviewSpacing))
+
         ScannerPreview(
-            modifier = Modifier.weight(1f),
-            isTorchEnabled = isTorchEnabled,
-            isScanning = scannerState == ScannerScreenState.Scanning,
+            modifier = Modifier.weight(ScannerScreenDefaults.PREVIEW_WEIGHT),
+            isTorchEnabled = uiState.isTorchEnabled,
+            isScanning = uiState.isScanning,
+            onQrCodeScanned = viewModel::onQrCodeScanned,
         )
-        Spacer(modifier = Modifier.height(20.dp))
+
+        Spacer(modifier = Modifier.height(ScannerScreenDefaults.previewButtonSpacing))
+
         QrezzyButton(
             onClick = {
-                when (scannerState) {
-                    ScannerScreenState.Idle             -> {
+                when (uiState.mode) {
+                    Mode.Idle             -> {
                         if (context.hasCameraPermission()) {
-                            scannerState = ScannerScreenState.Scanning
+                            viewModel.onStartScanning()
                         } else {
-                            cameraPermissionLauncher.launch(cameraPermission)
+                            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
                         }
                     }
 
-                    ScannerScreenState.PermissionDenied -> {
+                    Mode.PermissionDenied -> {
                         context.openAppSettings()
                     }
 
-                    ScannerScreenState.Scanning         -> {
-                        scannerState = ScannerScreenState.Idle
-                        isTorchEnabled = false
+                    Mode.Scanning         -> {
+                        viewModel.onStopScanning()
                     }
                 }
             },
-            text = stringResource(scannerState.getActionText()),
+            text = stringResource(uiState.mode.getActionText()),
             elevation = 0.dp,
-            containerColor = when (scannerState) {
-                ScannerScreenState.Idle             -> QrezzyMint
-                ScannerScreenState.PermissionDenied -> QrezzyYellow
-                ScannerScreenState.Scanning         -> QrezzyPink
-            },
-            depthColor = when (scannerState) {
-                ScannerScreenState.Idle             -> QrezzyPurple
-                ScannerScreenState.PermissionDenied -> QrezzyMint
-                ScannerScreenState.Scanning         -> QrezzyYellow
-            }
+            containerColor = uiState.mode.actionContainerColor,
+            depthColor = uiState.mode.actionDepthColor,
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        ScannerPopup(isPermissionDenied = scannerState == ScannerScreenState.PermissionDenied)
-        Spacer(modifier = Modifier.height(16.dp))
+
+        Spacer(modifier = Modifier.height(ScannerScreenDefaults.buttonPopupSpacing))
+
+        ScannerPopup(isPermissionDenied = uiState.mode == Mode.PermissionDenied)
+
+        Spacer(modifier = Modifier.height(ScannerScreenDefaults.bottomSpacing))
     }
 }
 
-private fun ScannerScreenState.getActionText(): Int {
+private fun Mode.getActionText(): Int {
     return when (this) {
-        ScannerScreenState.Idle             -> R.string.scanner_action_scan
-        ScannerScreenState.Scanning         -> R.string.scanner_action_stop
-        ScannerScreenState.PermissionDenied -> R.string.scanner_action_open_settings
+        Mode.Idle             -> R.string.scanner_action_scan
+        Mode.Scanning         -> R.string.scanner_action_stop
+        Mode.PermissionDenied -> R.string.scanner_action_open_settings
     }
 }
 
-private fun android.content.Context.hasCameraPermission(): Boolean {
-    return ContextCompat.checkSelfPermission(
-        this, Manifest.permission.CAMERA
-    ) == PackageManager.PERMISSION_GRANTED
+private val Mode.actionContainerColor
+    get() = when (this) {
+        Mode.Idle             -> QrezzyMint
+        Mode.PermissionDenied -> QrezzyYellow
+        Mode.Scanning         -> QrezzyPink
+    }
+private val Mode.actionDepthColor
+    get() = when (this) {
+        Mode.Idle             -> QrezzyPurple
+        Mode.PermissionDenied -> QrezzyMint
+        Mode.Scanning         -> QrezzyYellow
+    }
+
+private fun Context.hasCameraPermission(): Boolean {
+    val permission = Manifest.permission.CAMERA
+    return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 }
 
-private fun android.content.Context.openAppSettings() {
-    val intent = Intent(
-        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-        Uri.fromParts("package", packageName, null),
-    )
+private fun Context.openAppSettings() {
+    val action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+    val intent = Intent(action, Uri.fromParts("package", packageName, null))
     startActivity(intent)
+}
+
+private object ScannerScreenDefaults {
+    val horizontalPadding = 16.dp
+    val topBarPreviewSpacing = 16.dp
+    val previewButtonSpacing = 20.dp
+    val buttonPopupSpacing = 16.dp
+    val bottomSpacing = 16.dp
+    const val PREVIEW_WEIGHT = 1f
 }
