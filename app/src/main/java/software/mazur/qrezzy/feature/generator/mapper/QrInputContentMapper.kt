@@ -1,28 +1,28 @@
 package software.mazur.qrezzy.feature.generator.mapper
 
-import software.mazur.qrezzy.feature.generator.model.QrType
+import software.mazur.qrezzy.feature.generator.model.QrInput
 import software.mazur.qrezzy.feature.generator.model.WifiEncryption
 
-object QrTypeMapper {
-    fun mapToQrContent(type: QrType): String {
+object QrInputContentMapper {
+    fun mapToQrContent(type: QrInput): String {
         return when (type) {
-            is QrType.Text    -> type.text.trim()
-            is QrType.Url     -> type.url.trim()
-            is QrType.Phone   -> mapPhoneToQrContent(type)
-            is QrType.Email   -> mapEmailToQrContent(type)
-            is QrType.Wifi    -> mapWifiToQrContent(type)
-            is QrType.Contact -> mapContactToQrContent(type)
+            is QrInput.Text    -> type.text.trim()
+            is QrInput.Url     -> type.url.trim()
+            is QrInput.Phone   -> mapPhoneToQrContent(type)
+            is QrInput.Email   -> mapEmailToQrContent(type)
+            is QrInput.Wifi    -> mapWifiToQrContent(type)
+            is QrInput.Contact -> mapContactToQrContent(type)
         }
     }
 
-    private fun mapPhoneToQrContent(type: QrType.Phone): String {
+    private fun mapPhoneToQrContent(type: QrInput.Phone): String {
         val phone = type.phoneNumber.trim()
         if (phone.isBlank()) return ""
 
         return "tel:$phone"
     }
 
-    private fun mapEmailToQrContent(type: QrType.Email): String {
+    private fun mapEmailToQrContent(type: QrInput.Email): String {
         val email = type.email.trim()
         if (email.isBlank()) return ""
 
@@ -34,7 +34,7 @@ object QrTypeMapper {
         }
     }
 
-    private fun mapWifiToQrContent(type: QrType.Wifi): String {
+    private fun mapWifiToQrContent(type: QrInput.Wifi): String {
         val ssid = type.ssid.trim()
         val password = type.password.trim()
 
@@ -53,7 +53,7 @@ object QrTypeMapper {
         }
     }
 
-    private fun mapContactToQrContent(type: QrType.Contact): String {
+    private fun mapContactToQrContent(type: QrInput.Contact): String {
         val firstName = type.firstName.trim()
         val lastName = type.lastName.trim()
         val phone = type.phone.trim()

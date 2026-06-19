@@ -20,6 +20,13 @@
     <string name="onboarding_summary_description">Scan, create and share QR codes with one simple app.</string>
 
 
+    <string name="qr_type_text">Text</string>
+    <string name="qr_type_url">URL</string>
+    <string name="qr_type_wifi">Wi-Fi</string>
+    <string name="qr_type_contact">Contact</string>
+    <string name="qr_type_email">Email</string>
+    <string name="qr_type_phone">Phone</string>
+
     <string name="navigation_tab_scan">Scan</string>
     <string name="navigation_tab_generate">Generate</string>
     <string name="navigation_tab_history">History</string>

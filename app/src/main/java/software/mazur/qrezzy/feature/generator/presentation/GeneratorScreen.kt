@@ -95,8 +95,9 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
                 )
 
                 QrTypeTabs(
-                    selectedType = uiState.selectedType,
-                    onTypeSelected = viewModel::onTypeSelected,
+                    qrInputs = uiState.qrInputs,
+                    selectedQrInput = uiState.selectedQrInput,
+                    onQrInputSelected = viewModel::onQrInputSelected,
                 )
             }
 
@@ -109,7 +110,7 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
                 )
 
                 QrTypeForm(
-                    selectedType = uiState.selectedType,
+                    qrInput = uiState.selectedQrInput,
                     fieldErrors = uiState.fieldErrors,
                     onChange = viewModel::onFormEvent,
                 )

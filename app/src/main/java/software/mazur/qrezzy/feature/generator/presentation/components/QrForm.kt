@@ -7,105 +7,105 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTextInput
-import software.mazur.qrezzy.feature.generator.model.QrType
+import software.mazur.qrezzy.feature.generator.mapper.keyboardOptions
+import software.mazur.qrezzy.feature.generator.mapper.label
+import software.mazur.qrezzy.feature.generator.mapper.maxLength
+import software.mazur.qrezzy.feature.generator.model.QrInput
+import software.mazur.qrezzy.feature.generator.model.QrInputField
 import software.mazur.qrezzy.feature.generator.presentation.model.QrFieldError
-import software.mazur.qrezzy.feature.generator.presentation.model.QrTypeField
-import software.mazur.qrezzy.feature.generator.presentation.model.keyboardOptions
-import software.mazur.qrezzy.feature.generator.presentation.model.label
-import software.mazur.qrezzy.feature.generator.presentation.model.maxLength
 
 @Composable
 fun QrTypeForm(
-    selectedType: QrType,
-    fieldErrors: Map<QrTypeField, QrFieldError>,
-    onChange: (field: QrTypeField, value: String) -> Unit,
+    qrInput: QrInput,
+    fieldErrors: Map<QrInputField, QrFieldError>,
+    onChange: (field: QrInputField, value: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    when (selectedType) {
-        is QrType.Text    -> {
+    when (qrInput) {
+        is QrInput.Text    -> {
             QrTextField(
-                field = QrTypeField.Text,
-                value = selectedType.text,
+                field = QrInputField.Text,
+                value = qrInput.text,
                 fieldErrors = fieldErrors,
                 onChange = onChange)
         }
 
-        is QrType.Url     -> {
+        is QrInput.Url     -> {
             QrTextField(
-                field = QrTypeField.Url,
-                value = selectedType.url,
+                field = QrInputField.Url,
+                value = qrInput.url,
                 fieldErrors = fieldErrors,
                 onChange = onChange)
         }
 
-        is QrType.Phone   -> {
+        is QrInput.Phone   -> {
             QrTextField(
-                field = QrTypeField.Phone,
-                value = selectedType.phoneNumber,
+                field = QrInputField.Phone,
+                value = qrInput.phoneNumber,
                 fieldErrors = fieldErrors,
                 onChange = onChange)
         }
 
-        is QrType.Email   -> {
+        is QrInput.Email   -> {
             FormColumn(modifier = modifier) {
                 QrTextField(
-                    field = QrTypeField.EmailAddress,
-                    value = selectedType.email,
+                    field = QrInputField.EmailAddress,
+                    value = qrInput.email,
                     fieldErrors = fieldErrors,
                     onChange = onChange)
                 QrTextField(
-                    field = QrTypeField.EmailSubject,
-                    value = selectedType.subject,
+                    field = QrInputField.EmailSubject,
+                    value = qrInput.subject,
                     fieldErrors = fieldErrors,
                     onChange = onChange)
                 QrTextField(
-                    field = QrTypeField.EmailBody,
-                    value = selectedType.body,
+                    field = QrInputField.EmailBody,
+                    value = qrInput.body,
                     fieldErrors = fieldErrors,
                     onChange = onChange)
             }
         }
 
-        is QrType.Wifi    -> {
+        is QrInput.Wifi    -> {
             FormColumn(modifier = modifier) {
                 QrTextField(
-                    field = QrTypeField.WifiSsid,
-                    value = selectedType.ssid,
+                    field = QrInputField.WifiSsid,
+                    value = qrInput.ssid,
                     fieldErrors = fieldErrors,
                     onChange = onChange)
                 QrTextField(
-                    field = QrTypeField.WifiPassword,
-                    value = selectedType.password,
+                    field = QrInputField.WifiPassword,
+                    value = qrInput.password,
                     fieldErrors = fieldErrors,
                     onChange = onChange)
             }
         }
 
-        is QrType.Contact -> {
+        is QrInput.Contact -> {
             FormColumn(modifier = modifier) {
                 QrTextField(
-                    field = QrTypeField.ContactFirstName,
-                    value = selectedType.firstName,
+                    field = QrInputField.ContactFirstName,
+                    value = qrInput.firstName,
                     fieldErrors = fieldErrors,
                     onChange = onChange)
                 QrTextField(
-                    field = QrTypeField.ContactLastName,
-                    value = selectedType.lastName,
+                    field = QrInputField.ContactLastName,
+                    value = qrInput.lastName,
                     fieldErrors = fieldErrors,
                     onChange = onChange)
                 QrTextField(
-                    field = QrTypeField.ContactPhone,
-                    value = selectedType.phone,
+                    field = QrInputField.ContactPhone,
+                    value = qrInput.phone,
                     fieldErrors = fieldErrors,
                     onChange = onChange)
                 QrTextField(
-                    field = QrTypeField.ContactEmail,
-                    value = selectedType.email,
+                    field = QrInputField.ContactEmail,
+                    value = qrInput.email,
                     fieldErrors = fieldErrors,
                     onChange = onChange)
                 QrTextField(
-                    field = QrTypeField.ContactCompany,
-                    value = selectedType.company,
+                    field = QrInputField.ContactCompany,
+                    value = qrInput.company,
                     fieldErrors = fieldErrors,
                     onChange = onChange
                 )
@@ -115,10 +115,7 @@ fun QrTypeForm(
 }
 
 @Composable
-private fun FormColumn(
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
-) {
+private fun FormColumn(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -130,9 +127,9 @@ private fun FormColumn(
 @Composable
 private fun QrTextField(
     value: String,
-    field: QrTypeField,
-    fieldErrors: Map<QrTypeField, QrFieldError>,
-    onChange: (field: QrTypeField, value: String) -> Unit,
+    field: QrInputField,
+    fieldErrors: Map<QrInputField, QrFieldError>,
+    onChange: (field: QrInputField, value: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val error = fieldErrors[field]
@@ -141,8 +138,8 @@ private fun QrTextField(
         value = value,
         placeholder = field.label,
         modifier = modifier.fillMaxWidth(),
-        onValueChange = {newValue -> onChange(field, newValue)},
-        singleLine = field !== QrTypeField.Text && field !== QrTypeField.EmailBody,
+        onValueChange = { newValue -> onChange(field, newValue) },
+        singleLine = field !== QrInputField.Text && field !== QrInputField.EmailBody,
         maxLength = field.maxLength,
         keyboardOptions = field.keyboardOptions,
         isError = error != null,

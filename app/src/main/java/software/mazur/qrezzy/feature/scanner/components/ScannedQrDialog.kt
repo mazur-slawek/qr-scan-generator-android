@@ -9,11 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
-import software.mazur.qrezzy.domain.history.model.QrHistoryType
+import software.mazur.qrezzy.domain.qr.model.QrType
 
 @Composable
 fun ScannedQrDialog(
-    type: QrHistoryType?,
+    type: QrType?,
     title: String,
     content: String,
     onSaveClick: () -> Unit,

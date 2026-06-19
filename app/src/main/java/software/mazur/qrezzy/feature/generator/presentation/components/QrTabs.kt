@@ -25,29 +25,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import software.mazur.qrezzy.core.designsystem.extensions.ui
 import software.mazur.qrezzy.core.designsystem.theme.BorderSecondary
 import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
-import software.mazur.qrezzy.feature.generator.model.QrType
-import software.mazur.qrezzy.feature.generator.model.icon
-import software.mazur.qrezzy.feature.generator.model.iconTintColor
-import software.mazur.qrezzy.feature.generator.model.iconTintColorDark
+import software.mazur.qrezzy.domain.qr.model.QrType
+import software.mazur.qrezzy.feature.generator.mapper.toQrType
+import software.mazur.qrezzy.feature.generator.model.QrInput
 import software.mazur.qrezzy.feature.generator.model.isSameTypeAs
-import software.mazur.qrezzy.feature.generator.model.label
 
 @Composable
 fun QrTypeTabs(
-    selectedType: QrType,
-    onTypeSelected: (QrType) -> Unit,
-    modifier: Modifier = Modifier,
+    qrInputs: List<QrInput>,
+    selectedQrInput: QrInput,
+    onQrInputSelected: (QrInput) -> Unit
 ) {
     BoxWithConstraints(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .border(
                 color = BorderSecondary,
@@ -60,8 +60,7 @@ fun QrTypeTabs(
             )
             .padding(QrTypeTabsDefaults.Container.innerPadding),
     ) {
-        val tabs = QrTypeTabsDefaults.tabs
-        val tabSize = maxWidth / tabs.size
+        val inputSize = maxWidth / qrInputs.size
 
         Row(
             modifier = Modifier
@@ -69,12 +68,12 @@ fun QrTypeTabs(
                 .wrapContentHeight(),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            tabs.forEach { type ->
+            qrInputs.forEach { input ->
                 QrTypeTabButton(
-                    type = type,
-                    isSelected = selectedType.isSameTypeAs(type),
-                    size = tabSize,
-                    onClick = { onTypeSelected(type) },
+                    type = input.toQrType(),
+                    isSelected = selectedQrInput.isSameTypeAs(input),
+                    size = inputSize,
+                    onClick = { onQrInputSelected(input) },
                 )
             }
         }
@@ -96,14 +95,13 @@ private fun QrTypeTabButton(
             .padding(QrTypeTabsDefaults.Tab.outerPadding)
             .border(
                 width = if (isSelected) QrTypeTabsDefaults.Tab.selectedBorderWidth else 0.dp,
-                color = if (isSelected) type.iconTintColorDark else Color.Transparent,
+                color = if (isSelected) type.ui.containerColor else Color.Transparent,
                 shape = ShapeDefaults.Medium.copy(CornerSize(10.dp)),
             ),
         contentPadding = PaddingValues.Zero,
         shape = ShapeDefaults.Medium.copy(CornerSize(10.dp)),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (isSelected) type.iconTintColor else Color.Transparent,
-            contentColor = type.iconTintColorDark
+            containerColor = if (isSelected) type.ui.contentColor else Color.Transparent
         ),
     ) {
         Column(
@@ -112,13 +110,13 @@ private fun QrTypeTabButton(
             verticalArrangement = Arrangement.Center,
         ) {
             Icon(
-                imageVector = type.icon,
+                imageVector = type.ui.icon,
                 contentDescription = null,
                 tint = if (isSelected) TextPrimary else TextSecondary,
             )
             Spacer(modifier = Modifier.height(QrTypeTabsDefaults.Tab.iconTextSpacing))
             Text(
-                text = type.label,
+                text = stringResource(type.ui.labelResId),
                 maxLines = QrTypeTabsDefaults.Tab.LABEL_MAX_LINES,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
@@ -131,15 +129,6 @@ private fun QrTypeTabButton(
 }
 
 private object QrTypeTabsDefaults {
-    val tabs = listOf(
-        QrType.Text(),
-        QrType.Url(),
-        QrType.Wifi(),
-        QrType.Contact(),
-        QrType.Email(),
-        QrType.Phone(),
-    )
-
     object Container {
         val innerPadding = 1.5.dp
         val borderWidth = 1.5.dp

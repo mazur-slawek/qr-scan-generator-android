@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import software.mazur.qrezzy.domain.history.usecase.SaveScannedQrUseCase
+import software.mazur.qrezzy.domain.qr.usecase.SaveScannedQrItemUseCase
 import software.mazur.qrezzy.feature.scanner.model.ScannerUiEvent
 import software.mazur.qrezzy.feature.scanner.model.ScannerUiState
 import software.mazur.qrezzy.feature.scanner.model.ScannerUiState.Mode
@@ -17,7 +17,8 @@ import software.mazur.qrezzy.feature.scanner.parser.QrContentParser
 import javax.inject.Inject
 
 @HiltViewModel
-class ScannerViewModel @Inject constructor(private val saveScannedQrUseCase: SaveScannedQrUseCase) : ViewModel() {
+class ScannerViewModel @Inject constructor(
+    private val saveScannedQrItemUseCase: SaveScannedQrItemUseCase) : ViewModel() {
     private val _uiState = MutableStateFlow(ScannerUiState())
     val uiState = _uiState.asStateFlow()
     private val _events = MutableSharedFlow<ScannerUiEvent>()
@@ -36,35 +37,21 @@ class ScannerViewModel @Inject constructor(private val saveScannedQrUseCase: Sav
     }
 
     fun onStopScanning() {
-        _uiState.update { state ->
-            state.copy(
-                mode = Mode.Idle,
-                isTorchEnabled = false,
-            )
-        }
+        _uiState.update { state -> state.copy(mode = Mode.Idle, isTorchEnabled = false) }
     }
 
     fun onPermissionDenied() {
-        _uiState.update { state ->
-            state.copy(
-                mode = Mode.PermissionDenied,
-                isTorchEnabled = false,
-            )
-        }
+        _uiState.update { state -> state.copy(mode = Mode.PermissionDenied, isTorchEnabled = false) }
     }
 
     fun onPermissionRestored() {
-        _uiState.update { state ->
-            state.copy(mode = Mode.Idle)
-        }
+        _uiState.update { state -> state.copy(mode = Mode.Idle) }
     }
 
     fun onTorchClick() {
         if (!_uiState.value.isScanning) return
 
-        _uiState.update { state ->
-            state.copy(isTorchEnabled = !state.isTorchEnabled)
-        }
+        _uiState.update { state -> state.copy(isTorchEnabled = !state.isTorchEnabled) }
     }
 
     fun onQrCodeScanned(content: String) {
@@ -94,7 +81,7 @@ class ScannerViewModel @Inject constructor(private val saveScannedQrUseCase: Sav
 
         viewModelScope.launch {
             try {
-                saveScannedQrUseCase(type = type, title = title, content = content, payloadJson = null)
+                saveScannedQrItemUseCase(type = type, title = title, content = content, payloadJson = null)
                 clearScannedQr()
                 _events.emit(ScannerUiEvent.QrSaved)
             } catch (exception: Exception) {

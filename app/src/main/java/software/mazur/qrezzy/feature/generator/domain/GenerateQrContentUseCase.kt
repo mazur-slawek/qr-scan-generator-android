@@ -1,11 +1,11 @@
 package software.mazur.qrezzy.feature.generator.domain
 
-import software.mazur.qrezzy.feature.generator.mapper.QrTypeMapper
-import software.mazur.qrezzy.feature.generator.model.QrType
+import software.mazur.qrezzy.feature.generator.mapper.QrInputContentMapper
+import software.mazur.qrezzy.feature.generator.model.QrInput
 import javax.inject.Inject
 
 class GenerateQrContentUseCase @Inject constructor() {
-    operator fun invoke(qrType: QrType): String {
-        return QrTypeMapper.mapToQrContent(qrType)
+    operator fun invoke(qrInput: QrInput): String {
+        return QrInputContentMapper.mapToQrContent(qrInput)
     }
 }

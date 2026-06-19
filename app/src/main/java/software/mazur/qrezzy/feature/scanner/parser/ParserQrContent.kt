@@ -1,8 +1,8 @@
 package software.mazur.qrezzy.feature.scanner.parser
 
-import software.mazur.qrezzy.domain.history.model.QrHistoryType
+import software.mazur.qrezzy.domain.qr.model.QrType
 
 data class ParserQrContent(
-    val type: QrHistoryType,
+    val type: QrType,
     val title: String,
 )
