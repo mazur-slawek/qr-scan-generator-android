@@ -68,7 +68,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                ScannerUiEvent.QrSaved ->
+                ScannerUiEvent.QrSaved      ->
                     Toast.makeText(context, qrSavedMessage, Toast.LENGTH_SHORT).show()
 
                 is ScannerUiEvent.ShowError ->
@@ -87,13 +87,13 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
                         }
                     }
 
-                    Lifecycle.Event.ON_PAUSE -> {
+                    Lifecycle.Event.ON_PAUSE  -> {
                         if (uiState.mode == Mode.Scanning) {
                             viewModel.onStopScanning()
                         }
                     }
 
-                    else -> Unit
+                    else                      -> Unit
                 }
             }
 
@@ -111,7 +111,10 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
         )
     }
     Column(modifier = Modifier.padding(horizontal = ScannerScreenDefaults.horizontalPadding)) {
-        QrezzyTopBar(title = stringResource(R.string.navigation_title_scan)) {
+        QrezzyTopBar(
+            titleResId = R.string.navigation_title_scan,
+            subtitleResId = R.string.navigation_subtitle_scan
+        ) {
             QrezzyTopBarButton(
                 onClick = viewModel::onTorchClick,
                 enabled = uiState.isScanning,
@@ -134,7 +137,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
         QrezzyButton(
             onClick = {
                 when (uiState.mode) {
-                    Mode.Idle -> {
+                    Mode.Idle             -> {
                         if (context.hasCameraPermission()) {
                             viewModel.onStartScanning()
                         } else {
@@ -146,7 +149,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
                         context.openAppSettings()
                     }
 
-                    Mode.Scanning -> {
+                    Mode.Scanning         -> {
                         viewModel.onStopScanning()
                     }
                 }
@@ -167,24 +170,24 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
 
 private fun Mode.getActionText(): Int =
     when (this) {
-        Mode.Idle -> R.string.scanner_action_scan
-        Mode.Scanning -> R.string.scanner_action_stop
+        Mode.Idle             -> R.string.scanner_action_scan
+        Mode.Scanning         -> R.string.scanner_action_stop
         Mode.PermissionDenied -> R.string.scanner_action_open_settings
     }
 
 private val Mode.actionContainerColor
     get() =
         when (this) {
-            Mode.Idle -> QrezzyMint
+            Mode.Idle             -> QrezzyMint
             Mode.PermissionDenied -> QrezzyYellow
-            Mode.Scanning -> QrezzyPink
+            Mode.Scanning         -> QrezzyPink
         }
 private val Mode.actionDepthColor
     get() =
         when (this) {
-            Mode.Idle -> QrezzyPurple
+            Mode.Idle             -> QrezzyPurple
             Mode.PermissionDenied -> QrezzyMint
-            Mode.Scanning -> QrezzyYellow
+            Mode.Scanning         -> QrezzyYellow
         }
 
 private fun Context.hasCameraPermission(): Boolean {

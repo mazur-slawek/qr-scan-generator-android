@@ -1,5 +1,6 @@
 package software.mazur.qrezzy.core.designsystem.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
@@ -28,9 +30,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButtonDefaults.Content
 import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
@@ -40,8 +46,8 @@ import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 
 @Composable
 fun QrezzyTopBar(
-    title: String,
-    subtitle: String? = null,
+    @StringRes titleResId: Int,
+    @StringRes subtitleResId: Int? = null,
     onBackClick: (() -> Unit)? = null,
     content: @Composable (() -> Unit)? = null,
 ) {
@@ -62,7 +68,7 @@ fun QrezzyTopBar(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = title,
+                text = stringResource(titleResId),
                 maxLines = QrezzyTopBarDefaults.TITLE_MAX_LINES,
                 textAlign = TextAlign.Start,
                 style = MaterialTheme.typography.titleLarge,
@@ -70,16 +76,25 @@ fun QrezzyTopBar(
                 color = TextPrimary,
                 modifier = Modifier.fillMaxWidth(),
             )
-            subtitle?.let {
-                Text(
-                    text = subtitle,
-                    maxLines = QrezzyTopBarDefaults.TITLE_MAX_LINES,
-                    textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Medium,
-                    color = TextSecondary,
-                    modifier = Modifier.fillMaxWidth(),
-                )
+            subtitleResId?.let {
+                Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = stringResource(subtitleResId),
+                        maxLines = QrezzyTopBarDefaults.TITLE_MAX_LINES,
+                        textAlign = TextAlign.Start,
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Medium,
+                        color = TextSecondary,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Icon(
+                        painter = painterResource(R.drawable.qrezzy_sparkles),
+                        contentDescription = null,
+                        tint = Color.Unspecified,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
             }
         }
         Spacer(modifier = Modifier.width(Content.padding))
@@ -96,7 +111,7 @@ fun QrezzyTopBar(
 
 private object QrezzyTopBarDefaults {
     val height = 60.dp
-    const val TITLE_MAX_LINES = 2
+    const val TITLE_MAX_LINES = 1
 }
 
 @Composable

@@ -58,7 +58,10 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
     }
 
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        QrezzyTopBar(title = stringResource(R.string.navigation_title_generate)) {
+        QrezzyTopBar(
+            titleResId = R.string.navigation_title_generate,
+            subtitleResId = R.string.navigation_subtitle_generate
+        ) {
             QrezzyTopBarButton(
                 onClick = {},
                 enabled = uiState.canSave,
