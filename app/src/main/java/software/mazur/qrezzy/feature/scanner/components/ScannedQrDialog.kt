@@ -52,8 +52,8 @@ fun ScannedQrDialog(qr: Qr, onSaveClick: () -> Unit, onCancelClick: () -> Unit) 
                 .padding(ScannedQrDialogDefaults.contentPadding),
         ) {
             QrezzyTopBar(
-                title = stringResource(R.string.scanner_dialog_title),
-                subtitle = stringResource(R.string.scanner_dialog_subtitle)
+                titleResId = R.string.scanner_dialog_title,
+                subtitleResId = R.string.scanner_dialog_subtitle
             ) {
                 QrezzyTopBarButton(onClick = onCancelClick, icon = Icons.Outlined.Close, iconTint = QrezzyPurpleDark)
             }

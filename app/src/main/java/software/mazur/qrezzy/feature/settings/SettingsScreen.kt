@@ -8,7 +8,6 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
@@ -18,7 +17,10 @@ import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 @Composable
 fun SettingsScreen() {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        QrezzyTopBar(title = stringResource(R.string.navigation_title_settings)) {
+        QrezzyTopBar(
+            titleResId = R.string.navigation_title_settings,
+            subtitleResId = R.string.navigation_subtitle_settings
+        ) {
             QrezzyTopBarButton(
                 onClick = {},
                 enabled = false,

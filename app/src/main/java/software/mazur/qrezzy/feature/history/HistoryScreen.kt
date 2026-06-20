@@ -49,30 +49,34 @@ fun HistoryScreen(
     val selectedTab by viewModel.selectedTabItem.collectAsState()
 
     Column(modifier = Modifier.padding(horizontal = HistoryScreenDefaults.screenPadding)) {
-        QrezzyTopBar(title = stringResource(R.string.navigation_title_history)) {
+        QrezzyTopBar(
+            titleResId = R.string.navigation_title_history,
+            subtitleResId = R.string.navigation_subtitle_history
+        ) {
             AnimatedContent(
                 targetState = uiState.isDeleteModeEnabled,
                 transitionSpec = {
                     (
-                        fadeIn(
-                            animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.FADE_IN_DURATION_MILLIS),
-                        ) +
-                            scaleIn(
-                                initialScale = HistoryScreenDefaults.TopBarAnimation.INITIAL_SCALE,
-                                animationSpec =
-                                    tween(
-                                        HistoryScreenDefaults.TopBarAnimation.SCALE_IN_DURATION_MILLIS,
+                            fadeIn(
+                                animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.FADE_IN_DURATION_MILLIS),
+                            ) +
+                                    scaleIn(
+                                        initialScale = HistoryScreenDefaults.TopBarAnimation.INITIAL_SCALE,
+                                        animationSpec =
+                                            tween(
+                                                HistoryScreenDefaults.TopBarAnimation.SCALE_IN_DURATION_MILLIS,
+                                            ),
+                                    )
+                            ).togetherWith(
+                            fadeOut(
+                                animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.FADE_OUT_DURATION_MILLIS),
+                            ) +
+                                    scaleOut(
+                                        targetScale = HistoryScreenDefaults.TopBarAnimation.TARGET_SCALE,
+                                        animationSpec = tween(
+                                            HistoryScreenDefaults.TopBarAnimation.SCALE_OUT_DURATION_MILLIS),
                                     ),
-                            )
-                    ).togetherWith(
-                        fadeOut(
-                            animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.FADE_OUT_DURATION_MILLIS),
-                        ) +
-                            scaleOut(
-                                targetScale = HistoryScreenDefaults.TopBarAnimation.TARGET_SCALE,
-                                animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.SCALE_OUT_DURATION_MILLIS),
-                            ),
-                    ).using(SizeTransform(clip = false))
+                        ).using(SizeTransform(clip = false))
                 },
                 label = "history_top_bar_actions_animation",
             ) { isDeleteModeEnabled ->
@@ -89,9 +93,9 @@ fun HistoryScreen(
                                             HistoryScreenDefaults.TopBarAnimation.DELETE_BUTTON_DELAY_MILLIS,
                                         ),
                                 ) +
-                                    scaleIn(
-                                        initialScale = HistoryScreenDefaults.TopBarAnimation.INITIAL_SCALE,
-                                    ),
+                                        scaleIn(
+                                            initialScale = HistoryScreenDefaults.TopBarAnimation.INITIAL_SCALE,
+                                        ),
                         ) {
                             QrezzyTopBarButton(
                                 onClick = viewModel::onDeleteSelected,

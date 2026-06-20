@@ -67,7 +67,7 @@ fun HistoryDetailsScreen(
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                is HistoryDetailsUiEvent.ShareQrCode -> {
+                is HistoryDetailsUiEvent.ShareQrCode    -> {
                     qrSharingService.shareBitmap(bitmap = event.bitmap, fileName = event.title)
                 }
 
@@ -85,7 +85,7 @@ fun HistoryDetailsScreen(
     }
 
     Column(modifier = Modifier.padding(horizontal = HistoryDetailsScreenDefaults.screenHorizontalPadding)) {
-        QrezzyTopBar(title = stringResource(R.string.history_details_title), onBackClick = onBackClick) {
+        QrezzyTopBar(titleResId = R.string.history_details_title, onBackClick = onBackClick) {
             QrezzyTopBarButton(onClick = {}, icon = Icons.Outlined.FormatPaint, iconTint = QrezzyPurpleDark)
         }
 
