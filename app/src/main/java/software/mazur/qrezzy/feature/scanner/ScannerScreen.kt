@@ -52,11 +52,12 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val uiState by viewModel.uiState.collectAsState()
     val qrSavedMessage = stringResource(R.string.scanner_qr_saved)
-    val cameraPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-    ) { isGranted ->
-        if (isGranted) viewModel.onStartScanning() else viewModel.onPermissionDenied()
-    }
+    val cameraPermissionLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+        ) { isGranted ->
+            if (isGranted) viewModel.onStartScanning() else viewModel.onPermissionDenied()
+        }
 
     LaunchedEffect(Unit) {
         if (!context.hasCameraPermission()) {
@@ -67,7 +68,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                ScannerUiEvent.QrSaved      ->
+                ScannerUiEvent.QrSaved ->
                     Toast.makeText(context, qrSavedMessage, Toast.LENGTH_SHORT).show()
 
                 is ScannerUiEvent.ShowError ->
@@ -77,23 +78,24 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     }
 
     DisposableEffect(lifecycleOwner, uiState.mode) {
-        val observer = LifecycleEventObserver { _, event ->
-            when (event) {
-                Lifecycle.Event.ON_RESUME -> {
-                    if (uiState.mode == Mode.PermissionDenied && context.hasCameraPermission()) {
-                        viewModel.onPermissionRestored()
+        val observer =
+            LifecycleEventObserver { _, event ->
+                when (event) {
+                    Lifecycle.Event.ON_RESUME -> {
+                        if (uiState.mode == Mode.PermissionDenied && context.hasCameraPermission()) {
+                            viewModel.onPermissionRestored()
+                        }
                     }
-                }
 
-                Lifecycle.Event.ON_PAUSE  -> {
-                    if (uiState.mode == Mode.Scanning) {
-                        viewModel.onStopScanning()
+                    Lifecycle.Event.ON_PAUSE -> {
+                        if (uiState.mode == Mode.Scanning) {
+                            viewModel.onStopScanning()
+                        }
                     }
-                }
 
-                else                      -> Unit
+                    else -> Unit
+                }
             }
-        }
 
         lifecycleOwner.lifecycle.addObserver(observer)
 
@@ -101,24 +103,20 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
-
-    if (uiState.isDialogVisible) {
+    uiState.detectedQr?.let { qr ->
         ScannedQrDialog(
-            type = uiState.scannedType,
-            title = uiState.scannedTitle.orEmpty(),
-            content = uiState.scannedContent.orEmpty(),
+            qr = qr,
             onSaveClick = viewModel::onSaveScannedQrClick,
-            onCancelClick = viewModel::onCancelScannedQrClick,
+            onCancelClick = viewModel::clearScannedQr,
         )
     }
-
     Column(modifier = Modifier.padding(horizontal = ScannerScreenDefaults.horizontalPadding)) {
         QrezzyTopBar(title = stringResource(R.string.navigation_title_scan)) {
             QrezzyTopBarButton(
                 onClick = viewModel::onTorchClick,
                 enabled = uiState.isScanning,
                 icon = if (uiState.isTorchEnabled) Icons.Outlined.FlashOn else Icons.Outlined.FlashOff,
-                iconTint = if (uiState.isTorchEnabled) QrezzyPurpleDark else Color.Gray
+                iconTint = if (uiState.isTorchEnabled) QrezzyPurpleDark else Color.Gray,
             )
         }
 
@@ -136,7 +134,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
         QrezzyButton(
             onClick = {
                 when (uiState.mode) {
-                    Mode.Idle             -> {
+                    Mode.Idle -> {
                         if (context.hasCameraPermission()) {
                             viewModel.onStartScanning()
                         } else {
@@ -148,7 +146,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
                         context.openAppSettings()
                     }
 
-                    Mode.Scanning         -> {
+                    Mode.Scanning -> {
                         viewModel.onStopScanning()
                     }
                 }
@@ -167,26 +165,27 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     }
 }
 
-private fun Mode.getActionText(): Int {
-    return when (this) {
-        Mode.Idle             -> R.string.scanner_action_scan
-        Mode.Scanning         -> R.string.scanner_action_stop
+private fun Mode.getActionText(): Int =
+    when (this) {
+        Mode.Idle -> R.string.scanner_action_scan
+        Mode.Scanning -> R.string.scanner_action_stop
         Mode.PermissionDenied -> R.string.scanner_action_open_settings
     }
-}
 
 private val Mode.actionContainerColor
-    get() = when (this) {
-        Mode.Idle             -> QrezzyMint
-        Mode.PermissionDenied -> QrezzyYellow
-        Mode.Scanning         -> QrezzyPink
-    }
+    get() =
+        when (this) {
+            Mode.Idle -> QrezzyMint
+            Mode.PermissionDenied -> QrezzyYellow
+            Mode.Scanning -> QrezzyPink
+        }
 private val Mode.actionDepthColor
-    get() = when (this) {
-        Mode.Idle             -> QrezzyPurple
-        Mode.PermissionDenied -> QrezzyMint
-        Mode.Scanning         -> QrezzyYellow
-    }
+    get() =
+        when (this) {
+            Mode.Idle -> QrezzyPurple
+            Mode.PermissionDenied -> QrezzyMint
+            Mode.Scanning -> QrezzyYellow
+        }
 
 private fun Context.hasCameraPermission(): Boolean {
     val permission = Manifest.permission.CAMERA

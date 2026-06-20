@@ -43,7 +43,10 @@ import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiEvent
 import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiState
 
 @Composable
-fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewModel = hiltViewModel()) {
+fun HistoryDetailsScreen(
+    onBackClick: () -> Unit,
+    viewModel: HistoryDetailsViewModel = hiltViewModel(),
+) {
     val context = LocalContext.current
     val density = LocalDensity.current
     val windowInfo = LocalWindowInfo.current
@@ -53,27 +56,29 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
     val saveErrorMessage = stringResource(R.string.history_details_save_error)
 
     LaunchedEffect(windowInfo.containerSize.width, density) {
-        val qrSizePx = with(density) {
-            (windowInfo.containerSize.width - HistoryDetailsScreenDefaults.qrHorizontalOffset.roundToPx())
-                .coerceAtLeast(HistoryDetailsScreenDefaults.minQrSize.roundToPx())
-        }
+        val qrSizePx =
+            with(density) {
+                (windowInfo.containerSize.width - HistoryDetailsScreenDefaults.qrHorizontalOffset.roundToPx())
+                    .coerceAtLeast(HistoryDetailsScreenDefaults.minQrSize.roundToPx())
+            }
         viewModel.loadHistoryItem(qrSizePx)
     }
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                is HistoryDetailsUiEvent.ShareQrCode    -> {
+                is HistoryDetailsUiEvent.ShareQrCode -> {
                     qrSharingService.shareBitmap(bitmap = event.bitmap, fileName = event.title)
                 }
 
                 is HistoryDetailsUiEvent.DownloadQrCode -> {
                     val saved = qrSharingService.saveBitmap(bitmap = event.bitmap, fileName = event.fileName)
-                    Toast.makeText(
-                        context,
-                        if (saved) saveSuccessMessage else saveErrorMessage,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast
+                        .makeText(
+                            context,
+                            if (saved) saveSuccessMessage else saveErrorMessage,
+                            Toast.LENGTH_SHORT,
+                        ).show()
                 }
             }
         }
@@ -113,7 +118,10 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
 }
 
 @Composable
-private fun HistoryQrPreviewCard(uiState: HistoryDetailsUiState, modifier: Modifier = Modifier) {
+private fun HistoryQrPreviewCard(
+    uiState: HistoryDetailsUiState,
+    modifier: Modifier = Modifier,
+) {
     Card(
         modifier = modifier,
         shape = ShapeDefaults.Medium,

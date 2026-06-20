@@ -31,46 +31,53 @@ data class QrTypeUi(
 )
 
 val QrType.ui: QrTypeUi
-    get() = when (this) {
-        QrType.TEXT    -> QrTypeUi(
-            labelResId = R.string.qr_type_text,
-            icon = Icons.Outlined.Textsms,
-            containerColor = QrezzyYellowDark,
-            contentColor = QrezzyYellow,
-        )
+    get() =
+        when (this) {
+            QrType.TEXT ->
+                QrTypeUi(
+                    labelResId = R.string.qr_type_text,
+                    icon = Icons.Outlined.Textsms,
+                    containerColor = QrezzyYellowDark,
+                    contentColor = QrezzyYellow,
+                )
 
-        QrType.URL     -> QrTypeUi(
-            labelResId = R.string.qr_type_url,
-            icon = Icons.Outlined.InsertLink,
-            containerColor = QrezzyMintDark,
-            contentColor = QrezzyMint,
-        )
+            QrType.URL ->
+                QrTypeUi(
+                    labelResId = R.string.qr_type_url,
+                    icon = Icons.Outlined.InsertLink,
+                    containerColor = QrezzyMintDark,
+                    contentColor = QrezzyMint,
+                )
 
-        QrType.WIFI    -> QrTypeUi(
-            labelResId = R.string.qr_type_wifi,
-            icon = Icons.Outlined.Wifi,
-            containerColor = QrezzyPurpleDark,
-            contentColor = QrezzyPurple,
-        )
+            QrType.WIFI ->
+                QrTypeUi(
+                    labelResId = R.string.qr_type_wifi,
+                    icon = Icons.Outlined.Wifi,
+                    containerColor = QrezzyPurpleDark,
+                    contentColor = QrezzyPurple,
+                )
 
-        QrType.CONTACT -> QrTypeUi(
-            labelResId = R.string.qr_type_contact,
-            icon = Icons.Outlined.AccountCircle,
-            containerColor = QrezzyYellowDark,
-            contentColor = QrezzyYellow,
-        )
+            QrType.CONTACT ->
+                QrTypeUi(
+                    labelResId = R.string.qr_type_contact,
+                    icon = Icons.Outlined.AccountCircle,
+                    containerColor = QrezzyYellowDark,
+                    contentColor = QrezzyYellow,
+                )
 
-        QrType.EMAIL   -> QrTypeUi(
-            labelResId = R.string.qr_type_email,
-            icon = Icons.Outlined.AlternateEmail,
-            containerColor = QrezzyPinkDark,
-            contentColor = QrezzyPink,
-        )
+            QrType.EMAIL ->
+                QrTypeUi(
+                    labelResId = R.string.qr_type_email,
+                    icon = Icons.Outlined.AlternateEmail,
+                    containerColor = QrezzyPinkDark,
+                    contentColor = QrezzyPink,
+                )
 
-        QrType.PHONE   -> QrTypeUi(
-            labelResId = R.string.qr_type_phone,
-            icon = Icons.Outlined.Smartphone,
-            containerColor = QrezzyPurpleDark,
-            contentColor = QrezzyPurple,
-        )
-    }
+            QrType.PHONE ->
+                QrTypeUi(
+                    labelResId = R.string.qr_type_phone,
+                    icon = Icons.Outlined.Smartphone,
+                    containerColor = QrezzyPurpleDark,
+                    contentColor = QrezzyPurple,
+                )
+        }

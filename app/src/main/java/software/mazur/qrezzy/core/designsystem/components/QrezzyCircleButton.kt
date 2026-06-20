@@ -31,12 +31,13 @@ fun QrezzyCircleButton(
         shape = CircleShape,
         border = BorderStroke(width = QrezzyCircleButtonDefaults.Border.width, color = BorderPrimary),
         contentPadding = PaddingValues.Zero,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = color,
-            contentColor = iconTint,
-            disabledContainerColor = color.copy(alpha = QrezzyCircleButtonDefaults.DISABLED_ALPHA),
-            disabledContentColor = iconTint.copy(alpha = QrezzyCircleButtonDefaults.DISABLED_ALPHA),
-        ),
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = color,
+                contentColor = iconTint,
+                disabledContainerColor = color.copy(alpha = QrezzyCircleButtonDefaults.DISABLED_ALPHA),
+                disabledContentColor = iconTint.copy(alpha = QrezzyCircleButtonDefaults.DISABLED_ALPHA),
+            ),
     ) {
         Icon(
             imageVector = icon,

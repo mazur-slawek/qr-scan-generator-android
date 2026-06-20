@@ -28,7 +28,7 @@ fun HistoryListEmpty() {
         Image(
             painter = painterResource(R.drawable.history_empty),
             contentDescription = null,
-            modifier = Modifier.height(HistoryListEmptyDefaults.imageHeight)
+            modifier = Modifier.height(HistoryListEmptyDefaults.imageHeight),
         )
 
         Spacer(modifier = Modifier.height(HistoryListEmptyDefaults.imageTitleSpacing))

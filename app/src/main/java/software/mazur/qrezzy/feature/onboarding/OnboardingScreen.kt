@@ -54,7 +54,7 @@ import software.mazur.qrezzy.feature.onboarding.model.OnboardingItemType
 
 @Composable
 fun OnboardingScreen(onGetStartedClick: () -> Unit = {}) {
-    var currentPageIndex by rememberSaveable { mutableIntStateOf(OnboardingDefaults.initialPageIndex) }
+    var currentPageIndex by rememberSaveable { mutableIntStateOf(OnboardingDefaults.INITIAL_PAGE_INDEX) }
     val items = OnboardingDefaults.items
     val currentItem = items[currentPageIndex]
     val isLastPage = currentPageIndex == items.lastIndex
@@ -74,14 +74,16 @@ fun OnboardingScreen(onGetStartedClick: () -> Unit = {}) {
                     slideInHorizontally(
                         animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
                         initialOffsetX = { fullWidth -> fullWidth },
-                    ) + fadeIn(
-                        animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
-                    ) togetherWith slideOutHorizontally(
-                        animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
-                        targetOffsetX = { fullWidth -> -fullWidth },
-                    ) + fadeOut(
-                        animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
-                    )
+                    ) +
+                        fadeIn(
+                            animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
+                        ) togetherWith slideOutHorizontally(
+                            animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
+                            targetOffsetX = { fullWidth -> -fullWidth },
+                        ) +
+                        fadeOut(
+                            animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
+                        )
                 },
                 label = OnboardingDefaults.Animation.CONTENT_TRANSITION_LABEL,
                 modifier = Modifier.weight(OnboardingDefaults.Layout.CONTENT_WEIGHT),
@@ -107,17 +109,21 @@ fun OnboardingScreen(onGetStartedClick: () -> Unit = {}) {
 }
 
 @Composable
-private fun OnboardingContent(item: OnboardingItem, modifier: Modifier = Modifier) {
+private fun OnboardingContent(
+    item: OnboardingItem,
+    modifier: Modifier = Modifier,
+) {
     Box(modifier = modifier) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.Center),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Center),
         ) {
             Image(
                 painter = painterResource(id = item.iconResId),
                 contentDescription = null,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
 
             Spacer(modifier = Modifier.height(OnboardingDefaults.Content.imageTitleSpacing))
@@ -127,7 +133,7 @@ private fun OnboardingContent(item: OnboardingItem, modifier: Modifier = Modifie
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
 
             Spacer(modifier = Modifier.height(OnboardingDefaults.Content.titleDescriptionSpacing))
@@ -137,9 +143,10 @@ private fun OnboardingContent(item: OnboardingItem, modifier: Modifier = Modifie
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Normal,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = OnboardingDefaults.Content.descriptionHorizontalPadding)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = OnboardingDefaults.Content.descriptionHorizontalPadding),
             )
         }
     }
@@ -154,10 +161,11 @@ private fun OnboardingBottomSection(
     onGetStartedClick: () -> Unit,
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(OnboardingDefaults.BottomSection.height)
-            .padding(horizontal = OnboardingDefaults.BottomSection.horizontalPadding),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(OnboardingDefaults.BottomSection.height)
+                .padding(horizontal = OnboardingDefaults.BottomSection.horizontalPadding),
     ) {
         if (isLastPage) {
             QrezzyButton(
@@ -193,9 +201,10 @@ private fun OnboardingNavigationSection(
         OnboardingPageIndicators(
             items = items,
             currentItem = currentItem,
-            modifier = Modifier
-                .height(OnboardingDefaults.Navigation.nextButtonContainerHeight)
-                .weight(OnboardingDefaults.Layout.INDICATORS_WEIGHT),
+            modifier =
+                Modifier
+                    .height(OnboardingDefaults.Navigation.nextButtonContainerHeight)
+                    .weight(OnboardingDefaults.Layout.INDICATORS_WEIGHT),
         )
         QrezzyCircleButton(color = currentItem.accentColor, icon = nextIcon, onClick = onNextClick)
     }
@@ -215,68 +224,68 @@ private fun OnboardingPageIndicators(
         items.forEach { item ->
             val isSelected = item == currentItem
             Box(
-                modifier = Modifier
-                    .padding(horizontal = OnboardingDefaults.Indicator.horizontalPadding)
-                    .size(
-                        if (isSelected) {
-                            OnboardingDefaults.Indicator.selectedSize
-                        } else {
-                            OnboardingDefaults.Indicator.defaultSize
-                        },
-                    )
-                    .background(
-                        color = if (isSelected) currentItem.accentColor else OnboardingDefaults.Indicator.inactiveColor,
-                        shape = CircleShape,
-                    )
-                    .border(
-                        width = OnboardingDefaults.Indicator.borderWidth,
-                        color = if (isSelected) BorderPrimary else OnboardingDefaults.Indicator.inactiveColor,
-                        shape = CircleShape,
-                    ),
+                modifier =
+                    Modifier
+                        .padding(horizontal = OnboardingDefaults.Indicator.horizontalPadding)
+                        .size(
+                            if (isSelected) {
+                                OnboardingDefaults.Indicator.selectedSize
+                            } else {
+                                OnboardingDefaults.Indicator.defaultSize
+                            },
+                        ).background(
+                            color = if (isSelected) currentItem.accentColor else OnboardingDefaults.Indicator.inactiveColor,
+                            shape = CircleShape,
+                        ).border(
+                            width = OnboardingDefaults.Indicator.borderWidth,
+                            color = if (isSelected) BorderPrimary else OnboardingDefaults.Indicator.inactiveColor,
+                            shape = CircleShape,
+                        ),
             )
         }
     }
 }
 
 private object OnboardingDefaults {
-    const val initialPageIndex = 0
-    val items = listOf(
-        OnboardingItem(
-            type = OnboardingItemType.SCAN,
-            accentColor = QrezzyMint,
-            iconResId = R.drawable.onboarding_scan_icon,
-            titleResId = R.string.onboarding_scan_title,
-            descriptionResId = R.string.onboarding_scan_description,
-        ),
-        OnboardingItem(
-            type = OnboardingItemType.EDIT,
-            accentColor = QrezzyYellow,
-            iconResId = R.drawable.onboarding_generate_icon,
-            titleResId = R.string.onboarding_generate_title,
-            descriptionResId = R.string.onboarding_generate_description,
-        ),
-        OnboardingItem(
-            type = OnboardingItemType.HISTORY,
-            accentColor = QrezzyPink,
-            iconResId = R.drawable.onboarding_history_icon,
-            titleResId = R.string.onboarding_history_title,
-            descriptionResId = R.string.onboarding_history_description,
-        ),
-        OnboardingItem(
-            type = OnboardingItemType.SHARE,
-            accentColor = QrezzyPurple,
-            iconResId = R.drawable.onboarding_share_icon,
-            titleResId = R.string.onboarding_share_title,
-            descriptionResId = R.string.onboarding_share_description,
-        ),
-        OnboardingItem(
-            type = OnboardingItemType.SUMMARY,
-            accentColor = QrezzyMint,
-            iconResId = R.drawable.onboarding_summary_icon,
-            titleResId = R.string.onboarding_summary_title,
-            descriptionResId = R.string.onboarding_summary_description,
-        ),
-    )
+    const val INITIAL_PAGE_INDEX = 0
+    val items =
+        listOf(
+            OnboardingItem(
+                type = OnboardingItemType.SCAN,
+                accentColor = QrezzyMint,
+                iconResId = R.drawable.onboarding_scan_icon,
+                titleResId = R.string.onboarding_scan_title,
+                descriptionResId = R.string.onboarding_scan_description,
+            ),
+            OnboardingItem(
+                type = OnboardingItemType.EDIT,
+                accentColor = QrezzyYellow,
+                iconResId = R.drawable.onboarding_generate_icon,
+                titleResId = R.string.onboarding_generate_title,
+                descriptionResId = R.string.onboarding_generate_description,
+            ),
+            OnboardingItem(
+                type = OnboardingItemType.HISTORY,
+                accentColor = QrezzyPink,
+                iconResId = R.drawable.onboarding_history_icon,
+                titleResId = R.string.onboarding_history_title,
+                descriptionResId = R.string.onboarding_history_description,
+            ),
+            OnboardingItem(
+                type = OnboardingItemType.SHARE,
+                accentColor = QrezzyPurple,
+                iconResId = R.drawable.onboarding_share_icon,
+                titleResId = R.string.onboarding_share_title,
+                descriptionResId = R.string.onboarding_share_description,
+            ),
+            OnboardingItem(
+                type = OnboardingItemType.SUMMARY,
+                accentColor = QrezzyMint,
+                iconResId = R.drawable.onboarding_summary_icon,
+                titleResId = R.string.onboarding_summary_title,
+                descriptionResId = R.string.onboarding_summary_description,
+            ),
+        )
 
     object Layout {
         const val CONTENT_WEIGHT = 1f

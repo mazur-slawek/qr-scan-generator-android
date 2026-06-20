@@ -47,9 +47,10 @@ fun QrezzyAnimatedStars(
             }
             return@BoxWithConstraints
         }
-        val stars = remember(width, height, starsCount) {
-            buildStars(count = starsCount, width = width, height = height)
-        }
+        val stars =
+            remember(width, height, starsCount) {
+                buildStars(count = starsCount, width = width, height = height)
+            }
         var timeMillis by remember { mutableLongStateOf(0L) }
 
         LaunchedEffect(enabled) {
@@ -61,11 +62,12 @@ fun QrezzyAnimatedStars(
                 }
             }
         }
-        val timeSeconds = if (enabled) {
-            timeMillis / QrezzyAnimatedStarsDefaults.TIME_MILLIS_DIVIDER
-        } else {
-            QrezzyAnimatedStarsDefaults.INITIAL_TIME_SECONDS
-        }
+        val timeSeconds =
+            if (enabled) {
+                timeMillis / QrezzyAnimatedStarsDefaults.TIME_MILLIS_DIVIDER
+            } else {
+                QrezzyAnimatedStarsDefaults.INITIAL_TIME_SECONDS
+            }
 
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -79,13 +81,18 @@ fun QrezzyAnimatedStars(
     }
 }
 
-private fun buildStars(count: Int, width: Float, height: Float): List<QrezzyStar> {
+private fun buildStars(
+    count: Int,
+    width: Float,
+    height: Float,
+): List<QrezzyStar> {
     val colors = QrezzyAnimatedStarsDefaults.colors
     val safePadding = QrezzyAnimatedStarsDefaults.SAFE_PADDING
 
     return List(count) { index ->
         val sizeFactor = pseudoRandom(index * 71 + 23)
-        val radius = QrezzyAnimatedStarsDefaults.Star.MIN_RADIUS +
+        val radius =
+            QrezzyAnimatedStarsDefaults.Star.MIN_RADIUS +
                 sizeFactor * QrezzyAnimatedStarsDefaults.Star.RADIUS_RANGE
         val minX = safePadding + radius
         val maxX = width - safePadding - radius
@@ -98,26 +105,37 @@ private fun buildStars(count: Int, width: Float, height: Float): List<QrezzyStar
             radius = radius,
             color = colors[index % colors.size],
             phase = pseudoRandom(index * 97 + 31) * QrezzyAnimatedStarsDefaults.FULL_CIRCLE_RADIANS,
-            blinkSpeed = QrezzyAnimatedStarsDefaults.Animation.MIN_BLINK_SPEED +
+            blinkSpeed =
+                QrezzyAnimatedStarsDefaults.Animation.MIN_BLINK_SPEED +
                     pseudoRandom(index * 19 + 7) * QrezzyAnimatedStarsDefaults.Animation.BLINK_SPEED_RANGE,
-            moveSpeed = QrezzyAnimatedStarsDefaults.Animation.MIN_MOVE_SPEED +
+            moveSpeed =
+                QrezzyAnimatedStarsDefaults.Animation.MIN_MOVE_SPEED +
                     pseudoRandom(index * 31 + 9) * QrezzyAnimatedStarsDefaults.Animation.MOVE_SPEED_RANGE,
-            offsetX = QrezzyAnimatedStarsDefaults.Animation.MIN_OFFSET +
+            offsetX =
+                QrezzyAnimatedStarsDefaults.Animation.MIN_OFFSET +
                     pseudoRandom(index * 43 + 5) * QrezzyAnimatedStarsDefaults.Animation.OFFSET_RANGE,
-            offsetY = QrezzyAnimatedStarsDefaults.Animation.MIN_OFFSET +
+            offsetY =
+                QrezzyAnimatedStarsDefaults.Animation.MIN_OFFSET +
                     pseudoRandom(index * 29 + 3) * QrezzyAnimatedStarsDefaults.Animation.OFFSET_RANGE,
         )
     }
 }
 
-private fun DrawScope.drawAnimatedStar(star: QrezzyStar, timeSeconds: Float) {
+private fun DrawScope.drawAnimatedStar(
+    star: QrezzyStar,
+    timeSeconds: Float,
+) {
     val blinkWave = abs(sin(timeSeconds * star.blinkSpeed + star.phase))
     val moveWaveX = sin(timeSeconds * star.moveSpeed + star.phase)
-    val moveWaveY = sin(
-        timeSeconds * star.moveSpeed * QrezzyAnimatedStarsDefaults.Animation.Y_MOVE_MULTIPLIER + star.phase)
-    val alpha = QrezzyAnimatedStarsDefaults.Animation.MIN_ALPHA +
+    val moveWaveY =
+        sin(
+            timeSeconds * star.moveSpeed * QrezzyAnimatedStarsDefaults.Animation.Y_MOVE_MULTIPLIER + star.phase,
+        )
+    val alpha =
+        QrezzyAnimatedStarsDefaults.Animation.MIN_ALPHA +
             QrezzyAnimatedStarsDefaults.Animation.ALPHA_RANGE * blinkWave
-    val scale = QrezzyAnimatedStarsDefaults.Animation.MIN_RANGE +
+    val scale =
+        QrezzyAnimatedStarsDefaults.Animation.MIN_RANGE +
             QrezzyAnimatedStarsDefaults.Animation.SCALE_RANGE * blinkWave
     val animatedX = star.x + star.offsetX * moveWaveX
     val animatedY = star.y + star.offsetY * moveWaveY
@@ -129,43 +147,48 @@ private fun DrawScope.drawAnimatedStar(star: QrezzyStar, timeSeconds: Float) {
     )
 }
 
-private fun DrawScope.drawStar(center: Offset, radius: Float, color: Color) {
-    val path = Path().apply {
-        moveTo(center.x, center.y - radius)
-        cubicTo(
-            center.x + radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
-            center.y - radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
-            center.x + radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
-            center.y - radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
-            center.x + radius,
-            center.y,
-        )
-        cubicTo(
-            center.x + radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
-            center.y + radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
-            center.x + radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
-            center.y + radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
-            center.x,
-            center.y + radius,
-        )
-        cubicTo(
-            center.x - radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
-            center.y + radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
-            center.x - radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
-            center.y + radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
-            center.x - radius,
-            center.y,
-        )
-        cubicTo(
-            center.x - radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
-            center.y - radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
-            center.x - radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
-            center.y - radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
-            center.x,
-            center.y - radius,
-        )
-        close()
-    }
+private fun DrawScope.drawStar(
+    center: Offset,
+    radius: Float,
+    color: Color,
+) {
+    val path =
+        Path().apply {
+            moveTo(center.x, center.y - radius)
+            cubicTo(
+                center.x + radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
+                center.y - radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
+                center.x + radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
+                center.y - radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
+                center.x + radius,
+                center.y,
+            )
+            cubicTo(
+                center.x + radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
+                center.y + radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
+                center.x + radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
+                center.y + radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
+                center.x,
+                center.y + radius,
+            )
+            cubicTo(
+                center.x - radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
+                center.y + radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
+                center.x - radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
+                center.y + radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
+                center.x - radius,
+                center.y,
+            )
+            cubicTo(
+                center.x - radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
+                center.y - radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
+                center.x - radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
+                center.y - radius * QrezzyAnimatedStarsDefaults.Star.CURVE_FACTOR,
+                center.x,
+                center.y - radius,
+            )
+            close()
+        }
     drawPath(
         path = path,
         color = color,
@@ -173,7 +196,8 @@ private fun DrawScope.drawStar(center: Offset, radius: Float, color: Color) {
 }
 
 private fun pseudoRandom(seed: Int): Float {
-    val value = sin(seed * QrezzyAnimatedStarsDefaults.Random.SEED_MULTIPLIER) *
+    val value =
+        sin(seed * QrezzyAnimatedStarsDefaults.Random.SEED_MULTIPLIER) *
             QrezzyAnimatedStarsDefaults.Random.VALUE_MULTIPLIER
     return value - floor(value)
 }
@@ -197,12 +221,13 @@ private object QrezzyAnimatedStarsDefaults {
     const val INITIAL_TIME_SECONDS = 0f
     const val SAFE_PADDING = 32f
     const val FULL_CIRCLE_RADIANS = PI.toFloat() * 2f
-    val colors = listOf(
-        QrezzyPinkDark,
-        QrezzyPurpleDark,
-        QrezzyYellowDark,
-        QrezzyMintDark,
-    )
+    val colors =
+        listOf(
+            QrezzyPinkDark,
+            QrezzyPurpleDark,
+            QrezzyYellowDark,
+            QrezzyMintDark,
+        )
 
     object Star {
         const val MIN_RADIUS = 3f

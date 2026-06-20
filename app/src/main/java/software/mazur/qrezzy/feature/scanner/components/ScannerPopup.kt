@@ -30,47 +30,51 @@ import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 
 @Composable
-fun ScannerPopup(isPermissionDenied: Boolean, modifier: Modifier = Modifier) {
+fun ScannerPopup(
+    isPermissionDenied: Boolean,
+    modifier: Modifier = Modifier,
+) {
     val content = ScannerPopupContent.resolve(isPermissionDenied = isPermissionDenied)
 
     Row(
-        modifier = modifier
-            .wrapContentHeight()
-            .fillMaxWidth()
-            .border(
-                color = BorderLight,
-                shape = ShapeDefaults.Medium,
-                width = ScannerPopupDefaults.Border.width,
-            )
-            .background(
-                color = Surface,
-                shape = ShapeDefaults.Medium,
-            )
-            .padding(
-                vertical = ScannerPopupDefaults.Container.verticalPadding,
-                horizontal = ScannerPopupDefaults.Container.horizontalPadding,
-            ),
+        modifier =
+            modifier
+                .wrapContentHeight()
+                .fillMaxWidth()
+                .border(
+                    color = BorderLight,
+                    shape = ShapeDefaults.Medium,
+                    width = ScannerPopupDefaults.Border.width,
+                ).background(
+                    color = Surface,
+                    shape = ShapeDefaults.Medium,
+                ).padding(
+                    vertical = ScannerPopupDefaults.Container.verticalPadding,
+                    horizontal = ScannerPopupDefaults.Container.horizontalPadding,
+                ),
     ) {
         Image(
             painter = painterResource(id = content.imageResId),
             contentDescription = null,
-            modifier = Modifier
-                .size(ScannerPopupDefaults.Image.size)
-                .align(Alignment.CenterVertically),
+            modifier =
+                Modifier
+                    .size(ScannerPopupDefaults.Image.size)
+                    .align(Alignment.CenterVertically),
         )
 
         Spacer(modifier = Modifier.width(ScannerPopupDefaults.Content.spacing))
 
         Column(
-            modifier = Modifier
-                .weight(1f)
-                .align(Alignment.CenterVertically),
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .align(Alignment.CenterVertically),
         ) {
             Text(
                 text = stringResource(id = content.titleResId),
                 color = TextPrimary,
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
             )
 
             Spacer(modifier = Modifier.height(ScannerPopupDefaults.Text.spacing))
@@ -79,17 +83,21 @@ fun ScannerPopup(isPermissionDenied: Boolean, modifier: Modifier = Modifier) {
                 text = stringResource(id = content.descriptionResId),
                 color = TextSecondary,
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
             )
         }
     }
 }
 
 @Immutable
-private data class ScannerPopupContent(val imageResId: Int, val titleResId: Int, val descriptionResId: Int) {
+private data class ScannerPopupContent(
+    val imageResId: Int,
+    val titleResId: Int,
+    val descriptionResId: Int,
+) {
     companion object {
-        fun resolve(isPermissionDenied: Boolean): ScannerPopupContent {
-            return if (isPermissionDenied) {
+        fun resolve(isPermissionDenied: Boolean): ScannerPopupContent =
+            if (isPermissionDenied) {
                 ScannerPopupContent(
                     imageResId = R.drawable.scanner_popup_permission_denied,
                     titleResId = R.string.scanner_popup_permission_denied_title,
@@ -102,7 +110,6 @@ private data class ScannerPopupContent(val imageResId: Int, val titleResId: Int,
                     descriptionResId = R.string.scanner_popup_idle_desc,
                 )
             }
-        }
     }
 }
 

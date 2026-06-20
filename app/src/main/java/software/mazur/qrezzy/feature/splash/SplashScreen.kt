@@ -35,9 +35,7 @@ import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
-fun SplashScreen(
-    onGetStartedClick: () -> Unit,
-) {
+fun SplashScreen(onGetStartedClick: () -> Unit) {
     var isButtonVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
@@ -45,20 +43,22 @@ fun SplashScreen(
         isButtonVisible = true
     }
     val buttonAlpha by animateFloatAsState(
-        targetValue = if (isButtonVisible) {
-            SplashScreenDefaults.Animation.VISIBLE_ALPHA
-        } else {
-            SplashScreenDefaults.Animation.HIDDEN_ALPHA
-        },
+        targetValue =
+            if (isButtonVisible) {
+                SplashScreenDefaults.Animation.VISIBLE_ALPHA
+            } else {
+                SplashScreenDefaults.Animation.HIDDEN_ALPHA
+            },
         animationSpec = tween(durationMillis = SplashScreenDefaults.Animation.BUTTON_ANIMATION_DURATION_MILLIS),
         label = SplashScreenDefaults.Animation.BUTTON_ALPHA_LEVEL,
     )
     val buttonOffsetY by animateDpAsState(
-        targetValue = if (isButtonVisible) {
-            SplashScreenDefaults.Animation.finalButtonOffsetY
-        } else {
-            SplashScreenDefaults.Animation.initialButtonOffsetY
-        },
+        targetValue =
+            if (isButtonVisible) {
+                SplashScreenDefaults.Animation.finalButtonOffsetY
+            } else {
+                SplashScreenDefaults.Animation.initialButtonOffsetY
+            },
         animationSpec = tween(durationMillis = SplashScreenDefaults.Animation.BUTTON_ANIMATION_DURATION_MILLIS),
         label = SplashScreenDefaults.Animation.BUTTON_OFFSET_Y_LABEL,
     )
@@ -70,20 +70,22 @@ fun SplashScreen(
         QrezzyAnimatedBackground()
 
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = SplashScreenDefaults.Layout.contentHorizontalPadding)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = SplashScreenDefaults.Layout.contentHorizontalPadding),
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(SplashScreenDefaults.Layout.BRANDING_WEIGHT),
-                verticalArrangement = Arrangement.Center
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(SplashScreenDefaults.Layout.BRANDING_WEIGHT),
+                verticalArrangement = Arrangement.Center,
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.qrezzy_logo),
                     contentDescription = SplashScreenDefaults.LOGO_CONTENT_DESCRIPTION,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
 
                 Spacer(modifier = Modifier.height(SplashScreenDefaults.Layout.brandingSpacing))
@@ -95,10 +97,11 @@ fun SplashScreen(
                 text = stringResource(id = R.string.button_get_started),
                 onClick = onGetStartedClick,
                 rightIcon = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
-                modifier = Modifier
-                    .alpha(buttonAlpha)
-                    .offset(y = buttonOffsetY)
-                    .padding(bottom = SplashScreenDefaults.Layout.buttonBottomPadding),
+                modifier =
+                    Modifier
+                        .alpha(buttonAlpha)
+                        .offset(y = buttonOffsetY)
+                        .padding(bottom = SplashScreenDefaults.Layout.buttonBottomPadding),
             )
         }
     }

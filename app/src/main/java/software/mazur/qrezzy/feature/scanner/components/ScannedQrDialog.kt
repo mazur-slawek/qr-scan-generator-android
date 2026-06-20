@@ -9,36 +9,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
-import software.mazur.qrezzy.domain.qr.model.QrType
+import software.mazur.qrezzy.domain.qr.model.Qr
 
 @Composable
 fun ScannedQrDialog(
-    type: QrType?,
-    title: String,
-    content: String,
+    qr: Qr,
     onSaveClick: () -> Unit,
     onCancelClick: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onCancelClick,
         title = {
-            Column() {
+            Column {
                 Text(text = "QR code detected!")
                 Text(text = "QR detected")
             }
         },
         text = {
             Column {
-                Text(text = "Type: ${type?.name.orEmpty()}")
-
+                Text(text = "Type: ${qr.type.name}")
                 Spacer(modifier = Modifier.height(8.dp))
-
-                if (title.isNotBlank()) {
-                    Text(text = title)
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-
-                Text(text = content)
+                Text(text = qr.content)
             }
         },
         confirmButton = {

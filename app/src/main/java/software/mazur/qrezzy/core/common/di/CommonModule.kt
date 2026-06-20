@@ -13,7 +13,5 @@ import javax.inject.Singleton
 abstract class CommonModule {
     @Binds
     @Singleton
-    abstract fun bindTimeProvider(
-        impl: SystemTimeProvider,
-    ): TimeProvider
+    abstract fun bindTimeProvider(impl: SystemTimeProvider): TimeProvider
 }

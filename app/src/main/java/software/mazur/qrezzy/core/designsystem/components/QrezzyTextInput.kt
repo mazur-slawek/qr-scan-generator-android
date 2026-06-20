@@ -55,90 +55,98 @@ fun QrezzyTextInput(
     maxLength: Int? = null,
     isError: Boolean = false,
     errorText: String? = null,
-    containerHeight: Dp = if (singleLine) {
-        QrezzyTextInputDefaults.Container.singleLineHeight
-    } else {
-        QrezzyTextInputDefaults.Container.textAreaHeight
-    },
+    containerHeight: Dp =
+        if (singleLine) {
+            QrezzyTextInputDefaults.Container.singleLineHeight
+        } else {
+            QrezzyTextInputDefaults.Container.textAreaHeight
+        },
     containerColor: Color = Surface,
     depthColor: Color = QrezzyMint,
     errorColor: Color = Error,
     focusedBorderColor: Color = QrezzyPurpleDark,
-    textStyle: TextStyle = MaterialTheme.typography.bodyLarge.copy(
-        color = TextPrimary,
-        fontSize = QrezzyTextInputDefaults.Text.fontSize,
-        fontWeight = FontWeight.Medium,
-        lineHeight = QrezzyTextInputDefaults.Text.lineHeight,
-    ),
+    textStyle: TextStyle =
+        MaterialTheme.typography.bodyLarge.copy(
+            color = TextPrimary,
+            fontSize = QrezzyTextInputDefaults.Text.fontSize,
+            fontWeight = FontWeight.Medium,
+            lineHeight = QrezzyTextInputDefaults.Text.lineHeight,
+        ),
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
-    val targetBorderColor = when {
-        isError   -> errorColor
-        isFocused -> focusedBorderColor
-        else      -> BorderSecondary
-    }
+    val targetBorderColor =
+        when {
+            isError -> errorColor
+            isFocused -> focusedBorderColor
+            else -> BorderSecondary
+        }
     val borderColor by animateColorAsState(
         targetValue = targetBorderColor,
         label = "QrezzyTextInputBorderColor",
     )
     val borderWidth by animateDpAsState(
-        targetValue = if (isFocused || isError) {
-            QrezzyTextInputDefaults.Border.focusedWidth
-        } else {
-            QrezzyTextInputDefaults.Border.width
-        },
+        targetValue =
+            if (isFocused || isError) {
+                QrezzyTextInputDefaults.Border.focusedWidth
+            } else {
+                QrezzyTextInputDefaults.Border.width
+            },
         label = "QrezzyTextInputBorderWidth",
     )
     val contentAlignment = if (singleLine) Alignment.CenterStart else Alignment.TopStart
-    val contentPadding = if (singleLine) {
-        QrezzyTextInputDefaults.Content.singleLinePadding
-    } else {
-        QrezzyTextInputDefaults.Content.textAreaPadding
-    }
+    val contentPadding =
+        if (singleLine) {
+            QrezzyTextInputDefaults.Content.singleLinePadding
+        } else {
+            QrezzyTextInputDefaults.Content.textAreaPadding
+        }
 
     Column(modifier = modifier.fillMaxWidth()) {
         BoxWithConstraints(
-            modifier = Modifier
-                .height(containerHeight)
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .height(containerHeight)
+                    .fillMaxWidth(),
             contentAlignment = Alignment.Center,
         ) {
             val inputWidth = maxWidth - QrezzyTextInputDefaults.Depth.offsetX
             val inputHeight = maxHeight - QrezzyTextInputDefaults.Depth.offsetY
 
             Spacer(
-                modifier = Modifier
-                    .height(inputHeight)
-                    .width(inputWidth)
-                    .background(color = depthColor, shape = ShapeDefaults.Medium)
-                    .border(
-                        width = QrezzyTextInputDefaults.Border.width,
-                        color = BorderSecondary,
-                        shape = ShapeDefaults.Medium,
-                    )
-                    .align(Alignment.BottomEnd),
+                modifier =
+                    Modifier
+                        .height(inputHeight)
+                        .width(inputWidth)
+                        .background(color = depthColor, shape = ShapeDefaults.Medium)
+                        .border(
+                            width = QrezzyTextInputDefaults.Border.width,
+                            color = BorderSecondary,
+                            shape = ShapeDefaults.Medium,
+                        ).align(Alignment.BottomEnd),
             )
 
             Box(
-                modifier = Modifier
-                    .height(inputHeight)
-                    .width(inputWidth)
-                    .align(Alignment.TopStart)
-                    .background(color = containerColor, shape = ShapeDefaults.Medium)
-                    .border(
-                        width = borderWidth,
-                        color = borderColor,
-                        shape = ShapeDefaults.Medium,
-                    ),
+                modifier =
+                    Modifier
+                        .height(inputHeight)
+                        .width(inputWidth)
+                        .align(Alignment.TopStart)
+                        .background(color = containerColor, shape = ShapeDefaults.Medium)
+                        .border(
+                            width = borderWidth,
+                            color = borderColor,
+                            shape = ShapeDefaults.Medium,
+                        ),
             ) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(contentPadding),
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(contentPadding),
                     contentAlignment = contentAlignment,
                 ) {
                     BasicTextField(
@@ -178,10 +186,11 @@ fun QrezzyTextInput(
                 text = errorText,
                 color = errorColor,
                 style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(
-                    start = QrezzyTextInputDefaults.ErrorText.startPadding,
-                    top = QrezzyTextInputDefaults.ErrorText.topPadding,
-                ),
+                modifier =
+                    Modifier.padding(
+                        start = QrezzyTextInputDefaults.ErrorText.startPadding,
+                        top = QrezzyTextInputDefaults.ErrorText.topPadding,
+                    ),
             )
         }
     }
@@ -205,10 +214,11 @@ private object QrezzyTextInputDefaults {
 
     object Content {
         val singleLinePadding = PaddingValues(horizontal = 16.dp)
-        val textAreaPadding = PaddingValues(
-            horizontal = 16.dp,
-            vertical = 14.dp,
-        )
+        val textAreaPadding =
+            PaddingValues(
+                horizontal = 16.dp,
+                vertical = 14.dp,
+            )
     }
 
     object Text {

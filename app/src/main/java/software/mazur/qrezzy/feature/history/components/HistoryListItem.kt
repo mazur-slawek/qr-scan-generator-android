@@ -37,69 +37,71 @@ import software.mazur.qrezzy.core.designsystem.theme.Error
 import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
+import software.mazur.qrezzy.domain.qr.model.Qr
 import software.mazur.qrezzy.domain.qr.model.QrSource
-import software.mazur.qrezzy.feature.history.model.HistoryItemUi
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 @Composable
 fun HistoryListItem(
-    item: HistoryItemUi,
+    qr: Qr,
     isDeleteModeEnabled: Boolean,
     isSelected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = HistoryListItemDefaults.verticalPadding)
-            .clip(shape = ShapeDefaults.Medium),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(vertical = HistoryListItemDefaults.verticalPadding)
+                .clip(shape = ShapeDefaults.Medium),
         shape = ShapeDefaults.Medium,
-        border = BorderStroke(
-            width = HistoryListItemDefaults.borderWidth,
-            color = BorderLight,
-        ),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Surface,
-            contentColor = item.qrType.ui.containerColor,
-        ),
+        border =
+            BorderStroke(
+                width = HistoryListItemDefaults.borderWidth,
+                color = BorderLight,
+            ),
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = Surface,
+                contentColor = qr.type.ui.containerColor,
+            ),
         contentPadding = PaddingValues.Zero,
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(HistoryListItemDefaults.contentPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(HistoryListItemDefaults.contentPadding),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                imageVector = item.qrType.ui.icon,
-                contentDescription = stringResource(item.qrType.ui.labelResId),
+                imageVector = qr.type.ui.icon,
+                contentDescription = stringResource(qr.type.ui.labelResId),
                 tint = TextPrimary,
-                modifier = Modifier
-                    .border(
-                        width = HistoryListItemDefaults.Icon.borderWidth,
-                        color = item.qrType.ui.containerColor,
-                        shape = ShapeDefaults.Small,
-                    )
-                    .shadow(
-                        elevation = HistoryListItemDefaults.Icon.elevation,
-                        shape = ShapeDefaults.Small,
-                    )
-                    .background(
-                        color = item.qrType.ui.contentColor,
-                        shape = ShapeDefaults.Small,
-                    )
-                    .padding(HistoryListItemDefaults.Icon.padding),
+                modifier =
+                    Modifier
+                        .border(
+                            width = HistoryListItemDefaults.Icon.borderWidth,
+                            color = qr.type.ui.containerColor,
+                            shape = ShapeDefaults.Small,
+                        ).shadow(
+                            elevation = HistoryListItemDefaults.Icon.elevation,
+                            shape = ShapeDefaults.Small,
+                        ).background(
+                            color = qr.type.ui.contentColor,
+                            shape = ShapeDefaults.Small,
+                        ).padding(HistoryListItemDefaults.Icon.padding),
             )
 
             Spacer(modifier = Modifier.width(HistoryListItemDefaults.iconTextSpacing))
 
             Column(modifier = Modifier.weight(HistoryListItemDefaults.TEXT_WEIGHT)) {
                 Text(
-                    text = item.value,
+                    text = qr.content,
                     color = TextPrimary,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.SemiBold,
@@ -109,7 +111,7 @@ fun HistoryListItem(
                 Spacer(modifier = Modifier.height(HistoryListItemDefaults.textSpacing))
 
                 Text(
-                    text = item.subtitle(),
+                    text = qr.subtitle(),
                     color = TextSecondary,
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Medium,
@@ -132,11 +134,12 @@ private fun HistoryTrailingIcon(
 ) {
     if (isDeleteModeEnabled) {
         Icon(
-            imageVector = if (isSelected) {
-                Icons.Outlined.CheckCircle
-            } else {
-                Icons.Outlined.Circle
-            },
+            imageVector =
+                if (isSelected) {
+                    Icons.Outlined.CheckCircle
+                } else {
+                    Icons.Outlined.Circle
+                },
             tint = if (isSelected) Error else TextSecondary,
             contentDescription = null,
         )
@@ -150,21 +153,17 @@ private fun HistoryTrailingIcon(
 }
 
 @Composable
-private fun HistoryItemUi.subtitle(): String {
-    return "${source.toDisplayName()} • ${createdAt.toHistoryTime()}"
-}
+private fun Qr.subtitle(): String = "${source.toDisplayName()} • ${createdAt.toHistoryTime()}"
 
 @Composable
-private fun QrSource.toDisplayName(): String {
-    return when (this) {
+private fun QrSource.toDisplayName(): String =
+    when (this) {
         QrSource.GENERATED -> stringResource(R.string.history_source_generated)
-        QrSource.SCANNED   -> stringResource(R.string.history_source_scanned)
+        QrSource.SCANNED -> stringResource(R.string.history_source_scanned)
     }
-}
 
-private fun Long.toHistoryTime(): String {
-    return SimpleDateFormat(HistoryListItemDefaults.Date.TIME_FORMAT, Locale.getDefault()).format(Date(this))
-}
+private fun Long.toHistoryTime(): String =
+    SimpleDateFormat(HistoryListItemDefaults.Date.TIME_FORMAT, Locale.getDefault()).format(Date(this))
 
 private object HistoryListItemDefaults {
     val verticalPadding = 4.dp

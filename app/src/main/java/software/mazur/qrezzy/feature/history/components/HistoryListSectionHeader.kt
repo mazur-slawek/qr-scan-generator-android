@@ -12,21 +12,25 @@ import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 
 @Composable
-fun HistoryListSectionHeader(text: String, modifier: Modifier = Modifier) {
+fun HistoryListSectionHeader(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
     Text(
         text = text,
         color = TextSecondary,
         style = MaterialTheme.typography.labelLarge,
         fontWeight = FontWeight.Medium,
         maxLines = HistoryListSectionHeaderDefaults.MAX_LINES,
-        modifier = modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(
-                top = HistoryListSectionHeaderDefaults.topPadding,
-                start = HistoryListSectionHeaderDefaults.startPadding,
-                bottom = HistoryListSectionHeaderDefaults.bottomPadding,
-            )
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(
+                    top = HistoryListSectionHeaderDefaults.topPadding,
+                    start = HistoryListSectionHeaderDefaults.startPadding,
+                    bottom = HistoryListSectionHeaderDefaults.bottomPadding,
+                ),
     )
 }
 
@@ -36,4 +40,3 @@ private object HistoryListSectionHeaderDefaults {
     val bottomPadding = 2.dp
     const val MAX_LINES = 1
 }
-

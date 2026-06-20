@@ -16,18 +16,17 @@ import javax.inject.Singleton
 object DatabaseModule {
     @Provides
     @Singleton
-    fun provideQrezzyDatabase(@ApplicationContext context: Context): QrezzyDatabase {
-        return Room.databaseBuilder(
-            context = context,
-            klass = QrezzyDatabase::class.java,
-            name = QrezzyDatabase.DATABASE_NAME,
-        )
-            .fallbackToDestructiveMigration(false)
+    fun provideQrezzyDatabase(
+        @ApplicationContext context: Context,
+    ): QrezzyDatabase =
+        Room
+            .databaseBuilder(
+                context = context,
+                klass = QrezzyDatabase::class.java,
+                name = QrezzyDatabase.DATABASE_NAME,
+            ).fallbackToDestructiveMigration(dropAllTables = true)
             .build()
-    }
 
     @Provides
-    fun provideQrHistoryDao(database: QrezzyDatabase): QrDao {
-        return database.qrHistoryDao()
-    }
+    fun provideQrDao(database: QrezzyDatabase): QrDao = database.qrDao()
 }

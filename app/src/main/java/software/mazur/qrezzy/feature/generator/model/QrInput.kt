@@ -44,25 +44,4 @@ enum class WifiEncryption {
     NONE,
 }
 
-fun QrInput.isSameTypeAs(other: QrInput): Boolean {
-    return this::class == other::class
-}
-
-enum class QrInputField {
-    Text,
-    Url,
-    Phone,
-
-    EmailAddress,
-    EmailSubject,
-    EmailBody,
-
-    WifiSsid,
-    WifiPassword,
-
-    ContactFirstName,
-    ContactLastName,
-    ContactPhone,
-    ContactEmail,
-    ContactCompany,
-}
+fun QrInput.isSameTypeAs(other: QrInput): Boolean = this::class == other::class

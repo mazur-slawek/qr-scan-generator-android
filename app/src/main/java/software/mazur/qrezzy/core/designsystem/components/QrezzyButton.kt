@@ -48,25 +48,27 @@ fun QrezzyButton(
     elevation: Dp = 4.dp,
 ) {
     BoxWithConstraints(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(QrezzyButtonDefaults.Container.height)
-            .alpha(if (enabled) 1f else QrezzyButtonDefaults.DISABLED_ALPHA),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(QrezzyButtonDefaults.Container.height)
+                .alpha(if (enabled) 1f else QrezzyButtonDefaults.DISABLED_ALPHA),
         contentAlignment = Alignment.Center,
     ) {
         val buttonWidth = maxWidth - QrezzyButtonDefaults.Depth.offsetX
         val buttonHeight = maxHeight - QrezzyButtonDefaults.Depth.offsetY
 
         Card(
-            modifier = Modifier
-                .width(buttonWidth)
-                .height(buttonHeight)
-                .align(Alignment.BottomEnd)
-                .border(
-                    color = BorderPrimary,
-                    shape = ShapeDefaults.Medium,
-                    width = QrezzyButtonDefaults.Border.width,
-                ),
+            modifier =
+                Modifier
+                    .width(buttonWidth)
+                    .height(buttonHeight)
+                    .align(Alignment.BottomEnd)
+                    .border(
+                        color = BorderPrimary,
+                        shape = ShapeDefaults.Medium,
+                        width = QrezzyButtonDefaults.Border.width,
+                    ),
             shape = ShapeDefaults.Medium,
             colors = CardDefaults.cardColors(containerColor = depthColor),
             elevation = CardDefaults.cardElevation(defaultElevation = elevation),
@@ -75,59 +77,66 @@ fun QrezzyButton(
             onClick = onClick,
             enabled = enabled,
             shape = ShapeDefaults.Medium,
-            border = BorderStroke(
-                width = QrezzyButtonDefaults.Border.width,
-                color = BorderPrimary,
-            ),
+            border =
+                BorderStroke(
+                    width = QrezzyButtonDefaults.Border.width,
+                    color = BorderPrimary,
+                ),
             contentPadding = PaddingValues.Zero,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = containerColor,
-                contentColor = TextPrimary,
-                disabledContainerColor = containerColor,
-                disabledContentColor = TextPrimary,
-            ),
-            modifier = Modifier
-                .height(buttonHeight)
-                .width(buttonWidth)
-                .align(Alignment.TopStart)
+            colors =
+                ButtonDefaults.buttonColors(
+                    containerColor = containerColor,
+                    contentColor = TextPrimary,
+                    disabledContainerColor = containerColor,
+                    disabledContentColor = TextPrimary,
+                ),
+            modifier =
+                Modifier
+                    .height(buttonHeight)
+                    .width(buttonWidth)
+                    .align(Alignment.TopStart),
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .border(
-                        width = QrezzyButtonDefaults.Border.highlightWidth,
-                        color = HighlightPrimary.copy(alpha = QrezzyButtonDefaults.Border.HIGHLIGHT_ALPHA),
-                        shape = ShapeDefaults.Medium,
-                    ),
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .border(
+                            width = QrezzyButtonDefaults.Border.highlightWidth,
+                            color = HighlightPrimary.copy(alpha = QrezzyButtonDefaults.Border.HIGHLIGHT_ALPHA),
+                            shape = ShapeDefaults.Medium,
+                        ),
             ) {
                 Text(
                     text = text,
                     maxLines = QrezzyButtonDefaults.MAX_LINES,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = QrezzyButtonDefaults.Icon.width +
-                                    QrezzyButtonDefaults.Content.horizontalPadding,
-                        )
-                        .align(Alignment.Center),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                horizontal =
+                                    QrezzyButtonDefaults.Icon.width +
+                                        QrezzyButtonDefaults.Content.horizontalPadding,
+                            ).align(Alignment.Center),
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.SemiBold,
-                    autoSize = TextAutoSize.StepBased(
-                        minFontSize = QrezzyButtonDefaults.Text.minSize,
-                        maxFontSize = QrezzyButtonDefaults.Text.maxSize,
-                        stepSize = QrezzyButtonDefaults.Text.stepSize,
-                    ),
+                    autoSize =
+                        TextAutoSize.StepBased(
+                            minFontSize = QrezzyButtonDefaults.Text.minSize,
+                            maxFontSize = QrezzyButtonDefaults.Text.maxSize,
+                            stepSize = QrezzyButtonDefaults.Text.stepSize,
+                        ),
                 )
 
                 leftIcon?.let { icon ->
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        modifier = Modifier
-                            .padding(start = QrezzyButtonDefaults.Icon.horizontalPadding)
-                            .height(buttonHeight)
-                            .width(QrezzyButtonDefaults.Icon.width)
-                            .align(Alignment.TopStart),
+                        modifier =
+                            Modifier
+                                .padding(start = QrezzyButtonDefaults.Icon.horizontalPadding)
+                                .height(buttonHeight)
+                                .width(QrezzyButtonDefaults.Icon.width)
+                                .align(Alignment.TopStart),
                     )
                 }
 
@@ -135,11 +144,12 @@ fun QrezzyButton(
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        modifier = Modifier
-                            .padding(end = QrezzyButtonDefaults.Icon.horizontalPadding)
-                            .height(buttonHeight)
-                            .width(QrezzyButtonDefaults.Icon.width)
-                            .align(Alignment.TopEnd),
+                        modifier =
+                            Modifier
+                                .padding(end = QrezzyButtonDefaults.Icon.horizontalPadding)
+                                .height(buttonHeight)
+                                .width(QrezzyButtonDefaults.Icon.width)
+                                .align(Alignment.TopEnd),
                     )
                 }
             }

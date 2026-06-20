@@ -44,7 +44,7 @@ import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.core.designsystem.theme.TextDisabled
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
-import software.mazur.qrezzy.feature.generator.presentation.GeneratorScreen
+import software.mazur.qrezzy.feature.generator.GeneratorScreen
 import software.mazur.qrezzy.feature.history.HistoryNavHost
 import software.mazur.qrezzy.feature.scanner.ScannerScreen
 import software.mazur.qrezzy.feature.settings.SettingsScreen
@@ -55,18 +55,23 @@ fun HomeScreen() {
     Scaffold(
         bottomBar = {
             QrezzyBottomNavigationBar(selectedTab = selectedTab, onTabSelected = { tab -> selectedTab = tab })
-        }
+        },
     ) { innerPadding ->
         QrezzyHomeScreenContent(
             selectedTab = selectedTab,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding))
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+        )
     }
 }
 
 @Composable
-private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (HomeTab) -> Unit) {
+private fun QrezzyBottomNavigationBar(
+    selectedTab: HomeTab,
+    onTabSelected: (HomeTab) -> Unit,
+) {
     val isKeyboardVisible = WindowInsets.ime.getBottom(LocalDensity.current) > 0
     AnimatedVisibility(visible = !isKeyboardVisible, enter = fadeIn()) {
         NavigationBar(
@@ -80,15 +85,16 @@ private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (Home
                 NavigationBarItem(
                     selected = isSelected,
                     onClick = { onTabSelected(tab) },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = tab.selectedIconColor,
-                        selectedTextColor = TextPrimary,
-                        indicatorColor = tab.indicatorColor,
-                        unselectedIconColor = TextSecondary,
-                        unselectedTextColor = TextSecondary,
-                        disabledIconColor = TextDisabled,
-                        disabledTextColor = TextDisabled,
-                    ),
+                    colors =
+                        NavigationBarItemDefaults.colors(
+                            selectedIconColor = tab.selectedIconColor,
+                            selectedTextColor = TextPrimary,
+                            indicatorColor = tab.indicatorColor,
+                            unselectedIconColor = TextSecondary,
+                            unselectedTextColor = TextSecondary,
+                            disabledIconColor = TextDisabled,
+                            disabledTextColor = TextDisabled,
+                        ),
                     icon = {
                         Icon(imageVector = tab.icon, contentDescription = title)
                     },
@@ -96,7 +102,7 @@ private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (Home
                         Text(
                             text = title,
                             style = MaterialTheme.typography.bodySmall,
-                            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium
+                            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
                         )
                     },
                 )
@@ -106,12 +112,15 @@ private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (Home
 }
 
 @Composable
-private fun QrezzyHomeScreenContent(modifier: Modifier, selectedTab: HomeTab) {
+private fun QrezzyHomeScreenContent(
+    modifier: Modifier,
+    selectedTab: HomeTab,
+) {
     Box(modifier = modifier) {
         when (selectedTab) {
-            HomeTab.SCAN     -> ScannerScreen()
+            HomeTab.SCAN -> ScannerScreen()
             HomeTab.GENERATE -> GeneratorScreen()
-            HomeTab.HISTORY  -> HistoryNavHost()
+            HomeTab.HISTORY -> HistoryNavHost()
             HomeTab.SETTINGS -> SettingsScreen()
         }
     }
@@ -127,7 +136,7 @@ private enum class HomeTab(
         titleResId = R.string.navigation_tab_scan,
         icon = Icons.Rounded.QrCodeScanner,
         indicatorColor = QrezzyMint,
-        selectedIconColor = QrezzyPinkDark
+        selectedIconColor = QrezzyPinkDark,
     ),
     GENERATE(
         titleResId = R.string.navigation_tab_generate,

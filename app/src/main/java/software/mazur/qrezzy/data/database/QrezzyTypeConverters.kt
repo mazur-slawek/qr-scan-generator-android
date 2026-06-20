@@ -6,22 +6,14 @@ import software.mazur.qrezzy.domain.qr.model.QrType
 
 class QrezzyTypeConverters {
     @TypeConverter
-    fun fromQrHistorySource(value: QrSource): String {
-        return value.name
-    }
+    fun fromQrSource(value: QrSource): String = value.name
 
     @TypeConverter
-    fun toQrHistorySource(value: String): QrSource {
-        return QrSource.valueOf(value)
-    }
+    fun toQrSource(value: String): QrSource = QrSource.valueOf(value)
 
     @TypeConverter
-    fun fromQrHistoryType(value: QrType): String {
-        return value.name
-    }
+    fun fromQrType(value: QrType): String = value.name
 
     @TypeConverter
-    fun toQrHistoryType(value: String): QrType {
-        return QrType.valueOf(value)
-    }
+    fun toQrType(value: String): QrType = QrType.valueOf(value)
 }

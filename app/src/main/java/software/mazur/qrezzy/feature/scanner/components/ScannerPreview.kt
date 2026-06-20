@@ -57,7 +57,7 @@ fun ScannerPreview(
                     LiveCameraPreview(
                         modifier = Modifier.matchParentSize(),
                         onQrCodeScanned = onQrCodeScanned,
-                        isTorchEnabled = isTorchEnabled
+                        isTorchEnabled = isTorchEnabled,
                     )
                 }
                 ScannerFocusIndicator(
@@ -72,7 +72,7 @@ fun ScannerPreview(
 fun LiveCameraPreview(
     isTorchEnabled: Boolean,
     onQrCodeScanned: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -81,46 +81,54 @@ fun LiveCameraPreview(
     AndroidView(
         modifier = modifier,
         factory = { previewContext ->
-            val container = FrameLayout(previewContext).apply {
-                clipChildren = true
-                clipToPadding = true
-                setBackgroundColor(Color.TRANSPARENT)
-            }
-            val previewView = PreviewView(previewContext).apply {
-                implementationMode = PreviewView.ImplementationMode.COMPATIBLE
-                scaleType = PreviewView.ScaleType.FILL_CENTER
-                setBackgroundColor(Color.TRANSPARENT)
-                layoutParams = FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                )
-            }
+            val container =
+                FrameLayout(previewContext).apply {
+                    clipChildren = true
+                    clipToPadding = true
+                    setBackgroundColor(Color.TRANSPARENT)
+                }
+            val previewView =
+                PreviewView(previewContext).apply {
+                    implementationMode = PreviewView.ImplementationMode.COMPATIBLE
+                    scaleType = PreviewView.ScaleType.FILL_CENTER
+                    setBackgroundColor(Color.TRANSPARENT)
+                    layoutParams =
+                        FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT,
+                            FrameLayout.LayoutParams.MATCH_PARENT,
+                        )
+                }
             container.addView(previewView)
             val cameraProviderFuture = ProcessCameraProvider.getInstance(previewContext)
             cameraProviderFuture.addListener(
                 {
                     val cameraProvider = cameraProviderFuture.get()
-                    val preview = Preview.Builder()
-                        .build()
-                        .also { cameraPreview -> cameraPreview.surfaceProvider = previewView.surfaceProvider }
-                    val imageAnalysis = ImageAnalysis.Builder()
-                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                        .build()
-                        .also { analysis ->
-                            analysis.setAnalyzer(
-                                ContextCompat.getMainExecutor(previewContext),
-                                QrCodeAnalyzer(onQrCodeScanned)
-                            )
-                        }
+                    val preview =
+                        Preview
+                            .Builder()
+                            .build()
+                            .also { cameraPreview -> cameraPreview.surfaceProvider = previewView.surfaceProvider }
+                    val imageAnalysis =
+                        ImageAnalysis
+                            .Builder()
+                            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                            .build()
+                            .also { analysis ->
+                                analysis.setAnalyzer(
+                                    ContextCompat.getMainExecutor(previewContext),
+                                    QrCodeAnalyzer(onQrCodeScanned),
+                                )
+                            }
 
                     cameraProvider.unbindAll()
 
-                    camera = cameraProvider.bindToLifecycle(
-                        lifecycleOwner,
-                        CameraSelector.DEFAULT_BACK_CAMERA,
-                        preview,
-                        imageAnalysis
-                    )
+                    camera =
+                        cameraProvider.bindToLifecycle(
+                            lifecycleOwner,
+                            CameraSelector.DEFAULT_BACK_CAMERA,
+                            preview,
+                            imageAnalysis,
+                        )
                 },
                 ContextCompat.getMainExecutor(previewContext),
             )

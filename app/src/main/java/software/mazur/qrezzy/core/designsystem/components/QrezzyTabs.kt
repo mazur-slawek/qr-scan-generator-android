@@ -40,7 +40,7 @@ fun QrezzyTabs(
     selectedTab: QrezzyTabItem,
     onSelect: (QrezzyTabItem) -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     Card(
         modifier = modifier.alpha(if (enabled) 1f else 0.4f),
@@ -49,9 +49,10 @@ fun QrezzyTabs(
         elevation = CardDefaults.cardElevation(defaultElevation = QrezzyTabsDefaults.Container.elevation),
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = Surface, shape = ShapeDefaults.Medium)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .background(color = Surface, shape = ShapeDefaults.Medium),
         ) {
             tabs.forEach { tab ->
                 QrezzyTabItem(
@@ -59,7 +60,7 @@ fun QrezzyTabs(
                     text = stringResource(tab.titleResId),
                     isSelected = tab.key == selectedTab.key,
                     onClick = { onSelect(tab) },
-                    enabled = enabled
+                    enabled = enabled,
                 )
             }
         }
@@ -72,31 +73,34 @@ private fun QrezzyTabItem(
     isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier
-            .padding(QrezzyTabsDefaults.Tab.outerPadding)
-            .height(QrezzyTabsDefaults.Tab.height),
+        modifier =
+            modifier
+                .padding(QrezzyTabsDefaults.Tab.outerPadding)
+                .height(QrezzyTabsDefaults.Tab.height),
         shape = ShapeDefaults.Medium.copy(all = CornerSize(QrezzyTabsDefaults.Tab.cornerRadius)),
-        border = BorderStroke(
-            width = QrezzyTabsDefaults.Tab.borderWidth,
-            color = if (isSelected) QrezzyMintDark else Color.Transparent
-        ),
+        border =
+            BorderStroke(
+                width = QrezzyTabsDefaults.Tab.borderWidth,
+                color = if (isSelected) QrezzyMintDark else Color.Transparent,
+            ),
         contentPadding = PaddingValues.Zero,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = if (isSelected) QrezzyMint else Color.Transparent,
-            contentColor = TextSecondary,
-        ),
-        enabled = enabled
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = if (isSelected) QrezzyMint else Color.Transparent,
+                contentColor = TextSecondary,
+            ),
+        enabled = enabled,
     ) {
         Text(
             text = text,
             maxLines = 1,
             style = MaterialTheme.typography.labelLarge,
             color = if (isSelected) TextPrimary else TextSecondary,
-            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium
+            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
         )
     }
 }

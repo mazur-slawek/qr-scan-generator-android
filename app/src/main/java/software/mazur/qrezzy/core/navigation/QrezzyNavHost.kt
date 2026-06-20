@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import software.mazur.qrezzy.feature.generator.presentation.GeneratorScreen
+import software.mazur.qrezzy.feature.generator.GeneratorScreen
 import software.mazur.qrezzy.feature.history.HistoryNavHost
 import software.mazur.qrezzy.feature.home.HomeScreen
 import software.mazur.qrezzy.feature.onboarding.OnboardingScreen

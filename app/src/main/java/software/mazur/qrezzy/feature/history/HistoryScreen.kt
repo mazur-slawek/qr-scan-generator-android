@@ -41,7 +41,10 @@ import software.mazur.qrezzy.feature.history.components.HistoryListSectionHeader
 import software.mazur.qrezzy.feature.history.mapper.historyTabs
 
 @Composable
-fun HistoryScreen(onHistoryItemClick: (Long) -> Unit, viewModel: HistoryViewModel = hiltViewModel()) {
+fun HistoryScreen(
+    onHistoryItemClick: (Long) -> Unit,
+    viewModel: HistoryViewModel = hiltViewModel(),
+) {
     val uiState by viewModel.uiState.collectAsState()
     val selectedTab by viewModel.selectedTabItem.collectAsState()
 
@@ -50,21 +53,26 @@ fun HistoryScreen(onHistoryItemClick: (Long) -> Unit, viewModel: HistoryViewMode
             AnimatedContent(
                 targetState = uiState.isDeleteModeEnabled,
                 transitionSpec = {
-                    (fadeIn(
-                        animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.FADE_IN_DURATION_MILLIS)) +
+                    (
+                        fadeIn(
+                            animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.FADE_IN_DURATION_MILLIS),
+                        ) +
                             scaleIn(
                                 initialScale = HistoryScreenDefaults.TopBarAnimation.INITIAL_SCALE,
-                                animationSpec = tween(
-                                    HistoryScreenDefaults.TopBarAnimation.SCALE_IN_DURATION_MILLIS),
+                                animationSpec =
+                                    tween(
+                                        HistoryScreenDefaults.TopBarAnimation.SCALE_IN_DURATION_MILLIS,
+                                    ),
                             )
-                            ).togetherWith(
-                            fadeOut(
-                                animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.FADE_OUT_DURATION_MILLIS),
-                            ) + scaleOut(
+                    ).togetherWith(
+                        fadeOut(
+                            animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.FADE_OUT_DURATION_MILLIS),
+                        ) +
+                            scaleOut(
                                 targetScale = HistoryScreenDefaults.TopBarAnimation.TARGET_SCALE,
                                 animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.SCALE_OUT_DURATION_MILLIS),
-                            )
-                        ).using(SizeTransform(clip = false))
+                            ),
+                    ).using(SizeTransform(clip = false))
                 },
                 label = "history_top_bar_actions_animation",
             ) { isDeleteModeEnabled ->
@@ -74,13 +82,16 @@ fun HistoryScreen(onHistoryItemClick: (Long) -> Unit, viewModel: HistoryViewMode
                         Spacer(modifier = Modifier.width(HistoryScreenDefaults.topBarActionSpacing))
                         AnimatedVisibility(
                             visible = true,
-                            enter = fadeIn(
-                                animationSpec = tween(
-                                    HistoryScreenDefaults.TopBarAnimation.DELETE_BUTTON_DELAY_MILLIS,
-                                ),
-                            ) + scaleIn(
-                                initialScale = HistoryScreenDefaults.TopBarAnimation.INITIAL_SCALE,
-                            ),
+                            enter =
+                                fadeIn(
+                                    animationSpec =
+                                        tween(
+                                            HistoryScreenDefaults.TopBarAnimation.DELETE_BUTTON_DELAY_MILLIS,
+                                        ),
+                                ) +
+                                    scaleIn(
+                                        initialScale = HistoryScreenDefaults.TopBarAnimation.INITIAL_SCALE,
+                                    ),
                         ) {
                             QrezzyTopBarButton(
                                 onClick = viewModel::onDeleteSelected,
@@ -106,16 +117,18 @@ fun HistoryScreen(onHistoryItemClick: (Long) -> Unit, viewModel: HistoryViewMode
             selectedTab = selectedTab,
             onSelect = { tab -> viewModel.onTabSelected(tab.key) },
             modifier = Modifier.padding(bottom = HistoryScreenDefaults.tabsBottomPadding),
-            enabled = !uiState.isDeleteModeEnabled
+            enabled = !uiState.isDeleteModeEnabled,
         )
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            if (uiState.isInitialLoading) CircularProgressIndicator()
-            else if (uiState.sections.isEmpty()) HistoryListEmpty()
-            else {
+            if (uiState.isInitialLoading) {
+                CircularProgressIndicator()
+            } else if (uiState.sections.isEmpty()) {
+                HistoryListEmpty()
+            } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(bottom = HistoryScreenDefaults.screenPadding)
+                    contentPadding = PaddingValues(bottom = HistoryScreenDefaults.screenPadding),
                 ) {
                     uiState.sections.forEach { section ->
                         stickyHeader {
@@ -123,19 +136,19 @@ fun HistoryScreen(onHistoryItemClick: (Long) -> Unit, viewModel: HistoryViewMode
                         }
 
                         items(count = section.items.size, key = { index -> section.items[index].id }) { index ->
-                            val item = section.items[index]
+                            val qr = section.items[index]
 
                             HistoryListItem(
-                                item = item,
+                                qr = qr,
                                 isDeleteModeEnabled = uiState.isDeleteModeEnabled,
-                                isSelected = item.id in uiState.selectedItemIds,
+                                isSelected = qr.id in uiState.selectedItemIds,
                                 onClick = {
                                     if (uiState.isDeleteModeEnabled) {
-                                        viewModel.onHistoryItemClick(item.id)
+                                        viewModel.onHistoryItemClick(qr.id)
                                     } else {
-                                        onHistoryItemClick(item.id)
+                                        onHistoryItemClick(qr.id)
                                     }
-                                }
+                                },
                             )
                         }
                     }

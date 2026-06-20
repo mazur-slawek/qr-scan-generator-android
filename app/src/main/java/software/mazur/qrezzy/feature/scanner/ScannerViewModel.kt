@@ -9,102 +9,71 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import software.mazur.qrezzy.domain.qr.usecase.SaveScannedQrItemUseCase
+import software.mazur.qrezzy.domain.qr.usecase.CreateScannedQrUseCase
+import software.mazur.qrezzy.domain.qr.usecase.SaveQrUseCase
 import software.mazur.qrezzy.feature.scanner.model.ScannerUiEvent
 import software.mazur.qrezzy.feature.scanner.model.ScannerUiState
 import software.mazur.qrezzy.feature.scanner.model.ScannerUiState.Mode
-import software.mazur.qrezzy.feature.scanner.parser.QrContentParser
 import javax.inject.Inject
 
 @HiltViewModel
-class ScannerViewModel @Inject constructor(
-    private val saveScannedQrItemUseCase: SaveScannedQrItemUseCase) : ViewModel() {
-    private val _uiState = MutableStateFlow(ScannerUiState())
-    val uiState = _uiState.asStateFlow()
-    private val _events = MutableSharedFlow<ScannerUiEvent>()
-    val events = _events.asSharedFlow()
+class ScannerViewModel
+    @Inject
+    constructor(
+        private val createScannedQrUseCase: CreateScannedQrUseCase,
+        private val saveQrUseCase: SaveQrUseCase,
+    ) : ViewModel() {
+        private val _uiState = MutableStateFlow(ScannerUiState())
+        val uiState = _uiState.asStateFlow()
+        private val _events = MutableSharedFlow<ScannerUiEvent>()
+        val events = _events.asSharedFlow()
 
-    fun onStartScanning() {
-        _uiState.update { state ->
-            state.copy(
-                mode = Mode.Scanning,
-                isTorchEnabled = false,
-                scannedContent = null,
-                scannedType = null,
-                scannedTitle = null,
-            )
+        fun onStartScanning() {
+            _uiState.update { state -> state.copy(mode = Mode.Scanning, isTorchEnabled = false) }
         }
-    }
 
-    fun onStopScanning() {
-        _uiState.update { state -> state.copy(mode = Mode.Idle, isTorchEnabled = false) }
-    }
-
-    fun onPermissionDenied() {
-        _uiState.update { state -> state.copy(mode = Mode.PermissionDenied, isTorchEnabled = false) }
-    }
-
-    fun onPermissionRestored() {
-        _uiState.update { state -> state.copy(mode = Mode.Idle) }
-    }
-
-    fun onTorchClick() {
-        if (!_uiState.value.isScanning) return
-
-        _uiState.update { state -> state.copy(isTorchEnabled = !state.isTorchEnabled) }
-    }
-
-    fun onQrCodeScanned(content: String) {
-        val trimmedContent = content.trim()
-
-        if (trimmedContent.isBlank()) return
-        if (!_uiState.value.isScanning) return
-        if (_uiState.value.isDialogVisible) return
-        val parsedQr = QrContentParser.parse(trimmedContent)
-
-        _uiState.update { state ->
-            state.copy(
-                mode = Mode.Idle,
-                isTorchEnabled = false,
-                scannedContent = trimmedContent,
-                scannedType = parsedQr.type,
-                scannedTitle = parsedQr.title,
-            )
+        fun onStopScanning() {
+            _uiState.update { state -> state.copy(mode = Mode.Idle, isTorchEnabled = false) }
         }
-    }
 
-    fun onSaveScannedQrClick() {
-        val state = _uiState.value
-        val content = state.scannedContent ?: return
-        val type = state.scannedType ?: return
-        val title = state.scannedTitle ?: return
+        fun onPermissionDenied() {
+            _uiState.update { state -> state.copy(mode = Mode.PermissionDenied, isTorchEnabled = false) }
+        }
 
-        viewModelScope.launch {
-            try {
-                saveScannedQrItemUseCase(type = type, title = title, content = content, payloadJson = null)
-                clearScannedQr()
-                _events.emit(ScannerUiEvent.QrSaved)
-            } catch (exception: Exception) {
-                _events.emit(
-                    ScannerUiEvent.ShowError(message = exception.message ?: "Failed to save QR code")
-                )
+        fun onPermissionRestored() {
+            _uiState.update { state -> state.copy(mode = Mode.Idle) }
+        }
+
+        fun onTorchClick() {
+            if (!_uiState.value.isScanning) return
+            _uiState.update { state -> state.copy(isTorchEnabled = !state.isTorchEnabled) }
+        }
+
+        fun onQrCodeScanned(content: String) {
+            val trimmedContent = content.trim()
+
+            if (trimmedContent.isBlank()) return
+            if (!_uiState.value.isScanning) return
+            if (_uiState.value.detectedQr != null) return
+            val detectedQr = createScannedQrUseCase(trimmedContent)
+            _uiState.update { state -> state.copy(mode = Mode.Idle, isTorchEnabled = false, detectedQr = detectedQr) }
+        }
+
+        fun onSaveScannedQrClick() {
+            val state = _uiState.value
+            val detectedQr = state.detectedQr ?: return
+            viewModelScope.launch {
+                try {
+                    saveQrUseCase(detectedQr)
+                    clearScannedQr()
+                    _events.emit(ScannerUiEvent.QrSaved)
+                } catch (exception: Exception) {
+                    _events.emit(ScannerUiEvent.ShowError(message = exception.message ?: "Failed to save QR code"))
+                }
             }
         }
-    }
 
-    fun onCancelScannedQrClick() {
-        clearScannedQr()
-    }
-
-    private fun clearScannedQr() {
-        _uiState.update { state ->
-            state.copy(
-                mode = Mode.Idle,
-                isTorchEnabled = false,
-                scannedContent = null,
-                scannedType = null,
-                scannedTitle = null,
-            )
+        fun clearScannedQr() {
+            _uiState.update { state -> state.copy(mode = Mode.Idle, isTorchEnabled = false, detectedQr = null) }
         }
     }
-}

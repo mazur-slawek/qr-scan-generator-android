@@ -40,21 +40,22 @@ fun HistoryNavHost() {
                 AnimatedContentTransitionScope.SlideDirection.Right,
                 animationSpec = tween(300),
             )
-        }
+        },
     ) {
         composable(HistoryRoute.List.route) {
             HistoryScreen(
                 onHistoryItemClick = { historyId ->
                     navController.navigate(HistoryRoute.Details.createRoute(historyId))
-                }
+                },
             )
         }
 
         composable(
             route = HistoryRoute.Details.route,
-            arguments = listOf(
-                navArgument(HistoryRoute.Details.HISTORY_ID_ARG) { type = NavType.LongType }
-            )
+            arguments =
+                listOf(
+                    navArgument(HistoryRoute.Details.HISTORY_ID_ARG) { type = NavType.LongType },
+                ),
         ) {
             HistoryDetailsScreen(onBackClick = navController::popBackStack)
         }

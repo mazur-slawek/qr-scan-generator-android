@@ -53,6 +53,20 @@
     <string name="generator_save_qr_code">Save QR Code</string>
     <string name="generator_qr_saved_message">QR code saved</string>
 
+    <string name="qr_input_field_placeholder_text">Text</string>
+    <string name="qr_input_field_placeholder_url">URL</string>
+    <string name="qr_input_field_placeholder_phone">Phone number</string>
+    <string name="qr_input_field_placeholder_email_address">Email</string>
+    <string name="qr_input_field_placeholder_email_subject">Subject</string>
+    <string name="qr_input_field_placeholder_email_body">Message</string>
+    <string name="qr_input_field_placeholder_wifi_ssid">Network name (SSID)</string>
+    <string name="qr_input_field_placeholder_wifi_password">Password</string>
+    <string name="qr_input_field_placeholder_contact_first_name">First name</string>
+    <string name="qr_input_field_placeholder_contact_last_name">Last name</string>
+    <string name="qr_input_field_placeholder_contact_phone">Phone</string>
+    <string name="qr_input_field_placeholder_contact_email">Email</string>
+    <string name="qr_input_field_placeholder_contact_company">Company</string>
+
     <string name="history_select">Select</string>
     <string name="history_tab_all">All</string>
     <string name="history_tab_generated">Generated</string>
