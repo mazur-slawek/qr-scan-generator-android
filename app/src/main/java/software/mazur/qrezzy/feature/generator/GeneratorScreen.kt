@@ -72,24 +72,22 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
 
         QrPreview(
             qrBitmap = qrBitmap,
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp, bottom = 10.dp)
-                    .height(200.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, bottom = 10.dp)
+                .height(250.dp),
         )
 
         LazyColumn(
-            modifier =
-                Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .imePadding()
-                    .pointerInput(Unit) {
-                        detectTapGestures(
-                            onTap = { focusManager.clearFocus() },
-                        )
-                    },
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight()
+                .imePadding()
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onTap = { focusManager.clearFocus() },
+                    )
+                },
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             item {

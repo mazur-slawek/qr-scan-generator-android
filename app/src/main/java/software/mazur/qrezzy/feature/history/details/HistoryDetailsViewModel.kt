@@ -1,11 +1,11 @@
 package software.mazur.qrezzy.feature.history.details
 
+import android.graphics.Bitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -21,77 +21,80 @@ import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiState
 import javax.inject.Inject
 
 @HiltViewModel
-class HistoryDetailsViewModel
-    @Inject
-    constructor(
-        savedStateHandle: SavedStateHandle,
-        private val getQrByIdUseCase: GetQrByIdUseCase,
-        private val qrBitmapGenerator: QrBitmapGenerator,
-    ) : ViewModel() {
-        private val historyId: Long = checkNotNull(savedStateHandle[HistoryRoute.Details.HISTORY_ID_ARG])
-        private val _uiState = MutableStateFlow(HistoryDetailsUiState())
-        val uiState = _uiState.asStateFlow()
-        private val _events = MutableSharedFlow<HistoryDetailsUiEvent>()
-        val events = _events.asSharedFlow()
-        private var loadJob: Job? = null
-        private var lastQrSizePx: Int? = null
+class HistoryDetailsViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val getQrByIdUseCase: GetQrByIdUseCase,
+    private val qrBitmapGenerator: QrBitmapGenerator,
+) : ViewModel() {
+    private val historyId: Long = checkNotNull(savedStateHandle[HistoryRoute.Details.HISTORY_ID_ARG])
+    private val _uiState = MutableStateFlow(HistoryDetailsUiState())
+    val uiState = _uiState.asStateFlow()
+    private val _events = MutableSharedFlow<HistoryDetailsUiEvent>()
+    val events = _events.asSharedFlow()
 
-        fun loadHistoryItem(qrSizePx: Int) {
-            if (shouldSkipLoading(qrSizePx)) return
-
-            lastQrSizePx = qrSizePx
-            loadJob?.cancel()
-
-            loadJob =
-                viewModelScope.launch {
-                    val qr = getQrByIdUseCase(historyId)
-
-                    if (qr == null) {
-                        _uiState.update { it.copy(isLoading = false, isMissing = true) }
-                        return@launch
-                    }
-
-                    _uiState.update { it.copy(qr = qr, isLoading = true, isMissing = false) }
-                    val qrBitmap =
-                        withContext(Dispatchers.Default) {
-                            qrBitmapGenerator.generate(content = qr.content, size = qrSizePx)
-                        }
-
-                    _uiState.update {
-                        it.copy(qrBitmap = qrBitmap, isLoading = false)
-                    }
-                }
-        }
-
-        private fun shouldSkipLoading(qrSizePx: Int): Boolean {
-            val state = _uiState.value
-            return lastQrSizePx == qrSizePx && state.qrBitmap != null && !state.isMissing
-        }
-
-        fun onShareQrCodeClick() {
-            val state = _uiState.value
-            val bitmap = state.qrBitmap ?: return
-            val title = (state.qr ?: return).content.toQrFileName()
-            viewModelScope.launch { _events.emit(HistoryDetailsUiEvent.ShareQrCode(title = title, bitmap = bitmap)) }
-        }
-
-        fun onDownloadQrCodeClick() {
-            val state = _uiState.value
-            val bitmap = state.qrBitmap ?: return
-            val fileName = (state.qr ?: return).content.toQrFileName()
-            viewModelScope.launch {
-                _events.emit(HistoryDetailsUiEvent.DownloadQrCode(fileName = fileName, bitmap = bitmap))
-            }
-        }
-
-        private fun String.toQrFileName(): String =
-            trim()
-                .take(QR_SHARE_TITLE_MAX_LENGTH)
-                .replace(Regex("\\s+"), "_")
-                .ifBlank { DEFAULT_FILE_NAME }
-
-        private companion object {
-            private const val QR_SHARE_TITLE_MAX_LENGTH = 10
-            const val DEFAULT_FILE_NAME = "qrezzy_qr_code"
+    init {
+        viewModelScope.launch {
+            loadQr()
         }
     }
+
+    fun onShareQrCodeClick() {
+        val shareData = getShareData() ?: return
+
+        viewModelScope.launch {
+            _events.emit(
+                HistoryDetailsUiEvent.ShareQrCode(title = shareData.fileName, bitmap = shareData.bitmap)
+            )
+        }
+    }
+
+    fun onDownloadQrCodeClick() {
+        val shareData = getShareData() ?: return
+
+        viewModelScope.launch {
+            _events.emit(
+                HistoryDetailsUiEvent.DownloadQrCode(fileName = shareData.fileName, bitmap = shareData.bitmap)
+            )
+        }
+    }
+
+    private suspend fun loadQr() {
+        val qr = getQrByIdUseCase(historyId)
+
+        if (qr == null) {
+            _uiState.update { it.copy(isLoading = false, isMissing = true) }
+            return
+        }
+
+        _uiState.update { it.copy(qr = qr, isLoading = true, isMissing = false) }
+        val qrBitmap = withContext(Dispatchers.Default) {
+            qrBitmapGenerator.generate(content = qr.content)
+        }
+
+        _uiState.update { it.copy(qrBitmap = qrBitmap, isLoading = false) }
+    }
+
+    private fun getShareData(): QrShareData? {
+        val state = _uiState.value
+        val qr = state.qr ?: return null
+        val bitmap = state.qrBitmap ?: return null
+        return QrShareData(fileName = qr.content.toQrFileName(), bitmap = bitmap)
+    }
+
+    private fun String.toQrFileName(): String {
+        return trim()
+            .take(QR_SHARE_TITLE_MAX_LENGTH)
+            .replace(Regex("\\s+"), "_")
+            .ifBlank { DEFAULT_FILE_NAME }
+    }
+
+    private data class QrShareData(
+        val fileName: String,
+        val bitmap: Bitmap,
+    )
+
+    private companion object {
+        private const val QR_SHARE_TITLE_MAX_LENGTH = 10
+        private const val DEFAULT_FILE_NAME = "qrezzy_qr_code"
+    }
+}
