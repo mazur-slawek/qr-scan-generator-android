@@ -85,6 +85,7 @@
     <string name="history_empty_subtitle">Generate a QR code or scan one to start building your history.</string>
 
     <string name="history_details_title">QR Code Preview</string>
+    <string name="history_details_subtitle">View, share or download this QR code.</string>
     <string name="history_details_share">Share QR Code</string>
     <string name="history_details_download">Download QR Code</string>
     <string name="history_details_save_success">QR code saved successfully</string>
