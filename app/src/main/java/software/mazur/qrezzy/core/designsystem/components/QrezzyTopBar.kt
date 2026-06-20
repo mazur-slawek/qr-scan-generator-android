@@ -46,10 +46,9 @@ fun QrezzyTopBar(
     content: @Composable (() -> Unit)? = null,
 ) {
     Row(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(QrezzyTopBarDefaults.height),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(QrezzyTopBarDefaults.height),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (onBackClick != null) {
@@ -57,10 +56,9 @@ fun QrezzyTopBar(
             Spacer(modifier = Modifier.width(Content.padding))
         }
         Column(
-            modifier =
-                Modifier
-                    .weight(1f)
-                    .padding(end = 16.dp),
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
@@ -113,52 +111,49 @@ fun QrezzyTopBarButton(
     depthColor: Color = QrezzyMint,
 ) {
     Box(
-        modifier =
-            modifier
-                .wrapContentWidth()
-                .alpha(if (enabled) 1f else 0.4f)
-                .height(QrezzyTopBarButtonDefaults.Container.height),
+        modifier = modifier
+            .wrapContentWidth()
+            .alpha(if (enabled) 1f else 0.4f)
+            .height(QrezzyTopBarButtonDefaults.Container.height),
     ) {
         Spacer(
-            modifier =
-                Modifier
-                    .matchParentSize()
-                    .padding(
-                        top = QrezzyTopBarButtonDefaults.Depth.offsetY,
-                        start = QrezzyTopBarButtonDefaults.Depth.offsetX,
-                    ).background(color = depthColor, shape = ShapeDefaults.Medium)
-                    .border(
-                        width = QrezzyTopBarButtonDefaults.Depth.borderWidth,
-                        color = BorderPrimary,
-                        shape = ShapeDefaults.Medium,
-                    ).align(Alignment.BottomEnd),
+            modifier = Modifier
+                .matchParentSize()
+                .padding(
+                    top = QrezzyTopBarButtonDefaults.Depth.offsetY,
+                    start = QrezzyTopBarButtonDefaults.Depth.offsetX,
+                )
+                .background(color = depthColor, shape = ShapeDefaults.Medium)
+                .border(
+                    width = QrezzyTopBarButtonDefaults.Depth.borderWidth,
+                    color = BorderPrimary,
+                    shape = ShapeDefaults.Medium,
+                )
+                .align(Alignment.BottomEnd),
         )
         Button(
             onClick = onClick,
             enabled = enabled,
             shape = ShapeDefaults.Medium,
             border = BorderStroke(width = QrezzyTopBarButtonDefaults.Border.width, color = BorderPrimary),
-            contentPadding =
-                PaddingValues(
-                    horizontal = Content.padding,
-                ),
-            colors =
-                ButtonDefaults.buttonColors(
-                    containerColor = containerColor,
-                    contentColor = TextPrimary,
-                    disabledContainerColor = containerColor,
-                    disabledContentColor = TextPrimary,
-                ),
-            modifier =
-                Modifier
-                    .height(QrezzyTopBarButtonDefaults.Container.height)
-                    .padding(
-                        end = QrezzyTopBarButtonDefaults.Depth.offsetY,
-                        bottom = QrezzyTopBarButtonDefaults.Depth.offsetX,
-                    ).defaultMinSize(
-                        minWidth = QrezzyTopBarButtonDefaults.Container.minWidth,
-                        minHeight = QrezzyTopBarButtonDefaults.Container.height,
-                    ).align(Alignment.TopStart),
+            contentPadding = PaddingValues(horizontal = Content.padding),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = containerColor,
+                contentColor = TextPrimary,
+                disabledContainerColor = containerColor,
+                disabledContentColor = TextPrimary,
+            ),
+            modifier = Modifier
+                .height(QrezzyTopBarButtonDefaults.Container.height)
+                .padding(
+                    end = QrezzyTopBarButtonDefaults.Depth.offsetY,
+                    bottom = QrezzyTopBarButtonDefaults.Depth.offsetX,
+                )
+                .defaultMinSize(
+                    minWidth = QrezzyTopBarButtonDefaults.Container.minWidth,
+                    minHeight = QrezzyTopBarButtonDefaults.Container.height,
+                )
+                .align(Alignment.TopStart),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 text?.let {
@@ -169,18 +164,15 @@ fun QrezzyTopBarButton(
                         maxLines = QrezzyTopBarButtonDefaults.Text.MAX_LINES,
                     )
                 }
-                if (text != null && icon != null) {
-                    Spacer(modifier = Modifier.width(QrezzyTopBarButtonDefaults.Content.iconTextSpacing))
-                }
+                if (text != null && icon != null) Spacer(modifier = Modifier.width(Content.iconTextSpacing))
                 icon?.let {
                     Icon(
                         imageVector = it,
                         contentDescription = null,
                         tint = iconTint,
-                        modifier =
-                            Modifier
-                                .width(QrezzyTopBarButtonDefaults.Icon.size)
-                                .height(QrezzyTopBarButtonDefaults.Icon.size),
+                        modifier = Modifier
+                            .width(QrezzyTopBarButtonDefaults.Icon.size)
+                            .height(QrezzyTopBarButtonDefaults.Icon.size),
                     )
                 }
             }

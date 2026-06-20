@@ -48,6 +48,10 @@
     <string name="scanner_popup_permission_denied_desc">Please allow camera access in Settings to scan QR codes.</string>
     <string name="scanner_qr_saved">QR code saved to history</string>
 
+    <string name="scanner_dialog_title">QR code detected!</string>
+    <string name="scanner_dialog_subtitle">Here\'s a preview of what\'s inside.</string>
+    <string name="scanner_dialog_save">Save</string>
+
     <string name="generator_select_qr_type">Select QR code type</string>
     <string name="generator_enter_data">Enter data to generate a QR code</string>
     <string name="generator_save_qr_code">Save QR Code</string>
@@ -82,4 +86,25 @@
     <string name="history_details_save_success">QR code saved successfully</string>
     <string name="history_details_save_error">Failed to save QR code</string>
     <string name="history_details_qr_preview_content_description">QR Code preview</string>
+
+    <string name="qr_details_type">Type</string>
+    <string name="qr_details_section_details">Details</string>
+    <string name="qr_details_scanned">Scanned</string>
+    <string name="qr_details_section_content">Content</string>
+    <string name="qr_details_field_text">Text</string>
+    <string name="qr_details_field_url">URL</string>
+    <string name="qr_details_field_phone">Phone</string>
+    <string name="qr_details_field_wifi_network_name">Network Name</string>
+    <string name="qr_details_field_wifi_security">Security</string>
+    <string name="qr_details_field_wifi_password">Password</string>
+    <string name="qr_details_field_email_address">Email</string>
+    <string name="qr_details_field_email_subject">Subject</string>
+    <string name="qr_details_field_email_message">Message</string>
+    <string name="qr_details_field_contact_name">Name</string>
+    <string name="qr_details_field_contact_phone">Phone</string>
+    <string name="qr_details_field_contact_email">Email</string>
+    <string name="qr_details_field_contact_company">Company</string>
+    <string name="qr_details_field_contact_raw">Contact</string>
+    <string name="qr_security_tip_title">Make sure the content is safe before saving.</string>
+    <string name="qr_security_tip_description">Be cautious of links, Wi-Fi networks, emails and contact information.</string>
 </resources>
