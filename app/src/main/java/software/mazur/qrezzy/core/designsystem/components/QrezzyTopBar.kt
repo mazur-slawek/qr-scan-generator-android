@@ -67,34 +67,34 @@ fun QrezzyTopBar(
                 .padding(end = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(
-                text = stringResource(titleResId),
-                maxLines = QrezzyTopBarDefaults.TITLE_MAX_LINES,
-                textAlign = TextAlign.Start,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = TextPrimary,
-                modifier = Modifier.fillMaxWidth(),
-            )
+            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = stringResource(titleResId),
+                    maxLines = QrezzyTopBarDefaults.TITLE_MAX_LINES,
+                    textAlign = TextAlign.Start,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    color = TextPrimary,
+                )
+                Spacer(modifier = Modifier.width(7.dp))
+                Icon(
+                    painter = painterResource(R.drawable.qrezzy_sparkles),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
             subtitleResId?.let {
-                Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = stringResource(subtitleResId),
-                        maxLines = QrezzyTopBarDefaults.TITLE_MAX_LINES,
-                        textAlign = TextAlign.Start,
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Medium,
-                        color = TextSecondary,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Icon(
-                        painter = painterResource(R.drawable.qrezzy_sparkles),
-                        contentDescription = null,
-                        tint = Color.Unspecified,
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
+                Text(
+                    text = stringResource(subtitleResId),
+                    maxLines = QrezzyTopBarDefaults.TITLE_MAX_LINES,
+                    textAlign = TextAlign.Start,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Medium,
+                    color = TextSecondary,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.fillMaxWidth(),
+                )
             }
         }
         Spacer(modifier = Modifier.width(Content.padding))
@@ -129,7 +129,7 @@ fun QrezzyTopBarButton(
         modifier = modifier
             .wrapContentWidth()
             .alpha(if (enabled) 1f else 0.4f)
-            .height(QrezzyTopBarButtonDefaults.Container.height),
+            .height(QrezzyTopBarButtonDefaults.Container.size),
     ) {
         Spacer(
             modifier = Modifier
@@ -159,16 +159,22 @@ fun QrezzyTopBarButton(
                 disabledContentColor = TextPrimary,
             ),
             modifier = Modifier
-                .height(QrezzyTopBarButtonDefaults.Container.height)
+                .then(
+                    if (text == null) {
+                        Modifier.size(QrezzyTopBarButtonDefaults.Container.size)
+                    } else {
+                        Modifier.height(QrezzyTopBarButtonDefaults.Container.size)
+                    }
+                )
                 .padding(
                     end = QrezzyTopBarButtonDefaults.Depth.offsetY,
                     bottom = QrezzyTopBarButtonDefaults.Depth.offsetX,
                 )
                 .defaultMinSize(
-                    minWidth = QrezzyTopBarButtonDefaults.Container.minWidth,
-                    minHeight = QrezzyTopBarButtonDefaults.Container.height,
+                    minWidth = QrezzyTopBarButtonDefaults.Container.size,
+                    minHeight = QrezzyTopBarButtonDefaults.Container.size,
                 )
-                .align(Alignment.TopStart),
+                .align(Alignment.TopStart)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 text?.let {
@@ -197,8 +203,7 @@ fun QrezzyTopBarButton(
 
 private object QrezzyTopBarButtonDefaults {
     object Container {
-        val height = 50.dp
-        val minWidth = 50.dp
+        val size = 50.dp
     }
 
     object Content {
