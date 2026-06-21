@@ -16,11 +16,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
+import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
+import software.mazur.qrezzy.core.designsystem.components.QrezzyTabItem
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 
+enum class HistoryEmptyAction {
+    Scan,
+    Generate,
+}
+
 @Composable
-fun HistoryListEmpty() {
+fun HistoryListEmpty(selectedTab: QrezzyTabItem, onEmptyActionClick: (HistoryEmptyAction) -> Unit) {
+    val emptyAction = selectedTab.toEmptyAction()
+    val buttonTextResId = emptyAction.toButtonTextResId()
+
     Column(
         modifier = Modifier.padding(horizontal = HistoryListEmptyDefaults.horizontalPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -49,6 +59,25 @@ fun HistoryListEmpty() {
             textAlign = TextAlign.Center,
             text = stringResource(R.string.history_empty_subtitle),
         )
+
+        Spacer(modifier = Modifier.height(HistoryListEmptyDefaults.buttonPadding))
+
+        QrezzyButton(
+            onClick = { onEmptyActionClick(emptyAction) },
+            text = stringResource(buttonTextResId),
+            elevation = 0.dp
+        )
+    }
+}
+
+private fun QrezzyTabItem.toEmptyAction(): HistoryEmptyAction {
+    return if (this.key == 2) HistoryEmptyAction.Generate else HistoryEmptyAction.Scan
+}
+
+private fun HistoryEmptyAction.toButtonTextResId(): Int {
+    return when (this) {
+        HistoryEmptyAction.Scan     -> R.string.navigation_title_scan
+        HistoryEmptyAction.Generate -> R.string.navigation_title_generate
     }
 }
 
@@ -57,4 +86,5 @@ private object HistoryListEmptyDefaults {
     val horizontalPadding = 32.dp
     val imageTitleSpacing = 20.dp
     val titleSubtitleSpacing = 4.dp
+    val buttonPadding = 16.dp
 }

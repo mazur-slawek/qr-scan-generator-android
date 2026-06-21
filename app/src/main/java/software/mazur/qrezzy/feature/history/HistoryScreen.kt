@@ -35,6 +35,7 @@ import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTabs
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
+import software.mazur.qrezzy.feature.history.components.HistoryEmptyAction
 import software.mazur.qrezzy.feature.history.components.HistoryListEmpty
 import software.mazur.qrezzy.feature.history.components.HistoryListItem
 import software.mazur.qrezzy.feature.history.components.HistoryListSectionHeader
@@ -44,6 +45,7 @@ import software.mazur.qrezzy.feature.history.mapper.historyTabs
 fun HistoryScreen(
     onHistoryItemClick: (Long) -> Unit,
     viewModel: HistoryViewModel = hiltViewModel(),
+    onEmptyActionClick: (HistoryEmptyAction) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val selectedTab by viewModel.selectedTabItem.collectAsState()
@@ -128,7 +130,10 @@ fun HistoryScreen(
             if (uiState.isInitialLoading) {
                 CircularProgressIndicator()
             } else if (uiState.sections.isEmpty()) {
-                HistoryListEmpty()
+                HistoryListEmpty(
+                    selectedTab = selectedTab,
+                    onEmptyActionClick = onEmptyActionClick
+                )
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
