@@ -84,6 +84,8 @@
     <string name="history_source_scanned">Scanned</string>
     <string name="history_empty_title">No QR codes saved yet</string>
     <string name="history_empty_subtitle">Generate a QR code or scan one to start building your history.</string>
+    <string name="history_footer_title">You\'re all caught up!</string>
+    <string name="history_footer_subtitle">Generate a QR code or scan one to start building your history.</string>
 
     <string name="history_details_title">QR Code Preview</string>
     <string name="history_details_subtitle">View, share or download this QR code.</string>
@@ -92,6 +94,7 @@
     <string name="history_details_save_success">QR code saved successfully</string>
     <string name="history_details_save_error">Failed to save QR code</string>
     <string name="history_details_qr_preview_content_description">QR Code preview</string>
+    <string name="history_search_placeholder">Search…</string>
 
     <string name="qr_details_type">Type</string>
     <string name="qr_details_section_details">Details</string>

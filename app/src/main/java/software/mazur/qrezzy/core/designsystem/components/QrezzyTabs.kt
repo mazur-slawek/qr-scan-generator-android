@@ -3,6 +3,7 @@ package software.mazur.qrezzy.core.designsystem.components
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,8 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
@@ -23,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import software.mazur.qrezzy.core.designsystem.theme.BorderLight
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
 import software.mazur.qrezzy.core.designsystem.theme.Surface
@@ -39,32 +39,31 @@ fun QrezzyTabs(
     tabs: List<QrezzyTabItem>,
     selectedTab: QrezzyTabItem,
     onSelect: (QrezzyTabItem) -> Unit,
-    modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
-    Card(
-        modifier = modifier.alpha(if (enabled) 1f else 0.4f),
-        shape = ShapeDefaults.Medium,
-        colors = CardDefaults.cardColors(containerColor = Surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = QrezzyTabsDefaults.Container.elevation),
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .alpha(if (enabled) 1f else 0.4f)
+            .background(color = Surface, shape = ShapeDefaults.Medium)
+            .border(
+                width = QrezzyTabsDefaults.borderWidth,
+                color = BorderLight,
+                shape = ShapeDefaults.Medium,
+            )
+            .padding(all = 1.dp)
     ) {
-        Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .background(color = Surface, shape = ShapeDefaults.Medium),
-        ) {
-            tabs.forEach { tab ->
-                QrezzyTabItem(
-                    modifier = Modifier.weight(1f),
-                    text = stringResource(tab.titleResId),
-                    isSelected = tab.key == selectedTab.key,
-                    onClick = { onSelect(tab) },
-                    enabled = enabled,
-                )
-            }
+        tabs.forEach { tab ->
+            QrezzyTabItem(
+                modifier = Modifier.weight(1f),
+                text = stringResource(tab.titleResId),
+                isSelected = tab.key == selectedTab.key,
+                onClick = { onSelect(tab) },
+                enabled = enabled,
+            )
         }
     }
+
 }
 
 @Composable
@@ -106,9 +105,7 @@ private fun QrezzyTabItem(
 }
 
 private object QrezzyTabsDefaults {
-    object Container {
-        val elevation = 2.dp
-    }
+    val borderWidth = 1.5.dp
 
     object Tab {
         val height = 35.dp

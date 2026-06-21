@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,9 +37,10 @@ fun HistoryListEmpty(selectedTab: QrezzyTabItem, onEmptyActionClick: (HistoryEmp
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            painter = painterResource(R.drawable.history_empty),
+            painter = painterResource(R.drawable.history_list_empty),
             contentDescription = null,
             modifier = Modifier.height(HistoryListEmptyDefaults.imageHeight),
+            contentScale = ContentScale.FillHeight
         )
 
         Spacer(modifier = Modifier.height(HistoryListEmptyDefaults.imageTitleSpacing))
@@ -84,7 +86,7 @@ private fun HistoryEmptyAction.toButtonTextResId(): Int {
 private object HistoryListEmptyDefaults {
     val imageHeight = 170.dp
     val horizontalPadding = 32.dp
-    val imageTitleSpacing = 20.dp
+    val imageTitleSpacing = 16.dp
     val titleSubtitleSpacing = 4.dp
     val buttonPadding = 16.dp
 }
