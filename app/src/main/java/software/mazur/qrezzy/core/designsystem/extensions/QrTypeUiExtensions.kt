@@ -20,6 +20,7 @@ import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellow
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
+import software.mazur.qrezzy.domain.qr.model.Qr
 import software.mazur.qrezzy.domain.qr.model.QrType
 
 @Immutable
@@ -33,7 +34,7 @@ data class QrTypeUi(
 val QrType.ui: QrTypeUi
     get() =
         when (this) {
-            QrType.TEXT ->
+            QrType.TEXT    ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_text,
                     icon = Icons.Outlined.Textsms,
@@ -41,7 +42,7 @@ val QrType.ui: QrTypeUi
                     contentColor = QrezzyYellow,
                 )
 
-            QrType.URL ->
+            QrType.URL     ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_url,
                     icon = Icons.Outlined.InsertLink,
@@ -49,7 +50,7 @@ val QrType.ui: QrTypeUi
                     contentColor = QrezzyMint,
                 )
 
-            QrType.WIFI ->
+            QrType.WIFI    ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_wifi,
                     icon = Icons.Outlined.Wifi,
@@ -65,7 +66,7 @@ val QrType.ui: QrTypeUi
                     contentColor = QrezzyYellow,
                 )
 
-            QrType.EMAIL ->
+            QrType.EMAIL   ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_email,
                     icon = Icons.Outlined.AlternateEmail,
@@ -73,7 +74,7 @@ val QrType.ui: QrTypeUi
                     contentColor = QrezzyPink,
                 )
 
-            QrType.PHONE ->
+            QrType.PHONE   ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_phone,
                     icon = Icons.Outlined.Smartphone,
@@ -81,3 +82,71 @@ val QrType.ui: QrTypeUi
                     contentColor = QrezzyPurple,
                 )
         }
+val Qr.label: String
+    get() =
+        when (type) {
+            QrType.TEXT    -> content.toReadableTextLabel()
+            QrType.URL     -> content.toReadableUrlLabel()
+            QrType.WIFI    -> content.toReadableWifiLabel()
+            QrType.CONTACT -> content.toReadableContactLabel()
+            QrType.EMAIL   -> content.toReadableEmailLabel()
+            QrType.PHONE   -> content.toReadablePhoneLabel()
+        }
+
+private fun String.toReadableTextLabel(): String {
+    return trim()
+        .ifBlank { QrTypeUiDefaults.TEXT_FALLBACK_LABEL }
+}
+
+private fun String.toReadableUrlLabel(): String {
+    return trim()
+        .removePrefix("https://")
+        .removePrefix("http://")
+        .substringBefore("/")
+        .ifBlank { QrTypeUiDefaults.URL_FALLBACK_LABEL }
+}
+
+private fun String.toReadableWifiLabel(): String {
+    return substringAfter("S:", "")
+        .substringBefore(";")
+        .trim()
+        .ifBlank { QrTypeUiDefaults.WIFI_FALLBACK_LABEL }
+}
+
+private fun String.toReadableContactLabel(): String {
+    return lineSequence()
+        .firstOrNull { line -> line.startsWith("FN:", ignoreCase = true) }
+        ?.substringAfter("FN:")
+        ?.trim()
+        ?.takeIf { value -> value.isNotBlank() }
+            ?: QrTypeUiDefaults.CONTACT_FALLBACK_LABEL
+}
+
+private fun String.toReadableEmailLabel(): String {
+    if (startsWith("mailto:", ignoreCase = true)) {
+        return removePrefix("mailto:")
+            .substringBefore("?")
+            .trim()
+            .ifBlank { QrTypeUiDefaults.EMAIL_FALLBACK_LABEL }
+    }
+
+    return substringAfter("TO:", "")
+        .substringBefore(";")
+        .trim()
+        .ifBlank { QrTypeUiDefaults.EMAIL_FALLBACK_LABEL }
+}
+
+private fun String.toReadablePhoneLabel(): String {
+    return removePrefix("tel:")
+        .trim()
+        .ifBlank { QrTypeUiDefaults.PHONE_FALLBACK_LABEL }
+}
+
+private object QrTypeUiDefaults {
+    const val TEXT_FALLBACK_LABEL = "Text QR"
+    const val URL_FALLBACK_LABEL = "Website"
+    const val WIFI_FALLBACK_LABEL = "Wi-Fi Network"
+    const val CONTACT_FALLBACK_LABEL = "Contact"
+    const val EMAIL_FALLBACK_LABEL = "Email"
+    const val PHONE_FALLBACK_LABEL = "Phone"
+}

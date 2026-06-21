@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
+import software.mazur.qrezzy.core.designsystem.extensions.label
 import software.mazur.qrezzy.core.designsystem.extensions.ui
 import software.mazur.qrezzy.core.designsystem.theme.BorderLight
 import software.mazur.qrezzy.core.designsystem.theme.Error
@@ -88,20 +89,23 @@ fun HistoryListItem(
                             width = HistoryListItemDefaults.Icon.borderWidth,
                             color = qr.type.ui.containerColor,
                             shape = ShapeDefaults.Small,
-                        ).shadow(
+                        )
+                        .shadow(
                             elevation = HistoryListItemDefaults.Icon.elevation,
                             shape = ShapeDefaults.Small,
-                        ).background(
+                        )
+                        .background(
                             color = qr.type.ui.contentColor,
                             shape = ShapeDefaults.Small,
-                        ).padding(HistoryListItemDefaults.Icon.padding),
+                        )
+                        .padding(HistoryListItemDefaults.Icon.padding),
             )
 
             Spacer(modifier = Modifier.width(HistoryListItemDefaults.iconTextSpacing))
 
             Column(modifier = Modifier.weight(HistoryListItemDefaults.TEXT_WEIGHT)) {
                 Text(
-                    text = qr.content,
+                    text = qr.label,
                     color = TextPrimary,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.SemiBold,
@@ -159,7 +163,7 @@ private fun Qr.subtitle(): String = "${source.toDisplayName()} • ${createdAt.t
 private fun QrSource.toDisplayName(): String =
     when (this) {
         QrSource.GENERATED -> stringResource(R.string.history_source_generated)
-        QrSource.SCANNED -> stringResource(R.string.history_source_scanned)
+        QrSource.SCANNED   -> stringResource(R.string.history_source_scanned)
     }
 
 private fun Long.toHistoryTime(): String =
