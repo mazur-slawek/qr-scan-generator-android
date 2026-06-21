@@ -46,6 +46,7 @@ import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 import software.mazur.qrezzy.feature.generator.GeneratorScreen
 import software.mazur.qrezzy.feature.history.HistoryNavHost
+import software.mazur.qrezzy.feature.history.components.HistoryEmptyAction
 import software.mazur.qrezzy.feature.scanner.ScannerScreen
 import software.mazur.qrezzy.feature.settings.SettingsScreen
 
@@ -59,19 +60,16 @@ fun HomeScreen() {
     ) { innerPadding ->
         QrezzyHomeScreenContent(
             selectedTab = selectedTab,
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
+            onTabSelected = { tab -> selectedTab = tab },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
         )
     }
 }
 
 @Composable
-private fun QrezzyBottomNavigationBar(
-    selectedTab: HomeTab,
-    onTabSelected: (HomeTab) -> Unit,
-) {
+private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (HomeTab) -> Unit) {
     val isKeyboardVisible = WindowInsets.ime.getBottom(LocalDensity.current) > 0
     AnimatedVisibility(visible = !isKeyboardVisible, enter = fadeIn()) {
         NavigationBar(
@@ -112,15 +110,20 @@ private fun QrezzyBottomNavigationBar(
 }
 
 @Composable
-private fun QrezzyHomeScreenContent(
-    modifier: Modifier,
-    selectedTab: HomeTab,
-) {
+private fun QrezzyHomeScreenContent(modifier: Modifier, selectedTab: HomeTab, onTabSelected: (HomeTab) -> Unit) {
     Box(modifier = modifier) {
         when (selectedTab) {
-            HomeTab.SCAN -> ScannerScreen()
+            HomeTab.SCAN     -> ScannerScreen()
             HomeTab.GENERATE -> GeneratorScreen()
-            HomeTab.HISTORY -> HistoryNavHost()
+            HomeTab.HISTORY  -> HistoryNavHost(
+                onEmptyActionClick = { action ->
+                    when (action) {
+                        HistoryEmptyAction.Scan     -> onTabSelected(HomeTab.SCAN)
+                        HistoryEmptyAction.Generate -> onTabSelected(HomeTab.GENERATE)
+                    }
+                }
+            )
+
             HomeTab.SETTINGS -> SettingsScreen()
         }
     }

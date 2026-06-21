@@ -57,7 +57,7 @@ fun QrezzyNavHost() {
         }
 
         composable(QrezzyDestination.History.route) {
-            HistoryNavHost()
+            HistoryNavHost(onEmptyActionClick = {})
         }
 
         composable(QrezzyDestination.Settings.route) {

@@ -8,10 +8,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import software.mazur.qrezzy.feature.history.components.HistoryEmptyAction
 import software.mazur.qrezzy.feature.history.details.HistoryDetailsScreen
 
 @Composable
-fun HistoryNavHost() {
+fun HistoryNavHost(onEmptyActionClick: (HistoryEmptyAction) -> Unit) {
     val navController = rememberNavController()
 
     NavHost(
@@ -44,6 +45,7 @@ fun HistoryNavHost() {
     ) {
         composable(HistoryRoute.List.route) {
             HistoryScreen(
+                onEmptyActionClick = onEmptyActionClick,
                 onHistoryItemClick = { historyId ->
                     navController.navigate(HistoryRoute.Details.createRoute(historyId))
                 },
