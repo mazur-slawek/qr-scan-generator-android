@@ -45,6 +45,7 @@
     <string name="scanner_action_scan">Start Scanning</string>
     <string name="scanner_action_stop">Stop Scanning</string>
     <string name="scanner_action_open_settings">Open Settings</string>
+    <string name="scanner_action_select_image">Scan from Image</string>
 
     <string name="scanner_popup_idle_title">Point your camera at a QR code</string>
     <string name="scanner_popup_idle_desc">The code will be scanned automatically</string>

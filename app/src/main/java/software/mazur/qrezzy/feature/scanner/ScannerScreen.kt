@@ -37,6 +37,7 @@ import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellow
@@ -52,12 +53,16 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val uiState by viewModel.uiState.collectAsState()
     val qrSavedMessage = stringResource(R.string.scanner_qr_saved)
-    val cameraPermissionLauncher =
-        rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.RequestPermission(),
-        ) { isGranted ->
-            if (isGranted) viewModel.onStartScanning() else viewModel.onPermissionDenied()
-        }
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+    ) { isGranted ->
+        if (isGranted) viewModel.onStartScanning() else viewModel.onPermissionDenied()
+    }
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+    ) { uri ->
+        uri?.let(viewModel::onImageSelected)
+    }
 
     LaunchedEffect(Unit) {
         if (!context.hasCameraPermission()) {
@@ -122,18 +127,14 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
                 iconTint = if (uiState.isTorchEnabled) QrezzyPurpleDark else Color.Gray,
             )
         }
-
         Spacer(modifier = Modifier.height(ScannerScreenDefaults.topBarPreviewSpacing))
-
         ScannerPreview(
             modifier = Modifier.weight(ScannerScreenDefaults.PREVIEW_WEIGHT),
             isTorchEnabled = uiState.isTorchEnabled,
             isScanning = uiState.isScanning,
             onQrCodeScanned = viewModel::onQrCodeScanned,
         )
-
         Spacer(modifier = Modifier.height(ScannerScreenDefaults.previewButtonSpacing))
-
         QrezzyButton(
             onClick = {
                 when (uiState.mode) {
@@ -159,11 +160,16 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
             containerColor = uiState.mode.actionContainerColor,
             depthColor = uiState.mode.actionDepthColor,
         )
-
+        Spacer(modifier = Modifier.height(ScannerScreenDefaults.buttonsSpacing))
+        QrezzyButton(
+            onClick = { imagePickerLauncher.launch("image/*") },
+            elevation = 0.dp,
+            containerColor = QrezzyYellow,
+            depthColor = QrezzyPinkDark,
+            text = stringResource(R.string.scanner_action_select_image)
+        )
         Spacer(modifier = Modifier.height(ScannerScreenDefaults.buttonPopupSpacing))
-
         ScannerPopup(isPermissionDenied = uiState.mode == Mode.PermissionDenied)
-
         Spacer(modifier = Modifier.height(ScannerScreenDefaults.bottomSpacing))
     }
 }
@@ -206,6 +212,7 @@ private object ScannerScreenDefaults {
     val topBarPreviewSpacing = 16.dp
     val previewButtonSpacing = 20.dp
     val buttonPopupSpacing = 16.dp
+    val buttonsSpacing = 10.dp
     val bottomSpacing = 16.dp
     const val PREVIEW_WEIGHT = 1f
 }
