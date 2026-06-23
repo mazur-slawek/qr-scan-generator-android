@@ -22,12 +22,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -140,9 +140,7 @@ fun HistoryScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .pointerInput(Unit) {
-                    detectTapGestures(onTap = { focusManager.clearFocus() })
-                },
+                .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) },
             contentAlignment = Alignment.Center
         ) {
             if (uiState.isInitialLoading) {
@@ -172,9 +170,9 @@ fun HistoryScreen(
                         }
                     }
                     if (searchQuery == "") item {
-                        Spacer(modifier = Modifier.height(HistoryScreenDefaults.sectionSpacing))
+                        Spacer(modifier = Modifier.height(HistoryScreenDefaults.sectionSpacing * 2))
                         HistoryListFooter()
-                        Spacer(modifier = Modifier.height(HistoryScreenDefaults.sectionSpacing))
+                        Spacer(modifier = Modifier.height(HistoryScreenDefaults.sectionSpacing * 2))
                     }
                 }
             }
@@ -228,7 +226,7 @@ object HistoryScreenDefaults {
     val sectionSpacing = 7.dp
 
     object Section {
-        val shape = RoundedCornerShape(16.dp)
+        val shape = ShapeDefaults.Medium
         val borderWidth = 1.dp
         val dividerThickness = 1.dp
         val dividerStartPadding = 70.dp

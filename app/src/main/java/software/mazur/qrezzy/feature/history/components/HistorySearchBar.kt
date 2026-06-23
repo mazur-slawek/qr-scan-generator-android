@@ -54,9 +54,9 @@ fun HistorySearchBar(
             .border(
                 width = HistorySearchBarDefaults.borderWidth,
                 color = borderColor,
-                shape = ShapeDefaults.Medium,
+                shape = ShapeDefaults.ExtraLarge,
             )
-            .background(color = Surface, shape = ShapeDefaults.Medium)
+            .background(color = Surface, shape = ShapeDefaults.ExtraLarge)
             .padding(
                 start = HistorySearchBarDefaults.horizontalPadding,
                 end = HistorySearchBarDefaults.horizontalPadding / 2
@@ -70,16 +70,11 @@ fun HistorySearchBar(
             enabled = enabled,
             singleLine = true,
             cursorBrush = SolidColor(QrezzyMint),
-            textStyle = MaterialTheme.typography.bodyMedium.copy(
-                color = TextPrimary,
-                fontWeight = FontWeight.Medium
-            ),
+            textStyle = MaterialTheme.typography.bodyMedium.copy(color = TextPrimary, fontWeight = FontWeight.Medium),
             modifier = Modifier
                 .weight(HistorySearchBarDefaults.TEXT_FIELD_WEIGHT)
                 .padding(horizontal = HistorySearchBarDefaults.textHorizontalPadding)
-                .onFocusChanged { state ->
-                    isFocused = state.isFocused
-                },
+                .onFocusChanged { state -> isFocused = state.isFocused },
             decorationBox = { innerTextField ->
                 if (query.isBlank()) {
                     Text(
