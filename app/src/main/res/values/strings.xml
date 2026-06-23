@@ -100,7 +100,7 @@
     <string name="history_footer_subtitle">Generate a QR code or scan one to start building your history.</string>
 
     <string name="history_details_title">QR Code Preview</string>
-    <string name="history_details_subtitle">View, share or download this QR code.</string>
+    <string name="history_details_subtitle">View, share or download this QR.</string>
     <string name="history_details_share">Share QR Code</string>
     <string name="history_details_download">Download PNG</string>
     <string name="history_details_delete">Delete QR Code</string>
@@ -139,4 +139,5 @@
         <item quantity="one">This QR code will be permanently removed from your history.</item>
         <item quantity="other">%d QR codes will be permanently removed from your history.</item>
     </plurals>
+    <string name="history_section_favorites">Favorites</string>
 </resources>

@@ -10,6 +10,7 @@ fun QrEntity.toDomain(): Qr =
         type = type,
         content = content,
         createdAt = createdAt,
+        isFavorite = isFavorite,
     )
 
 fun Qr.toEntity(): QrEntity =
@@ -19,4 +20,5 @@ fun Qr.toEntity(): QrEntity =
         type = type,
         content = content,
         createdAt = createdAt,
+        isFavorite = isFavorite,
     )

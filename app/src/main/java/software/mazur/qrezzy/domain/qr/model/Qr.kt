@@ -6,4 +6,5 @@ data class Qr(
     val source: QrSource,
     val content: String,
     val createdAt: Long,
+    val isFavorite: Boolean = false,
 )

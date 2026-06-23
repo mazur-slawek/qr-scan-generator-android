@@ -17,6 +17,9 @@ interface QrDao {
 
     @Query("""SELECT * FROM qr WHERE id = :id LIMIT 1""")
     suspend fun getById(id: Long): QrEntity?
+    
+    @Query("""UPDATE qr SET isFavorite = :isFavorite WHERE id = :id""")
+    suspend fun updateFavoriteStatus(id: Long, isFavorite: Boolean)
 
     @Query("""DELETE FROM qr WHERE id IN (:ids)""")
     suspend fun deleteByIds(ids: List<Long>)

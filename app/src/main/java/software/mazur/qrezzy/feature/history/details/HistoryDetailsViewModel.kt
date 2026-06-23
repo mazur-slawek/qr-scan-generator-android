@@ -16,6 +16,7 @@ import kotlinx.coroutines.withContext
 import software.mazur.qrezzy.core.qr.renderer.QrBitmapGenerator
 import software.mazur.qrezzy.domain.qr.usecase.DeleteQrItemsUseCase
 import software.mazur.qrezzy.domain.qr.usecase.GetQrByIdUseCase
+import software.mazur.qrezzy.domain.qr.usecase.ToggleQrFavoriteUseCase
 import software.mazur.qrezzy.feature.history.HistoryRoute
 import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiEvent
 import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiState
@@ -26,7 +27,8 @@ class HistoryDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getQrByIdUseCase: GetQrByIdUseCase,
     private val qrBitmapGenerator: QrBitmapGenerator,
-    private val deleteQrItemsUseCase: DeleteQrItemsUseCase
+    private val deleteQrItemsUseCase: DeleteQrItemsUseCase,
+    private val toggleQrFavoriteUseCase: ToggleQrFavoriteUseCase
 ) : ViewModel() {
     private val historyId: Long = checkNotNull(savedStateHandle[HistoryRoute.Details.HISTORY_ID_ARG])
     private val _uiState = MutableStateFlow(HistoryDetailsUiState())
@@ -74,6 +76,22 @@ class HistoryDetailsViewModel @Inject constructor(
             _uiState.update { it.copy(isDeleteConfirmationVisible = false) }
             _events.emit(HistoryDetailsUiEvent.OnBack)
         }
+    }
+
+    fun onFavoriteClick() {
+        val currentQr = _uiState.value.qr ?: return
+        val updatedQr = currentQr.copy(isFavorite = !currentQr.isFavorite)
+
+        _uiState.update { state -> state.copy(qr = updatedQr) }
+
+        viewModelScope.launch {
+            runCatching {
+                toggleQrFavoriteUseCase(id = updatedQr.id, isFavorite = updatedQr.isFavorite)
+            }.onFailure {
+                _uiState.update { state -> state.copy(qr = currentQr) }
+            }
+        }
+
     }
 
     private suspend fun loadQr() {

@@ -10,6 +10,8 @@ interface QrRepository {
 
     suspend fun getById(id: Long): Qr?
 
+    suspend fun updateFavoriteStatus(id: Long, isFavorite: Boolean)
+
     suspend fun deleteByIds(ids: List<Long>)
 
     suspend fun deleteAll()

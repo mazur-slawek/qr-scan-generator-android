@@ -13,6 +13,7 @@ data class QrEntity(
     val type: QrType,
     val content: String,
     val createdAt: Long,
+    val isFavorite: Boolean = false,
 ) {
     companion object {
         const val TABLE_NAME = "qr"
