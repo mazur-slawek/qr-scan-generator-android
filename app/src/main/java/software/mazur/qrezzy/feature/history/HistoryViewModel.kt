@@ -46,6 +46,7 @@ constructor(
                 isInitialLoading = false,
                 isDeleteModeEnabled = deleteModeState.isEnabled,
                 selectedItemIds = deleteModeState.selectedItemIds,
+                isDeleteConfirmationVisible = deleteModeState.isDeleteConfirmationVisible,
             )
         }.stateIn(
             scope = viewModelScope,
@@ -62,6 +63,7 @@ constructor(
             )
 
     fun onSearchQueryChange(query: String) {
+        if (deleteModeState.value.isEnabled) return
         searchQuery.value = query
     }
 
@@ -75,7 +77,11 @@ constructor(
     }
 
     fun onEnterDeleteMode() {
-        deleteModeState.value = DeleteModeState(isEnabled = true, selectedItemIds = emptySet())
+        deleteModeState.value = DeleteModeState(
+            isEnabled = true,
+            selectedItemIds = emptySet(),
+            isDeleteConfirmationVisible = false,
+        )
     }
 
     fun onExitDeleteMode() {
@@ -92,15 +98,29 @@ constructor(
                 } else {
                     currentState.selectedItemIds + itemId
                 }
-            currentState.copy(
-                selectedItemIds = updatedSelectedIds,
-            )
+
+            currentState.copy(selectedItemIds = updatedSelectedIds)
         }
     }
 
     fun onDeleteSelected() {
+        if (deleteModeState.value.selectedItemIds.isEmpty()) return
+
+        deleteModeState.update { state ->
+            state.copy(isDeleteConfirmationVisible = true)
+        }
+    }
+
+    fun onDeleteConfirmationDialogDismiss() {
+        deleteModeState.update { state ->
+            state.copy(isDeleteConfirmationVisible = false)
+        }
+    }
+
+    fun onDeleteConfirmationDialogConfirm() {
         val selectedIds = deleteModeState.value.selectedItemIds
         if (selectedIds.isEmpty()) return
+
         viewModelScope.launch {
             deleteQrItemsUseCase(ids = selectedIds.toList())
             onExitDeleteMode()
@@ -124,6 +144,7 @@ constructor(
     private data class DeleteModeState(
         val isEnabled: Boolean = false,
         val selectedItemIds: Set<Long> = emptySet(),
+        val isDeleteConfirmationVisible: Boolean = false,
     )
 
     private companion object {

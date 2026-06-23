@@ -2,15 +2,18 @@ package software.mazur.qrezzy.feature.scanner.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,7 +28,6 @@ import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
 import software.mazur.qrezzy.core.designsystem.components.qrezzyQrDetails.QrezzyQrInfo
 import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
-import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.domain.qr.model.Qr
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,32 +41,36 @@ fun ScannedQrDialog(qr: Qr, onSaveClick: () -> Unit, onCancelClick: () -> Unit) 
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(ScannedQrDialogDefaults.outerPadding)
-                .background(
-                    color = Surface,
-                    shape = ScannedQrDialogDefaults.shape,
-                )
+                .background(color = MaterialTheme.colorScheme.background, shape = ScannedQrDialogDefaults.shape)
                 .border(
                     width = ScannedQrDialogDefaults.Border.width,
                     color = BorderPrimary,
                     shape = ScannedQrDialogDefaults.shape,
                 )
                 .clip(ScannedQrDialogDefaults.shape)
-                .padding(ScannedQrDialogDefaults.contentPadding),
+                .padding(ScannedQrDialogDefaults.contentPadding)
         ) {
             QrezzyTopBar(
                 titleResId = R.string.scanner_dialog_title,
                 subtitleResId = R.string.scanner_dialog_subtitle
             ) {
-                QrezzyTopBarButton(onClick = onCancelClick, icon = Icons.Outlined.Close, iconTint = QrezzyPurpleDark)
+                QrezzyTopBarButton(
+                    onClick = onCancelClick,
+                    icon = Icons.Outlined.Close,
+                    iconTint = QrezzyPurpleDark
+                )
             }
             Spacer(modifier = Modifier.height(ScannedQrDialogDefaults.contentSpacing))
-            QrezzyQrInfo(qr = qr)
-            Spacer(modifier = Modifier.height(ScannedQrDialogDefaults.contentSpacing))
-            QrezzyButton(
-                text = stringResource(R.string.scanner_dialog_save),
-                onClick = onSaveClick,
-                elevation = 0.dp,
-            )
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(ScannedQrDialogDefaults.contentSpacing)) {
+                item { QrezzyQrInfo(qr = qr) }
+                item {
+                    QrezzyButton(
+                        text = stringResource(R.string.scanner_dialog_save),
+                        onClick = onSaveClick,
+                        elevation = 0.dp
+                    )
+                }
+            }
         }
     }
 }

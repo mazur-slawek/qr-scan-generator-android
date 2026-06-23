@@ -44,6 +44,7 @@ import software.mazur.qrezzy.core.designsystem.components.QrezzyTabs
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
 import software.mazur.qrezzy.core.designsystem.theme.BorderLight
+import software.mazur.qrezzy.feature.history.components.DeleteQrConfirmationDialog
 import software.mazur.qrezzy.feature.history.components.HistoryEmptyAction
 import software.mazur.qrezzy.feature.history.components.HistoryListEmpty
 import software.mazur.qrezzy.feature.history.components.HistoryListFooter
@@ -63,6 +64,15 @@ fun HistoryScreen(
     val uiState by viewModel.uiState.collectAsState()
     val selectedTab by viewModel.selectedTabItem.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
+
+
+    if (uiState.isDeleteConfirmationVisible) {
+        DeleteQrConfirmationDialog(
+            count = uiState.selectedItemIds.size,
+            onCancelClick = viewModel::onDeleteConfirmationDialogDismiss,
+            onConfirmClick = viewModel::onDeleteConfirmationDialogConfirm
+        )
+    }
 
     Column(modifier = Modifier.padding(horizontal = HistoryScreenDefaults.screenPadding)) {
         QrezzyTopBar(

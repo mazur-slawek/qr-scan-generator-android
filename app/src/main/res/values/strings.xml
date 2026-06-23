@@ -1,8 +1,20 @@
 <resources>
     <string name="app_name">QREZZY</string>
 
-    <string name="button_get_started">Get started</string>
+    <string name="common_ok">OK</string>
+    <string name="common_save">Save</string>
+    <string name="common_close">Close</string>
+    <string name="common_retry">Retry</string>
+    <string name="common_share">Share</string>
+    <string name="common_download">Download</string>
+    <string name="common_reset">Reset</string>
+    <string name="common_apply">Apply</string>
+    <string name="common_yes">Yes</string>
+    <string name="common_no">No</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_cancel">Cancel</string>
 
+    <string name="button_get_started">Get started</string>
 
     <string name="onboarding_scan_title">Scan anything</string>
     <string name="onboarding_scan_description">Quickly scan QR codes and get the information in seconds.</string>
@@ -90,7 +102,8 @@
     <string name="history_details_title">QR Code Preview</string>
     <string name="history_details_subtitle">View, share or download this QR code.</string>
     <string name="history_details_share">Share QR Code</string>
-    <string name="history_details_download">Download QR Code</string>
+    <string name="history_details_download">Download PNG</string>
+    <string name="history_details_delete">Delete QR Code</string>
     <string name="history_details_save_success">QR code saved successfully</string>
     <string name="history_details_save_error">Failed to save QR code</string>
     <string name="history_details_qr_preview_content_description">QR Code preview</string>
@@ -116,4 +129,14 @@
     <string name="qr_details_field_contact_raw">Contact</string>
     <string name="qr_security_tip_title">Make sure the content is safe before saving.</string>
     <string name="qr_security_tip_description">Be cautious of links, Wi-Fi networks, emails and contact information.</string>
+    <string name="qr_details_open_link">Open link</string>
+    <string name="qr_details_copy_content">Copy content</string>
+    <plurals name="delete_confirmation_dialog_title">
+        <item quantity="one">Delete QR code?</item>
+        <item quantity="other">Delete %d QR codes?</item>
+    </plurals>
+    <plurals name="delete_confirmation_dialog_subtitle">
+        <item quantity="one">This QR code will be permanently removed from your history.</item>
+        <item quantity="other">%d QR codes will be permanently removed from your history.</item>
+    </plurals>
 </resources>

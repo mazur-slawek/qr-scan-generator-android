@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import software.mazur.qrezzy.core.qr.renderer.QrBitmapGenerator
+import software.mazur.qrezzy.domain.qr.usecase.DeleteQrItemsUseCase
 import software.mazur.qrezzy.domain.qr.usecase.GetQrByIdUseCase
 import software.mazur.qrezzy.feature.history.HistoryRoute
 import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiEvent
@@ -25,6 +26,7 @@ class HistoryDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getQrByIdUseCase: GetQrByIdUseCase,
     private val qrBitmapGenerator: QrBitmapGenerator,
+    private val deleteQrItemsUseCase: DeleteQrItemsUseCase
 ) : ViewModel() {
     private val historyId: Long = checkNotNull(savedStateHandle[HistoryRoute.Details.HISTORY_ID_ARG])
     private val _uiState = MutableStateFlow(HistoryDetailsUiState())
@@ -55,6 +57,22 @@ class HistoryDetailsViewModel @Inject constructor(
             _events.emit(
                 HistoryDetailsUiEvent.DownloadQrCode(fileName = shareData.fileName, bitmap = shareData.bitmap)
             )
+        }
+    }
+
+    fun onDeleteQrCodeClick() {
+        _uiState.update { it.copy(isDeleteConfirmationVisible = true) }
+    }
+
+    fun onDeleteConfirmationDialogDismiss() {
+        _uiState.update { it.copy(isDeleteConfirmationVisible = false) }
+    }
+
+    fun onDeleteConfirmationDialogConfirm() {
+        viewModelScope.launch {
+            deleteQrItemsUseCase(ids = listOf(historyId))
+            _uiState.update { it.copy(isDeleteConfirmationVisible = false) }
+            _events.emit(HistoryDetailsUiEvent.OnBack)
         }
     }
 

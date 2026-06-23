@@ -8,4 +8,5 @@ data class HistoryDetailsUiState(
     val qrBitmap: Bitmap? = null,
     val isLoading: Boolean = true,
     val isMissing: Boolean = false,
+    val isDeleteConfirmationVisible: Boolean = false,
 )

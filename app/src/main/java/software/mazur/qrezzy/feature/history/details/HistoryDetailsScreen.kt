@@ -31,11 +31,10 @@ import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.qrezzyQrDetails.QrezzyQrInfo
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
 import software.mazur.qrezzy.core.designsystem.theme.Surface
+import software.mazur.qrezzy.feature.history.components.DeleteQrConfirmationDialog
 import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiEvent
 
 @Composable
@@ -62,8 +61,19 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
                         Toast.LENGTH_SHORT,
                     ).show()
                 }
+
+                is HistoryDetailsUiEvent.OnBack         -> {
+                    onBackClick()
+                }
             }
         }
+    }
+
+    if (uiState.isDeleteConfirmationVisible) {
+        DeleteQrConfirmationDialog(
+            onCancelClick = viewModel::onDeleteConfirmationDialogDismiss,
+            onConfirmClick = viewModel::onDeleteConfirmationDialogConfirm
+        )
     }
 
     Column(modifier = Modifier.padding(horizontal = HistoryDetailsScreenDefaults.screenHorizontalPadding)) {
@@ -72,38 +82,20 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
             subtitleResId = R.string.history_details_subtitle,
             onBackClick = onBackClick
         )
-
         LazyColumn {
-            item {
-                Spacer(modifier = Modifier.height(HistoryDetailsScreenDefaults.sectionSpacing))
-            }
-
-            item {
-                HistoryDetailsQrPreview(bitmap = uiState.qrBitmap)
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(HistoryDetailsScreenDefaults.sectionSpacing))
-            }
-
-            item {
-                uiState.qr?.let { qr -> QrezzyQrInfo(qr = qr) }
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(HistoryDetailsScreenDefaults.sectionSpacing))
-            }
-
+            item { Spacer(modifier = Modifier.height(HistoryDetailsScreenDefaults.sectionSpacing)) }
+            item { HistoryDetailsQrPreview(bitmap = uiState.qrBitmap) }
+            item { Spacer(modifier = Modifier.height(HistoryDetailsScreenDefaults.sectionSpacing)) }
+            uiState.qr?.let { qr -> item { QrezzyQrInfo(qr = qr) } }
+            item { Spacer(modifier = Modifier.height(HistoryDetailsScreenDefaults.sectionSpacing)) }
             item {
                 HistoryDetailsActions(
                     onShareClick = viewModel::onShareQrCodeClick,
                     onDownloadClick = viewModel::onDownloadQrCodeClick,
+                    onDeleteClick = viewModel::onDeleteQrCodeClick,
                 )
             }
-
-            item {
-                Spacer(modifier = Modifier.height(HistoryDetailsScreenDefaults.sectionSpacing))
-            }
+            item { Spacer(modifier = Modifier.height(HistoryDetailsScreenDefaults.sectionSpacing)) }
         }
     }
 }
@@ -133,23 +125,29 @@ private fun HistoryDetailsQrPreview(bitmap: Bitmap?, modifier: Modifier = Modifi
 private fun HistoryDetailsActions(
     onShareClick: () -> Unit,
     onDownloadClick: () -> Unit,
+    onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
         QrezzyButton(
             elevation = 0.dp,
-            containerColor = QrezzyMint,
-            depthColor = QrezzyPurpleDark,
             onClick = onShareClick,
             text = stringResource(R.string.history_details_share),
         )
         Spacer(modifier = Modifier.height(HistoryDetailsScreenDefaults.buttonSpacing))
         QrezzyButton(
             elevation = 0.dp,
-            containerColor = QrezzyPink,
-            depthColor = QrezzyYellowDark,
             onClick = onDownloadClick,
             text = stringResource(R.string.history_details_download),
+        )
+        Spacer(modifier = Modifier.height(HistoryDetailsScreenDefaults.buttonSpacing))
+        Spacer(modifier = Modifier.height(HistoryDetailsScreenDefaults.buttonSpacing))
+        QrezzyButton(
+            elevation = 0.dp,
+            containerColor = QrezzyPink,
+            depthColor = QrezzyYellowDark,
+            onClick = onDeleteClick,
+            text = stringResource(R.string.history_details_delete),
         )
     }
 }

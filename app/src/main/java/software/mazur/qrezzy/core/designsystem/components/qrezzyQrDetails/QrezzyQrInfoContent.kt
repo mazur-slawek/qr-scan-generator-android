@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material.icons.outlined.CopyAll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -23,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -39,24 +41,30 @@ import software.mazur.qrezzy.domain.qr.model.QrType
 @Composable
 fun QrezzyQrInfoContent(qr: Qr, modifier: Modifier = Modifier) {
     val clipboardManager = LocalClipboardManager.current
+    val uriHandler = LocalUriHandler.current
     val rows = remember(qr) { qr.toInfoRows() }
 
     Column(
         modifier = modifier
             .fillMaxWidth()
             .border(
-                width = QrezzyQrInfoCardDefaults.Container.borderWidth,
+                width = QrezzyQrInfoContentDefaults.Container.borderWidth,
                 color = BorderLight,
                 shape = ShapeDefaults.Medium,
             )
             .background(color = Surface, shape = ShapeDefaults.Medium)
-            .padding(QrezzyQrInfoCardDefaults.Container.padding),
+            .padding(QrezzyQrInfoContentDefaults.Container.padding),
     ) {
         rows.forEachIndexed { index, row ->
-            QrezzyQrInfoRow(row = row, onCopyClick = { clipboardManager.setText(AnnotatedString(row.value)) })
+            QrezzyQrInfoRow(
+                row = row,
+                onCopyClick = { clipboardManager.setText(AnnotatedString(row.value)) },
+                onOpenLinkClick = { uriHandler.openUri(row.value.toBrowserUrl()) },
+            )
+
             if (index != rows.lastIndex) {
                 HorizontalDivider(
-                    modifier = Modifier.padding(vertical = QrezzyQrInfoCardDefaults.Divider.verticalPadding),
+                    modifier = Modifier.padding(vertical = QrezzyQrInfoContentDefaults.Divider.verticalPadding),
                     color = BorderLight,
                 )
             }
@@ -65,9 +73,9 @@ fun QrezzyQrInfoContent(qr: Qr, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun QrezzyQrInfoRow(row: QrInfoRow, onCopyClick: () -> Unit) {
+private fun QrezzyQrInfoRow(row: QrInfoRow, onCopyClick: () -> Unit, onOpenLinkClick: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        Column(modifier = Modifier.weight(1f)) {
+        Column(modifier = Modifier.weight(QrezzyQrInfoContentDefaults.Content.WEIGHT)) {
             Text(
                 text = stringResource(row.labelResId),
                 color = TextSecondary,
@@ -76,17 +84,39 @@ private fun QrezzyQrInfoRow(row: QrInfoRow, onCopyClick: () -> Unit) {
             )
             Text(
                 text = row.value,
-                maxLines = QrezzyQrInfoCardDefaults.Value.maxLines,
+                maxLines = QrezzyQrInfoContentDefaults.Value.MAX_LINES,
                 overflow = TextOverflow.Ellipsis,
                 color = TextPrimary,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.bodyMedium,
             )
         }
+
         if (row.isCopyEnabled) {
-            Spacer(modifier = Modifier.width(QrezzyQrInfoCardDefaults.CopyButton.spacing))
-            IconButton(onClick = onCopyClick, modifier = Modifier.size(QrezzyQrInfoCardDefaults.CopyButton.size)) {
-                Icon(imageVector = Icons.Outlined.CopyAll, contentDescription = null, tint = TextSecondary)
+            Spacer(modifier = Modifier.width(QrezzyQrInfoContentDefaults.ActionButton.spacing))
+            IconButton(
+                onClick = onCopyClick,
+                modifier = Modifier.size(QrezzyQrInfoContentDefaults.ActionButton.size)
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.CopyAll,
+                    contentDescription = stringResource(R.string.qr_details_copy_content),
+                    tint = TextSecondary,
+                )
+            }
+        }
+
+        if (row.isOpenLinkEnabled) {
+            Spacer(modifier = Modifier.width(QrezzyQrInfoContentDefaults.ActionButton.spacing))
+            IconButton(
+                onClick = onOpenLinkClick,
+                modifier = Modifier.size(QrezzyQrInfoContentDefaults.ActionButton.size)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.OpenInNew,
+                    contentDescription = stringResource(R.string.qr_details_open_link),
+                    tint = TextSecondary,
+                )
             }
         }
     }
@@ -94,8 +124,12 @@ private fun QrezzyQrInfoRow(row: QrInfoRow, onCopyClick: () -> Unit) {
 
 private fun Qr.toInfoRows(): List<QrInfoRow> {
     return when (type) {
-        QrType.TEXT    -> listOf(QrInfoRow(labelResId = R.string.qr_details_field_text, value = content))
-        QrType.URL     -> listOf(QrInfoRow(labelResId = R.string.qr_details_field_url, value = content))
+        QrType.TEXT    ->
+            listOf(QrInfoRow(labelResId = R.string.qr_details_field_text, value = content))
+
+        QrType.URL     ->
+            listOf(QrInfoRow(labelResId = R.string.qr_details_field_url, value = content, isOpenLinkEnabled = true))
+
         QrType.PHONE   ->
             listOf(QrInfoRow(labelResId = R.string.qr_details_field_phone, value = content.removePrefix("tel:")))
 
@@ -107,22 +141,27 @@ private fun Qr.toInfoRows(): List<QrInfoRow> {
 
 private fun parseWifiRows(content: String): List<QrInfoRow> {
     val values = content.toWifiValues()
+
     return listOf(
         QrInfoRow(labelResId = R.string.qr_details_field_wifi_network_name, value = values["S"].orEmpty()),
         QrInfoRow(labelResId = R.string.qr_details_field_wifi_security, value = values["T"].orDash()),
-        QrInfoRow(labelResId = R.string.qr_details_field_wifi_password, value = values["P"].orDash())
+        QrInfoRow(labelResId = R.string.qr_details_field_wifi_password, value = values["P"].orDash()),
     )
 }
 
 private fun parseEmailRows(content: String): List<QrInfoRow> {
     if (content.startsWith("mailto:", ignoreCase = true)) {
         return listOf(
-            QrInfoRow(labelResId = R.string.qr_details_field_email_address, value = content.removePrefix("mailto:"))
+            QrInfoRow(
+                labelResId = R.string.qr_details_field_email_address,
+                value = content.removePrefix("mailto:"),
+            ),
         )
     }
     val email = content.extractBetween("TO:", ";")
     val subject = content.extractBetween("SUB:", ";")
     val body = content.extractBetween("BODY:", ";;")
+
     return listOfNotNull(
         QrInfoRow(labelResId = R.string.qr_details_field_email_address, value = email).takeIfValueNotBlank(),
         QrInfoRow(labelResId = R.string.qr_details_field_email_subject, value = subject).takeIfValueNotBlank(),
@@ -136,6 +175,7 @@ private fun parseContactRows(content: String): List<QrInfoRow> {
     val phone = lines.findValue("TEL:")
     val email = lines.findValue("EMAIL:")
     val company = lines.findValue("ORG:")
+
     return listOfNotNull(
         QrInfoRow(labelResId = R.string.qr_details_field_contact_name, value = name).takeIfValueNotBlank(),
         QrInfoRow(labelResId = R.string.qr_details_field_contact_phone, value = phone).takeIfValueNotBlank(),
@@ -171,8 +211,21 @@ private fun String.extractBetween(start: String, end: String): String {
         .trim()
 }
 
+private fun String.toBrowserUrl(): String {
+    val trimmedValue = trim()
+
+    return if (
+        trimmedValue.startsWith("http://", ignoreCase = true) ||
+        trimmedValue.startsWith("https://", ignoreCase = true)
+    ) {
+        trimmedValue
+    } else {
+        "https://$trimmedValue"
+    }
+}
+
 private fun String?.orDash(): String {
-    return orEmpty().ifBlank { QrezzyQrInfoCardDefaults.EMPTY_VALUE }
+    return orEmpty().ifBlank { QrezzyQrInfoContentDefaults.EMPTY_VALUE }
 }
 
 private fun QrInfoRow.takeIfValueNotBlank(): QrInfoRow? {
@@ -183,9 +236,10 @@ private data class QrInfoRow(
     @param:StringRes val labelResId: Int,
     val value: String,
     val isCopyEnabled: Boolean = true,
+    val isOpenLinkEnabled: Boolean = false,
 )
 
-private object QrezzyQrInfoCardDefaults {
+private object QrezzyQrInfoContentDefaults {
     const val EMPTY_VALUE = "-"
 
     object Container {
@@ -197,12 +251,16 @@ private object QrezzyQrInfoCardDefaults {
         val verticalPadding = 8.dp
     }
 
-    object CopyButton {
+    object Content {
+        const val WEIGHT = 1f
+    }
+
+    object ActionButton {
         val size = 30.dp
-        val spacing = 16.dp
+        val spacing = 8.dp
     }
 
     object Value {
-        const val maxLines = 2
+        const val MAX_LINES = 2
     }
 }

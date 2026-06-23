@@ -12,4 +12,6 @@ sealed interface HistoryDetailsUiEvent {
         val fileName: String,
         val bitmap: Bitmap,
     ) : HistoryDetailsUiEvent
+
+    object OnBack : HistoryDetailsUiEvent
 }
