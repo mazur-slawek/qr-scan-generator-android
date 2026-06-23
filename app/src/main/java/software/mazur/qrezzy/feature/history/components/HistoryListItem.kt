@@ -13,11 +13,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
@@ -27,11 +30,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.extensions.label
 import software.mazur.qrezzy.core.designsystem.extensions.ui
-import software.mazur.qrezzy.core.designsystem.theme.Error
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
 import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
@@ -42,7 +47,13 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun HistoryListItem(qr: Qr, isDeleteModeEnabled: Boolean, isSelected: Boolean, onClick: () -> Unit) {
+fun HistoryListItem(
+    qr: Qr,
+    isDeleteModeEnabled: Boolean,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    onFavoriteClick: () -> Unit
+) {
     Button(
         onClick = onClick,
         contentPadding = PaddingValues.Zero,
@@ -78,6 +89,7 @@ fun HistoryListItem(qr: Qr, isDeleteModeEnabled: Boolean, isSelected: Boolean, o
                     color = TextPrimary,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.SemiBold,
+                    overflow = TextOverflow.Ellipsis,
                     maxLines = HistoryListItemDefaults.TITLE_MAX_LINES,
                 )
 
@@ -92,26 +104,42 @@ fun HistoryListItem(qr: Qr, isDeleteModeEnabled: Boolean, isSelected: Boolean, o
                 )
             }
 
-            HistoryTrailingIcon(isDeleteModeEnabled = isDeleteModeEnabled, isSelected = isSelected)
+            HistoryTrailingIcon(
+                isDeleteModeEnabled = isDeleteModeEnabled,
+                isSelected = isSelected,
+                isFavorite = qr.isFavorite,
+                onFavoriteClick = onFavoriteClick
+            )
         }
     }
 
 }
 
 @Composable
-private fun HistoryTrailingIcon(isDeleteModeEnabled: Boolean, isSelected: Boolean) {
+private fun HistoryTrailingIcon(
+    isDeleteModeEnabled: Boolean,
+    isSelected: Boolean,
+    isFavorite: Boolean,
+    onFavoriteClick: () -> Unit
+) {
     if (isDeleteModeEnabled) {
         Icon(
             imageVector = if (isSelected) Icons.Outlined.CheckCircle else Icons.Outlined.Circle,
-            tint = if (isSelected) Error else TextSecondary,
-            contentDescription = null,
+            tint = if (isSelected) QrezzyPinkDark else TextSecondary,
+            contentDescription = null
         )
-
     } else {
+        IconButton(onClick = onFavoriteClick) {
+            Icon(
+                imageVector = if (isFavorite) Icons.Default.Star else Icons.Default.StarBorder,
+                tint = if (isFavorite) QrezzyYellowDark else TextSecondary,
+                contentDescription = null
+            )
+        }
         Icon(
             imageVector = Icons.Default.KeyboardArrowRight,
-            tint = TextSecondary,
             contentDescription = null,
+            tint = TextSecondary,
         )
     }
 }

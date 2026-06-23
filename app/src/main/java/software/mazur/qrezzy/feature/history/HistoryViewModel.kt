@@ -14,6 +14,7 @@ import software.mazur.qrezzy.core.designsystem.extensions.label
 import software.mazur.qrezzy.domain.qr.model.Qr
 import software.mazur.qrezzy.domain.qr.usecase.DeleteQrItemsUseCase
 import software.mazur.qrezzy.domain.qr.usecase.ObserveQrItemsUseCase
+import software.mazur.qrezzy.domain.qr.usecase.ToggleQrFavoriteUseCase
 import software.mazur.qrezzy.feature.history.mapper.toHistorySections
 import software.mazur.qrezzy.feature.history.mapper.toTabItem
 import software.mazur.qrezzy.feature.history.model.HistoryTab
@@ -26,6 +27,7 @@ class HistoryViewModel
 constructor(
     observeQrItemsUseCase: ObserveQrItemsUseCase,
     private val deleteQrItemsUseCase: DeleteQrItemsUseCase,
+    private val toggleQrFavoriteUseCase: ToggleQrFavoriteUseCase,
 ) : ViewModel() {
     private val selectedTab = MutableStateFlow(HistoryTab.ALL)
     private val deleteModeState = MutableStateFlow(DeleteModeState())
@@ -40,9 +42,12 @@ constructor(
             val visibleItems = historyItems
                 .filterByTab(selectedTab)
                 .filterBySearchQuery(searchQuery)
+            val favoriteItems = visibleItems.filter { qr -> qr.isFavorite }
+            val regularItems = visibleItems.filterNot { qr -> qr.isFavorite }
 
             HistoryUiState(
-                sections = visibleItems.toHistorySections(),
+                favoriteItems = favoriteItems,
+                sections = regularItems.toHistorySections(),
                 isInitialLoading = false,
                 isDeleteModeEnabled = deleteModeState.isEnabled,
                 selectedItemIds = deleteModeState.selectedItemIds,
@@ -124,6 +129,13 @@ constructor(
         viewModelScope.launch {
             deleteQrItemsUseCase(ids = selectedIds.toList())
             onExitDeleteMode()
+        }
+    }
+
+    fun onFavoriteClick(qr: Qr) {
+        if (deleteModeState.value.isEnabled) return
+        viewModelScope.launch {
+            toggleQrFavoriteUseCase(id = qr.id, isFavorite = !qr.isFavorite)
         }
     }
 

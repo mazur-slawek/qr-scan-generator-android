@@ -8,9 +8,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,6 +40,7 @@ import software.mazur.qrezzy.core.designsystem.components.qrezzyQrDetails.Qrezzy
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
 import software.mazur.qrezzy.core.designsystem.theme.Surface
+import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 import software.mazur.qrezzy.feature.history.components.DeleteQrConfirmationDialog
 import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiEvent
 
@@ -81,7 +88,16 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
             titleResId = R.string.history_details_title,
             subtitleResId = R.string.history_details_subtitle,
             onBackClick = onBackClick
-        )
+        ) {
+            IconButton(onClick = viewModel::onFavoriteClick) {
+                Icon(
+                    imageVector = if (uiState.qr?.isFavorite == true) Icons.Default.Star else Icons.Default.StarBorder,
+                    tint = if (uiState.qr?.isFavorite == true) QrezzyYellowDark else TextSecondary,
+                    modifier = Modifier.size(HistoryDetailsScreenDefaults.favoriteIconSize),
+                    contentDescription = null,
+                )
+            }
+        }
         LazyColumn {
             item { Spacer(modifier = Modifier.height(HistoryDetailsScreenDefaults.sectionSpacing)) }
             item { HistoryDetailsQrPreview(bitmap = uiState.qrBitmap) }
@@ -169,4 +185,5 @@ private object HistoryDetailsScreenDefaults {
     val buttonSpacing = 8.dp
     val qrPreviewHeight = 250.dp
     val cardElevation = 2.dp
+    val favoriteIconSize = 32.dp
 }
