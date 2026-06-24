@@ -5,8 +5,6 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -30,8 +28,9 @@ import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
+import software.mazur.qrezzy.core.designsystem.components.qrezzyQr.QrezzyCustomizeQrDialog
+import software.mazur.qrezzy.core.designsystem.components.qrezzyQr.QrezzyQrPreview
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
-import software.mazur.qrezzy.feature.generator.components.QrPreview
 import software.mazur.qrezzy.feature.generator.components.QrTypeForm
 import software.mazur.qrezzy.feature.generator.components.QrTypeTabs
 import software.mazur.qrezzy.feature.generator.model.GeneratorUiEvent
@@ -40,9 +39,7 @@ import software.mazur.qrezzy.feature.generator.model.GeneratorUiEvent
 fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
     val uiState = viewModel.uiState.value
     val qrBitmap =
-        remember(uiState.qrContent) {
-            viewModel.generateQrBitmap(uiState.qrContent)
-        }
+        remember(uiState.qrContent, uiState.qrStyle) { viewModel.generateQrBitmap(uiState.qrContent) }
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
     val qrSavedMessage = stringResource(R.string.generator_qr_saved_message)
@@ -57,37 +54,45 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
         }
     }
 
+    if (uiState.isCustomizeQrDialogVisible) {
+        val previewBitmap = remember(uiState.qrContent, uiState.draftQrStyle) {
+            viewModel.generatePreviewQrBitmap(content = uiState.qrContent, style = uiState.draftQrStyle)
+        }
+
+        QrezzyCustomizeQrDialog(
+            qrBitmap = previewBitmap,
+            style = uiState.draftQrStyle,
+            onCancelClick = viewModel::onDismissCustomizeQrDialog,
+            onQrColorSelected = viewModel::onQrColorSelected,
+            onBackgroundColorSelected = viewModel::onBackgroundColorSelected,
+            onPatternStyleSelected = viewModel::onPatternStyleSelected,
+            onErrorCorrectionSelected = viewModel::onErrorCorrectionSelected,
+            onResetClick = viewModel::onResetQrStyleClick,
+            onApplyClick = viewModel::onApplyQrStyleClick
+        )
+    }
+
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         QrezzyTopBar(
             titleResId = R.string.navigation_title_generate,
             subtitleResId = R.string.navigation_subtitle_generate
         ) {
             QrezzyTopBarButton(
-                onClick = {},
+                onClick = viewModel::onCustomizeQrClick,
                 enabled = uiState.canSave,
                 icon = Icons.Outlined.FormatPaint,
                 iconTint = if (uiState.canSave) QrezzyPurpleDark else Color.Gray,
             )
         }
 
-        QrPreview(
-            qrBitmap = qrBitmap,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp, bottom = 10.dp)
-                .height(250.dp),
-        )
+        QrezzyQrPreview(qrBitmap = qrBitmap)
 
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight()
                 .imePadding()
-                .pointerInput(Unit) {
-                    detectTapGestures(
-                        onTap = { focusManager.clearFocus() },
-                    )
-                },
+                .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) },
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             item {
@@ -97,7 +102,6 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
-
                 QrTypeTabs(
                     qrInputs = uiState.qrInputs,
                     selectedQrInput = uiState.selectedQrInput,
@@ -112,7 +116,6 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
-
                 QrTypeForm(
                     qrInput = uiState.selectedQrInput,
                     fieldErrors = uiState.fieldErrors,

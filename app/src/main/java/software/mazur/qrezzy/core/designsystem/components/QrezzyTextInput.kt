@@ -80,9 +80,9 @@ fun QrezzyTextInput(
     val isFocused by interactionSource.collectIsFocusedAsState()
     val targetBorderColor =
         when {
-            isError -> errorColor
+            isError   -> errorColor
             isFocused -> focusedBorderColor
-            else -> BorderSecondary
+            else      -> BorderSecondary
         }
     val borderColor by animateColorAsState(
         targetValue = targetBorderColor,
@@ -126,7 +126,8 @@ fun QrezzyTextInput(
                             width = QrezzyTextInputDefaults.Border.width,
                             color = BorderSecondary,
                             shape = ShapeDefaults.Medium,
-                        ).align(Alignment.BottomEnd),
+                        )
+                        .align(Alignment.BottomEnd),
             )
 
             Box(
@@ -214,11 +215,7 @@ private object QrezzyTextInputDefaults {
 
     object Content {
         val singleLinePadding = PaddingValues(horizontal = 16.dp)
-        val textAreaPadding =
-            PaddingValues(
-                horizontal = 16.dp,
-                vertical = 14.dp,
-            )
+        val textAreaPadding = PaddingValues(horizontal = 16.dp, vertical = 14.dp)
     }
 
     object Text {

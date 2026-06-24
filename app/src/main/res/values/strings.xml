@@ -140,4 +140,20 @@
         <item quantity="other">%d QR codes will be permanently removed from your history.</item>
     </plurals>
     <string name="history_section_favorites">Favorites</string>
+
+    <string name="customize_qr_title">Customize QR</string>
+    <string name="customize_qr_subtitle">Adjust the style of your QR code</string>
+    <string name="customize_qr_qr_color">QR color</string>
+    <string name="customize_qr_background_color">Background color</string>
+    <string name="customize_qr_pattern_style">Pattern style</string>
+    <string name="customize_qr_error_correction">Error correction</string>
+    <string name="customize_qr_reset">Reset to default</string>
+    <string name="customize_qr_apply">Apply</string>
+    <string name="customize_qr_pattern_square">Square</string>
+    <string name="customize_qr_pattern_rounded">Rounded</string>
+    <string name="customize_qr_pattern_dots">Dots</string>
+    <string name="customize_qr_error_low">Low (7%)</string>
+    <string name="customize_qr_error_medium">Medium (15%)</string>
+    <string name="customize_qr_error_quartile">Quartile (25%)</string>
+    <string name="customize_qr_error_high">High (30%)</string>
 </resources>

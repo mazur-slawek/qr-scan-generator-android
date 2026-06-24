@@ -1,5 +1,7 @@
 package software.mazur.qrezzy.feature.generator.model
 
+import software.mazur.qrezzy.domain.qr.model.style.QrStyle
+
 data class GeneratorUiState(
     val selectedQrInput: QrInput = QrInput.Text(),
     val qrContent: String = "",
@@ -13,6 +15,9 @@ data class GeneratorUiState(
             QrInput.Phone(),
         ),
     val fieldErrors: Map<QrInputField, QrFieldError> = emptyMap(),
+    val qrStyle: QrStyle = QrStyle(),
+    val draftQrStyle: QrStyle = QrStyle(),
+    val isCustomizeQrDialogVisible: Boolean = false,
 ) {
     val canSave: Boolean
         get() = qrContent.isNotBlank() && fieldErrors.isEmpty()
