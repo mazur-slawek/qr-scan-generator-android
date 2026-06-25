@@ -104,7 +104,7 @@ class HistoryDetailsViewModel @Inject constructor(
 
         _uiState.update { it.copy(qr = qr, isLoading = true, isMissing = false) }
         val qrBitmap = withContext(Dispatchers.Default) {
-            qrBitmapGenerator.generate(content = qr.content)
+            qrBitmapGenerator.generate(content = qr.content, style = qr.style)
         }
 
         _uiState.update { it.copy(qrBitmap = qrBitmap, isLoading = false) }

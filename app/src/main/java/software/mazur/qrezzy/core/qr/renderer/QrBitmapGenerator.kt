@@ -2,48 +2,94 @@ package software.mazur.qrezzy.core.qr.renderer
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
-import android.graphics.Color
-import com.google.zxing.BarcodeFormat
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.RectF
 import com.google.zxing.EncodeHintType
-import com.google.zxing.qrcode.QRCodeWriter
+import com.google.zxing.qrcode.encoder.ByteMatrix
+import com.google.zxing.qrcode.encoder.Encoder
+import software.mazur.qrezzy.domain.qr.model.style.QrPatternStyle
+import software.mazur.qrezzy.domain.qr.model.style.QrStyle
 import java.util.EnumMap
 import javax.inject.Inject
 
-class QrBitmapGenerator
-@Inject
-constructor() {
-    fun generate(content: String, size: Int = DEFAULT_SIZE): Bitmap? {
+class QrBitmapGenerator @Inject constructor() {
+    fun generate(content: String, size: Int = DEFAULT_SIZE, style: QrStyle = QrStyle()): Bitmap? {
         val trimmedContent = content.trim()
-
         if (trimmedContent.isBlank()) return null
-        val hints =
-            EnumMap<EncodeHintType, Any>(EncodeHintType::class.java).apply {
-                put(EncodeHintType.MARGIN, DEFAULT_MARGIN)
-                put(EncodeHintType.CHARACTER_SET, DEFAULT_CHARACTER_SET)
-            }
-        val bitMatrix =
-            QRCodeWriter().encode(
-                trimmedContent,
-                BarcodeFormat.QR_CODE,
-                size,
-                size,
-                hints,
-            )
+        val hints = EnumMap<EncodeHintType, Any>(EncodeHintType::class.java).apply {
+            put(EncodeHintType.CHARACTER_SET, DEFAULT_CHARACTER_SET)
+        }
+        val qrCode = Encoder.encode(trimmedContent, style.errorCorrection.toZxingLevel(), hints)
+        return drawQrCode(matrix = qrCode.matrix, size = size, style = style)
+    }
 
-        @SuppressLint("UseKtx")
-        return Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888).apply {
-            for (x in 0 until size) {
-                for (y in 0 until size) {
-                    val color = if (bitMatrix[x, y]) Color.BLACK else Color.WHITE
-                    setPixel(x, y, color)
+    @SuppressLint("UseKtx")
+    private fun drawQrCode(matrix: ByteMatrix, size: Int, style: QrStyle): Bitmap {
+        val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+
+        canvas.drawColor(style.backgroundColor.toAndroidColor())
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = style.qrColor.toAndroidColor()
+            this.style = Paint.Style.FILL
+        }
+        val matrixWidth = matrix.width
+        val matrixHeight = matrix.height
+        val qrSizeWithMargin = maxOf(matrixWidth, matrixHeight) + DEFAULT_MARGIN * 2
+        val moduleSize = size / qrSizeWithMargin.toFloat()
+        val qrPixelSize = matrixWidth * moduleSize
+        val startX = (size - qrPixelSize) / 2f
+        val startY = (size - qrPixelSize) / 2f
+
+        for (x in 0 until matrixWidth) {
+            for (y in 0 until matrixHeight) {
+                if (matrix.get(x, y).toInt() == 1) {
+                    canvas.drawQrModule(
+                        left = startX + x * moduleSize,
+                        top = startY + y * moduleSize,
+                        size = moduleSize,
+                        patternStyle = style.patternStyle,
+                        paint = paint,
+                    )
                 }
+            }
+        }
+        return bitmap
+    }
+
+    private fun Canvas.drawQrModule(left: Float, top: Float, size: Float, patternStyle: QrPatternStyle, paint: Paint) {
+        when (patternStyle) {
+            QrPatternStyle.SQUARE  -> {
+                drawRect(left, top, left + size, top + size, paint)
+            }
+
+            QrPatternStyle.DOTS    -> {
+                drawCircle(left + size / 2f, top + size / 2f, size * DOT_RADIUS_FACTOR, paint)
+            }
+
+            QrPatternStyle.ROUNDED -> {
+                val inset = size * ROUNDED_INSET_FACTOR
+                val radius = size * ROUNDED_RADIUS_FACTOR
+
+                drawRoundRect(
+                    RectF(left + inset, top + inset, left + size - inset, top + size - inset),
+                    radius,
+                    radius,
+                    paint,
+                )
             }
         }
     }
 
+    private fun Long.toAndroidColor(): Int = toInt()
+
     private companion object {
         const val DEFAULT_SIZE = 512
-        const val DEFAULT_MARGIN = 1
+        const val DEFAULT_MARGIN = 2
         const val DEFAULT_CHARACTER_SET = "UTF-8"
+        const val DOT_RADIUS_FACTOR = 0.38f
+        const val ROUNDED_INSET_FACTOR = 0.08f
+        const val ROUNDED_RADIUS_FACTOR = 0.35f
     }
 }

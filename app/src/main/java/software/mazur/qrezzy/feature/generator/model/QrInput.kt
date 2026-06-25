@@ -36,6 +36,16 @@ sealed interface QrInput {
     data class Phone(
         val phoneNumber: String = "",
     ) : QrInput
+
+    data class Sms(
+        val phoneNumber: String = "",
+        val message: String = ""
+    ) : QrInput
+
+    data class GeoLocation(
+        val latitude: String = "",
+        val longitude: String = ""
+    ) : QrInput
 }
 
 enum class WifiEncryption {

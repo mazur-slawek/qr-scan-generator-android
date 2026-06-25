@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTextInput
 import software.mazur.qrezzy.feature.generator.mapper.keyboardOptions
 import software.mazur.qrezzy.feature.generator.mapper.maxLength
@@ -23,8 +24,9 @@ fun QrTypeForm(
     modifier: Modifier = Modifier,
 ) {
     when (qrInput) {
-        is QrInput.Text -> {
+        is QrInput.Text        -> {
             QrTextField(
+                title = stringResource(R.string.generator_enter_data),
                 field = QrInputField.Text,
                 value = qrInput.text,
                 fieldErrors = fieldErrors,
@@ -32,8 +34,9 @@ fun QrTypeForm(
             )
         }
 
-        is QrInput.Url -> {
+        is QrInput.Url         -> {
             QrTextField(
+                title = stringResource(R.string.generator_enter_data),
                 field = QrInputField.Url,
                 value = qrInput.url,
                 fieldErrors = fieldErrors,
@@ -41,8 +44,9 @@ fun QrTypeForm(
             )
         }
 
-        is QrInput.Phone -> {
+        is QrInput.Phone       -> {
             QrTextField(
+                title = stringResource(R.string.generator_enter_data),
                 field = QrInputField.Phone,
                 value = qrInput.phoneNumber,
                 fieldErrors = fieldErrors,
@@ -50,9 +54,10 @@ fun QrTypeForm(
             )
         }
 
-        is QrInput.Email -> {
+        is QrInput.Email       -> {
             FormColumn(modifier = modifier) {
                 QrTextField(
+                    title = stringResource(R.string.generator_enter_data),
                     field = QrInputField.EmailAddress,
                     value = qrInput.email,
                     fieldErrors = fieldErrors,
@@ -73,9 +78,10 @@ fun QrTypeForm(
             }
         }
 
-        is QrInput.Wifi -> {
+        is QrInput.Wifi        -> {
             FormColumn(modifier = modifier) {
                 QrTextField(
+                    title = stringResource(R.string.generator_enter_data),
                     field = QrInputField.WifiSsid,
                     value = qrInput.ssid,
                     fieldErrors = fieldErrors,
@@ -90,9 +96,10 @@ fun QrTypeForm(
             }
         }
 
-        is QrInput.Contact -> {
+        is QrInput.Contact     -> {
             FormColumn(modifier = modifier) {
                 QrTextField(
+                    title = stringResource(R.string.generator_enter_data),
                     field = QrInputField.ContactFirstName,
                     value = qrInput.firstName,
                     fieldErrors = fieldErrors,
@@ -124,6 +131,45 @@ fun QrTypeForm(
                 )
             }
         }
+
+        is QrInput.Sms         -> {
+            FormColumn(modifier = modifier) {
+                QrTextField(
+                    title = stringResource(R.string.generator_enter_data),
+                    field = QrInputField.SmsPhone,
+                    value = qrInput.phoneNumber,
+                    fieldErrors = fieldErrors,
+                    onChange = onChange
+                )
+
+                QrTextField(
+                    field = QrInputField.SmsMessage,
+                    value = qrInput.message,
+                    fieldErrors = fieldErrors,
+                    onChange = onChange
+                )
+            }
+
+        }
+
+        is QrInput.GeoLocation -> {
+            FormColumn(modifier = modifier) {
+                QrTextField(
+                    title = stringResource(R.string.generator_enter_data),
+                    field = QrInputField.GeoLatitude,
+                    value = qrInput.latitude,
+                    fieldErrors = fieldErrors,
+                    onChange = onChange
+                )
+
+                QrTextField(
+                    field = QrInputField.GeoLongitude,
+                    value = qrInput.longitude,
+                    fieldErrors = fieldErrors,
+                    onChange = onChange
+                )
+            }
+        }
     }
 }
 
@@ -147,18 +193,18 @@ private fun QrTextField(
     fieldErrors: Map<QrInputField, QrFieldError>,
     onChange: (field: QrInputField, value: String) -> Unit,
     modifier: Modifier = Modifier,
+    title: String? = null,
 ) {
     val error = fieldErrors[field]
-
     QrezzyTextInput(
         value = value,
+        title = title,
         placeholder = stringResource(field.placeholderResId),
         modifier = modifier.fillMaxWidth(),
         onValueChange = { newValue -> onChange(field, newValue) },
         singleLine = field !== QrInputField.Text && field !== QrInputField.EmailBody,
         maxLength = field.maxLength,
         keyboardOptions = field.keyboardOptions,
-        isError = error != null,
         errorText = error?.message,
     )
 }

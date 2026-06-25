@@ -17,4 +17,11 @@ enum class QrInputField {
     ContactPhone,
     ContactEmail,
     ContactCompany,
+    
+    SmsPhone,
+    SmsMessage,
+
+    GeoLatitude,
+    GeoLongitude,
+
 }
