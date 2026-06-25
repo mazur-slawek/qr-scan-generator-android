@@ -126,7 +126,11 @@ constructor(
         val qrContent = uiState.value.qrContent
 
         if (qrContent.isBlank()) return
-        val qr = createGeneratedQrUseCase(type = selectedQrInput.toQrType(), content = qrContent)
+        val qr = createGeneratedQrUseCase(
+            type = selectedQrInput.toQrType(),
+            content = qrContent,
+            style = uiState.value.qrStyle
+        )
 
         viewModelScope.launch {
             saveQrUseCase(qr)
