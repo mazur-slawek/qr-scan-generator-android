@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
+import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
 import software.mazur.qrezzy.core.designsystem.theme.BorderLight
 import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
@@ -44,29 +45,31 @@ fun QrezzyQrInfoContent(qr: Qr, modifier: Modifier = Modifier) {
     val uriHandler = LocalUriHandler.current
     val rows = remember(qr) { qr.toInfoRows() }
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .border(
-                width = QrezzyQrInfoContentDefaults.Container.borderWidth,
-                color = BorderLight,
-                shape = ShapeDefaults.Medium,
-            )
-            .background(color = Surface, shape = ShapeDefaults.Medium)
-            .padding(QrezzyQrInfoContentDefaults.Container.padding),
-    ) {
-        rows.forEachIndexed { index, row ->
-            QrezzyQrInfoRow(
-                row = row,
-                onCopyClick = { clipboardManager.setText(AnnotatedString(row.value)) },
-                onOpenLinkClick = { uriHandler.openUri(row.value.toBrowserUrl()) },
-            )
-
-            if (index != rows.lastIndex) {
-                HorizontalDivider(
-                    modifier = Modifier.padding(vertical = QrezzyQrInfoContentDefaults.Divider.verticalPadding),
+    QrezzyFieldWrapper(title = stringResource(R.string.qr_details_section_details)) {
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .border(
+                    width = QrezzyQrInfoContentDefaults.Container.borderWidth,
                     color = BorderLight,
+                    shape = ShapeDefaults.Medium,
                 )
+                .background(color = Surface, shape = ShapeDefaults.Medium)
+                .padding(QrezzyQrInfoContentDefaults.Container.padding),
+        ) {
+            rows.forEachIndexed { index, row ->
+                QrezzyQrInfoRow(
+                    row = row,
+                    onCopyClick = { clipboardManager.setText(AnnotatedString(row.value)) },
+                    onOpenLinkClick = { uriHandler.openUri(row.value.toBrowserUrl()) },
+                )
+
+                if (index != rows.lastIndex) {
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = QrezzyQrInfoContentDefaults.Divider.verticalPadding),
+                        color = BorderLight,
+                    )
+                }
             }
         }
     }

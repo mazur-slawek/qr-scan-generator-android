@@ -191,9 +191,7 @@ fun QrezzyTopBarButton(
                         imageVector = it,
                         contentDescription = null,
                         tint = iconTint,
-                        modifier = Modifier
-                            .width(QrezzyTopBarButtonDefaults.Icon.size)
-                            .height(QrezzyTopBarButtonDefaults.Icon.size),
+                        modifier = Modifier.size(QrezzyTopBarButtonDefaults.Icon.size)
                     )
                 }
             }

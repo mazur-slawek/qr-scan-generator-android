@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
@@ -36,8 +37,8 @@ fun QrezzyFieldWrapper(
     content: @Composable BoxScope.() -> Unit,
 ) {
     val isError = !error.isNullOrBlank()
-    val borderColor = if (isError) QrezzyPink else if (isFocused) QrezzyPurple else QrezzyMint
-    val backgroundColor = if (isError) QrezzyPinkDark else if (isFocused) QrezzyPurpleDark else BorderPrimary
+    val backgroundColor = if (isError) QrezzyPink else if (isFocused) QrezzyPurple else QrezzyMint
+    val borderColor = if (isError) QrezzyPinkDark else if (isFocused) QrezzyPurpleDark else BorderPrimary
 
     Column(modifier = modifier.fillMaxWidth()) {
         title?.let { value ->
@@ -65,14 +66,10 @@ fun QrezzyFieldWrapper(
             Box(
                 modifier = Modifier
                     .matchParentSize()
-                    .offset(
-                        x = -QrezzyFieldWrapperDefaults.Depth.offsetX,
-                        y = -QrezzyFieldWrapperDefaults.Depth.offsetY
-                    )
-                    .background(color = borderColor, shape = QrezzyFieldWrapperDefaults.shape)
+                    .background(color = backgroundColor, shape = QrezzyFieldWrapperDefaults.shape)
                     .border(
                         width = QrezzyFieldWrapperDefaults.borderWidth,
-                        color = backgroundColor,
+                        color = borderColor,
                         shape = QrezzyFieldWrapperDefaults.shape,
                     )
             )
@@ -81,13 +78,17 @@ fun QrezzyFieldWrapper(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
-                    .background(color = Surface, shape = QrezzyFieldWrapperDefaults.shape)
+                    .offset(
+                        x = -QrezzyFieldWrapperDefaults.Depth.offsetX,
+                        y = -QrezzyFieldWrapperDefaults.Depth.offsetY
+                    )
+                    .background(color = Surface, shape = RoundedCornerShape(10.dp))
                     .border(
                         width = QrezzyFieldWrapperDefaults.borderWidth,
                         color = BorderPrimary,
-                        shape = QrezzyFieldWrapperDefaults.shape,
+                        shape = RoundedCornerShape(10.dp),
                     )
-                    .clip(QrezzyFieldWrapperDefaults.shape),
+                    .clip(RoundedCornerShape(10.dp)),
                 content = content,
             )
         }
