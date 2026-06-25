@@ -124,18 +124,20 @@ private fun QrezzyQrInfoRow(row: QrInfoRow, onCopyClick: () -> Unit, onOpenLinkC
 
 private fun Qr.toInfoRows(): List<QrInfoRow> {
     return when (type) {
-        QrType.TEXT    ->
+        QrType.TEXT         ->
             listOf(QrInfoRow(labelResId = R.string.qr_details_field_text, value = content))
 
-        QrType.URL     ->
+        QrType.URL          ->
             listOf(QrInfoRow(labelResId = R.string.qr_details_field_url, value = content, isOpenLinkEnabled = true))
 
-        QrType.PHONE   ->
+        QrType.PHONE        ->
             listOf(QrInfoRow(labelResId = R.string.qr_details_field_phone, value = content.removePrefix("tel:")))
 
-        QrType.EMAIL   -> parseEmailRows(content)
-        QrType.WIFI    -> parseWifiRows(content)
-        QrType.CONTACT -> parseContactRows(content)
+        QrType.EMAIL        -> parseEmailRows(content)
+        QrType.WIFI         -> parseWifiRows(content)
+        QrType.CONTACT      -> parseContactRows(content)
+        QrType.SMS          -> parseSmsRows(content)
+        QrType.GEO_LOCATION -> parseGeoLocationRows(content)
     }
 }
 
@@ -184,6 +186,55 @@ private fun parseContactRows(content: String): List<QrInfoRow> {
     ).ifEmpty {
         listOf(QrInfoRow(labelResId = R.string.qr_details_field_contact_raw, value = content))
     }
+}
+
+private fun parseSmsRows(content: String): List<QrInfoRow> {
+    val normalizedContent = content.trim()
+    if (normalizedContent.startsWith("SMSTO:", ignoreCase = true)) {
+        val payload = normalizedContent.removePrefixIgnoreCase("SMSTO:")
+        val phone = payload.substringBefore(":").trim()
+        val message = payload.substringAfter(":", "").trim()
+
+        return listOfNotNull(
+            QrInfoRow(labelResId = R.string.qr_details_field_sms_phone, value = phone).takeIfValueNotBlank(),
+            QrInfoRow(labelResId = R.string.qr_details_field_sms_message, value = message).takeIfValueNotBlank(),
+        ).ifEmpty {
+            listOf(QrInfoRow(labelResId = R.string.qr_details_field_sms_raw, value = content))
+        }
+
+    }
+    val payload = normalizedContent.removePrefixIgnoreCase("sms:")
+    val phone = payload.substringBefore("?").trim()
+    val message = payload
+        .substringAfter("body=", "")
+        .substringBefore("&")
+        .trim()
+    return listOfNotNull(
+        QrInfoRow(labelResId = R.string.qr_details_field_sms_phone, value = phone).takeIfValueNotBlank(),
+        QrInfoRow(labelResId = R.string.qr_details_field_sms_message, value = message).takeIfValueNotBlank(),
+    ).ifEmpty {
+        listOf(QrInfoRow(labelResId = R.string.qr_details_field_sms_raw, value = content))
+    }
+}
+
+private fun parseGeoLocationRows(content: String): List<QrInfoRow> {
+    val payload = content
+        .trim()
+        .removePrefixIgnoreCase("geo:")
+        .substringBefore("?")
+    val latitude = payload.substringBefore(",", "").trim()
+    val longitude = payload.substringAfter(",", "").trim()
+
+    return listOfNotNull(
+        QrInfoRow(labelResId = R.string.qr_details_field_geo_latitude, value = latitude).takeIfValueNotBlank(),
+        QrInfoRow(labelResId = R.string.qr_details_field_geo_longitude, value = longitude).takeIfValueNotBlank(),
+    ).ifEmpty {
+        listOf(QrInfoRow(labelResId = R.string.qr_details_field_geo_raw, value = content))
+    }
+}
+
+private fun String.removePrefixIgnoreCase(prefix: String): String {
+    return if (startsWith(prefix, ignoreCase = true)) drop(prefix.length) else this
 }
 
 private fun String.toWifiValues(): Map<String, String> {

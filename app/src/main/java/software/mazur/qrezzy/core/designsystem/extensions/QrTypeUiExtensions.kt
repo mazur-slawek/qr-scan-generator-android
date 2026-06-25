@@ -5,7 +5,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.AlternateEmail
 import androidx.compose.material.icons.outlined.InsertLink
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Smartphone
+import androidx.compose.material.icons.outlined.Sms
 import androidx.compose.material.icons.outlined.Textsms
 import androidx.compose.material.icons.outlined.Wifi
 import androidx.compose.runtime.Immutable
@@ -20,6 +22,7 @@ import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellow
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
+import software.mazur.qrezzy.core.extensions.removePrefixIgnoreCase
 import software.mazur.qrezzy.domain.qr.model.Qr
 import software.mazur.qrezzy.domain.qr.model.QrType
 
@@ -34,7 +37,7 @@ data class QrTypeUi(
 val QrType.ui: QrTypeUi
     get() =
         when (this) {
-            QrType.TEXT    ->
+            QrType.TEXT         ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_text,
                     icon = Icons.Outlined.Textsms,
@@ -42,7 +45,7 @@ val QrType.ui: QrTypeUi
                     contentColor = QrezzyYellow,
                 )
 
-            QrType.URL     ->
+            QrType.URL          ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_url,
                     icon = Icons.Outlined.InsertLink,
@@ -50,7 +53,7 @@ val QrType.ui: QrTypeUi
                     contentColor = QrezzyMint,
                 )
 
-            QrType.WIFI    ->
+            QrType.WIFI         ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_wifi,
                     icon = Icons.Outlined.Wifi,
@@ -58,7 +61,7 @@ val QrType.ui: QrTypeUi
                     contentColor = QrezzyPurple,
                 )
 
-            QrType.CONTACT ->
+            QrType.CONTACT      ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_contact,
                     icon = Icons.Outlined.AccountCircle,
@@ -66,7 +69,7 @@ val QrType.ui: QrTypeUi
                     contentColor = QrezzyYellow,
                 )
 
-            QrType.EMAIL   ->
+            QrType.EMAIL        ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_email,
                     icon = Icons.Outlined.AlternateEmail,
@@ -74,23 +77,39 @@ val QrType.ui: QrTypeUi
                     contentColor = QrezzyPink,
                 )
 
-            QrType.PHONE   ->
+            QrType.PHONE        ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_phone,
                     icon = Icons.Outlined.Smartphone,
                     containerColor = QrezzyPurpleDark,
                     contentColor = QrezzyPurple,
                 )
+
+            QrType.SMS          -> QrTypeUi(
+                labelResId = R.string.qr_type_sms,
+                icon = Icons.Outlined.Sms,
+                containerColor = QrezzyPinkDark,
+                contentColor = QrezzyPink
+            )
+
+            QrType.GEO_LOCATION -> QrTypeUi(
+                labelResId = R.string.qr_type_geo_location,
+                icon = Icons.Outlined.LocationOn,
+                containerColor = QrezzyMintDark,
+                contentColor = QrezzyMint
+            )
         }
 val Qr.label: String
     get() =
         when (type) {
-            QrType.TEXT    -> content.toReadableTextLabel()
-            QrType.URL     -> content.toReadableUrlLabel()
-            QrType.WIFI    -> content.toReadableWifiLabel()
-            QrType.CONTACT -> content.toReadableContactLabel()
-            QrType.EMAIL   -> content.toReadableEmailLabel()
-            QrType.PHONE   -> content.toReadablePhoneLabel()
+            QrType.TEXT         -> content.toReadableTextLabel()
+            QrType.URL          -> content.toReadableUrlLabel()
+            QrType.WIFI         -> content.toReadableWifiLabel()
+            QrType.CONTACT      -> content.toReadableContactLabel()
+            QrType.EMAIL        -> content.toReadableEmailLabel()
+            QrType.PHONE        -> content.toReadablePhoneLabel()
+            QrType.SMS          -> content.toReadableSmsLabel()
+            QrType.GEO_LOCATION -> content.toReadableGeoLocationLabel()
         }
 
 private fun String.toReadableTextLabel(): String {
@@ -140,6 +159,25 @@ private fun String.toReadablePhoneLabel(): String {
     return removePrefix("tel:")
         .trim()
         .ifBlank { QrTypeUiDefaults.PHONE_FALLBACK_LABEL }
+}
+
+private fun String.toReadableSmsLabel(): String {
+    val normalizedContent = trim()
+    if (normalizedContent.startsWith("SMSTO:", ignoreCase = true)) {
+        val payload = normalizedContent.removePrefixIgnoreCase("SMSTO:")
+        return payload.substringBefore(":").trim().ifBlank { this }
+    }
+    val payload = normalizedContent.removePrefixIgnoreCase("sms:")
+    return payload.substringBefore("?").trim().ifBlank { this }
+}
+
+private fun String.toReadableGeoLocationLabel(): String {
+    val payload = trim()
+        .removePrefixIgnoreCase("geo:")
+        .substringBefore("?")
+    val latitude = payload.substringBefore(",", "").trim()
+    val longitude = payload.substringAfter(",", "").trim()
+    return if (latitude.isNotBlank() && longitude.isNotBlank()) "$latitude, $longitude" else this
 }
 
 private object QrTypeUiDefaults {

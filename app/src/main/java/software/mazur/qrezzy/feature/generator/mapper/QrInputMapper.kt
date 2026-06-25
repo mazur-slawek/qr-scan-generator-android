@@ -6,22 +6,26 @@ import software.mazur.qrezzy.feature.generator.model.WifiEncryption
 
 fun QrInput.toQrType(): QrType =
     when (this) {
-        is QrInput.Text -> QrType.TEXT
-        is QrInput.Url -> QrType.URL
-        is QrInput.Wifi -> QrType.WIFI
-        is QrInput.Contact -> QrType.CONTACT
-        is QrInput.Email -> QrType.EMAIL
-        is QrInput.Phone -> QrType.PHONE
+        is QrInput.Text        -> QrType.TEXT
+        is QrInput.Url         -> QrType.URL
+        is QrInput.Wifi        -> QrType.WIFI
+        is QrInput.Contact     -> QrType.CONTACT
+        is QrInput.Email       -> QrType.EMAIL
+        is QrInput.Phone       -> QrType.PHONE
+        is QrInput.Sms         -> QrType.SMS
+        is QrInput.GeoLocation -> QrType.GEO_LOCATION
     }
 
 fun QrInput.toQrContent(): String =
     when (this) {
-        is QrInput.Text -> text.trim()
-        is QrInput.Url -> url.trim()
-        is QrInput.Phone -> toQrContent()
-        is QrInput.Email -> toQrContent()
-        is QrInput.Wifi -> toQrContent()
-        is QrInput.Contact -> toQrContent()
+        is QrInput.Text        -> text.trim()
+        is QrInput.Url         -> url.trim()
+        is QrInput.Phone       -> toQrContent()
+        is QrInput.Email       -> toQrContent()
+        is QrInput.Wifi        -> toQrContent()
+        is QrInput.Contact     -> toQrContent()
+        is QrInput.Sms         -> toQrContent()
+        is QrInput.GeoLocation -> toQrContent()
     }
 
 private fun QrInput.Phone.toQrContent(): String {
@@ -58,8 +62,8 @@ private fun QrInput.Wifi.toQrContent(): String {
 
 private fun WifiEncryption.toQrValue(): String =
     when (this) {
-        WifiEncryption.WPA -> "WPA"
-        WifiEncryption.WEP -> "WEP"
+        WifiEncryption.WPA  -> "WPA"
+        WifiEncryption.WEP  -> "WEP"
         WifiEncryption.NONE -> "nopass"
     }
 
@@ -88,4 +92,20 @@ private fun QrInput.Contact.toQrContent(): String {
         if (contactCompany.isNotBlank()) appendLine("ORG:$contactCompany")
         appendLine("END:VCARD")
     }
+}
+
+private fun QrInput.GeoLocation.toQrContent(): String {
+    val lat = latitude.trim()
+    val lng = longitude.trim()
+    
+    if (lat.isBlank() || lng.isBlank()) return ""
+    return "geo:$lat,$lng"
+}
+
+private fun QrInput.Sms.toQrContent(): String {
+    val phone = phoneNumber.trim()
+    val text = message.trim()
+
+    if (phone.isBlank()) return ""
+    return if (text.isBlank()) "sms:$phone" else "sms:$phone?body=$text"
 }

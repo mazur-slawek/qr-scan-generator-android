@@ -14,6 +14,8 @@ data class GeneratorUiState(
             QrInput.Contact(),
             QrInput.Email(),
             QrInput.Phone(),
+            QrInput.Sms(),
+            QrInput.GeoLocation(),
         ),
     val fieldErrors: Map<QrInputField, QrFieldError> = emptyMap(),
     val qrStyleEditor: QrStyleEditorState = QrStyleEditorState()

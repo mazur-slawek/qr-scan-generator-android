@@ -24,7 +24,7 @@ fun QrTypeForm(
     modifier: Modifier = Modifier,
 ) {
     when (qrInput) {
-        is QrInput.Text    -> {
+        is QrInput.Text        -> {
             QrTextField(
                 title = stringResource(R.string.generator_enter_data),
                 field = QrInputField.Text,
@@ -34,7 +34,7 @@ fun QrTypeForm(
             )
         }
 
-        is QrInput.Url     -> {
+        is QrInput.Url         -> {
             QrTextField(
                 title = stringResource(R.string.generator_enter_data),
                 field = QrInputField.Url,
@@ -44,7 +44,7 @@ fun QrTypeForm(
             )
         }
 
-        is QrInput.Phone   -> {
+        is QrInput.Phone       -> {
             QrTextField(
                 title = stringResource(R.string.generator_enter_data),
                 field = QrInputField.Phone,
@@ -54,7 +54,7 @@ fun QrTypeForm(
             )
         }
 
-        is QrInput.Email   -> {
+        is QrInput.Email       -> {
             FormColumn(modifier = modifier) {
                 QrTextField(
                     title = stringResource(R.string.generator_enter_data),
@@ -78,7 +78,7 @@ fun QrTypeForm(
             }
         }
 
-        is QrInput.Wifi    -> {
+        is QrInput.Wifi        -> {
             FormColumn(modifier = modifier) {
                 QrTextField(
                     title = stringResource(R.string.generator_enter_data),
@@ -96,7 +96,7 @@ fun QrTypeForm(
             }
         }
 
-        is QrInput.Contact -> {
+        is QrInput.Contact     -> {
             FormColumn(modifier = modifier) {
                 QrTextField(
                     title = stringResource(R.string.generator_enter_data),
@@ -128,6 +128,45 @@ fun QrTypeForm(
                     value = qrInput.company,
                     fieldErrors = fieldErrors,
                     onChange = onChange,
+                )
+            }
+        }
+
+        is QrInput.Sms         -> {
+            FormColumn(modifier = modifier) {
+                QrTextField(
+                    title = stringResource(R.string.generator_enter_data),
+                    field = QrInputField.SmsPhone,
+                    value = qrInput.phoneNumber,
+                    fieldErrors = fieldErrors,
+                    onChange = onChange
+                )
+
+                QrTextField(
+                    field = QrInputField.SmsMessage,
+                    value = qrInput.message,
+                    fieldErrors = fieldErrors,
+                    onChange = onChange
+                )
+            }
+
+        }
+
+        is QrInput.GeoLocation -> {
+            FormColumn(modifier = modifier) {
+                QrTextField(
+                    title = stringResource(R.string.generator_enter_data),
+                    field = QrInputField.GeoLatitude,
+                    value = qrInput.latitude,
+                    fieldErrors = fieldErrors,
+                    onChange = onChange
+                )
+
+                QrTextField(
+                    field = QrInputField.GeoLongitude,
+                    value = qrInput.longitude,
+                    fieldErrors = fieldErrors,
+                    onChange = onChange
                 )
             }
         }

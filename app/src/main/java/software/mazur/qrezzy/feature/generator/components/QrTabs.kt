@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.Icon
@@ -52,7 +52,8 @@ fun QrTypeTabs(qrInputs: List<QrInput>, selectedQrInput: QrInput, onQrInputSelec
                 Column(
                     modifier = Modifier
                         .padding(all = QrTypeTabsDefaults.padding)
-                        .size(QrTypeTabsDefaults.size)
+                        .width(QrTypeTabsDefaults.width)
+                        .height(QrTypeTabsDefaults.height)
                         .border(
                             width = if (isSelected) QrTypeTabsDefaults.selectedBorderWidth else QrTypeTabsDefaults.defaultBorderWidth,
                             color = if (isSelected) typeUi.containerColor else Color.Transparent,
@@ -89,7 +90,8 @@ fun QrTypeTabs(qrInputs: List<QrInput>, selectedQrInput: QrInput, onQrInputSelec
 }
 
 private object QrTypeTabsDefaults {
-    val size = 60.dp
+    val height = 60.dp
+    val width = 70.dp
     val padding = 2.5.dp
     val shape = ShapeDefaults.Medium.copy(CornerSize(10.dp))
     val iconTextSpacing = 2.dp

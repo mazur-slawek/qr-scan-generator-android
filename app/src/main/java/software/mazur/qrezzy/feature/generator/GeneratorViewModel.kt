@@ -69,6 +69,12 @@ constructor(
             QrInputField.ContactPhone,
             QrInputField.ContactEmail,
             QrInputField.ContactCompany -> updateContactInput(field = field, value = value, fieldErrors = fieldErrors)
+
+            QrInputField.SmsPhone,
+            QrInputField.SmsMessage     -> updateSmsInput(field, value, fieldErrors)
+
+            QrInputField.GeoLatitude,
+            QrInputField.GeoLongitude   -> updateGeoLocationInput(field, value, fieldErrors)
         }
     }
 
@@ -159,6 +165,35 @@ constructor(
             QrInputField.ContactEmail     -> currentInput.copy(email = value)
             QrInputField.ContactCompany   -> currentInput.copy(company = value)
             else                          -> currentInput
+        }
+        updateSelectedQrInput(qrInput = updatedInput, fieldErrors = fieldErrors)
+    }
+
+    private fun updateSmsInput(
+        field: QrInputField,
+        value: String,
+        fieldErrors: Map<QrInputField, QrFieldError>
+    ) {
+        val currentInput = uiState.value.selectedQrInput as? QrInput.Sms ?: QrInput.Sms()
+        val updatedInput = when (field) {
+            QrInputField.SmsPhone   -> currentInput.copy(phoneNumber = value)
+            QrInputField.SmsMessage -> currentInput.copy(message = value)
+            else                    -> currentInput
+        }
+        updateSelectedQrInput(qrInput = updatedInput, fieldErrors = fieldErrors)
+    }
+
+
+    private fun updateGeoLocationInput(
+        field: QrInputField,
+        value: String,
+        fieldErrors: Map<QrInputField, QrFieldError>
+    ) {
+        val currentInput = uiState.value.selectedQrInput as? QrInput.GeoLocation ?: QrInput.GeoLocation()
+        val updatedInput = when (field) {
+            QrInputField.GeoLatitude  -> currentInput.copy(latitude = value)
+            QrInputField.GeoLongitude -> currentInput.copy(longitude = value)
+            else                      -> currentInput
         }
         updateSelectedQrInput(qrInput = updatedInput, fieldErrors = fieldErrors)
     }
