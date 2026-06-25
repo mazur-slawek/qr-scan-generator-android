@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import software.mazur.qrezzy.core.qr.renderer.QrBitmapGenerator
+import software.mazur.qrezzy.core.qr.style.QrStyleEditorState
 import software.mazur.qrezzy.domain.qr.model.style.QrErrorCorrection
 import software.mazur.qrezzy.domain.qr.model.style.QrPatternStyle
 import software.mazur.qrezzy.domain.qr.model.style.QrStyle
@@ -38,108 +39,80 @@ constructor(
     val events = _events.asSharedFlow()
 
     fun onFormEvent(field: QrInputField, value: String) {
-        val fieldErrors = updateFieldError(field, value)
+        val fieldErrors = updateFieldError(field = field, value = value)
 
         when (field) {
-            QrInputField.Text  -> {
-                updateSelectedQrInput(QrInput.Text(text = value), fieldErrors)
-            }
+            QrInputField.Text           -> updateSelectedQrInput(
+                qrInput = QrInput.Text(text = value),
+                fieldErrors = fieldErrors,
+            )
 
-            QrInputField.Url   -> {
-                updateSelectedQrInput(QrInput.Url(url = value), fieldErrors)
-            }
+            QrInputField.Url            -> updateSelectedQrInput(
+                qrInput = QrInput.Url(url = value),
+                fieldErrors = fieldErrors,
+            )
 
-            QrInputField.Phone -> {
-                updateSelectedQrInput(QrInput.Phone(phoneNumber = value), fieldErrors)
-            }
+            QrInputField.Phone          -> updateSelectedQrInput(
+                qrInput = QrInput.Phone(phoneNumber = value),
+                fieldErrors = fieldErrors,
+            )
 
             QrInputField.EmailAddress,
             QrInputField.EmailSubject,
-            QrInputField.EmailBody,
-                               -> {
-                val current = uiState.value.selectedQrInput as? QrInput.Email ?: QrInput.Email()
-
-                when (field) {
-                    QrInputField.EmailAddress -> updateSelectedQrInput(current.copy(email = value), fieldErrors)
-                    QrInputField.EmailSubject -> updateSelectedQrInput(current.copy(subject = value), fieldErrors)
-                    QrInputField.EmailBody    -> updateSelectedQrInput(current.copy(body = value), fieldErrors)
-                    else                      -> Unit
-                }
-            }
+            QrInputField.EmailBody      -> updateEmailInput(field = field, value = value, fieldErrors = fieldErrors)
 
             QrInputField.WifiSsid,
-            QrInputField.WifiPassword,
-                               -> {
-                val current = uiState.value.selectedQrInput as? QrInput.Wifi ?: QrInput.Wifi()
-
-                when (field) {
-                    QrInputField.WifiSsid     -> updateSelectedQrInput(current.copy(ssid = value), fieldErrors)
-                    QrInputField.WifiPassword -> updateSelectedQrInput(current.copy(password = value), fieldErrors)
-                    else                      -> Unit
-                }
-            }
+            QrInputField.WifiPassword   -> updateWifiInput(field = field, value = value, fieldErrors = fieldErrors)
 
             QrInputField.ContactFirstName,
             QrInputField.ContactLastName,
             QrInputField.ContactPhone,
             QrInputField.ContactEmail,
-            QrInputField.ContactCompany,
-                               -> {
-                val current = uiState.value.selectedQrInput as? QrInput.Contact ?: QrInput.Contact()
-
-                when (field) {
-                    QrInputField.ContactFirstName -> updateSelectedQrInput(current.copy(firstName = value), fieldErrors)
-                    QrInputField.ContactLastName  -> updateSelectedQrInput(current.copy(lastName = value), fieldErrors)
-                    QrInputField.ContactPhone     -> updateSelectedQrInput(current.copy(phone = value), fieldErrors)
-                    QrInputField.ContactEmail     -> updateSelectedQrInput(current.copy(email = value), fieldErrors)
-                    QrInputField.ContactCompany   -> updateSelectedQrInput(current.copy(company = value), fieldErrors)
-                    else                          -> Unit
-                }
-            }
+            QrInputField.ContactCompany -> updateContactInput(field = field, value = value, fieldErrors = fieldErrors)
         }
     }
 
     fun onQrInputSelected(qrInput: QrInput) {
-        val existingInput = uiState.value.qrInputs.firstOrNull { it.isSameTypeAs(qrInput) } ?: qrInput
-        updateSelectedQrInput(existingInput)
+        val existingInput = uiState.value.qrInputs.firstOrNull { input -> input.isSameTypeAs(qrInput) } ?: qrInput
+        updateSelectedQrInput(qrInput = existingInput)
     }
 
-    fun generateQrBitmap(content: String) = qrBitmapGenerator.generate(content = content, style = uiState.value.qrStyle)
+    fun generateQrBitmap(content: String) =
+        qrBitmapGenerator.generate(content = content, style = uiState.value.qrStyle)
 
     fun generatePreviewQrBitmap(content: String, style: QrStyle) =
         qrBitmapGenerator.generate(content = content, style = style)
 
     fun onCustomizeQrClick() {
-        uiState.value = uiState.value.copy(draftQrStyle = uiState.value.qrStyle, isCustomizeQrDialogVisible = true)
+        updateQrStyleEditor { editor -> editor.open() }
     }
 
     fun onDismissCustomizeQrDialog() {
-        uiState.value = uiState.value.copy(isCustomizeQrDialogVisible = false)
+        updateQrStyleEditor { editor -> editor.dismiss() }
     }
 
     fun onQrColorSelected(color: Long) {
-        uiState.value = uiState.value.copy(draftQrStyle = uiState.value.draftQrStyle.copy(qrColor = color))
+        updateQrStyleEditor { editor -> editor.updateQrColor(color) }
     }
 
     fun onBackgroundColorSelected(color: Long) {
-        uiState.value = uiState.value.copy(draftQrStyle = uiState.value.draftQrStyle.copy(backgroundColor = color))
+        updateQrStyleEditor { editor -> editor.updateBackgroundColor(color) }
     }
 
     fun onPatternStyleSelected(patternStyle: QrPatternStyle) {
-        uiState.value = uiState.value.copy(draftQrStyle = uiState.value.draftQrStyle.copy(patternStyle = patternStyle))
+        updateQrStyleEditor { editor -> editor.updatePatternStyle(patternStyle) }
     }
 
     fun onErrorCorrectionSelected(errorCorrection: QrErrorCorrection) {
-        uiState.value =
-            uiState.value.copy(draftQrStyle = uiState.value.draftQrStyle.copy(errorCorrection = errorCorrection))
+        updateQrStyleEditor { editor -> editor.updateErrorCorrection(errorCorrection) }
     }
 
     fun onResetQrStyleClick() {
-        uiState.value = uiState.value.copy(draftQrStyle = QrStyle())
+        updateQrStyleEditor { editor -> editor.resetDraft() }
     }
 
     fun onApplyQrStyleClick() {
-        uiState.value = uiState.value.copy(qrStyle = uiState.value.draftQrStyle, isCustomizeQrDialogVisible = false)
+        updateQrStyleEditor { editor -> editor.applyDraft() }
     }
 
     fun saveQrCode() {
@@ -147,14 +120,51 @@ constructor(
         val qrContent = uiState.value.qrContent
 
         if (qrContent.isBlank()) return
-        val qrType = selectedQrInput.toQrType()
-        val qr = createGeneratedQrUseCase(type = qrType, content = qrContent)
+        val qr = createGeneratedQrUseCase(type = selectedQrInput.toQrType(), content = qrContent)
 
         viewModelScope.launch {
             saveQrUseCase(qr)
             resetForm()
             _events.emit(GeneratorUiEvent.QrSaved)
         }
+    }
+
+    private fun updateEmailInput(field: QrInputField, value: String, fieldErrors: Map<QrInputField, QrFieldError>) {
+        val currentInput = uiState.value.selectedQrInput as? QrInput.Email ?: QrInput.Email()
+        val updatedInput = when (field) {
+            QrInputField.EmailAddress -> currentInput.copy(email = value)
+            QrInputField.EmailSubject -> currentInput.copy(subject = value)
+            QrInputField.EmailBody    -> currentInput.copy(body = value)
+            else                      -> currentInput
+        }
+        updateSelectedQrInput(qrInput = updatedInput, fieldErrors = fieldErrors)
+    }
+
+    private fun updateWifiInput(field: QrInputField, value: String, fieldErrors: Map<QrInputField, QrFieldError>) {
+        val currentInput = uiState.value.selectedQrInput as? QrInput.Wifi ?: QrInput.Wifi()
+        val updatedInput = when (field) {
+            QrInputField.WifiSsid     -> currentInput.copy(ssid = value)
+            QrInputField.WifiPassword -> currentInput.copy(password = value)
+            else                      -> currentInput
+        }
+        updateSelectedQrInput(qrInput = updatedInput, fieldErrors = fieldErrors)
+    }
+
+    private fun updateContactInput(field: QrInputField, value: String, fieldErrors: Map<QrInputField, QrFieldError>) {
+        val currentInput = uiState.value.selectedQrInput as? QrInput.Contact ?: QrInput.Contact()
+        val updatedInput = when (field) {
+            QrInputField.ContactFirstName -> currentInput.copy(firstName = value)
+            QrInputField.ContactLastName  -> currentInput.copy(lastName = value)
+            QrInputField.ContactPhone     -> currentInput.copy(phone = value)
+            QrInputField.ContactEmail     -> currentInput.copy(email = value)
+            QrInputField.ContactCompany   -> currentInput.copy(company = value)
+            else                          -> currentInput
+        }
+        updateSelectedQrInput(qrInput = updatedInput, fieldErrors = fieldErrors)
+    }
+
+    private fun updateQrStyleEditor(update: (QrStyleEditorState) -> QrStyleEditorState) {
+        uiState.value = uiState.value.copy(qrStyleEditor = update(uiState.value.qrStyleEditor))
     }
 
     private fun resetForm() {
@@ -172,21 +182,21 @@ constructor(
     }
 
     private fun updateFieldError(field: QrInputField, value: String): Map<QrInputField, QrFieldError> {
-        val error = validateField(field, value)
+        val error = validateField(field = field, value = value)
         return if (error == null) uiState.value.fieldErrors - field else uiState.value.fieldErrors + (field to error)
     }
 
     private fun updateSelectedQrInput(
         qrInput: QrInput,
-        fieldErrors: Map<QrInputField, QrFieldError> = uiState.value.fieldErrors,
+        fieldErrors: Map<QrInputField, QrFieldError> = uiState.value.fieldErrors
     ) {
         uiState.value = uiState.value.copy(
             selectedQrInput = qrInput,
             qrContent = qrInput.toQrContent(),
             fieldErrors = fieldErrors,
-            qrInputs = uiState.value.qrInputs.map { currentType ->
-                if (currentType.isSameTypeAs(qrInput)) qrInput else currentType
-            },
+            qrInputs = uiState.value.qrInputs.map { currentInput ->
+                if (currentInput.isSameTypeAs(qrInput)) qrInput else currentInput
+            }
         )
     }
 }

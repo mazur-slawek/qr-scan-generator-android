@@ -4,15 +4,19 @@ import android.graphics.Bitmap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
@@ -34,13 +38,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
-import software.mazur.qrezzy.core.designsystem.components.QrezzyRowFieldWrapper
+import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
 import software.mazur.qrezzy.core.designsystem.extensions.toComposeColor
 import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
@@ -133,13 +137,22 @@ private fun CustomizeQrColorSelector(
     colors: List<QrColorOption>,
     onColorSelected: (Long) -> Unit
 ) {
-    QrezzyRowFieldWrapper(title = title) {
-        colors.forEach { color ->
-            CustomizeQrColorOption(
-                color = color,
-                isSelected = selectedColor == color.value,
-                onClick = { onColorSelected(color.value) },
-            )
+    QrezzyFieldWrapper(title = title) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .horizontalScroll(rememberScrollState())
+                .padding(all = CustomizeQrDialogDefaults.Selector.spacing),
+            horizontalArrangement = Arrangement.spacedBy(CustomizeQrDialogDefaults.Selector.spacing)
+        ) {
+            colors.forEach { color ->
+                CustomizeQrColorOption(
+                    color = color,
+                    isSelected = selectedColor == color.value,
+                    onClick = { onColorSelected(color.value) },
+                )
+            }
         }
     }
 }
@@ -156,14 +169,10 @@ private fun CustomizeQrColorOption(color: QrColorOption, isSelected: Boolean, on
                     CustomizeQrDialogDefaults.ColorOption.outerBorderWidth
                 },
                 shape = CustomizeQrDialogDefaults.ColorOption.containerShape,
-                color = if (isSelected) QrezzyMintDark else BorderPrimary
+                color = if (isSelected) QrezzyPurpleDark else BorderPrimary
             )
             .background(
-                color = if (isSelected) {
-                    QrezzyMintDark.copy(alpha = CustomizeQrDialogDefaults.ColorOption.SELECTED_BACKGROUND_ALPHA)
-                } else {
-                    Color.Transparent
-                },
+                color = if (isSelected) QrezzyPurple else Color.Transparent,
                 shape = CustomizeQrDialogDefaults.ColorOption.containerShape
             )
             .padding(
@@ -200,25 +209,34 @@ private fun CustomizeQrPatternSelector(
     selectedPatternStyle: QrPatternStyle,
     onPatternStyleSelected: (QrPatternStyle) -> Unit,
 ) {
-    QrezzyRowFieldWrapper(title = stringResource(R.string.customize_qr_pattern_style)) {
-        CustomizeQrOption(
-            iconResId = R.drawable.square,
-            titleResId = R.string.customize_qr_pattern_square,
-            isSelected = selectedPatternStyle == QrPatternStyle.SQUARE,
-            onClick = { onPatternStyleSelected(QrPatternStyle.SQUARE) }
-        )
-        CustomizeQrOption(
-            iconResId = R.drawable.rounded,
-            titleResId = R.string.customize_qr_pattern_rounded,
-            isSelected = selectedPatternStyle == QrPatternStyle.ROUNDED,
-            onClick = { onPatternStyleSelected(QrPatternStyle.ROUNDED) }
-        )
-        CustomizeQrOption(
-            iconResId = R.drawable.dots,
-            titleResId = R.string.customize_qr_pattern_dots,
-            isSelected = selectedPatternStyle == QrPatternStyle.DOTS,
-            onClick = { onPatternStyleSelected(QrPatternStyle.DOTS) }
-        )
+    QrezzyFieldWrapper(title = stringResource(R.string.customize_qr_pattern_style)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .horizontalScroll(rememberScrollState())
+                .padding(all = CustomizeQrDialogDefaults.Selector.spacing),
+            horizontalArrangement = Arrangement.spacedBy(CustomizeQrDialogDefaults.Selector.spacing)
+        ) {
+            CustomizeQrOption(
+                iconResId = R.drawable.square,
+                titleResId = R.string.customize_qr_pattern_square,
+                isSelected = selectedPatternStyle == QrPatternStyle.SQUARE,
+                onClick = { onPatternStyleSelected(QrPatternStyle.SQUARE) }
+            )
+            CustomizeQrOption(
+                iconResId = R.drawable.rounded,
+                titleResId = R.string.customize_qr_pattern_rounded,
+                isSelected = selectedPatternStyle == QrPatternStyle.ROUNDED,
+                onClick = { onPatternStyleSelected(QrPatternStyle.ROUNDED) }
+            )
+            CustomizeQrOption(
+                iconResId = R.drawable.dots,
+                titleResId = R.string.customize_qr_pattern_dots,
+                isSelected = selectedPatternStyle == QrPatternStyle.DOTS,
+                onClick = { onPatternStyleSelected(QrPatternStyle.DOTS) }
+            )
+        }
     }
 }
 
@@ -227,31 +245,40 @@ private fun CustomizeQrErrorCorrectionSelector(
     selectedErrorCorrection: QrErrorCorrection,
     onErrorCorrectionSelected: (QrErrorCorrection) -> Unit,
 ) {
-    QrezzyRowFieldWrapper(title = stringResource(R.string.customize_qr_error_correction)) {
-        CustomizeQrOption(
-            iconResId = R.drawable.qr_error_correction,
-            titleResId = R.string.customize_qr_error_low,
-            isSelected = selectedErrorCorrection == QrErrorCorrection.LOW,
-            onClick = { onErrorCorrectionSelected(QrErrorCorrection.LOW) },
-        )
-        CustomizeQrOption(
-            iconResId = R.drawable.qr_error_correction,
-            titleResId = R.string.customize_qr_error_medium,
-            isSelected = selectedErrorCorrection == QrErrorCorrection.MEDIUM,
-            onClick = { onErrorCorrectionSelected(QrErrorCorrection.MEDIUM) },
-        )
-        CustomizeQrOption(
-            iconResId = R.drawable.qr_error_correction,
-            titleResId = R.string.customize_qr_error_quartile,
-            isSelected = selectedErrorCorrection == QrErrorCorrection.QUARTILE,
-            onClick = { onErrorCorrectionSelected(QrErrorCorrection.QUARTILE) },
-        )
-        CustomizeQrOption(
-            iconResId = R.drawable.qr_error_correction,
-            titleResId = R.string.customize_qr_error_high,
-            isSelected = selectedErrorCorrection == QrErrorCorrection.HIGH,
-            onClick = { onErrorCorrectionSelected(QrErrorCorrection.HIGH) },
-        )
+    QrezzyFieldWrapper(title = stringResource(R.string.customize_qr_error_correction)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .horizontalScroll(rememberScrollState())
+                .padding(all = CustomizeQrDialogDefaults.Selector.spacing),
+            horizontalArrangement = Arrangement.spacedBy(CustomizeQrDialogDefaults.Selector.spacing)
+        ) {
+            CustomizeQrOption(
+                iconResId = R.drawable.qr_error_correction,
+                titleResId = R.string.customize_qr_error_low,
+                isSelected = selectedErrorCorrection == QrErrorCorrection.LOW,
+                onClick = { onErrorCorrectionSelected(QrErrorCorrection.LOW) },
+            )
+            CustomizeQrOption(
+                iconResId = R.drawable.qr_error_correction,
+                titleResId = R.string.customize_qr_error_medium,
+                isSelected = selectedErrorCorrection == QrErrorCorrection.MEDIUM,
+                onClick = { onErrorCorrectionSelected(QrErrorCorrection.MEDIUM) },
+            )
+            CustomizeQrOption(
+                iconResId = R.drawable.qr_error_correction,
+                titleResId = R.string.customize_qr_error_quartile,
+                isSelected = selectedErrorCorrection == QrErrorCorrection.QUARTILE,
+                onClick = { onErrorCorrectionSelected(QrErrorCorrection.QUARTILE) },
+            )
+            CustomizeQrOption(
+                iconResId = R.drawable.qr_error_correction,
+                titleResId = R.string.customize_qr_error_high,
+                isSelected = selectedErrorCorrection == QrErrorCorrection.HIGH,
+                onClick = { onErrorCorrectionSelected(QrErrorCorrection.HIGH) },
+            )
+        }
     }
 }
 
@@ -264,14 +291,10 @@ private fun CustomizeQrOption(iconResId: Int, titleResId: Int, isSelected: Boole
             .border(
                 width = CustomizeQrDialogDefaults.Option.borderWidth,
                 shape = CustomizeQrDialogDefaults.Option.shape,
-                color = if (isSelected) QrezzyMintDark else TextSecondary,
+                color = if (isSelected) QrezzyPurpleDark else TextSecondary,
             )
             .background(
-                color = if (isSelected) {
-                    QrezzyMintDark.copy(alpha = CustomizeQrDialogDefaults.Option.SELECTED_BACKGROUND_ALPHA)
-                } else {
-                    Color.Transparent
-                },
+                color = if (isSelected) QrezzyPurple else Color.Transparent,
                 shape = CustomizeQrDialogDefaults.Option.shape,
             )
             .clip(CustomizeQrDialogDefaults.Option.shape)
@@ -291,7 +314,7 @@ private fun CustomizeQrOption(iconResId: Int, titleResId: Int, isSelected: Boole
         Spacer(modifier = Modifier.width(CustomizeQrDialogDefaults.Option.iconTextSpacing))
         Text(
             text = stringResource(titleResId),
-            color = if (isSelected) QrezzyMintDark else TextSecondary,
+            color = if (isSelected) TextPrimary else TextSecondary,
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.weight(CustomizeQrDialogDefaults.CONTENT_WEIGHT),
@@ -337,17 +360,20 @@ private object CustomizeQrDialogDefaults {
         val bottomSpacing = 32.dp
     }
 
+    object Selector {
+        val spacing = 10.dp
+    }
+
     object ColorOption {
         val containerSize = 48.dp
         val containerShape = ShapeDefaults.Medium
         val selectedColorShape = RoundedCornerShape(9.dp)
-        val outerBorderWidth = 1.5.dp
-        val selectedOuterBorderWidth = 2.dp
+        val outerBorderWidth = 1.dp
+        val selectedOuterBorderWidth = 1.5.dp
         val defaultInnerPadding = 0.dp
         val selectedInnerPadding = 5.dp
         val defaultInnerBorderWidth = 0.dp
         val selectedInnerBorderWidth = 1.5.dp
-        const val SELECTED_BACKGROUND_ALPHA = 0.2f
     }
 
     object Option {

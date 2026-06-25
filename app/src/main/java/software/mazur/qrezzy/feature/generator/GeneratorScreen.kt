@@ -4,14 +4,14 @@ import android.widget.Toast
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FormatPaint
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -21,7 +21,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import software.mazur.qrezzy.R
@@ -34,15 +33,17 @@ import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.feature.generator.components.QrTypeForm
 import software.mazur.qrezzy.feature.generator.components.QrTypeTabs
 import software.mazur.qrezzy.feature.generator.model.GeneratorUiEvent
+import software.mazur.qrezzy.feature.generator.model.GeneratorUiState
 
 @Composable
 fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
     val uiState = viewModel.uiState.value
-    val qrBitmap =
-        remember(uiState.qrContent, uiState.qrStyle) { viewModel.generateQrBitmap(uiState.qrContent) }
-    val focusManager = LocalFocusManager.current
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
     val qrSavedMessage = stringResource(R.string.generator_qr_saved_message)
+    val qrBitmap = remember(uiState.qrContent, uiState.qrStyle) {
+        viewModel.generateQrBitmap(content = uiState.qrContent)
+    }
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -54,84 +55,101 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
         }
     }
 
-    if (uiState.isCustomizeQrDialogVisible) {
-        val previewBitmap = remember(uiState.qrContent, uiState.draftQrStyle) {
-            viewModel.generatePreviewQrBitmap(content = uiState.qrContent, style = uiState.draftQrStyle)
-        }
+    GeneratorCustomizeQrDialog(uiState = uiState, viewModel = viewModel)
 
-        QrezzyCustomizeQrDialog(
-            qrBitmap = previewBitmap,
-            style = uiState.draftQrStyle,
-            onCancelClick = viewModel::onDismissCustomizeQrDialog,
-            onQrColorSelected = viewModel::onQrColorSelected,
-            onBackgroundColorSelected = viewModel::onBackgroundColorSelected,
-            onPatternStyleSelected = viewModel::onPatternStyleSelected,
-            onErrorCorrectionSelected = viewModel::onErrorCorrectionSelected,
-            onResetClick = viewModel::onResetQrStyleClick,
-            onApplyClick = viewModel::onApplyQrStyleClick
-        )
-    }
-
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+    Column(modifier = Modifier.padding(horizontal = GeneratorScreenDefaults.screenHorizontalPadding)) {
         QrezzyTopBar(
             titleResId = R.string.navigation_title_generate,
-            subtitleResId = R.string.navigation_subtitle_generate
+            subtitleResId = R.string.navigation_subtitle_generate,
         ) {
             QrezzyTopBarButton(
-                onClick = viewModel::onCustomizeQrClick,
                 enabled = uiState.canSave,
                 icon = Icons.Outlined.FormatPaint,
+                onClick = viewModel::onCustomizeQrClick,
                 iconTint = if (uiState.canSave) QrezzyPurpleDark else Color.Gray,
             )
         }
-
         QrezzyQrPreview(qrBitmap = qrBitmap)
+        GeneratorContent(
+            uiState = uiState,
+            onQrInputSelected = viewModel::onQrInputSelected,
+            onFormEvent = viewModel::onFormEvent,
+            onSaveClick = viewModel::saveQrCode,
+            onClearFocus = focusManager::clearFocus,
+        )
+    }
+}
 
-        LazyColumn(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight()
-                .imePadding()
-                .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) },
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            item {
-                Text(
-                    modifier = Modifier.padding(bottom = 10.dp),
-                    text = stringResource(R.string.generator_select_qr_type),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                )
-                QrTypeTabs(
-                    qrInputs = uiState.qrInputs,
-                    selectedQrInput = uiState.selectedQrInput,
-                    onQrInputSelected = viewModel::onQrInputSelected,
-                )
-            }
+@Composable
+private fun GeneratorCustomizeQrDialog(uiState: GeneratorUiState, viewModel: GeneratorViewModel) {
+    if (!uiState.qrStyleEditor.isDialogVisible) return
+    val previewBitmap = remember(uiState.qrContent, uiState.qrStyleEditor.draftStyle) {
+        viewModel.generatePreviewQrBitmap(content = uiState.qrContent, style = uiState.qrStyleEditor.draftStyle)
+    }
 
-            item {
-                Text(
-                    modifier = Modifier.padding(bottom = 10.dp),
-                    text = stringResource(R.string.generator_enter_data),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                )
-                QrTypeForm(
-                    qrInput = uiState.selectedQrInput,
-                    fieldErrors = uiState.fieldErrors,
-                    onChange = viewModel::onFormEvent,
-                )
-            }
+    QrezzyCustomizeQrDialog(
+        qrBitmap = previewBitmap,
+        style = uiState.qrStyleEditor.draftStyle,
+        onQrColorSelected = viewModel::onQrColorSelected,
+        onBackgroundColorSelected = viewModel::onBackgroundColorSelected,
+        onPatternStyleSelected = viewModel::onPatternStyleSelected,
+        onErrorCorrectionSelected = viewModel::onErrorCorrectionSelected,
+        onCancelClick = viewModel::onDismissCustomizeQrDialog,
+        onResetClick = viewModel::onResetQrStyleClick,
+        onApplyClick = viewModel::onApplyQrStyleClick,
+    )
+}
 
-            item {
-                QrezzyButton(
-                    modifier = Modifier.padding(bottom = 16.dp, top = 10.dp),
-                    elevation = 0.dp,
-                    text = stringResource(R.string.generator_save_qr_code),
-                    enabled = uiState.canSave,
-                    onClick = viewModel::saveQrCode,
-                )
-            }
+@Composable
+private fun GeneratorContent(
+    uiState: GeneratorUiState,
+    onQrInputSelected: (software.mazur.qrezzy.feature.generator.model.QrInput) -> Unit,
+    onFormEvent: (software.mazur.qrezzy.feature.generator.model.QrInputField, String) -> Unit,
+    onSaveClick: () -> Unit,
+    onClearFocus: () -> Unit,
+) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxHeight()
+            .imePadding()
+            .pointerInput(Unit) { detectTapGestures(onTap = { onClearFocus() }) },
+        verticalArrangement = Arrangement.spacedBy(GeneratorScreenDefaults.sectionSpacing),
+    ) {
+        item {
+            Spacer(modifier = Modifier.height(GeneratorScreenDefaults.firstSectionTopSpacing))
+            QrTypeTabs(
+                qrInputs = uiState.qrInputs,
+                selectedQrInput = uiState.selectedQrInput,
+                onQrInputSelected = onQrInputSelected,
+            )
+        }
+        item {
+            QrTypeForm(
+                qrInput = uiState.selectedQrInput,
+                fieldErrors = uiState.fieldErrors,
+                onChange = onFormEvent,
+            )
+        }
+        item {
+            QrezzyButton(
+                modifier = Modifier.padding(
+                    top = GeneratorScreenDefaults.saveButtonTopPadding,
+                    bottom = GeneratorScreenDefaults.saveButtonBottomPadding,
+                ),
+                elevation = GeneratorScreenDefaults.saveButtonElevation,
+                text = stringResource(R.string.generator_save_qr_code),
+                enabled = uiState.canSave,
+                onClick = onSaveClick,
+            )
         }
     }
+}
+
+private object GeneratorScreenDefaults {
+    val screenHorizontalPadding = 16.dp
+    val sectionSpacing = 16.dp
+    val firstSectionTopSpacing = 16.dp
+    val saveButtonTopPadding = 10.dp
+    val saveButtonBottomPadding = 16.dp
+    val saveButtonElevation = 0.dp
 }
