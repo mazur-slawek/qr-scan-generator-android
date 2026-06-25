@@ -103,8 +103,8 @@
     <string name="history_footer_title">You\'re all caught up!</string>
     <string name="history_footer_subtitle">Generate a QR code or scan one to start building your history.</string>
 
-    <string name="history_details_title">QR Code Preview</string>
-    <string name="history_details_subtitle">View, share or download this QR.</string>
+    <string name="history_details_title">QR Preview</string>
+    <string name="history_details_subtitle">View, share or download.</string>
     <string name="history_details_share">Share QR Code</string>
     <string name="history_details_download">Download PNG</string>
     <string name="history_details_delete">Delete QR Code</string>
@@ -159,6 +159,7 @@
     <string name="customize_qr_error_correction">Error correction</string>
     <string name="customize_qr_reset">Reset to default</string>
     <string name="customize_qr_apply">Apply</string>
+    <string name="customize_qr_save">Save</string>
     <string name="customize_qr_pattern_square">Square</string>
     <string name="customize_qr_pattern_rounded">Rounded</string>
     <string name="customize_qr_pattern_dots">Dots</string>

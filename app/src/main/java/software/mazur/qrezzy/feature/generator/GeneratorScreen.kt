@@ -116,7 +116,7 @@ private fun GeneratorContent(
         verticalArrangement = Arrangement.spacedBy(GeneratorScreenDefaults.sectionSpacing),
     ) {
         item {
-            Spacer(modifier = Modifier.height(GeneratorScreenDefaults.firstSectionTopSpacing))
+            Spacer(modifier = Modifier.height(GeneratorScreenDefaults.sectionSpacing))
             QrTypeTabs(
                 qrInputs = uiState.qrInputs,
                 selectedQrInput = uiState.selectedQrInput,
@@ -148,7 +148,6 @@ private fun GeneratorContent(
 private object GeneratorScreenDefaults {
     val screenHorizontalPadding = 16.dp
     val sectionSpacing = 16.dp
-    val firstSectionTopSpacing = 16.dp
     val saveButtonTopPadding = 10.dp
     val saveButtonBottomPadding = 16.dp
     val saveButtonElevation = 0.dp

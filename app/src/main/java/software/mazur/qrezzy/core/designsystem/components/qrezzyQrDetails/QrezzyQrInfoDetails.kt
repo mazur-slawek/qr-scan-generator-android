@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
+import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
 import software.mazur.qrezzy.core.designsystem.extensions.ui
 import software.mazur.qrezzy.core.designsystem.theme.BorderLight
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
@@ -39,37 +40,39 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun QrezzyQrInfoDetails(qr: Qr, modifier: Modifier = Modifier) {
     val qrTypeUi = qr.type.ui
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .border(
-                width = QrezzyQrInfoDetailsDefaults.Container.borderWidth,
-                color = BorderLight,
-                shape = ShapeDefaults.Medium,
+    QrezzyFieldWrapper(title = stringResource(R.string.qr_details_section_content)) {
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .border(
+                    width = QrezzyQrInfoDetailsDefaults.Container.borderWidth,
+                    color = BorderLight,
+                    shape = ShapeDefaults.Medium,
+                )
+                .background(color = Surface, shape = ShapeDefaults.Medium)
+                .padding(QrezzyQrInfoDetailsDefaults.Container.padding),
+        ) {
+            QrezzyQrInfoDetailsRow(
+                icon = qrTypeUi.icon,
+                iconBorderColor = qrTypeUi.containerColor,
+                iconBackgroundColor = qrTypeUi.contentColor,
+                label = stringResource(R.string.qr_details_type),
+                value = stringResource(qrTypeUi.labelResId),
+                contentDescription = stringResource(qrTypeUi.labelResId),
             )
-            .background(color = Surface, shape = ShapeDefaults.Medium)
-            .padding(QrezzyQrInfoDetailsDefaults.Container.padding),
-    ) {
-        QrezzyQrInfoDetailsRow(
-            icon = qrTypeUi.icon,
-            iconBorderColor = qrTypeUi.containerColor,
-            iconBackgroundColor = qrTypeUi.contentColor,
-            label = stringResource(R.string.qr_details_type),
-            value = stringResource(qrTypeUi.labelResId),
-            contentDescription = stringResource(qrTypeUi.labelResId),
-        )
-        HorizontalDivider(
-            modifier = Modifier.padding(vertical = QrezzyQrInfoDetailsDefaults.Divider.verticalPadding),
-            color = BorderLight,
-        )
-        QrezzyQrInfoDetailsRow(
-            icon = Icons.Default.MoreTime,
-            iconBorderColor = QrezzyPurpleDark,
-            iconBackgroundColor = QrezzyPurple,
-            label = stringResource(R.string.qr_details_scanned),
-            value = qr.createdAt.toQrDateTime(),
-            contentDescription = null,
-        )
+            HorizontalDivider(
+                modifier = Modifier.padding(vertical = QrezzyQrInfoDetailsDefaults.Divider.verticalPadding),
+                color = BorderLight,
+            )
+            QrezzyQrInfoDetailsRow(
+                icon = Icons.Default.MoreTime,
+                iconBorderColor = QrezzyPurpleDark,
+                iconBackgroundColor = QrezzyPurple,
+                label = stringResource(R.string.qr_details_scanned),
+                value = qr.createdAt.toQrDateTime(),
+                contentDescription = null,
+            )
+        }
     }
 }
 

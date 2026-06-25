@@ -14,9 +14,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import software.mazur.qrezzy.core.qr.renderer.QrBitmapGenerator
+import software.mazur.qrezzy.core.qr.style.QrStyleEditorState
+import software.mazur.qrezzy.domain.qr.model.style.QrErrorCorrection
+import software.mazur.qrezzy.domain.qr.model.style.QrPatternStyle
 import software.mazur.qrezzy.domain.qr.usecase.DeleteQrItemsUseCase
 import software.mazur.qrezzy.domain.qr.usecase.GetQrByIdUseCase
 import software.mazur.qrezzy.domain.qr.usecase.ToggleQrFavoriteUseCase
+import software.mazur.qrezzy.domain.qr.usecase.UpdateQrStyleUseCase
 import software.mazur.qrezzy.feature.history.HistoryRoute
 import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiEvent
 import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiState
@@ -28,7 +32,8 @@ class HistoryDetailsViewModel @Inject constructor(
     private val getQrByIdUseCase: GetQrByIdUseCase,
     private val qrBitmapGenerator: QrBitmapGenerator,
     private val deleteQrItemsUseCase: DeleteQrItemsUseCase,
-    private val toggleQrFavoriteUseCase: ToggleQrFavoriteUseCase
+    private val toggleQrFavoriteUseCase: ToggleQrFavoriteUseCase,
+    private val updateQrStyleUseCase: UpdateQrStyleUseCase,
 ) : ViewModel() {
     private val historyId: Long = checkNotNull(savedStateHandle[HistoryRoute.Details.HISTORY_ID_ARG])
     private val _uiState = MutableStateFlow(HistoryDetailsUiState())
@@ -102,12 +107,87 @@ class HistoryDetailsViewModel @Inject constructor(
             return
         }
 
-        _uiState.update { it.copy(qr = qr, isLoading = true, isMissing = false) }
+        _uiState.update {
+            it.copy(
+                qr = qr,
+                isLoading = true,
+                isMissing = false,
+                qrStyleEditor = QrStyleEditorState(appliedStyle = qr.style, draftStyle = qr.style)
+            )
+        }
         val qrBitmap = withContext(Dispatchers.Default) {
             qrBitmapGenerator.generate(content = qr.content, style = qr.style)
         }
 
         _uiState.update { it.copy(qrBitmap = qrBitmap, isLoading = false) }
+    }
+
+    fun onCustomizeQrClick() {
+        val qr = _uiState.value.qr ?: return
+        _uiState.update { state ->
+            state.copy(qrStyleEditor = state.qrStyleEditor.open(), editPreviewBitmap = state.qrBitmap)
+        }
+        generateEditPreview(content = qr.content)
+    }
+
+    fun onDismissCustomizeQrDialog() {
+        _uiState.update { state ->
+            state.copy(qrStyleEditor = state.qrStyleEditor.dismiss(), editPreviewBitmap = null)
+        }
+    }
+
+    fun onQrColorSelected(color: Long) {
+        updateQrStyleEditor { it.updateQrColor(color) }
+    }
+
+    fun onBackgroundColorSelected(color: Long) {
+        updateQrStyleEditor { it.updateBackgroundColor(color) }
+    }
+
+    fun onPatternStyleSelected(patternStyle: QrPatternStyle) {
+        updateQrStyleEditor { it.updatePatternStyle(patternStyle) }
+    }
+
+    fun onErrorCorrectionSelected(errorCorrection: QrErrorCorrection) {
+        updateQrStyleEditor { it.updateErrorCorrection(errorCorrection) }
+    }
+
+    fun onResetQrStyleClick() {
+        updateQrStyleEditor { it.resetDraft() }
+    }
+
+    fun onSaveQrStyleClick() {
+        val currentQr = _uiState.value.qr ?: return
+        val newStyle = _uiState.value.qrStyleEditor.draftStyle
+        val updatedQr = currentQr.copy(style = newStyle)
+        _uiState.update { state ->
+            state.copy(
+                qr = updatedQr,
+                qrBitmap = state.editPreviewBitmap ?: state.qrBitmap,
+                editPreviewBitmap = null,
+                qrStyleEditor = state.qrStyleEditor.applyDraft()
+            )
+        }
+        viewModelScope.launch {
+            updateQrStyleUseCase(id = currentQr.id, style = newStyle)
+        }
+    }
+
+    private fun updateQrStyleEditor(update: (QrStyleEditorState) -> QrStyleEditorState) {
+        val qr = _uiState.value.qr ?: return
+        _uiState.update { state -> state.copy(qrStyleEditor = update(state.qrStyleEditor)) }
+        generateEditPreview(content = qr.content)
+    }
+
+    private fun generateEditPreview(content: String) {
+        val draftStyle = _uiState.value.qrStyleEditor.draftStyle
+
+        viewModelScope.launch {
+            val bitmap = withContext(Dispatchers.Default) {
+                qrBitmapGenerator.generate(content = content, style = draftStyle)
+            }
+            _uiState.update { state -> state.copy(editPreviewBitmap = bitmap) }
+        }
     }
 
     private fun getShareData(): QrShareData? {

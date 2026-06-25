@@ -58,6 +58,7 @@ import software.mazur.qrezzy.domain.qr.model.style.QrStyle
 fun QrezzyCustomizeQrDialog(
     qrBitmap: Bitmap?,
     style: QrStyle,
+    isEditMode: Boolean = false,
     onQrColorSelected: (Long) -> Unit,
     onBackgroundColorSelected: (Long) -> Unit,
     onPatternStyleSelected: (QrPatternStyle) -> Unit,
@@ -125,7 +126,11 @@ fun QrezzyCustomizeQrDialog(
                 }
                 item { Spacer(modifier = Modifier.height(CustomizeQrDialogDefaults.Section.bottomSpacing)) }
             }
-            CustomizeQrActions(onResetClick = onResetClick, onApplyClick = onApplyClick)
+            CustomizeQrActions(
+                isEditMode = isEditMode,
+                onResetClick = onResetClick,
+                onApplyClick = onApplyClick
+            )
         }
     }
 }
@@ -323,9 +328,13 @@ private fun CustomizeQrOption(iconResId: Int, titleResId: Int, isSelected: Boole
 }
 
 @Composable
-private fun CustomizeQrActions(onResetClick: () -> Unit, onApplyClick: () -> Unit) {
+private fun CustomizeQrActions(
+    isEditMode: Boolean = false,
+    onResetClick: () -> Unit,
+    onApplyClick: () -> Unit
+) {
     QrezzyButton(
-        text = stringResource(R.string.customize_qr_apply),
+        text = stringResource(id = if (isEditMode) R.string.customize_qr_save else R.string.customize_qr_apply),
         elevation = CustomizeQrDialogDefaults.Actions.buttonElevation,
         onClick = onApplyClick,
     )
