@@ -69,7 +69,7 @@ fun QrezzyTextInput(
             BasicTextField(
                 value = value,
                 onValueChange = { newValue ->
-                    val limitedValue = maxLength?.let(newValue::take) ?: newValue
+                    val limitedValue = maxLength?.let { limit -> newValue.take(limit + 1) } ?: newValue
                     onValueChange(limitedValue)
                 },
                 enabled = enabled,

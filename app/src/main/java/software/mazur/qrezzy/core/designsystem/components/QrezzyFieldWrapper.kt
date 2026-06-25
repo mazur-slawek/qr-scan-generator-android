@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
 import software.mazur.qrezzy.core.designsystem.theme.Error
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.Surface
@@ -33,6 +35,10 @@ fun QrezzyFieldWrapper(
     error: String? = null,
     content: @Composable BoxScope.() -> Unit,
 ) {
+    val isError = !error.isNullOrBlank()
+    val borderColor = if (isError) QrezzyPink else if (isFocused) QrezzyPurple else QrezzyMint
+    val backgroundColor = if (isError) QrezzyPinkDark else if (isFocused) QrezzyPurpleDark else BorderPrimary
+
     Column(modifier = modifier.fillMaxWidth()) {
         title?.let { value ->
             Text(
@@ -61,27 +67,21 @@ fun QrezzyFieldWrapper(
                     .matchParentSize()
                     .offset(
                         x = -QrezzyFieldWrapperDefaults.Depth.offsetX,
-                        y = -QrezzyFieldWrapperDefaults.Depth.offsetY,
+                        y = -QrezzyFieldWrapperDefaults.Depth.offsetY
                     )
-                    .background(
-                        color = if (isFocused) QrezzyPurple else QrezzyMint,
-                        shape = QrezzyFieldWrapperDefaults.shape,
-                    )
+                    .background(color = borderColor, shape = QrezzyFieldWrapperDefaults.shape)
                     .border(
                         width = QrezzyFieldWrapperDefaults.borderWidth,
-                        color = if (isFocused) QrezzyPurpleDark else BorderPrimary,
+                        color = backgroundColor,
                         shape = QrezzyFieldWrapperDefaults.shape,
-                    ),
+                    )
             )
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
-                    .background(
-                        color = Surface,
-                        shape = QrezzyFieldWrapperDefaults.shape,
-                    )
+                    .background(color = Surface, shape = QrezzyFieldWrapperDefaults.shape)
                     .border(
                         width = QrezzyFieldWrapperDefaults.borderWidth,
                         color = BorderPrimary,
@@ -91,7 +91,7 @@ fun QrezzyFieldWrapper(
                 content = content,
             )
         }
-        if (!error.isNullOrBlank()) {
+        if (isError) {
             Text(
                 text = error,
                 color = Error,

@@ -2,6 +2,7 @@ package software.mazur.qrezzy.feature.generator.model
 
 import software.mazur.qrezzy.core.qr.style.QrStyleEditorState
 import software.mazur.qrezzy.domain.qr.model.style.QrStyle
+import software.mazur.qrezzy.feature.generator.mapper.fields
 
 data class GeneratorUiState(
     val selectedQrInput: QrInput = QrInput.Text(),
@@ -21,11 +22,9 @@ data class GeneratorUiState(
     val qrStyleEditor: QrStyleEditorState = QrStyleEditorState()
 ) {
     val canSave: Boolean
-        get() = qrContent.isNotBlank() && fieldErrors.isEmpty()
+        get() = qrContent.isNotBlank() && currentFieldErrors.isEmpty()
+    val currentFieldErrors: Map<QrInputField, QrFieldError>
+        get() = fieldErrors.filterKeys { field -> field in selectedQrInput.fields }
     val qrStyle: QrStyle
         get() = qrStyleEditor.appliedStyle
-    val draftQrStyle: QrStyle
-        get() = qrStyleEditor.draftStyle
-    val isCustomizeQrDialogVisible: Boolean
-        get() = qrStyleEditor.isDialogVisible
 }

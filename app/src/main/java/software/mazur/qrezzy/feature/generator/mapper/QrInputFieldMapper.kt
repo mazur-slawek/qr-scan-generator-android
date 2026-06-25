@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import software.mazur.qrezzy.R
+import software.mazur.qrezzy.feature.generator.model.QrInput
 import software.mazur.qrezzy.feature.generator.model.QrInputField
 
 val QrInputField.placeholderResId: Int
@@ -92,4 +93,28 @@ val QrInputField.keyboardOptions: KeyboardOptions
 
             QrInputField.GeoLatitude,
             QrInputField.GeoLongitude -> KeyboardOptions(keyboardType = KeyboardType.Decimal)
+        }
+val QrInput.fields: Set<QrInputField>
+    get() =
+        when (this) {
+            is QrInput.Text        -> setOf(QrInputField.Text)
+            is QrInput.Url         -> setOf(QrInputField.Url)
+            is QrInput.Phone       -> setOf(QrInputField.Phone)
+            is QrInput.Email       -> setOf(
+                QrInputField.EmailAddress,
+                QrInputField.EmailSubject,
+                QrInputField.EmailBody
+            )
+
+            is QrInput.Wifi        -> setOf(QrInputField.WifiSsid, QrInputField.WifiPassword)
+            is QrInput.Contact     -> setOf(
+                QrInputField.ContactFirstName,
+                QrInputField.ContactLastName,
+                QrInputField.ContactPhone,
+                QrInputField.ContactEmail,
+                QrInputField.ContactCompany
+            )
+
+            is QrInput.Sms         -> setOf(QrInputField.SmsPhone, QrInputField.SmsMessage)
+            is QrInput.GeoLocation -> setOf(QrInputField.GeoLatitude, QrInputField.GeoLongitude)
         }
