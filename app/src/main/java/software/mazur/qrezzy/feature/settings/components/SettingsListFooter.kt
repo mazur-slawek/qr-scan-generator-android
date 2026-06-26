@@ -3,6 +3,7 @@ package software.mazur.qrezzy.feature.settings.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,7 +33,7 @@ import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 
 @Composable
-fun SettingsListFooter(modifier: Modifier = Modifier) {
+fun SettingsListFooter(modifier: Modifier = Modifier, onClick: () -> Unit) {
     QrezzyAnimatedStars(
         starsCount = SettingsListFooterDefaults.STARS_COUNT,
         modifier = modifier
@@ -51,7 +52,8 @@ fun SettingsListFooter(modifier: Modifier = Modifier) {
                     color = QrezzyMint.copy(alpha = SettingsListFooterDefaults.backgroundAlpha),
                     shape = ShapeDefaults.Medium,
                 )
-                .padding(SettingsListFooterDefaults.contentPadding),
+                .padding(SettingsListFooterDefaults.contentPadding)
+                .clickable(onClick = onClick),
             horizontalArrangement = Arrangement.spacedBy(SettingsListFooterDefaults.contentSpacing),
             verticalAlignment = Alignment.CenterVertically,
         ) {

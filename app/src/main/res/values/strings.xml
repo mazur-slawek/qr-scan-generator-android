@@ -196,4 +196,38 @@
     <string name="settings_rate_app">Rate app</string>
     <string name="settings_help_support">Help &amp; support</string>
     <string name="settings_open_source_licenses">Open source licenses</string>
+
+    <!-- Language -->
+    <string name="settings_language_screen_title">Language</string>
+    <string name="settings_language_screen_subtitle">Choose your preferred language.</string>
+    <!-- Theme -->
+    <string name="settings_theme_screen_title">Theme</string>
+    <string name="settings_theme_screen_subtitle">Personalize how QREZZY looks.</string>
+    <!-- Privacy -->
+    <string name="settings_privacy_screen_title">Privacy</string>
+    <string name="settings_privacy_screen_subtitle">Learn how your data is handled.</string>
+    <!-- Permissions -->
+    <string name="settings_permissions_screen_title">Permissions</string>
+    <string name="settings_permissions_screen_subtitle">Manage the permissions granted to QREZZY.</string>
+    <!-- History Limit -->
+    <string name="settings_history_limit_screen_title">History Limit</string>
+    <string name="settings_history_limit_screen_subtitle">Set how many scanned QR codes to keep.</string>
+    <!-- Clear History -->
+    <string name="settings_clear_history_screen_title">Clear History</string>
+    <string name="settings_clear_history_screen_subtitle">Permanently remove all saved scans.</string>
+    <!-- About -->
+    <string name="settings_about_screen_title">About QREZZY</string>
+    <string name="settings_about_screen_subtitle">Version, credits and app information.</string>
+    <!-- Rate -->
+    <string name="settings_rate_screen_title">Rate QREZZY</string>
+    <string name="settings_rate_screen_subtitle">Enjoying the app? Leave a rating.</string>
+    <!-- Help -->
+    <string name="settings_help_screen_title">Help &amp; Support</string>
+    <string name="settings_help_screen_subtitle">Find answers or get in touch with us.</string>
+    <!-- Open Source -->
+    <string name="settings_open_source_screen_title">Open Source Licenses</string>
+    <string name="settings_open_source_screen_subtitle">Libraries and licenses used by QREZZY.</string>
+    <!-- Donate -->
+    <string name="settings_donate_screen_title">Support QREZZY</string>
+    <string name="settings_donate_screen_subtitle">Help support future development.</string>
 </resources>

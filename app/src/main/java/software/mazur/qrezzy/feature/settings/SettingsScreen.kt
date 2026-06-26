@@ -38,18 +38,25 @@ import software.mazur.qrezzy.feature.settings.components.SettingsListFooter
 import software.mazur.qrezzy.feature.settings.components.SettingsListHeader
 
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(
+    onLanguageClick: () -> Unit,
+    onThemeClick: () -> Unit,
+    onPrivacyClick: () -> Unit,
+    onPermissionsClick: () -> Unit,
+    onMaximumHistoryItemsClick: () -> Unit,
+    onClearAllHistoryClick: () -> Unit,
+    onAboutAppClick: () -> Unit,
+    onRateAppClick: () -> Unit,
+    onHelpSupportClick: () -> Unit,
+    onOpenSourceLicensesClick: () -> Unit,
+    onDonateClick: () -> Unit,
+) {
     Column(modifier = Modifier.padding(horizontal = SettingsScreenDefaults.horizontalPadding)) {
         QrezzyTopBar(
             titleResId = R.string.navigation_title_settings,
             subtitleResId = R.string.navigation_subtitle_settings
         ) {
-            QrezzyTopBarButton(
-                onClick = {},
-                enabled = false,
-                icon = Icons.Default.Favorite,
-                iconTint = QrezzyPurpleDark
-            )
+            QrezzyTopBarButton(onClick = onDonateClick, icon = Icons.Default.Favorite, iconTint = QrezzyPurpleDark)
         }
 
         LazyColumn(
@@ -67,20 +74,20 @@ fun SettingsScreen() {
                             iconBackgroundColor = QrezzyPurpleDark,
                             title = stringResource(R.string.settings_language),
                             value = stringResource(R.string.settings_language_polish),
-                            onClick = {}
+                            onClick = onLanguageClick
                         )
                         SettingsItem(
                             icon = Icons.Outlined.Palette,
                             title = stringResource(R.string.settings_theme),
                             value = stringResource(R.string.settings_theme_system),
-                            onClick = {},
+                            onClick = onThemeClick,
                             iconTintColor = QrezzyMintDark,
                             iconBackgroundColor = QrezzyMintDark,
                         )
                         SettingsItem(
                             icon = Icons.Outlined.PrivacyTip,
                             title = stringResource(R.string.settings_privacy),
-                            onClick = {},
+                            onClick = onPrivacyClick,
                             iconTintColor = QrezzyPinkDark,
                             iconBackgroundColor = QrezzyPinkDark,
                         )
@@ -88,7 +95,7 @@ fun SettingsScreen() {
                             icon = Icons.Outlined.Checklist,
                             title = stringResource(R.string.settings_permission),
                             showDivider = false,
-                            onClick = {},
+                            onClick = onPermissionsClick,
                             iconTintColor = TextSecondary,
                             iconBackgroundColor = QrezzyYellowDark,
                         )
@@ -132,7 +139,7 @@ fun SettingsScreen() {
                             icon = Icons.Outlined.History,
                             title = stringResource(R.string.settings_max_history_items),
                             value = "500",
-                            onClick = {},
+                            onClick = onMaximumHistoryItemsClick,
                             iconTintColor = TextSecondary,
                             iconBackgroundColor = QrezzyYellowDark,
                         )
@@ -141,7 +148,7 @@ fun SettingsScreen() {
                             title = stringResource(R.string.settings_clear_all_history),
                             titleColor = QrezzyPinkDark,
                             showDivider = false,
-                            onClick = {},
+                            onClick = onClearAllHistoryClick,
                             iconTintColor = QrezzyPinkDark,
                             iconBackgroundColor = QrezzyPinkDark,
                         )
@@ -155,21 +162,21 @@ fun SettingsScreen() {
                         SettingsItem(
                             icon = Icons.Outlined.Info,
                             title = stringResource(R.string.settings_about_app),
-                            onClick = {},
+                            onClick = onAboutAppClick,
                             iconTintColor = QrezzyPurpleDark,
                             iconBackgroundColor = QrezzyPurpleDark,
                         )
                         SettingsItem(
                             icon = Icons.Outlined.StarBorder,
                             title = stringResource(R.string.settings_rate_app),
-                            onClick = {},
+                            onClick = onRateAppClick,
                             iconTintColor = QrezzyMintDark,
                             iconBackgroundColor = QrezzyMintDark,
                         )
                         SettingsItem(
                             icon = Icons.Outlined.HelpOutline,
                             title = stringResource(R.string.settings_help_support),
-                            onClick = {},
+                            onClick = onHelpSupportClick,
                             iconTintColor = QrezzyPinkDark,
                             iconBackgroundColor = QrezzyPinkDark,
                         )
@@ -177,14 +184,19 @@ fun SettingsScreen() {
                             icon = Icons.Outlined.Description,
                             title = stringResource(R.string.settings_open_source_licenses),
                             showDivider = false,
-                            onClick = {},
+                            onClick = onOpenSourceLicensesClick,
                             iconTintColor = TextSecondary,
                             iconBackgroundColor = QrezzyYellowDark,
                         )
                     }
                 }
             }
-            item { SettingsListFooter(modifier = Modifier.padding(bottom = SettingsScreenDefaults.bottomPadding)) }
+            item {
+                SettingsListFooter(
+                    onClick = onDonateClick,
+                    modifier = Modifier.padding(bottom = SettingsScreenDefaults.bottomPadding)
+                )
+            }
         }
     }
 }
