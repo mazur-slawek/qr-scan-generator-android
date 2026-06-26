@@ -28,7 +28,9 @@ class ScannerViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ScannerUiState())
     val uiState = _uiState.asStateFlow()
-    private val _events = MutableSharedFlow<ScannerUiEvent>()
+    private val _events = MutableSharedFlow<ScannerUiEvent>(
+        extraBufferCapacity = 1
+    )
     val events = _events.asSharedFlow()
 
     fun onStartScanning() {
@@ -36,7 +38,7 @@ class ScannerViewModel @Inject constructor(
     }
 
     fun onStopScanning() {
-        _uiState.update { state -> state.copy(mode = Mode.Idle, isTorchEnabled = false) }
+        _uiState.update { state -> state.copy(mode = Mode.Idle, isTorchEnabled = false, detectedQr = null) }
     }
 
     fun onPermissionDenied() {
@@ -59,8 +61,9 @@ class ScannerViewModel @Inject constructor(
         if (!_uiState.value.isScanning) return
         if (_uiState.value.detectedQr != null) return
         val detectedQr = createScannedQrUseCase(trimmedContent)
-
-        _uiState.update { state -> state.copy(mode = Mode.Idle, isTorchEnabled = false, detectedQr = detectedQr) }
+        viewModelScope.launch {
+            _uiState.update { state -> state.copy(mode = Mode.Idle, isTorchEnabled = false, detectedQr = detectedQr) }
+        }
     }
 
     fun onImageSelected(uri: Uri) {

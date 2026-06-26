@@ -18,6 +18,7 @@ import androidx.compose.material.icons.outlined.FlashOff
 import androidx.compose.material.icons.outlined.FlashOn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,16 +34,15 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
+import software.mazur.qrezzy.core.designsystem.components.QrezzyPopup
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellow
 import software.mazur.qrezzy.feature.scanner.components.ScannedQrDialog
-import software.mazur.qrezzy.feature.scanner.components.ScannerPopup
 import software.mazur.qrezzy.feature.scanner.components.ScannerPreview
 import software.mazur.qrezzy.feature.scanner.model.ScannerUiEvent
 import software.mazur.qrezzy.feature.scanner.model.ScannerUiState.Mode
@@ -63,6 +63,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     ) { uri ->
         uri?.let(viewModel::onImageSelected)
     }
+    val popupContent = ScannerPopupContent.resolve(isPermissionDenied = uiState.mode == Mode.PermissionDenied)
 
     LaunchedEffect(Unit) {
         if (!context.hasCameraPermission()) {
@@ -73,41 +74,31 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                ScannerUiEvent.QrSaved      ->
-                    Toast.makeText(context, qrSavedMessage, Toast.LENGTH_SHORT).show()
-
-                is ScannerUiEvent.ShowError ->
-                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                ScannerUiEvent.QrSaved      -> Toast.makeText(context, qrSavedMessage, Toast.LENGTH_SHORT).show()
+                is ScannerUiEvent.ShowError -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    DisposableEffect(lifecycleOwner, uiState.mode) {
-        val observer =
-            LifecycleEventObserver { _, event ->
-                when (event) {
-                    Lifecycle.Event.ON_RESUME -> {
-                        if (uiState.mode == Mode.PermissionDenied && context.hasCameraPermission()) {
-                            viewModel.onPermissionRestored()
-                        }
-                    }
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_RESUME                         ->
+                    if (context.hasCameraPermission()) viewModel.onPermissionRestored()
 
-                    Lifecycle.Event.ON_PAUSE  -> {
-                        if (uiState.mode == Mode.Scanning) {
-                            viewModel.onStopScanning()
-                        }
-                    }
-
-                    else                      -> Unit
-                }
+                Lifecycle.Event.ON_PAUSE, Lifecycle.Event.ON_STOP -> viewModel.onStopScanning()
+                else                                              -> Unit
             }
+        }
 
         lifecycleOwner.lifecycle.addObserver(observer)
 
         onDispose {
+            viewModel.onStopScanning()
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
+
     uiState.detectedQr?.let { qr ->
         ScannedQrDialog(
             qr = qr,
@@ -115,6 +106,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
             onCancelClick = viewModel::clearScannedQr,
         )
     }
+
     Column(modifier = Modifier.padding(horizontal = ScannerScreenDefaults.horizontalPadding)) {
         QrezzyTopBar(
             titleResId = R.string.navigation_title_scan,
@@ -134,67 +126,76 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
             isScanning = uiState.isScanning,
             onQrCodeScanned = viewModel::onQrCodeScanned,
         )
-        Spacer(modifier = Modifier.height(ScannerScreenDefaults.previewButtonSpacing))
-        QrezzyButton(
-            onClick = {
-                when (uiState.mode) {
-                    Mode.Idle             -> {
-                        if (context.hasCameraPermission()) {
-                            viewModel.onStartScanning()
-                        } else {
-                            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
-                        }
+        if (uiState.mode == Mode.Idle) {
+            Spacer(modifier = Modifier.height(ScannerScreenDefaults.previewButtonSpacing))
+            QrezzyButton(
+                onClick = {
+                    if (context.hasCameraPermission()) {
+                        viewModel.onStartScanning()
+                    } else {
+                        cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
                     }
-
-                    Mode.PermissionDenied -> {
-                        context.openAppSettings()
-                    }
-
-                    Mode.Scanning         -> {
-                        viewModel.onStopScanning()
-                    }
-                }
-            },
-            text = stringResource(uiState.mode.getActionText()),
-            elevation = 0.dp,
-            containerColor = uiState.mode.actionContainerColor,
-            depthColor = uiState.mode.actionDepthColor,
-        )
+                },
+                text = stringResource(R.string.scanner_action_scan),
+                elevation = 0.dp,
+            )
+        } else if (uiState.mode == Mode.Scanning) {
+            Spacer(modifier = Modifier.height(ScannerScreenDefaults.previewButtonSpacing))
+            QrezzyButton(
+                onClick = { viewModel.onStopScanning() },
+                text = stringResource(R.string.scanner_action_stop),
+                containerColor = QrezzyPink,
+                depthColor = QrezzyYellow,
+                elevation = 0.dp,
+            )
+        }
         Spacer(modifier = Modifier.height(ScannerScreenDefaults.buttonsSpacing))
         QrezzyButton(
             onClick = { imagePickerLauncher.launch("image/*") },
             elevation = 0.dp,
             containerColor = QrezzyYellow,
-            depthColor = QrezzyPinkDark,
+            depthColor = QrezzyPurple,
             text = stringResource(R.string.scanner_action_select_image)
         )
         Spacer(modifier = Modifier.height(ScannerScreenDefaults.buttonPopupSpacing))
-        ScannerPopup(isPermissionDenied = uiState.mode == Mode.PermissionDenied)
+        QrezzyPopup(
+            imageResId = popupContent.imageResId,
+            titleResId = popupContent.titleResId,
+            descriptionResId = popupContent.descriptionResId
+        )
+        if (uiState.mode == Mode.PermissionDenied) {
+            Spacer(modifier = Modifier.height(ScannerScreenDefaults.buttonPopupSpacing))
+            QrezzyButton(
+                onClick = { context.openAppSettings() },
+                text = stringResource(R.string.scanner_action_open_settings),
+                containerColor = QrezzyYellow,
+                depthColor = QrezzyMint,
+                elevation = 0.dp,
+            )
+        }
         Spacer(modifier = Modifier.height(ScannerScreenDefaults.bottomSpacing))
     }
 }
 
-private fun Mode.getActionText(): Int =
-    when (this) {
-        Mode.Idle             -> R.string.scanner_action_scan
-        Mode.Scanning         -> R.string.scanner_action_stop
-        Mode.PermissionDenied -> R.string.scanner_action_open_settings
+@Immutable
+private data class ScannerPopupContent(val imageResId: Int, val titleResId: Int, val descriptionResId: Int) {
+    companion object {
+        fun resolve(isPermissionDenied: Boolean): ScannerPopupContent =
+            if (isPermissionDenied) {
+                ScannerPopupContent(
+                    imageResId = R.drawable.scanner_popup_permission_denied,
+                    titleResId = R.string.scanner_popup_permission_denied_title,
+                    descriptionResId = R.string.scanner_popup_permission_denied_desc,
+                )
+            } else {
+                ScannerPopupContent(
+                    imageResId = R.drawable.scanner_popup_idle,
+                    titleResId = R.string.scanner_popup_idle_title,
+                    descriptionResId = R.string.scanner_popup_idle_desc,
+                )
+            }
     }
-
-private val Mode.actionContainerColor
-    get() =
-        when (this) {
-            Mode.Idle             -> QrezzyMint
-            Mode.PermissionDenied -> QrezzyYellow
-            Mode.Scanning         -> QrezzyPink
-        }
-private val Mode.actionDepthColor
-    get() =
-        when (this) {
-            Mode.Idle             -> QrezzyPurple
-            Mode.PermissionDenied -> QrezzyMint
-            Mode.Scanning         -> QrezzyYellow
-        }
+}
 
 private fun Context.hasCameraPermission(): Boolean {
     val permission = Manifest.permission.CAMERA

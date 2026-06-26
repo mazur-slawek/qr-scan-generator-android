@@ -67,7 +67,6 @@
 
     <string name="scanner_dialog_title">QR code detected!</string>
     <string name="scanner_dialog_subtitle">Here\'s a preview of what\'s inside.</string>
-    <string name="scanner_dialog_save">Save</string>
 
     <string name="generator_select_qr_type">Select QR code type</string>
     <string name="generator_enter_data">Enter data to generate a QR code</string>

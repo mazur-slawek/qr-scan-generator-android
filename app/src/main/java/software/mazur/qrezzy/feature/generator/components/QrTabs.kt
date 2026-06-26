@@ -1,5 +1,7 @@
 package software.mazur.qrezzy.feature.generator.components
 
+
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,12 +16,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
 import software.mazur.qrezzy.core.designsystem.extensions.ui
@@ -36,14 +39,26 @@ import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 import software.mazur.qrezzy.feature.generator.mapper.toQrType
 import software.mazur.qrezzy.feature.generator.model.QrInput
 import software.mazur.qrezzy.feature.generator.model.isSameTypeAs
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun QrTypeTabs(qrInputs: List<QrInput>, selectedQrInput: QrInput, onQrInputSelected: (QrInput) -> Unit) {
+    val scrollState = rememberScrollState()
+
+    LaunchedEffect(qrInputs.size) {
+        delay(600.milliseconds)
+        if (scrollState.maxValue > 0) {
+            scrollState.animateScrollTo(value = scrollState.maxValue, animationSpec = tween(durationMillis = 700))
+            delay(250.milliseconds)
+            scrollState.animateScrollTo(value = 0, animationSpec = tween(durationMillis = 700))
+        }
+    }
+
     QrezzyFieldWrapper(title = stringResource(R.string.generator_select_qr_type)) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .horizontalScroll(rememberScrollState()),
+                .horizontalScroll(state = scrollState),
             verticalAlignment = Alignment.CenterVertically
         ) {
             qrInputs.forEach { input ->
@@ -55,7 +70,11 @@ fun QrTypeTabs(qrInputs: List<QrInput>, selectedQrInput: QrInput, onQrInputSelec
                         .width(QrTypeTabsDefaults.width)
                         .height(QrTypeTabsDefaults.height)
                         .border(
-                            width = if (isSelected) QrTypeTabsDefaults.selectedBorderWidth else QrTypeTabsDefaults.defaultBorderWidth,
+                            width = if (isSelected) {
+                                QrTypeTabsDefaults.selectedBorderWidth
+                            } else {
+                                QrTypeTabsDefaults.defaultBorderWidth
+                            },
                             color = if (isSelected) typeUi.containerColor else Color.Transparent,
                             shape = QrTypeTabsDefaults.shape,
                         )
@@ -93,7 +112,7 @@ private object QrTypeTabsDefaults {
     val height = 60.dp
     val width = 70.dp
     val padding = 2.5.dp
-    val shape = ShapeDefaults.Medium.copy(CornerSize(10.dp))
+    val shape = RoundedCornerShape(8.dp)
     val iconTextSpacing = 2.dp
     val selectedBorderWidth = 1.dp
     val defaultBorderWidth = 0.dp
