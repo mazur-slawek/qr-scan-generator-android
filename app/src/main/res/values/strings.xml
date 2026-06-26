@@ -166,4 +166,34 @@
     <string name="customize_qr_error_medium">Medium (15%)</string>
     <string name="customize_qr_error_quartile">Quartile (25%)</string>
     <string name="customize_qr_error_high">High (30%)</string>
+
+
+    <string name="settings_footer_thanks">Thanks for using QREZZY!</string>
+    <string name="settings_footer_made_with">Made with</string>
+    <string name="settings_footer_author">by Sławek Mazur</string>
+
+    <string name="settings_section_general">General</string>
+    <string name="settings_section_scanner">Scanner</string>
+    <string name="settings_section_history">History</string>
+    <string name="settings_section_support">About</string>
+
+    <string name="settings_language">Language</string>
+    <string name="settings_language_polish">Polski</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_theme_system">System</string>
+    <string name="settings_privacy">Privacy</string>
+    <string name="settings_permission">Permission</string>
+
+    <string name="settings_auto_save_scanned_qr">Auto save scanned QR</string>
+    <string name="settings_vibrate_on_scan">Vibrate on scan</string>
+    <string name="settings_open_links_automatically">Open links automatically</string>
+
+    <string name="settings_max_history_items">Maximum history items</string>
+    <string name="settings_export_history">Export history</string>
+    <string name="settings_clear_all_history">Clear all history</string>
+
+    <string name="settings_about_app">About app</string>
+    <string name="settings_rate_app">Rate app</string>
+    <string name="settings_help_support">Help &amp; support</string>
+    <string name="settings_open_source_licenses">Open source licenses</string>
 </resources>

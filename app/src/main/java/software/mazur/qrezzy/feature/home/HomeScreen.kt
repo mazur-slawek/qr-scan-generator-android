@@ -48,7 +48,7 @@ import software.mazur.qrezzy.feature.generator.GeneratorScreen
 import software.mazur.qrezzy.feature.history.HistoryNavHost
 import software.mazur.qrezzy.feature.history.components.HistoryEmptyAction
 import software.mazur.qrezzy.feature.scanner.ScannerScreen
-import software.mazur.qrezzy.feature.settings.SettingsScreen
+import software.mazur.qrezzy.feature.settings.SettingsNavHost
 
 @Composable
 fun HomeScreen() {
@@ -124,7 +124,7 @@ private fun QrezzyHomeScreenContent(modifier: Modifier, selectedTab: HomeTab, on
                 }
             )
 
-            HomeTab.SETTINGS -> SettingsScreen()
+            HomeTab.SETTINGS -> SettingsNavHost()
         }
     }
 }

@@ -29,7 +29,7 @@ fun HistoryListFooter() {
             .padding(horizontal = HistoryListFooterDefaults.horizontalPadding),
         horizontalAlignment = Alignment.CenterHorizontally) {
         Image(
-            painter = painterResource(R.drawable.history_list_footer),
+            painter = painterResource(R.drawable.qrezzy_mascot_history_list_footer),
             contentDescription = null,
             modifier = Modifier.height(HistoryListFooterDefaults.imageHeight),
             contentScale = ContentScale.FillHeight

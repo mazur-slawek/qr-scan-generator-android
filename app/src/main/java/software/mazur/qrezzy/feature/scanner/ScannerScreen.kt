@@ -183,13 +183,13 @@ private data class ScannerPopupContent(val imageResId: Int, val titleResId: Int,
         fun resolve(isPermissionDenied: Boolean): ScannerPopupContent =
             if (isPermissionDenied) {
                 ScannerPopupContent(
-                    imageResId = R.drawable.scanner_popup_permission_denied,
+                    imageResId = R.drawable.qrezzy_mascot_camera_permission_denied,
                     titleResId = R.string.scanner_popup_permission_denied_title,
                     descriptionResId = R.string.scanner_popup_permission_denied_desc,
                 )
             } else {
                 ScannerPopupContent(
-                    imageResId = R.drawable.scanner_popup_idle,
+                    imageResId = R.drawable.qrezzy_mascot_scanner,
                     titleResId = R.string.scanner_popup_idle_title,
                     descriptionResId = R.string.scanner_popup_idle_desc,
                 )

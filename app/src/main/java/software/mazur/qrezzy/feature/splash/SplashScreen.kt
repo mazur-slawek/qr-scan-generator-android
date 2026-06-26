@@ -83,7 +83,7 @@ fun SplashScreen(onGetStartedClick: () -> Unit) {
                 verticalArrangement = Arrangement.Center,
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.qrezzy_logo),
+                    painter = painterResource(id = R.drawable.qrezzy_mascot),
                     contentDescription = SplashScreenDefaults.LOGO_CONTENT_DESCRIPTION,
                     modifier = Modifier.fillMaxWidth(),
                 )

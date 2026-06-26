@@ -154,7 +154,7 @@ private fun QrezzySlogan(
     )
 
     Image(
-        painter = painterResource(id = R.drawable.slogan_scan_create_share),
+        painter = painterResource(id = R.drawable.qrezzy_slogan),
         contentDescription = QrezzyBrandingDefaults.Slogan.CONTENT_DESCRIPTION,
         contentScale = ContentScale.Fit,
         modifier =
