@@ -16,13 +16,13 @@ import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 
 @Composable
-fun QrezzyAppVersion() {
+fun QrezzyAppVersion(modifier: Modifier = Modifier) {
     Text(
         text = "Version ${BuildConfig.VERSION_NAME}",
         color = TextPrimary,
         fontWeight = FontWeight.SemiBold,
         style = MaterialTheme.typography.bodySmall,
-        modifier = Modifier
+        modifier = modifier
             .background(
                 color = QrezzyPurple.copy(alpha = QrezzyAppVersionDefaults.BACKGROUND_ALPHA),
                 shape = ShapeDefaults.ExtraLarge

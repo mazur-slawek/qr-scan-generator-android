@@ -33,27 +33,27 @@ import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 
 @Composable
-fun SettingsListFooter(modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun SettingsListFooterCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
     QrezzyAnimatedStars(
         starsCount = SettingsListFooterDefaults.STARS_COUNT,
         modifier = modifier
             .fillMaxWidth()
-            .height(SettingsListFooterDefaults.height),
+            .height(SettingsListFooterDefaults.height)
+            .clickable(onClick = onClick),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
                 .border(
-                    width = SettingsListFooterDefaults.borderWidth,
-                    color = QrezzyMintDark.copy(alpha = SettingsListFooterDefaults.borderAlpha),
+                    width = SettingsListFooterDefaults.Border.width,
+                    color = QrezzyMintDark.copy(alpha = SettingsListFooterDefaults.Border.ALPHA),
                     shape = ShapeDefaults.Medium,
                 )
                 .background(
-                    color = QrezzyMint.copy(alpha = SettingsListFooterDefaults.backgroundAlpha),
+                    color = QrezzyMint.copy(alpha = SettingsListFooterDefaults.BACKGROUND_ALPHA),
                     shape = ShapeDefaults.Medium,
                 )
-                .padding(SettingsListFooterDefaults.contentPadding)
-                .clickable(onClick = onClick),
+                .padding(SettingsListFooterDefaults.contentPadding),
             horizontalArrangement = Arrangement.spacedBy(SettingsListFooterDefaults.contentSpacing),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -107,10 +107,14 @@ private fun FooterText(text: String, style: androidx.compose.ui.text.TextStyle) 
 
 private object SettingsListFooterDefaults {
     val height = 100.dp
+
+    object Border {
+        val width = 0.5.dp
+        const val ALPHA = 0.5f
+    }
+
     const val STARS_COUNT = 40
-    val borderWidth = 1.5.dp
-    const val borderAlpha = 0.5f
-    const val backgroundAlpha = 0.5f
+    const val BACKGROUND_ALPHA = 0.5f
     val contentPadding = 16.dp
     val contentSpacing = 16.dp
     val textSpacing = 6.dp

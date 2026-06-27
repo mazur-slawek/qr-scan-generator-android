@@ -8,8 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import software.mazur.qrezzy.feature.settings.screens.AboutAppScreen
 import software.mazur.qrezzy.feature.settings.screens.ClearAllHistoryScreen
+import software.mazur.qrezzy.feature.settings.screens.ContactScreen
 import software.mazur.qrezzy.feature.settings.screens.DonateScreen
-import software.mazur.qrezzy.feature.settings.screens.HelpSupportScreen
 import software.mazur.qrezzy.feature.settings.screens.LanguageScreen
 import software.mazur.qrezzy.feature.settings.screens.MaximumHistoryItemsScreen
 import software.mazur.qrezzy.feature.settings.screens.OpenSourceLicenseScreen
@@ -60,7 +60,7 @@ fun SettingsNavHost() {
                 onClearAllHistoryClick = { navController.navigate(SettingsRoute.ClearAllHistory.route) },
                 onAboutAppClick = { navController.navigate(SettingsRoute.AboutApp.route) },
                 onRateAppClick = { navController.navigate(SettingsRoute.RateApp.route) },
-                onHelpSupportClick = { navController.navigate(SettingsRoute.HelpSupport.route) },
+                onContactClick = { navController.navigate(SettingsRoute.Contact.route) },
                 onOpenSourceLicensesClick = { navController.navigate(SettingsRoute.OpenSourceLicense.route) },
                 onDonateClick = { navController.navigate(SettingsRoute.Donate.route) },
             )
@@ -97,8 +97,8 @@ fun SettingsNavHost() {
             RateAppScreen(navController::popBackStack)
         }
 
-        composable(SettingsRoute.HelpSupport.route) {
-            HelpSupportScreen(navController::popBackStack)
+        composable(SettingsRoute.Contact.route) {
+            ContactScreen(navController::popBackStack)
         }
 
         composable(SettingsRoute.OpenSourceLicense.route) {

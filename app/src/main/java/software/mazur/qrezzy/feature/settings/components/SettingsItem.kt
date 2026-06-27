@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
@@ -33,7 +35,9 @@ fun SettingsItem(
     icon: ImageVector,
     title: String,
     modifier: Modifier = Modifier,
+    subtitle: String? = null,
     value: String? = null,
+    iconSize: Dp = SettingsItemDefaults.Icon.size,
     titleColor: Color = TextPrimary,
     iconTintColor: Color = TextPrimary,
     iconBackgroundColor: Color = QrezzyMintDark,
@@ -46,59 +50,51 @@ fun SettingsItem(
             modifier = modifier
                 .fillMaxWidth()
                 .height(SettingsItemDefaults.Container.height)
-                .then(
-                    if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier,
-                )
+                .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
                 .padding(horizontal = SettingsItemDefaults.Container.horizontalPadding),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             SettingsItemIcon(
                 icon = icon,
+                size = iconSize,
                 tintColor = iconTintColor,
-                backgroundColor = iconBackgroundColor,
+                backgroundColor = iconBackgroundColor
             )
 
-            SettingsItemTitle(
+            SettingsItemText(
                 title = title,
-                color = titleColor,
+                subtitle = subtitle,
+                titleColor = titleColor,
                 modifier = Modifier
-                    .weight(SettingsItemDefaults.Title.WEIGHT)
-                    .padding(start = SettingsItemDefaults.Title.startPadding),
+                    .weight(SettingsItemDefaults.Text.WEIGHT)
+                    .padding(start = SettingsItemDefaults.Text.startPadding)
             )
 
-            value?.let { text ->
-                SettingsItemValue(value = text)
-            }
+            value?.let { text -> SettingsItemValue(value = text) }
 
             trailing?.invoke()
 
-            if (onClick != null) {
-                SettingsItemArrow()
-            }
+            if (onClick != null) SettingsItemArrow()
         }
 
         if (showDivider) {
             SettingsItemDivider(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(start = SettingsItemDefaults.Divider.startPadding),
+                    .padding(start = SettingsItemDefaults.Divider.startPadding)
             )
         }
     }
 }
 
 @Composable
-private fun SettingsItemIcon(
-    icon: ImageVector,
-    tintColor: Color,
-    backgroundColor: Color,
-) {
+private fun SettingsItemIcon(icon: ImageVector, size: Dp, tintColor: Color, backgroundColor: Color) {
     Icon(
         imageVector = icon,
         contentDescription = null,
         tint = tintColor,
         modifier = Modifier
-            .size(SettingsItemDefaults.Icon.size)
+            .size(size)
             .background(
                 color = backgroundColor.copy(alpha = SettingsItemDefaults.Icon.BACKGROUND_ALPHA),
                 shape = ShapeDefaults.Small,
@@ -108,23 +104,29 @@ private fun SettingsItemIcon(
                 color = backgroundColor,
                 shape = ShapeDefaults.Small,
             )
-            .padding(SettingsItemDefaults.Icon.padding),
+            .padding(SettingsItemDefaults.Icon.padding)
     )
 }
 
 @Composable
-private fun SettingsItemTitle(
-    title: String,
-    color: Color,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        text = title,
-        color = color,
-        style = MaterialTheme.typography.bodyMedium,
-        fontWeight = FontWeight.SemiBold,
-        modifier = modifier,
-    )
+private fun SettingsItemText(title: String, subtitle: String?, titleColor: Color, modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
+        Text(
+            text = title,
+            color = titleColor,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold
+        )
+
+        subtitle?.let { text ->
+            Text(
+                text = text,
+                color = TextSecondary,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Medium,
+            )
+        }
+    }
 }
 
 @Composable
@@ -149,9 +151,7 @@ private fun SettingsItemArrow() {
 }
 
 @Composable
-private fun SettingsItemDivider(
-    modifier: Modifier = Modifier,
-) {
+private fun SettingsItemDivider(modifier: Modifier = Modifier) {
     HorizontalDivider(
         modifier = modifier,
         thickness = SettingsItemDefaults.Divider.thickness,
@@ -173,7 +173,7 @@ private object SettingsItemDefaults {
         const val BACKGROUND_ALPHA = 0.2f
     }
 
-    object Title {
+    object Text {
         val startPadding = 14.dp
         const val WEIGHT = 1f
     }

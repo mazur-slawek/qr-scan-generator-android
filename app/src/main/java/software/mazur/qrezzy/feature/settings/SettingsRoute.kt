@@ -10,7 +10,7 @@ sealed class SettingsRoute(val route: String) {
     data object ClearAllHistory : SettingsRoute("clear_all_history")
     data object AboutApp : SettingsRoute("about_app")
     data object RateApp : SettingsRoute("rate_app")
-    data object HelpSupport : SettingsRoute("help_support")
+    data object Contact : SettingsRoute("contact")
     data object OpenSourceLicense : SettingsRoute("open_source_license")
     data object Donate : SettingsRoute("donate")
 }

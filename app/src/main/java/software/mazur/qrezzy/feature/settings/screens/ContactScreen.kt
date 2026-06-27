@@ -16,11 +16,11 @@ import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 
 @Composable
-fun HelpSupportScreen(onBackClick: () -> Unit) {
+fun ContactScreen(onBackClick: () -> Unit) {
     Column(modifier = Modifier.padding(HelpSupportScreenDefaults.horizontalPadding)) {
         QrezzyTopBar(
-            titleResId = R.string.settings_help_screen_title,
-            subtitleResId = R.string.settings_help_screen_subtitle,
+            titleResId = R.string.settings_contact_screen_title,
+            subtitleResId = R.string.settings_contact_screen_subtitle,
             onBackClick = onBackClick
         )
         LazyColumn(modifier = Modifier.fillMaxSize()) {
