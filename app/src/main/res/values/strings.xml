@@ -212,7 +212,18 @@
     <string name="theme_mode_system">System</string>
     <!-- Privacy -->
     <string name="settings_privacy_screen_title">Privacy</string>
-    <string name="settings_privacy_screen_subtitle">Learn how QREZZY handles your data and privacy.</string>
+    <string name="settings_privacy_screen_subtitle">Last updated: 27.06.2026</string>
+    <!-- Privacy details -->
+    <string name="privacy_data_collect_title">Data We Collect</string>
+    <string name="privacy_data_collect_subtitle">QREZZY does not collect or share personal data.</string>
+    <string name="privacy_data_usage_title">How We Use Data</string>
+    <string name="privacy_data_usage_subtitle">Scans and QR codes stay on your device.</string>
+    <string name="privacy_data_sharing_title">Data Sharing</string>
+    <string name="privacy_data_sharing_subtitle">We do not share your data with third parties.</string>
+    <string name="privacy_data_security_title">Data Security</string>
+    <string name="privacy_data_security_subtitle">Your data is stored locally on your device.</string>
+    <string name="privacy_data_deletion_title">Data Deletion</string>
+    <string name="privacy_data_deletion_subtitle">You can delete your data at any time.</string>
     <!-- Permissions -->
     <string name="settings_permissions_screen_title">Permissions</string>
     <string name="settings_permissions_screen_subtitle">View the permissions used by QREZZY.</string>
