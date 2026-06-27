@@ -227,6 +227,8 @@
     <!-- Permissions -->
     <string name="settings_permissions_screen_title">Permissions</string>
     <string name="settings_permissions_screen_subtitle">View the permissions used by QREZZY.</string>
+    <string name="permissions_camera_title">Camera Permission</string>
+    <string name="permissions_camera_subtitle">Required to scan QR and barcodes.</string>
     <!-- History Limit -->
     <string name="settings_history_limit_screen_title">History Limit</string>
     <string name="settings_history_limit_screen_subtitle">Manage history size.</string>
