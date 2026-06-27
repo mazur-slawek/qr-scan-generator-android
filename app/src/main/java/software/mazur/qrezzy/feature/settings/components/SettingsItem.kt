@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material3.HorizontalDivider
@@ -22,6 +22,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -32,9 +33,10 @@ import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 
 @Composable
 fun SettingsItem(
-    icon: ImageVector,
     title: String,
     modifier: Modifier = Modifier,
+    icon: ImageVector? = null,
+    iconPainter: Painter? = null,
     subtitle: String? = null,
     value: String? = null,
     iconSize: Dp = SettingsItemDefaults.Icon.size,
@@ -49,16 +51,20 @@ fun SettingsItem(
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .height(SettingsItemDefaults.Container.height)
+                .wrapContentHeight()
                 .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
-                .padding(horizontal = SettingsItemDefaults.Container.horizontalPadding),
+                .padding(
+                    vertical = SettingsItemDefaults.Container.verticalPadding,
+                    horizontal = SettingsItemDefaults.Container.horizontalPadding,
+                ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             SettingsItemIcon(
                 icon = icon,
+                iconPainter = iconPainter,
                 size = iconSize,
                 tintColor = iconTintColor,
-                backgroundColor = iconBackgroundColor
+                backgroundColor = iconBackgroundColor,
             )
 
             SettingsItemText(
@@ -67,55 +73,83 @@ fun SettingsItem(
                 titleColor = titleColor,
                 modifier = Modifier
                     .weight(SettingsItemDefaults.Text.WEIGHT)
-                    .padding(start = SettingsItemDefaults.Text.startPadding)
+                    .padding(start = SettingsItemDefaults.Text.startPadding),
             )
 
-            value?.let { text -> SettingsItemValue(value = text) }
+            value?.let { SettingsItemValue(value = it) }
 
             trailing?.invoke()
 
-            if (onClick != null) SettingsItemArrow()
+            if (onClick != null) {
+                SettingsItemArrow()
+            }
         }
 
         if (showDivider) {
             SettingsItemDivider(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(start = SettingsItemDefaults.Divider.startPadding)
+                    .padding(start = iconSize + SettingsItemDefaults.Divider.startPadding),
             )
         }
     }
 }
 
 @Composable
-private fun SettingsItemIcon(icon: ImageVector, size: Dp, tintColor: Color, backgroundColor: Color) {
-    Icon(
-        imageVector = icon,
-        contentDescription = null,
-        tint = tintColor,
-        modifier = Modifier
-            .size(size)
-            .background(
-                color = backgroundColor.copy(alpha = SettingsItemDefaults.Icon.BACKGROUND_ALPHA),
-                shape = ShapeDefaults.Small,
+private fun SettingsItemIcon(
+    icon: ImageVector?,
+    iconPainter: Painter?,
+    size: Dp,
+    tintColor: Color,
+    backgroundColor: Color,
+) {
+    val iconModifier = Modifier
+        .size(size)
+        .background(
+            color = backgroundColor.copy(alpha = SettingsItemDefaults.Icon.BACKGROUND_ALPHA),
+            shape = ShapeDefaults.Small,
+        )
+        .border(
+            width = SettingsItemDefaults.Icon.borderWidth,
+            color = backgroundColor,
+            shape = ShapeDefaults.Small,
+        )
+        .padding(SettingsItemDefaults.Icon.padding)
+
+    when {
+        icon != null        -> {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = tintColor,
+                modifier = iconModifier,
             )
-            .border(
-                width = SettingsItemDefaults.Icon.borderWidth,
-                color = backgroundColor,
-                shape = ShapeDefaults.Small,
+        }
+
+        iconPainter != null -> {
+            Icon(
+                painter = iconPainter,
+                contentDescription = null,
+                tint = null,
+                modifier = iconModifier,
             )
-            .padding(SettingsItemDefaults.Icon.padding)
-    )
+        }
+    }
 }
 
 @Composable
-private fun SettingsItemText(title: String, subtitle: String?, titleColor: Color, modifier: Modifier = Modifier) {
+private fun SettingsItemText(
+    title: String,
+    subtitle: String?,
+    titleColor: Color,
+    modifier: Modifier = Modifier,
+) {
     Column(modifier = modifier) {
         Text(
             text = title,
             color = titleColor,
             style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
         )
 
         subtitle?.let { text ->
@@ -162,12 +196,12 @@ private fun SettingsItemDivider(modifier: Modifier = Modifier) {
 @Immutable
 private object SettingsItemDefaults {
     object Container {
-        val height = 52.dp
-        val horizontalPadding = 14.dp
+        val verticalPadding = 12.dp
+        val horizontalPadding = 16.dp
     }
 
     object Icon {
-        val size = 30.dp
+        val size = 32.dp
         val padding = 5.dp
         val borderWidth = 1.dp
         const val BACKGROUND_ALPHA = 0.2f
@@ -187,7 +221,7 @@ private object SettingsItemDefaults {
     }
 
     object Divider {
-        val startPadding = 55.dp
+        val startPadding = 25.dp
         val thickness = 1.dp
         const val ALPHA = 0.12f
     }

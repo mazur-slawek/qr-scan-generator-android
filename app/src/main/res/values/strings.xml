@@ -199,6 +199,11 @@
     <!-- Language -->
     <string name="settings_language_screen_title">Language</string>
     <string name="settings_language_screen_subtitle">Choose your preferred language.</string>
+    <string name="language_english">English</string>
+    <string name="language_german">German</string>
+    <string name="language_italian">Italian</string>
+    <string name="language_polish">Polish</string>
+    <string name="language_ukrainian">Ukrainian</string>
     <!-- Theme -->
     <string name="settings_theme_screen_title">Theme</string>
     <string name="settings_theme_screen_subtitle">Personalize how QREZZY looks.</string>

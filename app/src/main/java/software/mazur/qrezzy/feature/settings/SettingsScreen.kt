@@ -152,7 +152,6 @@ fun SettingsScreen(
                         SettingsItem(
                             icon = Icons.Outlined.Checklist,
                             title = stringResource(R.string.settings_permission),
-                            showDivider = false,
                             onClick = onPermissionsClick,
                             iconTintColor = TextSecondary,
                             iconBackgroundColor = QrezzyYellowDark,
