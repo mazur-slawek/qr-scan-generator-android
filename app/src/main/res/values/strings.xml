@@ -207,6 +207,9 @@
     <!-- Theme -->
     <string name="settings_theme_screen_title">Theme</string>
     <string name="settings_theme_screen_subtitle">Personalize how QREZZY looks.</string>
+    <string name="theme_mode_light">Light</string>
+    <string name="theme_mode_dark">Dark</string>
+    <string name="theme_mode_system">System</string>
     <!-- Privacy -->
     <string name="settings_privacy_screen_title">Privacy</string>
     <string name="settings_privacy_screen_subtitle">Learn how QREZZY handles your data and privacy.</string>

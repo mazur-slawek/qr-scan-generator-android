@@ -41,7 +41,7 @@ fun SettingsItem(
     value: String? = null,
     iconSize: Dp = SettingsItemDefaults.Icon.size,
     titleColor: Color = TextPrimary,
-    iconTintColor: Color = TextPrimary,
+    iconTintColor: Color? = null,
     iconBackgroundColor: Color = QrezzyMintDark,
     trailing: @Composable (() -> Unit)? = null,
     onClick: (() -> Unit)? = null,
@@ -100,8 +100,8 @@ private fun SettingsItemIcon(
     icon: ImageVector?,
     iconPainter: Painter?,
     size: Dp,
-    tintColor: Color,
     backgroundColor: Color,
+    tintColor: Color? = null
 ) {
     val iconModifier = Modifier
         .size(size)
@@ -121,7 +121,7 @@ private fun SettingsItemIcon(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = tintColor,
+                tint = tintColor ?: Color.Unspecified,
                 modifier = iconModifier,
             )
         }
@@ -130,7 +130,7 @@ private fun SettingsItemIcon(
             Icon(
                 painter = iconPainter,
                 contentDescription = null,
-                tint = null,
+                tint = tintColor ?: Color.Unspecified,
                 modifier = iconModifier,
             )
         }

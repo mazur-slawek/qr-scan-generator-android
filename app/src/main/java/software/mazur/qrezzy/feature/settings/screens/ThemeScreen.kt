@@ -10,10 +10,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
+import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
+import software.mazur.qrezzy.core.designsystem.components.QrezzyRadioButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
+import software.mazur.qrezzy.core.designsystem.theme.TextDisabled
+import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
+import software.mazur.qrezzy.feature.settings.components.SettingsItem
 
 @Composable
 fun ThemeScreen(onBackClick: () -> Unit) {
@@ -38,6 +45,36 @@ fun ThemeScreen(onBackClick: () -> Unit) {
                     )
                 }
             }
+            item {
+                QrezzyFieldWrapper {
+                    Column {
+                        SettingsItem(
+                            iconPainter = painterResource(R.drawable.theme_mode_light),
+                            iconSize = ThemeScreenDefaults.iconSize,
+                            title = stringResource(R.string.theme_mode_light),
+                            trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
+                            iconTintColor = TextSecondary,
+                            iconBackgroundColor = TextDisabled,
+                        )
+                        SettingsItem(
+                            iconPainter = painterResource(R.drawable.theme_mode_dark),
+                            iconSize = ThemeScreenDefaults.iconSize,
+                            title = stringResource(R.string.theme_mode_dark),
+                            trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
+                            iconTintColor = TextSecondary,
+                            iconBackgroundColor = TextDisabled,
+                        )
+                        SettingsItem(
+                            iconPainter = painterResource(R.drawable.theme_mode_system),
+                            iconSize = ThemeScreenDefaults.iconSize,
+                            title = stringResource(R.string.theme_mode_system),
+                            trailing = { QrezzyRadioButton(selected = true, onClick = {}) },
+                            iconTintColor = QrezzyMintDark,
+                            iconBackgroundColor = QrezzyMintDark,
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -47,4 +84,5 @@ private object ThemeScreenDefaults {
     val imageHeight = 180.dp
     val imagePadding = 16.dp
     val horizontalPadding = 16.dp
+    val iconSize = 40.dp
 }
