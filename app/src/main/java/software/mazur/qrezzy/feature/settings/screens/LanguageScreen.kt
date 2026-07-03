@@ -1,9 +1,10 @@
 package software.mazur.qrezzy.feature.settings.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,66 +24,63 @@ import software.mazur.qrezzy.feature.settings.components.SettingsItem
 
 @Composable
 fun LanguageScreen(onBackClick: () -> Unit) {
-    Column(modifier = Modifier.padding(LanguageScreenDefaults.horizontalPadding)) {
-        QrezzyTopBar(
-            titleResId = R.string.settings_language_screen_title,
-            subtitleResId = R.string.settings_language_screen_subtitle,
-            onBackClick = onBackClick
-        )
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            item {
-                QrezzyAnimatedStars(
-                    starsCount = LanguageScreenDefaults.START_COUNT,
-                    modifier = Modifier.height(LanguageScreenDefaults.imageHeight)
-                ) {
+    Column(modifier = Modifier.padding(horizontal = LanguageScreenDefaults.horizontalPadding)) {
+        QrezzyTopBar(onBackClick = onBackClick, titleResId = R.string.language_screen_title)
+        QrezzyAnimatedStars(modifier = Modifier.fillMaxSize(), starsCount = LanguageScreenDefaults.STARS_COUNT) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(LanguageScreenDefaults.itemSpacing)
+            ) {
+                item {
                     Image(
                         painter = painterResource(R.drawable.qrezzy_mascot_language),
-                        contentDescription = null,
                         modifier = Modifier
-                            .padding(LanguageScreenDefaults.imagePadding)
-                            .fillMaxHeight(),
+                            .fillMaxWidth()
+                            .padding(top = LanguageScreenDefaults.imageTopPadding)
+                            .height(LanguageScreenDefaults.imageHeight),
+                        contentDescription = null
                     )
                 }
-            }
-            item {
-                QrezzyFieldWrapper {
-                    Column {
-                        SettingsItem(
-                            iconPainter = painterResource(R.drawable.language_english),
-                            iconSize = LanguageScreenDefaults.iconSize,
-                            title = stringResource(R.string.language_english),
-                            trailing = { QrezzyRadioButton(selected = true, onClick = {}) },
-                            iconBackgroundColor = QrezzyMintDark,
-                        )
-                        SettingsItem(
-                            iconPainter = painterResource(R.drawable.language_polish),
-                            iconSize = LanguageScreenDefaults.iconSize,
-                            title = stringResource(R.string.language_polish),
-                            trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
-                            iconBackgroundColor = TextDisabled,
-                        )
-                        SettingsItem(
-                            iconPainter = painterResource(R.drawable.language_german),
-                            iconSize = LanguageScreenDefaults.iconSize,
-                            title = stringResource(R.string.language_german),
-                            trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
-                            iconBackgroundColor = TextDisabled,
-                        )
-                        SettingsItem(
-                            iconPainter = painterResource(R.drawable.language_ukrainian),
-                            iconSize = LanguageScreenDefaults.iconSize,
-                            title = stringResource(R.string.language_ukrainian),
-                            trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
-                            iconBackgroundColor = TextDisabled,
-                        )
-                        SettingsItem(
-                            iconPainter = painterResource(R.drawable.language_italian),
-                            iconSize = LanguageScreenDefaults.iconSize,
-                            title = stringResource(R.string.language_italian),
-                            trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
-                            showDivider = false,
-                            iconBackgroundColor = TextDisabled,
-                        )
+                item {
+                    QrezzyFieldWrapper(title = stringResource(R.string.language_screen_subtitle)) {
+                        Column {
+                            SettingsItem(
+                                iconPainter = painterResource(R.drawable.language_english),
+                                iconSize = LanguageScreenDefaults.iconSize,
+                                title = stringResource(R.string.language_english),
+                                trailing = { QrezzyRadioButton(selected = true, onClick = {}) },
+                                iconBackgroundColor = QrezzyMintDark
+                            )
+                            SettingsItem(
+                                iconPainter = painterResource(R.drawable.language_polish),
+                                iconSize = LanguageScreenDefaults.iconSize,
+                                title = stringResource(R.string.language_polish),
+                                trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
+                                iconBackgroundColor = TextDisabled.copy(alpha = 0.5f)
+                            )
+                            SettingsItem(
+                                iconPainter = painterResource(R.drawable.language_german),
+                                iconSize = LanguageScreenDefaults.iconSize,
+                                title = stringResource(R.string.language_german),
+                                trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
+                                iconBackgroundColor = TextDisabled.copy(alpha = 0.5f)
+                            )
+                            SettingsItem(
+                                iconPainter = painterResource(R.drawable.language_ukrainian),
+                                iconSize = LanguageScreenDefaults.iconSize,
+                                title = stringResource(R.string.language_ukrainian),
+                                trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
+                                iconBackgroundColor = TextDisabled.copy(alpha = 0.5f)
+                            )
+                            SettingsItem(
+                                iconPainter = painterResource(R.drawable.language_italian),
+                                iconSize = LanguageScreenDefaults.iconSize,
+                                title = stringResource(R.string.language_italian),
+                                trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
+                                showDivider = false,
+                                iconBackgroundColor = TextDisabled.copy(alpha = 0.5f)
+                            )
+                        }
                     }
                 }
             }
@@ -91,9 +89,10 @@ fun LanguageScreen(onBackClick: () -> Unit) {
 }
 
 private object LanguageScreenDefaults {
-    const val START_COUNT = 50
-    val imageHeight = 180.dp
-    val imagePadding = 16.dp
+    const val STARS_COUNT = 150
     val horizontalPadding = 16.dp
+    val itemSpacing = 16.dp
+    val imageTopPadding = 16.dp
+    val imageHeight = 150.dp
     val iconSize = 40.dp
 }

@@ -204,7 +204,7 @@ private object SettingsItemDefaults {
 
     object Icon {
         val size = 32.dp
-        val padding = 5.dp
+        val padding = 4.dp
         val borderWidth = 1.dp
         const val BACKGROUND_ALPHA = 0.2f
     }

@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import software.mazur.qrezzy.feature.settings.screens.AboutAppScreen
 import software.mazur.qrezzy.feature.settings.screens.ClearAllHistoryScreen
 import software.mazur.qrezzy.feature.settings.screens.ContactScreen
 import software.mazur.qrezzy.feature.settings.screens.DonateScreen
@@ -58,7 +57,6 @@ fun SettingsNavHost() {
                 onPermissionsClick = { navController.navigate(SettingsRoute.Permissions.route) },
                 onMaximumHistoryItemsClick = { navController.navigate(SettingsRoute.MaximumHistoryItems.route) },
                 onClearAllHistoryClick = { navController.navigate(SettingsRoute.ClearAllHistory.route) },
-                onAboutAppClick = { navController.navigate(SettingsRoute.AboutApp.route) },
                 onRateAppClick = { navController.navigate(SettingsRoute.RateApp.route) },
                 onContactClick = { navController.navigate(SettingsRoute.Contact.route) },
                 onOpenSourceLicensesClick = { navController.navigate(SettingsRoute.OpenSourceLicense.route) },
@@ -87,10 +85,6 @@ fun SettingsNavHost() {
 
         composable(SettingsRoute.ClearAllHistory.route) {
             ClearAllHistoryScreen(navController::popBackStack)
-        }
-
-        composable(SettingsRoute.AboutApp.route) {
-            AboutAppScreen(navController::popBackStack)
         }
 
         composable(SettingsRoute.RateApp.route) {

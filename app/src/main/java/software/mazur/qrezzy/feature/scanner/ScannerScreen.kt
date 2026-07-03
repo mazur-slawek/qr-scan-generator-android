@@ -13,9 +13,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.FlashOff
-import androidx.compose.material.icons.outlined.FlashOn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Immutable
@@ -23,8 +20,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -40,7 +37,6 @@ import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellow
 import software.mazur.qrezzy.feature.scanner.components.ScannedQrDialog
 import software.mazur.qrezzy.feature.scanner.components.ScannerPreview
@@ -115,8 +111,8 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
             QrezzyTopBarButton(
                 onClick = viewModel::onTorchClick,
                 enabled = uiState.isScanning,
-                icon = if (uiState.isTorchEnabled) Icons.Outlined.FlashOn else Icons.Outlined.FlashOff,
-                iconTint = if (uiState.isTorchEnabled) QrezzyPurpleDark else Color.Gray,
+                iconPainter = painterResource(
+                    if (uiState.isTorchEnabled) R.drawable.qrezzy_torch_on else R.drawable.qrezzy_torch_off),
             )
         }
         Spacer(modifier = Modifier.height(ScannerScreenDefaults.topBarPreviewSpacing))

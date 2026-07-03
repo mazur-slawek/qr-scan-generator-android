@@ -87,6 +87,6 @@ private fun sendFeedbackEmail(context: Context, subject: String) {
 }
 
 private object QrezzyRateAppDefaults {
-    val IconSize = 45.dp
+    val IconSize = 40.dp
     const val EMAIL_ADDRESS = "slawek.mazur.software@gmail.com"
 }

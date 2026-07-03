@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
-import androidx.compose.material.icons.outlined.FormatPaint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -18,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -32,7 +32,6 @@ import software.mazur.qrezzy.core.designsystem.components.qrezzyQr.QrezzyCustomi
 import software.mazur.qrezzy.core.designsystem.components.qrezzyQr.QrezzyQrPreview
 import software.mazur.qrezzy.core.designsystem.components.qrezzyQrDetails.QrezzyQrInfo
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
 import software.mazur.qrezzy.feature.history.components.DeleteQrConfirmationDialog
 import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiEvent
@@ -104,9 +103,8 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
             )
             Spacer(modifier = Modifier.width(10.dp))
             QrezzyTopBarButton(
-                icon = Icons.Outlined.FormatPaint,
+                iconPainter = painterResource(R.drawable.qrezzy_edit),
                 onClick = viewModel::onCustomizeQrClick,
-                iconTint = QrezzyPurpleDark
             )
         }
         LazyColumn {

@@ -2,10 +2,11 @@ package software.mazur.qrezzy.feature.settings.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -34,54 +35,55 @@ import software.mazur.qrezzy.feature.settings.components.SettingsItem
 @Composable
 fun OpenSourceLicenseScreen(onBackClick: () -> Unit) {
     Column(modifier = Modifier.padding(horizontal = OpenSourceLicenseScreenDefaults.horizontalPadding)) {
-        QrezzyTopBar(
-            titleResId = R.string.settings_open_source_screen_title,
-            subtitleResId = R.string.settings_open_source_screen_subtitle,
-            onBackClick = onBackClick,
-        )
-
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            item {
-                QrezzyAnimatedStars(
-                    starsCount = OpenSourceLicenseScreenDefaults.STAR_COUNT,
-                    modifier = Modifier.height(OpenSourceLicenseScreenDefaults.imageHeight),
-                ) {
+        QrezzyTopBar(titleResId = R.string.open_source_screen_title, onBackClick = onBackClick)
+        QrezzyAnimatedStars(
+            modifier = Modifier.fillMaxSize(),
+            starsCount = OpenSourceLicenseScreenDefaults.STARS_COUNT
+        ) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(OpenSourceLicenseScreenDefaults.itemSpacing)
+            ) {
+                item {
                     Image(
                         painter = painterResource(R.drawable.qrezzy_mascot_open_source_license),
-                        contentDescription = null,
                         modifier = Modifier
-                            .padding(OpenSourceLicenseScreenDefaults.imagePadding)
-                            .fillMaxHeight(),
+                            .fillMaxWidth()
+                            .padding(top = OpenSourceLicenseScreenDefaults.imageTopPadding)
+                            .height(OpenSourceLicenseScreenDefaults.imageHeight),
+                        contentDescription = null,
                     )
                 }
-            }
-
-            item {
-                QrezzyFieldWrapper {
-                    Column {
-                        SettingsItem(
-                            icon = Icons.Outlined.QrCodeScanner,
-                            iconSize = OpenSourceLicenseScreenDefaults.iconSize,
-                            title = stringResource(R.string.license_zxing_title),
-                            subtitle = stringResource(R.string.license_apache_2),
-                            trailing = {
-                                LicenseVersionBadge(version = stringResource(R.string.license_zxing_version))
-                            },
-                            iconTintColor = QrezzyMintDark,
-                            iconBackgroundColor = QrezzyMintDark,
-                        )
-                        SettingsItem(
-                            icon = Icons.Outlined.CenterFocusStrong,
-                            iconSize = OpenSourceLicenseScreenDefaults.iconSize,
-                            title = stringResource(R.string.license_mlkit_barcode_title),
-                            subtitle = stringResource(R.string.license_apache_2),
-                            trailing = {
-                                LicenseVersionBadge(
-                                    version = stringResource(R.string.license_mlkit_barcode_version))
-                            },
-                            iconTintColor = QrezzyPinkDark,
-                            iconBackgroundColor = QrezzyPinkDark,
-                        )
+                item {
+                    QrezzyFieldWrapper(title = stringResource(R.string.open_source_screen_subtitle)) {
+                        Column {
+                            SettingsItem(
+                                icon = Icons.Outlined.QrCodeScanner,
+                                iconSize = OpenSourceLicenseScreenDefaults.iconSize,
+                                title = stringResource(R.string.open_source_license_zxing_title),
+                                subtitle = stringResource(R.string.open_source_license_apache_2),
+                                trailing = {
+                                    LicenseVersionBadge(
+                                        version = stringResource(R.string.open_source_license_zxing_version)
+                                    )
+                                },
+                                iconTintColor = QrezzyMintDark,
+                                iconBackgroundColor = QrezzyMintDark,
+                            )
+                            SettingsItem(
+                                icon = Icons.Outlined.CenterFocusStrong,
+                                iconSize = OpenSourceLicenseScreenDefaults.iconSize,
+                                title = stringResource(R.string.open_source_license_mlkit_barcode_title),
+                                subtitle = stringResource(R.string.open_source_license_apache_2),
+                                trailing = {
+                                    LicenseVersionBadge(
+                                        version = stringResource(R.string.open_source_license_mlkit_barcode_version)
+                                    )
+                                },
+                                iconTintColor = QrezzyPinkDark,
+                                iconBackgroundColor = QrezzyPinkDark,
+                            )
+                        }
                     }
                 }
             }
@@ -94,7 +96,7 @@ private fun LicenseVersionBadge(version: String) {
     Box(
         modifier = Modifier
             .background(
-                color = QrezzyPurpleDark.copy(alpha = OpenSourceLicenseScreenDefaults.Badge.backgroundAlpha),
+                color = QrezzyPurpleDark.copy(alpha = OpenSourceLicenseScreenDefaults.Badge.BACKGROUND_ALPHA),
                 shape = ShapeDefaults.Small,
             )
             .padding(
@@ -113,15 +115,16 @@ private fun LicenseVersionBadge(version: String) {
 }
 
 private object OpenSourceLicenseScreenDefaults {
-    const val STAR_COUNT = 50
-    val imageHeight = 180.dp
-    val imagePadding = 16.dp
+    const val STARS_COUNT = 150
     val horizontalPadding = 16.dp
+    val itemSpacing = 16.dp
+    val imageTopPadding = 16.dp
+    val imageHeight = 150.dp
     val iconSize = 40.dp
 
     object Badge {
         val horizontalPadding = 6.dp
         val verticalPadding = 2.dp
-        const val backgroundAlpha = 0.12f
+        const val BACKGROUND_ALPHA = 0.12f
     }
 }

@@ -46,14 +46,16 @@ fun DonateScreen(onBackClick: () -> Unit) {
                 }
                 item {
                     QrezzyFieldWrapper(title = stringResource(R.string.donate_support_section_title)) {
-                        SettingsItem(
-                            iconPainter = painterResource(R.drawable.qrezzy_coffee),
-                            title = stringResource(R.string.donate_buy_coffee_title),
-                            subtitle = stringResource(R.string.donate_buy_coffee_subtitle),
-                            iconSize = DonateScreenDefaults.iconSize,
-                            showDivider = false,
-                            onClick = { openBuyMeACoffee(context) },
-                        )
+                        Column {
+                            SettingsItem(
+                                iconPainter = painterResource(R.drawable.qrezzy_coffee),
+                                title = stringResource(R.string.donate_buy_coffee_title),
+                                subtitle = stringResource(R.string.donate_buy_coffee_subtitle),
+                                iconSize = DonateScreenDefaults.iconSize,
+                                showDivider = false,
+                                onClick = { openBuyMeACoffee(context) },
+                            )
+                        }
                     }
                 }
                 item {
@@ -73,11 +75,11 @@ private fun openBuyMeACoffee(context: Context) {
 }
 
 private object DonateScreenDefaults {
-    const val STARS_COUNT = 150
     const val BUY_ME_A_COFFEE_URL = "https://buymeacoffee.com/slawek_mazur"
+    const val STARS_COUNT = 150
     val horizontalPadding = 16.dp
     val itemSpacing = 16.dp
     val imageTopPadding = 16.dp
     val imageHeight = 150.dp
-    val iconSize = 45.dp
+    val iconSize = 40.dp
 }

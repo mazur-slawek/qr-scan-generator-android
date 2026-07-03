@@ -1,9 +1,10 @@
 package software.mazur.qrezzy.feature.settings.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,37 +23,37 @@ import software.mazur.qrezzy.feature.settings.components.SettingsItem
 @Composable
 fun MaxHistoryItemsScreen(onBackClick: () -> Unit) {
     Column(modifier = Modifier.padding(horizontal = MaxHistoryItemsScreenDefaults.horizontalPadding)) {
-        QrezzyTopBar(onBackClick = onBackClick, titleResId = R.string.settings_history_limit_screen_title)
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            item {
-                QrezzyAnimatedStars(
-                    starsCount = MaxHistoryItemsScreenDefaults.STAR_COUNT,
-                    modifier = Modifier.height(MaxHistoryItemsScreenDefaults.imageHeight),
-                ) {
+        QrezzyTopBar(onBackClick = onBackClick, titleResId = R.string.history_limit_screen_title)
+        QrezzyAnimatedStars(modifier = Modifier.fillMaxSize(), starsCount = MaxHistoryItemsScreenDefaults.STARS_COUNT) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(MaxHistoryItemsScreenDefaults.itemSpacing)
+            ) {
+                item {
                     Image(
                         painter = painterResource(R.drawable.qrezzy_mascot_max_items),
-                        contentDescription = null,
                         modifier = Modifier
-                            .padding(MaxHistoryItemsScreenDefaults.imagePadding)
-                            .fillMaxHeight(),
+                            .fillMaxWidth()
+                            .padding(top = MaxHistoryItemsScreenDefaults.imageTopPadding)
+                            .height(MaxHistoryItemsScreenDefaults.imageHeight),
+                        contentDescription = null,
                     )
                 }
-            }
-
-            item {
-                QrezzyFieldWrapper(title = stringResource(R.string.history_limit_section_title)) {
-                    Column {
-                        MaxHistoryItemsScreenDefaults.options.forEachIndexed { index, option ->
-                            SettingsItem(
-                                title = stringResource(option.titleResId),
-                                trailing = {
-                                    QrezzyRadioButton(
-                                        selected = option.selected,
-                                        onClick = {},
-                                    )
-                                },
-                                showDivider = index != MaxHistoryItemsScreenDefaults.options.lastIndex
-                            )
+                item {
+                    QrezzyFieldWrapper(title = stringResource(R.string.history_limit_screen_subtitle)) {
+                        Column {
+                            MaxHistoryItemsScreenDefaults.options.forEachIndexed { index, option ->
+                                SettingsItem(
+                                    title = stringResource(option.titleResId),
+                                    trailing = {
+                                        QrezzyRadioButton(
+                                            selected = option.selected,
+                                            onClick = {},
+                                        )
+                                    },
+                                    showDivider = index != MaxHistoryItemsScreenDefaults.options.lastIndex
+                                )
+                            }
                         }
                     }
                 }
@@ -62,10 +63,11 @@ fun MaxHistoryItemsScreen(onBackClick: () -> Unit) {
 }
 
 private object MaxHistoryItemsScreenDefaults {
-    const val STAR_COUNT = 50
-    val imageHeight = 180.dp
-    val imagePadding = 16.dp
+    const val STARS_COUNT = 150
     val horizontalPadding = 16.dp
+    val itemSpacing = 16.dp
+    val imageTopPadding = 16.dp
+    val imageHeight = 150.dp
     val options = listOf(
         HistoryLimitOption(R.string.history_limit_50, false),
         HistoryLimitOption(R.string.history_limit_100, false),

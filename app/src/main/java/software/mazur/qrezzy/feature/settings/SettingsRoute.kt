@@ -8,7 +8,6 @@ sealed class SettingsRoute(val route: String) {
     data object Permissions : SettingsRoute("permissions")
     data object MaximumHistoryItems : SettingsRoute("maximum_history_items")
     data object ClearAllHistory : SettingsRoute("clear_all_history")
-    data object AboutApp : SettingsRoute("about_app")
     data object RateApp : SettingsRoute("rate_app")
     data object Contact : SettingsRoute("contact")
     data object OpenSourceLicense : SettingsRoute("open_source_license")
