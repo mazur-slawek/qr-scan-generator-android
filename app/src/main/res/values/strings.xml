@@ -239,8 +239,11 @@
     <string name="settings_about_screen_title">About QREZZY</string>
     <string name="settings_about_screen_subtitle">Learn more about the app.</string>
     <!-- Contact -->
-    <string name="settings_contact_screen_title">Contact</string>
-    <string name="settings_contact_screen_subtitle">Get help, report issues, or send feedback.</string>
+    <string name="contact_screen_title">Contact</string>
+    <string name="contact_screen_subtitle">Questions, feedback, and bug reports.</string>
+    <string name="contact_email_title">Email contact</string>
+    <string name="contact_email_subtitle">Contact the developer by email.</string>
+    <string name="contact_email_subject">QREZZY support</string>
     <!-- Rate -->
     <string name="settings_rate_screen_title">Rate QREZZY</string>
     <string name="settings_rate_screen_subtitle">Enjoying the app? Leave a rating.</string>
