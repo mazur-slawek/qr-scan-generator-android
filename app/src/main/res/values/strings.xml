@@ -241,7 +241,10 @@
     <string name="history_limit_unlimited">Unlimited</string>
     <!-- Clear History -->
     <string name="settings_clear_history_screen_title">Clear History</string>
-    <string name="settings_clear_history_screen_subtitle">Permanently delete all history.</string>
+    <string name="clear_history_section_title">History summary</string>
+    <string name="clear_history_current_items_title">Items in history</string>
+    <string name="clear_history_oldest_item_title">Oldest saved item</string>
+    <string name="clear_history_button">Clear all history</string>
     <!-- About -->
     <string name="settings_about_screen_title">About QREZZY</string>
     <string name="settings_about_screen_subtitle">Learn more about the app.</string>
