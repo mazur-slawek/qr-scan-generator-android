@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">QREZZY</string>
+    <string name="app_copyright">© 2026 QREZZY. All rights reserved.</string>
 
     <string name="common_ok">OK</string>
     <string name="common_save">Save</string>
@@ -238,6 +239,11 @@
     <!-- About -->
     <string name="settings_about_screen_title">About QREZZY</string>
     <string name="settings_about_screen_subtitle">Learn more about the app.</string>
+    <!-- About App -->
+    <string name="about_app_description">
+        QREZZY is a modern QR code scanner and generator designed for speed, simplicity, and privacy.\n
+        Scan, create, and share QR codes in just a few taps.
+    </string>
     <!-- Contact -->
     <string name="contact_screen_title">Contact</string>
     <string name="contact_screen_subtitle">Questions, feedback, and bug reports.</string>
