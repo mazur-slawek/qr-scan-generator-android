@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -59,7 +60,7 @@ fun QrezzyTopBar(
     ) {
         if (onBackClick != null) {
             QrezzyTopBarButton(onClick = onBackClick, icon = Icons.Outlined.ArrowBack)
-            Spacer(modifier = Modifier.width(Content.padding))
+            Spacer(modifier = Modifier.width(Content.onBackButtonPadding))
         }
         Column(
             modifier = Modifier
@@ -97,7 +98,7 @@ fun QrezzyTopBar(
                 )
             }
         }
-        Spacer(modifier = Modifier.width(Content.padding))
+        Spacer(modifier = Modifier.width(Content.onBackButtonPadding))
         content?.let {
             Row(
                 modifier = Modifier.height(QrezzyTopBarDefaults.height),
@@ -119,6 +120,7 @@ fun QrezzyTopBarButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
+    iconPainter: Painter? = null,
     text: String? = null,
     enabled: Boolean = true,
     iconTint: Color = TextPrimary,
@@ -151,7 +153,8 @@ fun QrezzyTopBarButton(
             enabled = enabled,
             shape = ShapeDefaults.Medium,
             border = BorderStroke(width = QrezzyTopBarButtonDefaults.Border.width, color = BorderPrimary),
-            contentPadding = PaddingValues(horizontal = Content.padding),
+            contentPadding = PaddingValues(
+                horizontal = if (text == null) Content.horizontalIconPadding else Content.horizontalTextPadding),
             colors = ButtonDefaults.buttonColors(
                 containerColor = containerColor,
                 contentColor = TextPrimary,
@@ -185,14 +188,27 @@ fun QrezzyTopBarButton(
                         maxLines = QrezzyTopBarButtonDefaults.Text.MAX_LINES,
                     )
                 }
-                if (text != null && icon != null) Spacer(modifier = Modifier.width(Content.iconTextSpacing))
-                icon?.let {
-                    Icon(
-                        imageVector = it,
-                        contentDescription = null,
-                        tint = iconTint,
-                        modifier = Modifier.size(QrezzyTopBarButtonDefaults.Icon.size)
-                    )
+                if (text != null && icon != null && iconPainter != null) {
+                    Spacer(modifier = Modifier.width(Content.iconTextSpacing))
+                }
+                when {
+                    icon != null        -> {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = null,
+                            tint = iconTint,
+                            modifier = Modifier.size(QrezzyTopBarButtonDefaults.Icon.size)
+                        )
+                    }
+
+                    iconPainter != null -> {
+                        Icon(
+                            painter = iconPainter,
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                            modifier = Modifier.size(QrezzyTopBarButtonDefaults.Icon.sizePainter)
+                        )
+                    }
                 }
             }
         }
@@ -205,8 +221,10 @@ private object QrezzyTopBarButtonDefaults {
     }
 
     object Content {
-        val padding = 12.dp
+        val horizontalTextPadding = 14.dp
+        val horizontalIconPadding = 8.dp
         val iconTextSpacing = 8.dp
+        val onBackButtonPadding = 14.dp
     }
 
     object Depth {
@@ -221,6 +239,7 @@ private object QrezzyTopBarButtonDefaults {
 
     object Icon {
         val size = 24.dp
+        val sizePainter = 32.dp
     }
 
     object Text {

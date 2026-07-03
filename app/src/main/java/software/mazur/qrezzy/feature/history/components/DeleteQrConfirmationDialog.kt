@@ -129,7 +129,7 @@ private fun DeleteQrConfirmationMessageCard(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            painter = painterResource(R.drawable.delete_qr),
+            painter = painterResource(R.drawable.qrezzy_mascot_delete),
             contentDescription = null,
             modifier = Modifier.size(DeleteQrConfirmationDialogDefaults.Illustration.size),
         )

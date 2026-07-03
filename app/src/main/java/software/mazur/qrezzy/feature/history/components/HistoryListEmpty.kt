@@ -37,7 +37,7 @@ fun HistoryListEmpty(selectedTab: QrezzyTabItem, onEmptyActionClick: (HistoryEmp
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            painter = painterResource(R.drawable.history_list_empty),
+            painter = painterResource(R.drawable.qrezzy_mascot_list_empty),
             contentDescription = null,
             modifier = Modifier.height(HistoryListEmptyDefaults.imageHeight),
             contentScale = ContentScale.FillHeight

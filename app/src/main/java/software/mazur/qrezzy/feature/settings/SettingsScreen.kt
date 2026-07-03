@@ -1,37 +1,184 @@
 package software.mazur.qrezzy.feature.settings
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
+import software.mazur.qrezzy.core.designsystem.components.QrezzyCopyright
+import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
+import software.mazur.qrezzy.core.designsystem.components.QrezzySwitch
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
+import software.mazur.qrezzy.feature.settings.components.SettingsItem
+import software.mazur.qrezzy.feature.settings.components.SettingsListFooterCard
+import software.mazur.qrezzy.feature.settings.components.SettingsListHeaderCard
 
 @Composable
-fun SettingsScreen() {
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+fun SettingsScreen(
+    onLanguageClick: () -> Unit,
+    onThemeClick: () -> Unit,
+    onPrivacyClick: () -> Unit,
+    onPermissionsClick: () -> Unit,
+    onMaximumHistoryItemsClick: () -> Unit,
+    onClearAllHistoryClick: () -> Unit,
+    onRateAppClick: () -> Unit,
+    onContactClick: () -> Unit,
+    onOpenSourceLicensesClick: () -> Unit,
+    onDonateClick: () -> Unit,
+) {
+    Column(modifier = Modifier.padding(horizontal = SettingsScreenDefaults.horizontalPadding)) {
         QrezzyTopBar(
             titleResId = R.string.navigation_title_settings,
             subtitleResId = R.string.navigation_subtitle_settings
         ) {
-            QrezzyTopBarButton(
-                onClick = {},
-                enabled = false,
-                icon = Icons.Default.Favorite,
-                iconTint = QrezzyPurpleDark,
-            )
+            QrezzyTopBarButton(onClick = onDonateClick, iconPainter = painterResource(R.drawable.qrezzy_donate))
         }
-        Box(
-            modifier = Modifier.weight(1f),
-            contentAlignment = Alignment.Center,
+
+        LazyColumn(
+            modifier = Modifier.weight(SettingsScreenDefaults.LIST_WEIGHT),
+            verticalArrangement = Arrangement.spacedBy(SettingsScreenDefaults.sectionSpacing)
         ) {
+            item { SettingsListHeaderCard(modifier = Modifier.padding(top = SettingsScreenDefaults.topPadding)) }
+
+            item {
+                QrezzyFieldWrapper(title = stringResource(R.string.settings_section_general)) {
+                    Column {
+                        SettingsItem(
+                            iconPainter = painterResource(R.drawable.qrezzy_language),
+                            title = stringResource(R.string.settings_language),
+                            value = stringResource(R.string.settings_language_polish),
+                            iconSize = SettingsScreenDefaults.iconSize,
+                            iconBackgroundColor = QrezzyYellowDark,
+                            onClick = onLanguageClick
+                        )
+                        SettingsItem(
+                            iconPainter = painterResource(R.drawable.qrezzy_theme),
+                            title = stringResource(R.string.settings_theme),
+                            value = stringResource(R.string.settings_theme_system),
+                            iconSize = SettingsScreenDefaults.iconSize,
+                            iconBackgroundColor = QrezzyMintDark,
+                            onClick = onThemeClick,
+                        )
+                    }
+                }
+            }
+
+            item {
+                QrezzyFieldWrapper(title = stringResource(R.string.settings_section_scanner)) {
+                    Column {
+                        SettingsItem(
+                            iconPainter = painterResource(R.drawable.qrezzy_autosave),
+                            title = stringResource(R.string.settings_auto_save_scanned_qr),
+                            trailing = { QrezzySwitch(checked = true, onCheckedChange = {}) },
+                            iconSize = SettingsScreenDefaults.iconSize,
+                            iconBackgroundColor = QrezzyMintDark,
+                        )
+                        SettingsItem(
+                            iconPainter = painterResource(R.drawable.qrezzy_vibro),
+                            title = stringResource(R.string.settings_vibrate_on_scan),
+                            trailing = { QrezzySwitch(checked = true, onCheckedChange = {}) },
+                            iconSize = SettingsScreenDefaults.iconSize,
+                            iconBackgroundColor = QrezzyPurpleDark,
+                        )
+                    }
+                }
+            }
+
+            item {
+                QrezzyFieldWrapper(title = stringResource(R.string.settings_section_history)) {
+                    Column {
+                        SettingsItem(
+                            iconPainter = painterResource(R.drawable.qrezzy_history_limit),
+                            title = stringResource(R.string.settings_max_history_items),
+                            value = "500",
+                            onClick = onMaximumHistoryItemsClick,
+                            iconSize = SettingsScreenDefaults.iconSize,
+                            iconBackgroundColor = QrezzyYellowDark,
+                        )
+                        SettingsItem(
+                            iconPainter = painterResource(R.drawable.qrezzy_delete),
+                            title = stringResource(R.string.settings_clear_all_history),
+                            titleColor = QrezzyPinkDark,
+                            showDivider = false,
+                            onClick = onClearAllHistoryClick,
+                            iconSize = SettingsScreenDefaults.iconSize,
+                            iconBackgroundColor = QrezzyPinkDark,
+                        )
+                    }
+                }
+            }
+
+            item {
+                QrezzyFieldWrapper(title = stringResource(R.string.settings_section_support)) {
+                    Column {
+                        SettingsItem(
+                            iconPainter = painterResource(R.drawable.qrezzy_privacy),
+                            title = stringResource(R.string.settings_privacy),
+                            onClick = onPrivacyClick,
+                            iconSize = SettingsScreenDefaults.iconSize,
+                            iconBackgroundColor = QrezzyMintDark
+                        )
+                        SettingsItem(
+                            iconPainter = painterResource(R.drawable.qrezzy_permission),
+                            title = stringResource(R.string.settings_permission),
+                            onClick = onPermissionsClick,
+                            iconSize = SettingsScreenDefaults.iconSize,
+                            iconBackgroundColor = QrezzyPurpleDark
+                        )
+                        SettingsItem(
+                            iconPainter = painterResource(R.drawable.qrezzy_rate),
+                            title = stringResource(R.string.settings_rate_app),
+                            onClick = onRateAppClick,
+                            iconSize = SettingsScreenDefaults.iconSize,
+                            iconBackgroundColor = QrezzyYellowDark
+                        )
+                        SettingsItem(
+                            iconPainter = painterResource(R.drawable.qrezzy_contact),
+                            title = stringResource(R.string.settings_contact),
+                            onClick = onContactClick,
+                            iconSize = SettingsScreenDefaults.iconSize,
+                            iconBackgroundColor = QrezzyMintDark
+                        )
+                        SettingsItem(
+                            iconPainter = painterResource(R.drawable.qrezzy_open_source_licenses),
+                            title = stringResource(R.string.settings_open_source_licenses),
+                            onClick = onOpenSourceLicensesClick,
+                            iconSize = SettingsScreenDefaults.iconSize,
+                            iconBackgroundColor = QrezzyPurpleDark,
+                            showDivider = false
+                        )
+                    }
+                }
+            }
+            item {
+                SettingsListFooterCard(
+                    onClick = onDonateClick,
+                    modifier = Modifier.padding(bottom = SettingsScreenDefaults.bottomPadding)
+                )
+                QrezzyCopyright(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = SettingsScreenDefaults.bottomPadding))
+            }
         }
     }
+}
+
+private object SettingsScreenDefaults {
+    val horizontalPadding = 16.dp
+    val sectionSpacing = 14.dp
+    val topPadding = 16.dp
+    val bottomPadding = 16.dp
+    const val LIST_WEIGHT = 1f
+    val iconSize = 40.dp
 }

@@ -20,7 +20,7 @@ fun QrezzyQrInfo(qr: Qr, modifier: Modifier = Modifier) {
         QrezzyQrInfoDetails(qr = qr)
         Spacer(modifier = Modifier.height(QrezzyQrDetailsDefaults.sectionSpacing))
         QrezzyPopup(
-            imageResId = R.drawable.qrezzy_security_tip,
+            imageResId = R.drawable.qrezzy_mascot_privacy,
             titleResId = R.string.qr_security_tip_title,
             descriptionResId = R.string.qr_security_tip_description
         )

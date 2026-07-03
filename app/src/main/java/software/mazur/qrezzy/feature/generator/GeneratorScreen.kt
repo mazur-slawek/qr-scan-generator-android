@@ -10,16 +10,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.FormatPaint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -29,7 +27,6 @@ import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
 import software.mazur.qrezzy.core.designsystem.components.qrezzyQr.QrezzyCustomizeQrDialog
 import software.mazur.qrezzy.core.designsystem.components.qrezzyQr.QrezzyQrPreview
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.feature.generator.components.QrTypeForm
 import software.mazur.qrezzy.feature.generator.components.QrTypeTabs
 import software.mazur.qrezzy.feature.generator.model.GeneratorUiEvent
@@ -64,9 +61,8 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
         ) {
             QrezzyTopBarButton(
                 enabled = uiState.canSave,
-                icon = Icons.Outlined.FormatPaint,
+                iconPainter = painterResource(R.drawable.qrezzy_edit),
                 onClick = viewModel::onCustomizeQrClick,
-                iconTint = if (uiState.canSave) QrezzyPurpleDark else Color.Gray,
             )
         }
         QrezzyQrPreview(qrBitmap = qrBitmap)

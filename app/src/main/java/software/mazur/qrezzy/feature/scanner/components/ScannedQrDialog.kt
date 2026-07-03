@@ -67,7 +67,7 @@ fun ScannedQrDialog(qr: Qr, onSaveClick: () -> Unit, onCancelClick: () -> Unit) 
                             .fillMaxWidth()
                             .height(ScannedQrDialogDefaults.Image.size)) {
                         Image(
-                            painter = painterResource(id = R.drawable.qr_code_detected),
+                            painter = painterResource(id = R.drawable.qrezzy_mascot_detected),
                             contentDescription = null,
                             modifier = Modifier.fillMaxSize(),
                         )
