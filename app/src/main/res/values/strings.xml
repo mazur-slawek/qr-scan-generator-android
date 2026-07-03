@@ -188,7 +188,7 @@
     <string name="settings_auto_save_scanned_qr">Auto save scanned QR</string>
     <string name="settings_vibrate_on_scan">Vibrate on scan</string>
 
-    <string name="settings_max_history_items">Maximum history items</string>
+    <string name="settings_max_history_items">History Limit</string>
     <string name="settings_export_history">Export history</string>
     <string name="settings_clear_all_history">Clear all history</string>
 
@@ -232,7 +232,13 @@
     <string name="permissions_camera_subtitle">Required to scan QR and barcodes.</string>
     <!-- History Limit -->
     <string name="settings_history_limit_screen_title">History Limit</string>
-    <string name="settings_history_limit_screen_subtitle">Manage history size.</string>
+    <string name="history_limit_section_title">Maximum history items</string>
+    <string name="history_limit_50">50 items</string>
+    <string name="history_limit_100">100 items</string>
+    <string name="history_limit_200">200 items</string>
+    <string name="history_limit_500">500 items</string>
+    <string name="history_limit_1000">1000 items</string>
+    <string name="history_limit_unlimited">Unlimited</string>
     <!-- Clear History -->
     <string name="settings_clear_history_screen_title">Clear History</string>
     <string name="settings_clear_history_screen_subtitle">Permanently delete all history.</string>

@@ -73,7 +73,7 @@ fun SettingsItem(
                 titleColor = titleColor,
                 modifier = Modifier
                     .weight(SettingsItemDefaults.Text.WEIGHT)
-                    .padding(start = SettingsItemDefaults.Text.startPadding),
+                    .padding(start = if (icon !== null) SettingsItemDefaults.Text.startPadding else 0.dp),
             )
 
             value?.let { SettingsItemValue(value = it) }
@@ -89,7 +89,7 @@ fun SettingsItem(
             SettingsItemDivider(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(start = iconSize + SettingsItemDefaults.Divider.startPadding),
+                    .padding(start = if (icon !== null) iconSize + SettingsItemDefaults.Divider.startPadding else 0.dp)
             )
         }
     }

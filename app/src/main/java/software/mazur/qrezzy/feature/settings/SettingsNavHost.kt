@@ -11,7 +11,7 @@ import software.mazur.qrezzy.feature.settings.screens.ClearAllHistoryScreen
 import software.mazur.qrezzy.feature.settings.screens.ContactScreen
 import software.mazur.qrezzy.feature.settings.screens.DonateScreen
 import software.mazur.qrezzy.feature.settings.screens.LanguageScreen
-import software.mazur.qrezzy.feature.settings.screens.MaximumHistoryItemsScreen
+import software.mazur.qrezzy.feature.settings.screens.MaxHistoryItemsScreen
 import software.mazur.qrezzy.feature.settings.screens.OpenSourceLicenseScreen
 import software.mazur.qrezzy.feature.settings.screens.PermissionsScreen
 import software.mazur.qrezzy.feature.settings.screens.PrivacyScreen
@@ -82,7 +82,7 @@ fun SettingsNavHost() {
         }
 
         composable(SettingsRoute.MaximumHistoryItems.route) {
-            MaximumHistoryItemsScreen(navController::popBackStack)
+            MaxHistoryItemsScreen(navController::popBackStack)
         }
 
         composable(SettingsRoute.ClearAllHistory.route) {
