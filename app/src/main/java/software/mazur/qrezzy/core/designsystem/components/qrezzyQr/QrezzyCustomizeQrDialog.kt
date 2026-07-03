@@ -18,8 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -88,7 +86,11 @@ fun QrezzyCustomizeQrDialog(
                 .padding(CustomizeQrDialogDefaults.Container.contentPadding),
         ) {
             QrezzyTopBar(titleResId = R.string.customize_qr_title, subtitleResId = R.string.customize_qr_subtitle) {
-                QrezzyTopBarButton(onClick = onCancelClick, icon = Icons.Outlined.Close, iconTint = QrezzyPurpleDark)
+                QrezzyTopBarButton(
+                    onClick = onCancelClick,
+                    iconPainter = painterResource(R.drawable.qrezzy_close),
+                    iconTint = TextSecondary
+                )
             }
             QrezzyQrPreview(qrBitmap = qrBitmap)
             LazyColumn(modifier = Modifier.weight(CustomizeQrDialogDefaults.CONTENT_WEIGHT)) {

@@ -26,7 +26,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -159,7 +158,7 @@ private fun HistoryTopBar(
                 QrezzyTopBarButton(
                     enabled = hasItems,
                     onClick = onEnterDeleteMode,
-                    text = stringResource(R.string.history_select)
+                    iconPainter = painterResource(R.drawable.qrezzy_select)
                 )
             }
         }
@@ -173,7 +172,11 @@ private fun HistoryDeleteModeActions(
     onDeleteSelected: () -> Unit,
 ) {
     Row {
-        QrezzyTopBarButton(onClick = onExitDeleteMode, icon = Icons.Outlined.Close)
+        QrezzyTopBarButton(
+            onClick = onExitDeleteMode,
+            iconPainter = painterResource(R.drawable.qrezzy_close),
+            iconTint = TextSecondary
+        )
         Spacer(modifier = Modifier.width(HistoryScreenDefaults.topBarActionSpacing))
         AnimatedVisibility(
             visible = true,

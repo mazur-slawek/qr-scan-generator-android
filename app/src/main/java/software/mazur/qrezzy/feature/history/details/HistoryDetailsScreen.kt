@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -97,7 +94,11 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
             onBackClick = onBackClick
         ) {
             QrezzyTopBarButton(
-                icon = if (uiState.qr?.isFavorite == true) Icons.Default.Star else Icons.Default.StarBorder,
+                iconPainter = painterResource(if (uiState.qr?.isFavorite == true) {
+                    R.drawable.qrezzy_favorite_on
+                } else {
+                    R.drawable.qrezzy_favorite_off
+                }),
                 onClick = viewModel::onFavoriteClick,
                 iconTint = QrezzyYellowDark
             )
