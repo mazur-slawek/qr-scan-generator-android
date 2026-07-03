@@ -262,22 +262,23 @@
     <!-- Rate -->
     <string name="settings_rate_screen_title">Rate QREZZY</string>
     <string name="settings_rate_screen_subtitle">Enjoying the app? Leave a rating.</string>
-    <!-- Rate app -->
+    <string name="rate_app_title">Rate QREZZY</string>
+    <string name="rate_app_subtitle">Leave a quick review.\nIt means a lot!</string>
+
+    <string name="rate_app_share_title">Share with friends</string>
+    <string name="rate_app_share_subtitle">Spread the word and help\nothers discover QREZZY!</string>
+
+    <string name="rate_app_feedback_title">Send feedback</string>
+    <string name="rate_app_feedback_subtitle">Have an idea or found a bug?\nLet us know!</string>
+
+    <string name="rate_app_feedback_subject">QREZZY feedback</string>
+    <string name="rate_app_share_text">Check out QREZZY — a simple QR scanner and generator.</string>
+    <string name="rate_app_share_chooser_title">Share QREZZY</string>
+
     <string name="rate_app_section_store">Store</string>
     <string name="rate_app_store_title">Rate QREZZY</string>
     <string name="rate_app_store_subtitle">Leave a quick review.</string>
-
     <string name="rate_app_section_support">Support</string>
-    <string name="rate_app_share_title">Share QREZZY</string>
-    <string name="rate_app_share_subtitle">Recommend it to a friend.</string>
-
-    <string name="rate_app_feedback_title">Send feedback</string>
-    <string name="rate_app_feedback_subtitle">Help improve the app.</string>
-
-    <string name="rate_app_feedback_subject">QREZZY feedback</string>
-    <string name="rate_app_share_chooser_title">Share QREZZY</string>
-    <string name="rate_app_share_text">Check out QREZZY — a simple QR scanner and generator.</string>
-
     <!-- Open Source -->
     <string name="settings_open_source_screen_title">Open Source Licenses</string>
     <string name="settings_open_source_screen_subtitle">Libraries and licenses used by QREZZY.</string>
@@ -291,6 +292,9 @@
     <string name="license_mlkit_barcode_version">17.3.0</string>
 
     <!-- Donate -->
-    <string name="settings_donate_screen_title">Support QREZZY</string>
-    <string name="settings_donate_screen_subtitle">Help support future development.</string>
+    <string name="donate_screen_title">Support QREZZY</string>
+    <string name="donate_support_section_title">Help support future development.</string>
+    <string name="donate_buy_coffee_title">Buy me a coffee</string>
+    <string name="donate_buy_coffee_subtitle">Your support helps keep the app free and brings new features!</string>
+    <string name="donate_other_support_title">Other ways to support</string>
 </resources>

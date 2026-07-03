@@ -6,9 +6,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
@@ -47,6 +49,7 @@ fun SettingsItem(
     onClick: (() -> Unit)? = null,
     showDivider: Boolean = true,
 ) {
+    val hasIcon = icon != null || iconPainter != null
     Box {
         Row(
             modifier = modifier
@@ -66,14 +69,12 @@ fun SettingsItem(
                 tintColor = iconTintColor,
                 backgroundColor = iconBackgroundColor,
             )
-
+            if (hasIcon) Spacer(modifier = Modifier.width(SettingsItemDefaults.Text.startPadding))
             SettingsItemText(
                 title = title,
                 subtitle = subtitle,
                 titleColor = titleColor,
-                modifier = Modifier
-                    .weight(SettingsItemDefaults.Text.WEIGHT)
-                    .padding(start = if (icon !== null) SettingsItemDefaults.Text.startPadding else 0.dp),
+                modifier = Modifier.weight(SettingsItemDefaults.Text.WEIGHT)
             )
 
             value?.let { SettingsItemValue(value = it) }
@@ -89,7 +90,8 @@ fun SettingsItem(
             SettingsItemDivider(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(start = if (icon !== null) iconSize + SettingsItemDefaults.Divider.startPadding else 0.dp)
+                    .padding(
+                        start = if (hasIcon) iconSize + SettingsItemDefaults.Divider.startPadding else 0.dp)
             )
         }
     }
