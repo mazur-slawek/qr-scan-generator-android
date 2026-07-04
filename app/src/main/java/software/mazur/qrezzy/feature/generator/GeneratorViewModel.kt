@@ -133,9 +133,14 @@ constructor(
         )
 
         viewModelScope.launch {
-            saveQrUseCase(qr)
-            resetForm()
-            _events.emit(GeneratorUiEvent.QrSaved)
+            runCatching {
+                saveQrUseCase(qr)
+            }.onSuccess {
+                resetForm()
+                _events.emit(GeneratorUiEvent.QrSaved)
+            }.onFailure {
+                _events.emit(GeneratorUiEvent.QrSaveFailed)
+            }
         }
     }
 

@@ -38,6 +38,7 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val qrSavedMessage = stringResource(R.string.generator_qr_saved_message)
+    val qrSaveFailedMessage = stringResource(R.string.generator_qr_save_failed_message)
     val qrBitmap = remember(uiState.qrContent, uiState.qrStyle) {
         viewModel.generateQrBitmap(content = uiState.qrContent)
     }
@@ -45,15 +46,18 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                GeneratorUiEvent.QrSaved -> {
+                GeneratorUiEvent.QrSaved      -> {
                     Toast.makeText(context, qrSavedMessage, Toast.LENGTH_SHORT).show()
+                }
+
+                GeneratorUiEvent.QrSaveFailed -> {
+                    Toast.makeText(context, qrSaveFailedMessage, Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
-
     GeneratorCustomizeQrDialog(uiState = uiState, viewModel = viewModel)
-
+    
     Column(modifier = Modifier.padding(horizontal = GeneratorScreenDefaults.screenHorizontalPadding)) {
         QrezzyTopBar(
             titleResId = R.string.navigation_title_generate,
