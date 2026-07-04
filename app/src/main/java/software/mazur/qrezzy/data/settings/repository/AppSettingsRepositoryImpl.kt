@@ -17,6 +17,10 @@ class AppSettingsRepositoryImpl @Inject constructor(private val dao: AppSettings
         return dao.observeSettings().map { entity -> entity?.toDomain() ?: AppSettings() }
     }
 
+    override suspend fun initializeSettingsIfNeeded(language: AppLanguage) {
+        dao.insertIfMissing(AppSettingsEntity(language = language))
+    }
+
     override suspend fun setOnboardingCompleted(value: Boolean) {
         ensureSettingsExist()
         dao.setOnboardingCompleted(value)

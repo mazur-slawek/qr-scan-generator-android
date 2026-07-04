@@ -6,7 +6,6 @@ import software.mazur.qrezzy.domain.settings.model.HistoryLimit
 
 fun AppLanguage.displayName(): String {
     return when (this) {
-        AppLanguage.SYSTEM    -> "System"
         AppLanguage.ENGLISH   -> "English"
         AppLanguage.POLISH    -> "Polski"
         AppLanguage.GERMAN    -> "Deutsch"

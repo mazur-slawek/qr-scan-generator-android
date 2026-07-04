@@ -64,14 +64,14 @@ object DatabaseModule {
             db.execSQL("""CREATE TABLE IF NOT EXISTS app_settings (
                 id INTEGER NOT NULL PRIMARY KEY,
                 onboardingCompleted INTEGER NOT NULL DEFAULT 0,
-                language TEXT NOT NULL DEFAULT 'SYSTEM',
+                language TEXT NOT NULL DEFAULT 'ENGLISH',
                 theme TEXT NOT NULL DEFAULT 'SYSTEM',
                 autoSaveScans INTEGER NOT NULL DEFAULT 0,
                 vibrationEnabled INTEGER NOT NULL DEFAULT 1,
                 historyLimit TEXT NOT NULL DEFAULT 'ITEMS_200')""".trimIndent())
             db.execSQL("""INSERT OR IGNORE INTO app_settings (
                 id, onboardingCompleted, language, theme, autoSaveScans, vibrationEnabled, historyLimit) VALUES (
-                1, 0, 'SYSTEM', 'SYSTEM', 0, 1, 'ITEMS_200')""".trimIndent()
+                1, 0, 'ENGLISH', 'SYSTEM', 0, 1, 'ITEMS_200')""".trimIndent()
             )
         }
     }

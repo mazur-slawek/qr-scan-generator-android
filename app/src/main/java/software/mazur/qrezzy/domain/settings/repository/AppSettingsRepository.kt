@@ -8,7 +8,7 @@ import software.mazur.qrezzy.domain.settings.model.HistoryLimit
 
 interface AppSettingsRepository {
     fun observeSettings(): Flow<AppSettings>
-
+    suspend fun initializeSettingsIfNeeded(language: AppLanguage)
     suspend fun setOnboardingCompleted(value: Boolean)
     suspend fun setLanguage(value: AppLanguage)
     suspend fun setTheme(value: AppTheme)

@@ -10,7 +10,7 @@ import software.mazur.qrezzy.domain.settings.model.HistoryLimit
 data class AppSettingsEntity(
     @PrimaryKey val id: Int = DEFAULT_ID,
     val onboardingCompleted: Boolean = false,
-    val language: AppLanguage = AppLanguage.SYSTEM,
+    val language: AppLanguage = AppLanguage.ENGLISH,
     val theme: AppTheme = AppTheme.SYSTEM,
     val autoSaveScans: Boolean = false,
     val vibrationEnabled: Boolean = true,
