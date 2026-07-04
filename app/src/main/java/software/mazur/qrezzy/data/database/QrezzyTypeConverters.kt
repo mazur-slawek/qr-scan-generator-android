@@ -53,7 +53,13 @@ class QrezzyTypeConverters {
     fun fromAppTheme(value: AppTheme): String = value.name
 
     @TypeConverter
-    fun toAppTheme(value: String): AppTheme = AppTheme.valueOf(value)
+    fun toAppTheme(value: String): AppTheme =
+        when (value) {
+            "LIGHT"  -> AppTheme.LIGHT
+            "DARK"   -> AppTheme.DARK
+            "SYSTEM" -> AppTheme.SYSTEM
+            else     -> AppTheme.SYSTEM
+        }
 
     @TypeConverter
     fun fromHistoryLimit(value: HistoryLimit): String = value.name

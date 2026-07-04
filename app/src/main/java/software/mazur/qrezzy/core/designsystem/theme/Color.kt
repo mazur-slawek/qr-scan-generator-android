@@ -34,3 +34,12 @@ val ShadowPrimary = Color(0xFF000000)
 val Success = Color(0xFF4CAF50)
 val Warning = Color(0xFFFFB300)
 val Error = Color(0xFFFF5A5A)
+
+// Dark mode
+val DarkSurface = Color(0xFF15161F)
+val DarkSurfaceVariant = Color(0xFF1E2030)
+val DarkCard = Color(0xFF222438)
+val DarkTextPrimary = Color(0xFFF7F4FF)
+val DarkTextSecondary = Color(0xFFC9C3D8)
+val DarkTextDisabled = Color(0xFF817A91)
+val DarkBorderPrimary = Color(0xFF34364A)

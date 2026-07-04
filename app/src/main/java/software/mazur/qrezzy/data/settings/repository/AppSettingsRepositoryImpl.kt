@@ -32,7 +32,7 @@ class AppSettingsRepositoryImpl @Inject constructor(private val dao: AppSettings
     }
 
     override suspend fun setTheme(value: AppTheme) {
-        ensureSettingsExist()
+        dao.insertIfMissing(AppSettingsEntity())
         dao.setTheme(value)
     }
 
