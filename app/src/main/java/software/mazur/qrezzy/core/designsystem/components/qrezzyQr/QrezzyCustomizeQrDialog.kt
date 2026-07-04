@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
-import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
 import software.mazur.qrezzy.core.designsystem.extensions.toComposeColor
@@ -140,7 +140,7 @@ private fun CustomizeQrColorSelector(
     colors: List<QrColorOption>,
     onColorSelected: (Long) -> Unit
 ) {
-    QrezzyFieldWrapper(title = title) {
+    QrezzyListSection(title = title) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -212,7 +212,7 @@ private fun CustomizeQrPatternSelector(
     selectedPatternStyle: QrPatternStyle,
     onPatternStyleSelected: (QrPatternStyle) -> Unit,
 ) {
-    QrezzyFieldWrapper(title = stringResource(R.string.customize_qr_pattern_style)) {
+    QrezzyListSection(title = stringResource(R.string.customize_qr_pattern_style)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -248,7 +248,7 @@ private fun CustomizeQrErrorCorrectionSelector(
     selectedErrorCorrection: QrErrorCorrection,
     onErrorCorrectionSelected: (QrErrorCorrection) -> Unit,
 ) {
-    QrezzyFieldWrapper(title = stringResource(R.string.customize_qr_error_correction)) {
+    QrezzyListSection(title = stringResource(R.string.customize_qr_error_correction)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

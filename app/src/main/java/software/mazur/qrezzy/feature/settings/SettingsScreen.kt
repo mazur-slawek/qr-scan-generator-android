@@ -12,7 +12,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyCopyright
-import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListItem
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.components.QrezzySwitch
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
@@ -20,7 +21,6 @@ import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
-import software.mazur.qrezzy.feature.settings.components.SettingsItem
 import software.mazur.qrezzy.feature.settings.components.SettingsListFooterCard
 import software.mazur.qrezzy.feature.settings.components.SettingsListHeaderCard
 
@@ -52,9 +52,9 @@ fun SettingsScreen(
             item { SettingsListHeaderCard(modifier = Modifier.padding(top = SettingsScreenDefaults.topPadding)) }
 
             item {
-                QrezzyFieldWrapper(title = stringResource(R.string.settings_section_general)) {
+                QrezzyListSection(title = stringResource(R.string.settings_section_general)) {
                     Column {
-                        SettingsItem(
+                        QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_language),
                             title = stringResource(R.string.settings_language),
                             value = stringResource(R.string.settings_language_polish),
@@ -62,7 +62,7 @@ fun SettingsScreen(
                             iconBackgroundColor = QrezzyYellowDark,
                             onClick = onLanguageClick
                         )
-                        SettingsItem(
+                        QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_theme),
                             title = stringResource(R.string.settings_theme),
                             value = stringResource(R.string.settings_theme_system),
@@ -75,16 +75,16 @@ fun SettingsScreen(
             }
 
             item {
-                QrezzyFieldWrapper(title = stringResource(R.string.settings_section_scanner)) {
+                QrezzyListSection(title = stringResource(R.string.settings_section_scanner)) {
                     Column {
-                        SettingsItem(
+                        QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_autosave),
                             title = stringResource(R.string.settings_auto_save_scanned_qr),
                             trailing = { QrezzySwitch(checked = true, onCheckedChange = {}) },
                             iconSize = SettingsScreenDefaults.iconSize,
                             iconBackgroundColor = QrezzyMintDark,
                         )
-                        SettingsItem(
+                        QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_vibro),
                             title = stringResource(R.string.settings_vibrate_on_scan),
                             trailing = { QrezzySwitch(checked = true, onCheckedChange = {}) },
@@ -96,9 +96,9 @@ fun SettingsScreen(
             }
 
             item {
-                QrezzyFieldWrapper(title = stringResource(R.string.settings_section_history)) {
+                QrezzyListSection(title = stringResource(R.string.settings_section_history)) {
                     Column {
-                        SettingsItem(
+                        QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_history_limit),
                             title = stringResource(R.string.settings_max_history_items),
                             value = "500",
@@ -106,7 +106,7 @@ fun SettingsScreen(
                             iconSize = SettingsScreenDefaults.iconSize,
                             iconBackgroundColor = QrezzyYellowDark,
                         )
-                        SettingsItem(
+                        QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_delete),
                             title = stringResource(R.string.settings_clear_all_history),
                             titleColor = QrezzyPinkDark,
@@ -120,37 +120,37 @@ fun SettingsScreen(
             }
 
             item {
-                QrezzyFieldWrapper(title = stringResource(R.string.settings_section_support)) {
+                QrezzyListSection(title = stringResource(R.string.settings_section_support)) {
                     Column {
-                        SettingsItem(
+                        QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_privacy),
                             title = stringResource(R.string.settings_privacy),
                             onClick = onPrivacyClick,
                             iconSize = SettingsScreenDefaults.iconSize,
                             iconBackgroundColor = QrezzyMintDark
                         )
-                        SettingsItem(
+                        QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_permission),
                             title = stringResource(R.string.settings_permission),
                             onClick = onPermissionsClick,
                             iconSize = SettingsScreenDefaults.iconSize,
                             iconBackgroundColor = QrezzyPurpleDark
                         )
-                        SettingsItem(
+                        QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_rate),
                             title = stringResource(R.string.settings_rate_app),
                             onClick = onRateAppClick,
                             iconSize = SettingsScreenDefaults.iconSize,
                             iconBackgroundColor = QrezzyYellowDark
                         )
-                        SettingsItem(
+                        QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_contact),
                             title = stringResource(R.string.settings_contact),
                             onClick = onContactClick,
                             iconSize = SettingsScreenDefaults.iconSize,
                             iconBackgroundColor = QrezzyMintDark
                         )
-                        SettingsItem(
+                        QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_open_source_licenses),
                             title = stringResource(R.string.settings_open_source_licenses),
                             onClick = onOpenSourceLicensesClick,

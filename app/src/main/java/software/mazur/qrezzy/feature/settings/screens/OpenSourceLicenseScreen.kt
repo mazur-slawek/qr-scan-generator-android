@@ -25,12 +25,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
-import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListItem
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
-import software.mazur.qrezzy.feature.settings.components.SettingsItem
 
 @Composable
 fun OpenSourceLicenseScreen(onBackClick: () -> Unit) {
@@ -55,9 +55,9 @@ fun OpenSourceLicenseScreen(onBackClick: () -> Unit) {
                     )
                 }
                 item {
-                    QrezzyFieldWrapper(title = stringResource(R.string.open_source_screen_subtitle)) {
+                    QrezzyListSection(title = stringResource(R.string.open_source_screen_subtitle)) {
                         Column {
-                            SettingsItem(
+                            QrezzyListItem(
                                 icon = Icons.Outlined.QrCodeScanner,
                                 iconSize = OpenSourceLicenseScreenDefaults.iconSize,
                                 title = stringResource(R.string.open_source_license_zxing_title),
@@ -70,7 +70,7 @@ fun OpenSourceLicenseScreen(onBackClick: () -> Unit) {
                                 iconTintColor = QrezzyMintDark,
                                 iconBackgroundColor = QrezzyMintDark,
                             )
-                            SettingsItem(
+                            QrezzyListItem(
                                 icon = Icons.Outlined.CenterFocusStrong,
                                 iconSize = OpenSourceLicenseScreenDefaults.iconSize,
                                 title = stringResource(R.string.open_source_license_mlkit_barcode_title),

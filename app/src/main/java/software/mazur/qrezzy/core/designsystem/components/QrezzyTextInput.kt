@@ -65,7 +65,7 @@ fun QrezzyTextInput(
         QrezzyTextInputDefaults.Content.textAreaPadding
     }
     Column(modifier = modifier.fillMaxWidth()) {
-        QrezzyFieldWrapper(title = title, isFocused = isFocused, error = errorText) {
+        QrezzyListSection(title = title, isFocused = isFocused, error = errorText) {
             BasicTextField(
                 value = value,
                 onValueChange = { newValue ->

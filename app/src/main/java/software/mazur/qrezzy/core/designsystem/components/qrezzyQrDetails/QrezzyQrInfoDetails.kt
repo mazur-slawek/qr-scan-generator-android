@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
-import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.extensions.ui
 import software.mazur.qrezzy.core.designsystem.theme.BorderLight
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
@@ -40,7 +40,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun QrezzyQrInfoDetails(qr: Qr, modifier: Modifier = Modifier) {
     val qrTypeUi = qr.type.ui
-    QrezzyFieldWrapper(title = stringResource(R.string.qr_details_section_content)) {
+    QrezzyListSection(title = stringResource(R.string.qr_details_section_content)) {
         Column(
             modifier = modifier
                 .fillMaxWidth()

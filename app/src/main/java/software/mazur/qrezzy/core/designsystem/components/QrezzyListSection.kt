@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -29,7 +28,7 @@ import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 
 @Composable
-fun QrezzyFieldWrapper(
+fun QrezzyListSection(
     modifier: Modifier = Modifier,
     isFocused: Boolean = false,
     title: String? = null,
@@ -37,59 +36,70 @@ fun QrezzyFieldWrapper(
     content: @Composable BoxScope.() -> Unit,
 ) {
     val isError = !error.isNullOrBlank()
-    val backgroundColor = if (isError) QrezzyPink else if (isFocused) QrezzyPurple else QrezzyMint
-    val borderColor = if (isError) QrezzyPinkDark else if (isFocused) QrezzyPurpleDark else BorderPrimary
-
+    val backgroundColor = when {
+        isError   -> QrezzyPink
+        isFocused -> QrezzyPurple
+        else      -> QrezzyMint
+    }
+    val borderColor = when {
+        isError   -> QrezzyPinkDark
+        isFocused -> QrezzyPurpleDark
+        else      -> BorderPrimary
+    }
     Column(modifier = modifier.fillMaxWidth()) {
-        title?.let { value ->
+        title?.let {
             Text(
-                text = value,
+                text = it,
                 color = TextPrimary,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(
-                    start = QrezzyFieldWrapperDefaults.Title.startPadding,
-                    bottom = QrezzyFieldWrapperDefaults.Title.bottomPadding,
-                ),
+                    start = QrezzyListSectionDefaults.Title.startPadding,
+                    bottom = QrezzyListSectionDefaults.Title.bottomPadding
+                )
             )
         }
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .padding(
-                    start = QrezzyFieldWrapperDefaults.Depth.offsetX,
-                    top = QrezzyFieldWrapperDefaults.Depth.offsetY,
-                ),
+                    top = QrezzyListSectionDefaults.Depth.offsetY,
+                    start = QrezzyListSectionDefaults.Depth.offsetX
+                )
         ) {
             Box(
                 modifier = Modifier
                     .matchParentSize()
-                    .background(color = backgroundColor, shape = QrezzyFieldWrapperDefaults.shape)
+                    .background(
+                        color = backgroundColor,
+                        shape = QrezzyListSectionDefaults.shape
+                    )
                     .border(
-                        width = QrezzyFieldWrapperDefaults.borderWidth,
                         color = borderColor,
-                        shape = QrezzyFieldWrapperDefaults.shape,
+                        shape = QrezzyListSectionDefaults.shape,
+                        width = QrezzyListSectionDefaults.borderWidth,
                     )
             )
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .offset(
-                        x = -QrezzyFieldWrapperDefaults.Depth.offsetX,
-                        y = -QrezzyFieldWrapperDefaults.Depth.offsetY
+                        x = -QrezzyListSectionDefaults.Depth.offsetX,
+                        y = -QrezzyListSectionDefaults.Depth.offsetY
                     )
-                    .background(color = Surface, shape = RoundedCornerShape(10.dp))
+                    .background(
+                        color = Surface,
+                        shape = QrezzyListSectionDefaults.shape
+                    )
                     .border(
-                        width = QrezzyFieldWrapperDefaults.borderWidth,
                         color = BorderPrimary,
-                        shape = RoundedCornerShape(10.dp),
+                        shape = QrezzyListSectionDefaults.shape,
+                        width = QrezzyListSectionDefaults.borderWidth
                     )
-                    .clip(RoundedCornerShape(10.dp)),
-                content = content,
+                    .clip(QrezzyListSectionDefaults.shape),
+                content = content
             )
         }
         if (isError) {
@@ -98,16 +108,16 @@ fun QrezzyFieldWrapper(
                 color = Error,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(
-                    start = QrezzyFieldWrapperDefaults.Error.startPadding,
-                    top = QrezzyFieldWrapperDefaults.Error.topPadding,
+                    start = QrezzyListSectionDefaults.Error.startPadding,
+                    top = QrezzyListSectionDefaults.Error.topPadding
                 )
             )
         }
     }
 }
 
-private object QrezzyFieldWrapperDefaults {
-    val shape = ShapeDefaults.Medium
+private object QrezzyListSectionDefaults {
+    val shape = RoundedCornerShape(10.dp)
     val borderWidth = 1.5.dp
 
     object Title {

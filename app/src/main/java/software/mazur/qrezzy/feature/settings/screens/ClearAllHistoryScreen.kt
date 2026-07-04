@@ -17,13 +17,13 @@ import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
-import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListItem
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
-import software.mazur.qrezzy.feature.settings.components.SettingsItem
 
 @Composable
 fun ClearAllHistoryScreen(onBackClick: () -> Unit) {
@@ -50,16 +50,16 @@ fun ClearAllHistoryScreen(onBackClick: () -> Unit) {
                     )
                 }
                 item {
-                    QrezzyFieldWrapper(title = stringResource(R.string.clear_history_screen_subtitle)) {
+                    QrezzyListSection(title = stringResource(R.string.clear_history_screen_subtitle)) {
                         Column {
-                            SettingsItem(
+                            QrezzyListItem(
                                 iconPainter = painterResource(R.drawable.qrezzy_delete),
                                 iconSize = ClearAllHistoryScreenDefaults.iconSize,
                                 title = stringResource(R.string.clear_history_current_items_title),
                                 value = "324",
                                 iconBackgroundColor = QrezzyPinkDark,
                             )
-                            SettingsItem(
+                            QrezzyListItem(
                                 iconPainter = painterResource(R.drawable.qrezzy_calendar),
                                 iconSize = ClearAllHistoryScreenDefaults.iconSize,
                                 title = stringResource(R.string.clear_history_oldest_item_title),

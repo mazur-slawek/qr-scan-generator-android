@@ -13,16 +13,15 @@ import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
-import software.mazur.qrezzy.feature.settings.components.SettingsItem
 
 @Composable
 fun QrezzyRateApp(title: String) {
     val context = LocalContext.current
     val shareText = stringResource(R.string.rate_app_share_text)
     val feedbackSubject = stringResource(R.string.rate_app_feedback_subject)
-    QrezzyFieldWrapper(title = title) {
+    QrezzyListSection(title = title) {
         Column {
-            SettingsItem(
+            QrezzyListItem(
                 iconPainter = painterResource(R.drawable.qrezzy_rate),
                 title = stringResource(R.string.rate_app_title),
                 subtitle = stringResource(R.string.rate_app_subtitle),
@@ -30,7 +29,7 @@ fun QrezzyRateApp(title: String) {
                 iconSize = QrezzyRateAppDefaults.IconSize,
                 onClick = { launchPlayStore(context) }
             )
-            SettingsItem(
+            QrezzyListItem(
                 iconPainter = painterResource(R.drawable.qrezzy_share),
                 title = stringResource(R.string.rate_app_share_title),
                 subtitle = stringResource(R.string.rate_app_share_subtitle),
@@ -38,7 +37,7 @@ fun QrezzyRateApp(title: String) {
                 iconSize = QrezzyRateAppDefaults.IconSize,
                 onClick = { shareApplication(context = context, text = shareText) }
             )
-            SettingsItem(
+            QrezzyListItem(
                 iconPainter = painterResource(R.drawable.qrezzy_email),
                 title = stringResource(R.string.rate_app_feedback_title),
                 subtitle = stringResource(R.string.rate_app_feedback_subtitle),

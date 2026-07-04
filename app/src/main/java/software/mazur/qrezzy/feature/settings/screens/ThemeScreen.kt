@@ -15,12 +15,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
-import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListItem
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.components.QrezzyRadioButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
 import software.mazur.qrezzy.core.designsystem.theme.TextDisabled
-import software.mazur.qrezzy.feature.settings.components.SettingsItem
 
 @Composable
 fun ThemeScreen(onBackClick: () -> Unit) {
@@ -42,23 +42,23 @@ fun ThemeScreen(onBackClick: () -> Unit) {
                     )
                 }
                 item {
-                    QrezzyFieldWrapper(title = stringResource(R.string.theme_screen_subtitle)) {
+                    QrezzyListSection(title = stringResource(R.string.theme_screen_subtitle)) {
                         Column {
-                            SettingsItem(
+                            QrezzyListItem(
                                 iconPainter = painterResource(R.drawable.theme_mode_light),
                                 iconSize = ThemeScreenDefaults.iconSize,
                                 title = stringResource(R.string.theme_mode_light),
                                 trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
                                 iconBackgroundColor = TextDisabled.copy(alpha = 0.5f),
                             )
-                            SettingsItem(
+                            QrezzyListItem(
                                 iconPainter = painterResource(R.drawable.theme_mode_dark),
                                 iconSize = ThemeScreenDefaults.iconSize,
                                 title = stringResource(R.string.theme_mode_dark),
                                 trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
                                 iconBackgroundColor = TextDisabled.copy(alpha = 0.5f),
                             )
-                            SettingsItem(
+                            QrezzyListItem(
                                 iconPainter = painterResource(R.drawable.theme_mode_system),
                                 iconSize = ThemeScreenDefaults.iconSize,
                                 title = stringResource(R.string.theme_mode_system),

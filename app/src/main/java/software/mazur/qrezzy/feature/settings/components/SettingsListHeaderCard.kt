@@ -16,11 +16,11 @@ import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAppVersion
-import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 
 @Composable
 fun SettingsListHeaderCard(modifier: Modifier = Modifier) {
-    QrezzyFieldWrapper(modifier = modifier.wrapContentSize()) {
+    QrezzyListSection(modifier = modifier.wrapContentSize()) {
         QrezzyAnimatedStars(
             starsCount = SettingsListHeaderDefaults.STARTS_COUNT,
             modifier = Modifier.height(SettingsListHeaderDefaults.headerHeight),

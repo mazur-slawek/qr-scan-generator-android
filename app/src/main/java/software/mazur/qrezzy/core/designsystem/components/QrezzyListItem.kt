@@ -1,4 +1,4 @@
-package software.mazur.qrezzy.feature.settings.components
+package software.mazur.qrezzy.core.designsystem.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -34,14 +34,14 @@ import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 
 @Composable
-fun SettingsItem(
+fun QrezzyListItem(
     title: String,
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
     iconPainter: Painter? = null,
     subtitle: String? = null,
     value: String? = null,
-    iconSize: Dp = SettingsItemDefaults.Icon.size,
+    iconSize: Dp = QrezzyListItemDefaults.Icon.size,
     titleColor: Color = TextPrimary,
     iconTintColor: Color? = null,
     iconBackgroundColor: Color = QrezzyMintDark,
@@ -55,68 +55,66 @@ fun SettingsItem(
             modifier = modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
+                .then(
+                    if (onClick != null) Modifier.clickable(onClick = onClick)
+                    else Modifier
+                )
                 .padding(
-                    vertical = SettingsItemDefaults.Container.verticalPadding,
-                    horizontal = SettingsItemDefaults.Container.horizontalPadding,
+                    vertical = QrezzyListItemDefaults.Container.verticalPadding,
+                    horizontal = QrezzyListItemDefaults.Container.horizontalPadding,
                 ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            SettingsItemIcon(
+            QrezzyListItemIcon(
                 icon = icon,
                 iconPainter = iconPainter,
                 size = iconSize,
                 tintColor = iconTintColor,
                 backgroundColor = iconBackgroundColor,
             )
-            if (hasIcon) Spacer(modifier = Modifier.width(SettingsItemDefaults.Text.startPadding))
-            SettingsItemText(
+            if (hasIcon) Spacer(modifier = Modifier.width(QrezzyListItemDefaults.Text.startPadding))
+            QrezzyListItemText(
                 title = title,
                 subtitle = subtitle,
                 titleColor = titleColor,
-                modifier = Modifier.weight(SettingsItemDefaults.Text.WEIGHT)
+                modifier = Modifier.weight(QrezzyListItemDefaults.Text.WEIGHT),
             )
-
-            value?.let { SettingsItemValue(value = it) }
-
-            trailing?.invoke()
-
-            if (onClick != null) {
-                SettingsItemArrow()
+            value?.let {
+                QrezzyListItemValue(value = it)
             }
+            trailing?.invoke()
+            if (onClick != null) QrezzyListItemArrow()
         }
-
         if (showDivider) {
-            SettingsItemDivider(
+            QrezzyListItemDivider(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(
-                        start = if (hasIcon) iconSize + SettingsItemDefaults.Divider.startPadding else 0.dp)
+                    .padding(start = if (hasIcon) iconSize + QrezzyListItemDefaults.Divider.startPadding else 0.dp)
             )
         }
     }
 }
 
 @Composable
-private fun SettingsItemIcon(
+private fun QrezzyListItemIcon(
     icon: ImageVector?,
     iconPainter: Painter?,
     size: Dp,
     backgroundColor: Color,
-    tintColor: Color? = null
+    tintColor: Color? = null,
 ) {
     val iconModifier = Modifier
         .size(size)
         .background(
-            color = backgroundColor.copy(alpha = SettingsItemDefaults.Icon.BACKGROUND_ALPHA),
+            color = backgroundColor.copy(alpha = QrezzyListItemDefaults.Icon.BACKGROUND_ALPHA),
             shape = ShapeDefaults.Small,
         )
         .border(
-            width = SettingsItemDefaults.Icon.borderWidth,
+            width = QrezzyListItemDefaults.Icon.borderWidth,
             color = backgroundColor,
             shape = ShapeDefaults.Small,
         )
-        .padding(SettingsItemDefaults.Icon.padding)
+        .padding(QrezzyListItemDefaults.Icon.padding)
 
     when {
         icon != null        -> {
@@ -140,12 +138,7 @@ private fun SettingsItemIcon(
 }
 
 @Composable
-private fun SettingsItemText(
-    title: String,
-    subtitle: String?,
-    titleColor: Color,
-    modifier: Modifier = Modifier,
-) {
+private fun QrezzyListItemText(title: String, subtitle: String?, titleColor: Color, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Text(
             text = title,
@@ -153,7 +146,6 @@ private fun SettingsItemText(
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.SemiBold,
         )
-
         subtitle?.let { text ->
             Text(
                 text = text,
@@ -166,37 +158,37 @@ private fun SettingsItemText(
 }
 
 @Composable
-private fun SettingsItemValue(value: String) {
+private fun QrezzyListItemValue(value: String) {
     Text(
         text = value,
         color = TextSecondary,
         style = MaterialTheme.typography.bodySmall,
         fontWeight = FontWeight.Medium,
-        modifier = Modifier.padding(end = SettingsItemDefaults.Value.endPadding),
+        modifier = Modifier.padding(end = QrezzyListItemDefaults.Value.endPadding),
     )
 }
 
 @Composable
-private fun SettingsItemArrow() {
+private fun QrezzyListItemArrow() {
     Icon(
         imageVector = Icons.Outlined.KeyboardArrowRight,
         contentDescription = null,
         tint = TextSecondary,
-        modifier = Modifier.size(SettingsItemDefaults.Arrow.size),
+        modifier = Modifier.size(QrezzyListItemDefaults.Arrow.size),
     )
 }
 
 @Composable
-private fun SettingsItemDivider(modifier: Modifier = Modifier) {
+private fun QrezzyListItemDivider(modifier: Modifier = Modifier) {
     HorizontalDivider(
         modifier = modifier,
-        thickness = SettingsItemDefaults.Divider.thickness,
-        color = TextSecondary.copy(alpha = SettingsItemDefaults.Divider.ALPHA),
+        thickness = QrezzyListItemDefaults.Divider.thickness,
+        color = TextSecondary.copy(alpha = QrezzyListItemDefaults.Divider.ALPHA),
     )
 }
 
 @Immutable
-private object SettingsItemDefaults {
+private object QrezzyListItemDefaults {
     object Container {
         val verticalPadding = 12.dp
         val horizontalPadding = 16.dp

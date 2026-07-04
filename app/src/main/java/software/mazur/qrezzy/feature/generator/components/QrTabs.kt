@@ -32,7 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import software.mazur.qrezzy.R
-import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.extensions.ui
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
@@ -54,7 +54,7 @@ fun QrTypeTabs(qrInputs: List<QrInput>, selectedQrInput: QrInput, onQrInputSelec
         }
     }
 
-    QrezzyFieldWrapper(title = stringResource(R.string.generator_select_qr_type)) {
+    QrezzyListSection(title = stringResource(R.string.generator_select_qr_type)) {
         Row(
             modifier = Modifier
                 .fillMaxSize()

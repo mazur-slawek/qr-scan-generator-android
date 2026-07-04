@@ -15,12 +15,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
-import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListItem
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.components.QrezzyRadioButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
 import software.mazur.qrezzy.core.designsystem.theme.TextDisabled
-import software.mazur.qrezzy.feature.settings.components.SettingsItem
 
 @Composable
 fun LanguageScreen(onBackClick: () -> Unit) {
@@ -42,37 +42,37 @@ fun LanguageScreen(onBackClick: () -> Unit) {
                     )
                 }
                 item {
-                    QrezzyFieldWrapper(title = stringResource(R.string.language_screen_subtitle)) {
+                    QrezzyListSection(title = stringResource(R.string.language_screen_subtitle)) {
                         Column {
-                            SettingsItem(
+                            QrezzyListItem(
                                 iconPainter = painterResource(R.drawable.language_english),
                                 iconSize = LanguageScreenDefaults.iconSize,
                                 title = stringResource(R.string.language_english),
                                 trailing = { QrezzyRadioButton(selected = true, onClick = {}) },
                                 iconBackgroundColor = QrezzyMintDark
                             )
-                            SettingsItem(
+                            QrezzyListItem(
                                 iconPainter = painterResource(R.drawable.language_polish),
                                 iconSize = LanguageScreenDefaults.iconSize,
                                 title = stringResource(R.string.language_polish),
                                 trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
                                 iconBackgroundColor = TextDisabled.copy(alpha = 0.5f)
                             )
-                            SettingsItem(
+                            QrezzyListItem(
                                 iconPainter = painterResource(R.drawable.language_german),
                                 iconSize = LanguageScreenDefaults.iconSize,
                                 title = stringResource(R.string.language_german),
                                 trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
                                 iconBackgroundColor = TextDisabled.copy(alpha = 0.5f)
                             )
-                            SettingsItem(
+                            QrezzyListItem(
                                 iconPainter = painterResource(R.drawable.language_ukrainian),
                                 iconSize = LanguageScreenDefaults.iconSize,
                                 title = stringResource(R.string.language_ukrainian),
                                 trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
                                 iconBackgroundColor = TextDisabled.copy(alpha = 0.5f)
                             )
-                            SettingsItem(
+                            QrezzyListItem(
                                 iconPainter = painterResource(R.drawable.language_italian),
                                 iconSize = LanguageScreenDefaults.iconSize,
                                 title = stringResource(R.string.language_italian),

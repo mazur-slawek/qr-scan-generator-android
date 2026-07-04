@@ -19,10 +19,10 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
-import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListItem
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.components.QrezzyRateApp
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
-import software.mazur.qrezzy.feature.settings.components.SettingsItem
 
 @Composable
 fun DonateScreen(onBackClick: () -> Unit) {
@@ -45,9 +45,9 @@ fun DonateScreen(onBackClick: () -> Unit) {
                     )
                 }
                 item {
-                    QrezzyFieldWrapper(title = stringResource(R.string.donate_support_section_title)) {
+                    QrezzyListSection(title = stringResource(R.string.donate_support_section_title)) {
                         Column {
-                            SettingsItem(
+                            QrezzyListItem(
                                 iconPainter = painterResource(R.drawable.qrezzy_coffee),
                                 title = stringResource(R.string.donate_buy_coffee_title),
                                 subtitle = stringResource(R.string.donate_buy_coffee_subtitle),

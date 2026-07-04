@@ -20,10 +20,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
-import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListItem
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
-import software.mazur.qrezzy.feature.settings.components.SettingsItem
 
 @Composable
 fun PermissionsScreen(onBackClick: () -> Unit) {
@@ -46,9 +46,9 @@ fun PermissionsScreen(onBackClick: () -> Unit) {
                     )
                 }
                 item {
-                    QrezzyFieldWrapper(title = stringResource(R.string.permissions_screen_subtitle)) {
+                    QrezzyListSection(title = stringResource(R.string.permissions_screen_subtitle)) {
                         Column {
-                            SettingsItem(
+                            QrezzyListItem(
                                 iconPainter = painterResource(R.drawable.qrezzy_camera),
                                 iconSize = PermissionsScreenDefaults.iconSize,
                                 title = stringResource(R.string.permissions_camera_title),

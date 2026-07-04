@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
-import software.mazur.qrezzy.core.designsystem.components.QrezzyFieldWrapper
+import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.theme.BorderLight
 import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
@@ -45,7 +45,7 @@ fun QrezzyQrInfoContent(qr: Qr, modifier: Modifier = Modifier) {
     val uriHandler = LocalUriHandler.current
     val rows = remember(qr) { qr.toInfoRows() }
 
-    QrezzyFieldWrapper(title = stringResource(R.string.qr_details_section_details)) {
+    QrezzyListSection(title = stringResource(R.string.qr_details_section_details)) {
         Column(
             modifier = modifier
                 .fillMaxWidth()
