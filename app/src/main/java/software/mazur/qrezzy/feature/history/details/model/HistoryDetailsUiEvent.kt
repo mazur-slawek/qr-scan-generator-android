@@ -12,6 +12,8 @@ sealed interface HistoryDetailsUiEvent {
         val fileName: String,
         val bitmap: Bitmap,
     ) : HistoryDetailsUiEvent
-
+    
+    data object QrStyleSaved : HistoryDetailsUiEvent
+    data object QrStyleSaveFailed : HistoryDetailsUiEvent
     object OnBack : HistoryDetailsUiEvent
 }

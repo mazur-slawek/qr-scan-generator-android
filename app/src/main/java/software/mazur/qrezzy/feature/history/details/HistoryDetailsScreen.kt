@@ -40,6 +40,8 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
     val uiState by viewModel.uiState.collectAsState()
     val saveSuccessMessage = stringResource(R.string.history_details_save_success)
     val saveErrorMessage = stringResource(R.string.history_details_save_error)
+    val qrStyleSavedMessage = stringResource(R.string.history_details_qr_style_saved)
+    val qrStyleSaveFailedMessage = stringResource(R.string.history_details_qr_style_save_failed)
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -50,15 +52,19 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
 
                 is HistoryDetailsUiEvent.DownloadQrCode -> {
                     val isSaved = qrSharingService.saveBitmap(bitmap = event.bitmap, fileName = event.fileName)
-
-                    Toast.makeText(
-                        context,
-                        if (isSaved) saveSuccessMessage else saveErrorMessage,
-                        Toast.LENGTH_SHORT,
-                    ).show()
+                    val text = if (isSaved) saveSuccessMessage else saveErrorMessage
+                    Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
                 }
 
-                is HistoryDetailsUiEvent.OnBack         -> {
+                HistoryDetailsUiEvent.QrStyleSaved      -> {
+                    Toast.makeText(context, qrStyleSavedMessage, Toast.LENGTH_SHORT).show()
+                }
+
+                HistoryDetailsUiEvent.QrStyleSaveFailed -> {
+                    Toast.makeText(context, qrStyleSaveFailedMessage, Toast.LENGTH_SHORT).show()
+                }
+
+                HistoryDetailsUiEvent.OnBack            -> {
                     onBackClick()
                 }
             }

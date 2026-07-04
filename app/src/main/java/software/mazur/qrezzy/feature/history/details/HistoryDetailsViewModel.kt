@@ -157,19 +157,37 @@ class HistoryDetailsViewModel @Inject constructor(
     }
 
     fun onSaveQrStyleClick() {
-        val currentQr = _uiState.value.qr ?: return
-        val newStyle = _uiState.value.qrStyleEditor.draftStyle
+        val currentState = _uiState.value
+        val currentQr = currentState.qr ?: return
+        val previousBitmap = currentState.qrBitmap
+        val previousEditor = currentState.qrStyleEditor
+        val newStyle = currentState.qrStyleEditor.draftStyle
         val updatedQr = currentQr.copy(style = newStyle)
-        _uiState.update { state ->
-            state.copy(
+        val previewBitmap = currentState.editPreviewBitmap ?: currentState.qrBitmap
+        _uiState.update {
+            it.copy(
                 qr = updatedQr,
-                qrBitmap = state.editPreviewBitmap ?: state.qrBitmap,
+                qrBitmap = previewBitmap,
                 editPreviewBitmap = null,
-                qrStyleEditor = state.qrStyleEditor.applyDraft()
+                qrStyleEditor = it.qrStyleEditor.applyDraft()
             )
         }
         viewModelScope.launch {
-            updateQrStyleUseCase(id = currentQr.id, style = newStyle)
+            runCatching {
+                updateQrStyleUseCase(id = currentQr.id, style = newStyle)
+            }.onSuccess {
+                _events.emit(HistoryDetailsUiEvent.QrStyleSaved)
+            }.onFailure {
+                _uiState.update {
+                    it.copy(
+                        qr = currentQr,
+                        qrBitmap = previousBitmap,
+                        editPreviewBitmap = null,
+                        qrStyleEditor = previousEditor.dismiss()
+                    )
+                }
+                _events.emit(HistoryDetailsUiEvent.QrStyleSaveFailed)
+            }
         }
     }
 
