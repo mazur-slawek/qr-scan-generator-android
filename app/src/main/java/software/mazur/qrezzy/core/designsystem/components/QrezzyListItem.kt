@@ -79,6 +79,7 @@ fun QrezzyListItem(
                 titleColor = titleColor,
                 modifier = Modifier.weight(QrezzyListItemDefaults.Text.WEIGHT),
             )
+            Spacer(modifier = Modifier.width(QrezzyListItemDefaults.Text.startPadding))
             value?.let {
                 QrezzyListItemValue(value = it)
             }

@@ -7,11 +7,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.History
-import androidx.compose.material.icons.rounded.QrCode
-import androidx.compose.material.icons.rounded.QrCodeScanner
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -20,26 +15,15 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import software.mazur.qrezzy.R
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellow
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.core.designsystem.theme.TextDisabled
 import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
@@ -51,21 +35,23 @@ import software.mazur.qrezzy.feature.scanner.ScannerScreen
 import software.mazur.qrezzy.feature.settings.navigation.SettingsNavHost
 
 @Composable
-fun HomeScreen() {
-    var selectedTab by remember { mutableStateOf(HomeTab.SCAN) }
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+    val selectedTab by viewModel.selectedTab.collectAsState()
+
     Scaffold(
         bottomBar = {
-            QrezzyBottomNavigationBar(selectedTab = selectedTab, onTabSelected = { tab -> selectedTab = tab })
-        },
+            QrezzyBottomNavigationBar(selectedTab = selectedTab, onTabSelected = viewModel::onTabSelected)
+        }
     ) { innerPadding ->
         QrezzyHomeScreenContent(
             selectedTab = selectedTab,
-            onTabSelected = { tab -> selectedTab = tab },
+            onTabSelected = viewModel::onTabSelected,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
+                .padding(innerPadding)
         )
     }
+
 }
 
 @Composable
@@ -129,37 +115,6 @@ private fun QrezzyHomeScreenContent(modifier: Modifier, selectedTab: HomeTab, on
     }
 }
 
-private enum class HomeTab(
-    val titleResId: Int,
-    val icon: ImageVector,
-    val indicatorColor: Color,
-    val selectedIconColor: Color,
-) {
-    SCAN(
-        titleResId = R.string.navigation_tab_scan,
-        icon = Icons.Rounded.QrCodeScanner,
-        indicatorColor = QrezzyMint,
-        selectedIconColor = QrezzyPinkDark,
-    ),
-    GENERATE(
-        titleResId = R.string.navigation_tab_generate,
-        icon = Icons.Rounded.QrCode,
-        indicatorColor = QrezzyYellow,
-        selectedIconColor = QrezzyPurpleDark,
-    ),
-    HISTORY(
-        titleResId = R.string.navigation_tab_history,
-        icon = Icons.Rounded.History,
-        indicatorColor = QrezzyPink,
-        selectedIconColor = QrezzyMintDark,
-    ),
-    SETTINGS(
-        titleResId = R.string.navigation_tab_settings,
-        icon = Icons.Rounded.Settings,
-        indicatorColor = QrezzyPurple,
-        selectedIconColor = QrezzyYellow,
-    ),
-}
 
 private object HomeScreenDefaults {
     object NavigationBar {

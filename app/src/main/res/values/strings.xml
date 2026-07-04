@@ -267,15 +267,15 @@
     <string name="open_source_screen_title">Open Source Licenses</string>
     <string name="open_source_screen_subtitle">Libraries and licenses used by QREZZY</string>
     <!-- Open source licenses -->
-    <string name="open_source_license_apache_2">Apache License 2.0</string>
-    <string name="open_source_license_zxing_title">ZXing</string>
-    <string name="open_source_license_zxing_version">4.3.0</string>
-    <string name="open_source_license_mlkit_barcode_title">ML Kit Barcode Scanning</string>
-    <string name="open_source_license_mlkit_barcode_version">17.3.0</string>
     <!-- Donate -->
     <string name="donate_screen_title">Support QREZZY</string>
     <string name="donate_support_section_title">Help support future development</string>
     <string name="donate_buy_coffee_title">Buy me a coffee</string>
     <string name="donate_buy_coffee_subtitle">Your support helps keep the app free and brings new features!</string>
     <string name="donate_other_support_title">Other ways to support</string>
+    <string name="open_source_license_apache_2" translatable="false">Apache License 2.0</string>
+    <string name="open_source_license_zxing_title" translatable="false">ZXing</string>
+    <string name="open_source_license_zxing_version" translatable="false">4.3.0</string>
+    <string name="open_source_license_mlkit_barcode_title" translatable="false">ML Kit Barcode Scanning</string>
+    <string name="open_source_license_mlkit_barcode_version" translatable="false">17.3.0</string>
 </resources>

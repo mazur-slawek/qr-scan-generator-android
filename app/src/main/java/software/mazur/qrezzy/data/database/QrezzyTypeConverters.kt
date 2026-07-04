@@ -38,7 +38,16 @@ class QrezzyTypeConverters {
     fun fromAppLanguage(value: AppLanguage): String = value.name
 
     @TypeConverter
-    fun toAppLanguage(value: String): AppLanguage = AppLanguage.valueOf(value)
+    fun toAppLanguage(value: String): AppLanguage =
+        when (value) {
+            "POLISH"    -> AppLanguage.POLISH
+            "GERMAN"    -> AppLanguage.GERMAN
+            "UKRAINIAN" -> AppLanguage.UKRAINIAN
+            "ITALIAN"   -> AppLanguage.ITALIAN
+            "ENGLISH"   -> AppLanguage.ENGLISH
+            "SYSTEM"    -> AppLanguage.ENGLISH
+            else        -> AppLanguage.ENGLISH
+        }
 
     @TypeConverter
     fun fromAppTheme(value: AppTheme): String = value.name

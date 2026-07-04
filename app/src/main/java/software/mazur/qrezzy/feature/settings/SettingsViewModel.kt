@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import software.mazur.qrezzy.core.localization.QrezzyLocaleManager
 import software.mazur.qrezzy.domain.settings.model.AppLanguage
 import software.mazur.qrezzy.domain.settings.model.AppTheme
 import software.mazur.qrezzy.domain.settings.model.HistoryLimit
@@ -27,26 +28,29 @@ class SettingsViewModel @Inject constructor(
     private val setAutoSaveScansUseCase: SetAutoSaveScansUseCase,
     private val setVibrationEnabledUseCase: SetVibrationEnabledUseCase,
     private val setHistoryLimitUseCase: SetHistoryLimitUseCase,
+    private val localeManager: QrezzyLocaleManager
 ) : ViewModel() {
-    val uiState = observeAppSettingsUseCase()
-        .map { settings ->
-            SettingsUiState(
-                language = settings.language,
-                theme = settings.theme,
-                autoSaveScans = settings.autoSaveScans,
-                vibrationEnabled = settings.vibrationEnabled,
-                historyLimit = settings.historyLimit,
+    val uiState =
+        observeAppSettingsUseCase()
+            .map { settings ->
+                SettingsUiState(
+                    theme = settings.theme,
+                    language = settings.language,
+                    historyLimit = settings.historyLimit,
+                    autoSaveScans = settings.autoSaveScans,
+                    vibrationEnabled = settings.vibrationEnabled,
+                )
+            }
+            .stateIn(
+                scope = viewModelScope,
+                initialValue = SettingsUiState(),
+                started = SharingStarted.WhileSubscribed(5_000),
             )
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = SettingsUiState(),
-        )
 
     fun onLanguageSelected(language: AppLanguage) {
         viewModelScope.launch {
             setAppLanguageUseCase(language)
+            localeManager.applyLanguage(language)
         }
     }
 
