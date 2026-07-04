@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -20,7 +21,6 @@ import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.components.QrezzyRadioButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
-import software.mazur.qrezzy.core.designsystem.theme.TextDisabled
 import software.mazur.qrezzy.domain.settings.model.AppLanguage
 
 @Composable
@@ -58,7 +58,7 @@ fun LanguageScreen(selectedLanguage: AppLanguage, onLanguageSelected: (AppLangua
                                 iconBackgroundColor = if (selectedLanguage == AppLanguage.ENGLISH) {
                                     QrezzyMintDark
                                 } else {
-                                    TextDisabled.copy(alpha = 0.5f)
+                                    MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.5f)
                                 }
                             )
                             QrezzyListItem(
@@ -74,7 +74,7 @@ fun LanguageScreen(selectedLanguage: AppLanguage, onLanguageSelected: (AppLangua
                                 iconBackgroundColor = if (selectedLanguage == AppLanguage.POLISH) {
                                     QrezzyMintDark
                                 } else {
-                                    TextDisabled.copy(alpha = 0.5f)
+                                    MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.5f)
                                 }
                             )
                             QrezzyListItem(
@@ -90,7 +90,7 @@ fun LanguageScreen(selectedLanguage: AppLanguage, onLanguageSelected: (AppLangua
                                 iconBackgroundColor = if (selectedLanguage == AppLanguage.GERMAN) {
                                     QrezzyMintDark
                                 } else {
-                                    TextDisabled.copy(alpha = 0.5f)
+                                    MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.5f)
                                 }
                             )
                             QrezzyListItem(
@@ -106,7 +106,7 @@ fun LanguageScreen(selectedLanguage: AppLanguage, onLanguageSelected: (AppLangua
                                 iconBackgroundColor = if (selectedLanguage == AppLanguage.UKRAINIAN) {
                                     QrezzyMintDark
                                 } else {
-                                    TextDisabled.copy(alpha = 0.5f)
+                                    MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.5f)
                                 }
                             )
                             QrezzyListItem(
@@ -122,7 +122,7 @@ fun LanguageScreen(selectedLanguage: AppLanguage, onLanguageSelected: (AppLangua
                                 iconBackgroundColor = if (selectedLanguage == AppLanguage.ITALIAN) {
                                     QrezzyMintDark
                                 } else {
-                                    TextDisabled.copy(alpha = 0.5f)
+                                    MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.5f)
                                 }
                             )
                         }

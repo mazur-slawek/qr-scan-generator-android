@@ -38,9 +38,6 @@ import software.mazur.qrezzy.core.designsystem.extensions.label
 import software.mazur.qrezzy.core.designsystem.extensions.ui
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
-import software.mazur.qrezzy.core.designsystem.theme.Surface
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
-import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 import software.mazur.qrezzy.domain.qr.model.Qr
 import software.mazur.qrezzy.domain.qr.model.QrSource
 import java.text.SimpleDateFormat
@@ -59,7 +56,8 @@ fun HistoryListItem(
         onClick = onClick,
         contentPadding = PaddingValues.Zero,
         shape = RoundedCornerShape(0.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Surface, contentColor = qr.type.ui.containerColor),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = qr.type.ui.containerColor),
     ) {
         Row(
             modifier = Modifier
@@ -70,7 +68,7 @@ fun HistoryListItem(
             Icon(
                 imageVector = qr.type.ui.icon,
                 contentDescription = stringResource(qr.type.ui.labelResId),
-                tint = TextPrimary,
+                tint = MaterialTheme.colorScheme.inverseOnSurface,
                 modifier = Modifier
                     .border(
                         width = HistoryListItemDefaults.Icon.borderWidth,
@@ -87,7 +85,7 @@ fun HistoryListItem(
             Column(modifier = Modifier.weight(HistoryListItemDefaults.TEXT_WEIGHT)) {
                 Text(
                     text = qr.label,
-                    color = TextPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.ExtraBold,
                     overflow = TextOverflow.Ellipsis,
@@ -98,7 +96,7 @@ fun HistoryListItem(
 
                 Text(
                     text = qr.subtitle(),
-                    color = TextSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Medium,
                     maxLines = HistoryListItemDefaults.SUBTITLE_MAX_LINES,
@@ -128,7 +126,7 @@ private fun HistoryTrailingIcon(
     if (isDeleteModeEnabled) {
         Icon(
             imageVector = if (isSelected) Icons.Outlined.CheckCircle else Icons.Outlined.Circle,
-            tint = if (isSelected) QrezzyPinkDark else TextSecondary,
+            tint = if (isSelected) QrezzyPinkDark else MaterialTheme.colorScheme.onSurfaceVariant,
             contentDescription = null
         )
     } else {
@@ -140,14 +138,14 @@ private fun HistoryTrailingIcon(
         ) {
             Icon(
                 imageVector = if (isFavorite) Icons.Default.Star else Icons.Default.StarBorder,
-                tint = if (isFavorite) QrezzyYellowDark else TextSecondary,
+                tint = if (isFavorite) QrezzyYellowDark else MaterialTheme.colorScheme.onSurfaceVariant,
                 contentDescription = null
             )
         }
         Icon(
             imageVector = Icons.Default.KeyboardArrowRight,
             contentDescription = null,
-            tint = TextSecondary,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

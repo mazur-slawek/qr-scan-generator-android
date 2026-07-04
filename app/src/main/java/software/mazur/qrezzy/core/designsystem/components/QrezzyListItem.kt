@@ -30,8 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
-import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
+
 
 @Composable
 fun QrezzyListItem(
@@ -42,7 +41,7 @@ fun QrezzyListItem(
     subtitle: String? = null,
     value: String? = null,
     iconSize: Dp = QrezzyListItemDefaults.Icon.size,
-    titleColor: Color = TextPrimary,
+    titleColor: Color = MaterialTheme.colorScheme.onSurface,
     iconTintColor: Color? = null,
     iconBackgroundColor: Color = QrezzyMintDark,
     trailing: @Composable (() -> Unit)? = null,
@@ -87,11 +86,7 @@ fun QrezzyListItem(
             if (onClick != null) QrezzyListItemArrow()
         }
         if (showDivider) {
-            QrezzyListItemDivider(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(start = if (hasIcon) iconSize + QrezzyListItemDefaults.Divider.startPadding else 0.dp)
-            )
+            QrezzyListItemDivider(modifier = Modifier.align(Alignment.BottomEnd))
         }
     }
 }
@@ -150,7 +145,7 @@ private fun QrezzyListItemText(title: String, subtitle: String?, titleColor: Col
         subtitle?.let { text ->
             Text(
                 text = text,
-                color = TextSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Medium,
             )
@@ -162,7 +157,7 @@ private fun QrezzyListItemText(title: String, subtitle: String?, titleColor: Col
 private fun QrezzyListItemValue(value: String) {
     Text(
         text = value,
-        color = TextSecondary,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
         style = MaterialTheme.typography.bodySmall,
         fontWeight = FontWeight.Medium,
         modifier = Modifier.padding(end = QrezzyListItemDefaults.Value.endPadding),
@@ -174,7 +169,7 @@ private fun QrezzyListItemArrow() {
     Icon(
         imageVector = Icons.Outlined.KeyboardArrowRight,
         contentDescription = null,
-        tint = TextSecondary,
+        tint = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = Modifier.size(QrezzyListItemDefaults.Arrow.size),
     )
 }
@@ -184,7 +179,7 @@ private fun QrezzyListItemDivider(modifier: Modifier = Modifier) {
     HorizontalDivider(
         modifier = modifier,
         thickness = QrezzyListItemDefaults.Divider.thickness,
-        color = TextSecondary.copy(alpha = QrezzyListItemDefaults.Divider.ALPHA),
+        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = QrezzyListItemDefaults.Divider.ALPHA),
     )
 }
 
@@ -216,7 +211,6 @@ private object QrezzyListItemDefaults {
     }
 
     object Divider {
-        val startPadding = 25.dp
         val thickness = 1.dp
         const val ALPHA = 0.12f
     }

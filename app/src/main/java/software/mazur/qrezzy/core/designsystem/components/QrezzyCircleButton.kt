@@ -7,13 +7,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 
 @Composable
 fun QrezzyCircleButton(
@@ -22,14 +21,15 @@ fun QrezzyCircleButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    iconTint: Color = TextPrimary,
+    iconTint: Color = MaterialTheme.colorScheme.onSurface,
 ) {
     Button(
         onClick = onClick,
         enabled = enabled,
         modifier = modifier.size(QrezzyCircleButtonDefaults.Container.size),
         shape = CircleShape,
-        border = BorderStroke(width = QrezzyCircleButtonDefaults.Border.width, color = BorderPrimary),
+        border = BorderStroke(width = QrezzyCircleButtonDefaults.Border.width,
+            color = MaterialTheme.colorScheme.surfaceDim),
         contentPadding = PaddingValues.Zero,
         colors =
             ButtonDefaults.buttonColors(

@@ -19,8 +19,7 @@ import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTabItem
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
-import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
+
 
 enum class HistoryEmptyAction {
     Scan,
@@ -46,7 +45,7 @@ fun HistoryListEmpty(selectedTab: QrezzyTabItem, onEmptyActionClick: (HistoryEmp
         Spacer(modifier = Modifier.height(HistoryListEmptyDefaults.imageTitleSpacing))
 
         Text(
-            color = TextPrimary,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.ExtraBold,
             text = stringResource(R.string.history_empty_title),
@@ -55,7 +54,7 @@ fun HistoryListEmpty(selectedTab: QrezzyTabItem, onEmptyActionClick: (HistoryEmp
         Spacer(modifier = Modifier.height(HistoryListEmptyDefaults.titleSubtitleSpacing))
 
         Text(
-            color = TextSecondary,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,

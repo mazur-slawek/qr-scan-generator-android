@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
@@ -13,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
-import software.mazur.qrezzy.core.designsystem.theme.TextDisabled
+
 
 @Composable
 fun QrezzyRadioButton(selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
@@ -27,7 +28,8 @@ fun QrezzyRadioButton(selected: Boolean, onClick: () -> Unit, modifier: Modifier
             RadioButton(
                 selected = selected,
                 onClick = onClick,
-                colors = RadioButtonDefaults.colors(selectedColor = QrezzyMintDark, unselectedColor = TextDisabled),
+                colors = RadioButtonDefaults.colors(selectedColor = QrezzyMintDark,
+                    unselectedColor = MaterialTheme.colorScheme.surfaceTint),
             )
         }
     }

@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import software.mazur.qrezzy.R
+import software.mazur.qrezzy.core.designsystem.theme.LocalIsDarkTheme
 import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
@@ -135,10 +136,8 @@ private fun QrezzyLogoLetter(
 }
 
 @Composable
-private fun QrezzySlogan(
-    width: Dp,
-    isVisible: Boolean,
-) {
+private fun QrezzySlogan(width: Dp, isVisible: Boolean) {
+    val isDarkTheme = LocalIsDarkTheme.current
     val animatedAlpha by animateFloatAsState(
         targetValue =
             if (isVisible) {
@@ -154,7 +153,7 @@ private fun QrezzySlogan(
     )
 
     Image(
-        painter = painterResource(id = R.drawable.qrezzy_slogan),
+        painter = painterResource(id = if (isDarkTheme) R.drawable.qrezzy_slogan_dark else R.drawable.qrezzy_slogan),
         contentDescription = QrezzyBrandingDefaults.Slogan.CONTENT_DESCRIPTION,
         contentScale = ContentScale.Fit,
         modifier =

@@ -49,10 +49,8 @@ import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTabs
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
-import software.mazur.qrezzy.core.designsystem.theme.BorderLight
+import software.mazur.qrezzy.core.designsystem.theme.LocalIsDarkTheme
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
-import software.mazur.qrezzy.core.designsystem.theme.Surface
-import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 import software.mazur.qrezzy.domain.qr.model.Qr
 import software.mazur.qrezzy.feature.history.components.DeleteQrConfirmationDialog
 import software.mazur.qrezzy.feature.history.components.HistoryEmptyAction
@@ -128,6 +126,7 @@ private fun HistoryTopBar(
     onExitDeleteMode: () -> Unit,
     onDeleteSelected: () -> Unit,
 ) {
+    val isDarkTheme = LocalIsDarkTheme.current
     QrezzyTopBar(titleResId = R.string.navigation_title_history, subtitleResId = R.string.navigation_subtitle_history) {
         AnimatedContent(
             targetState = isDeleteModeEnabled,
@@ -158,7 +157,8 @@ private fun HistoryTopBar(
                 QrezzyTopBarButton(
                     enabled = hasItems,
                     onClick = onEnterDeleteMode,
-                    iconPainter = painterResource(R.drawable.qrezzy_selection)
+                    iconPainter = painterResource(
+                        if (isDarkTheme) R.drawable.qrezzy_selection_dark else R.drawable.qrezzy_selection)
                 )
             }
         }
@@ -172,7 +172,11 @@ private fun HistoryDeleteModeActions(
     onDeleteSelected: () -> Unit,
 ) {
     Row {
-        QrezzyTopBarButton(onClick = onExitDeleteMode, iconPainter = painterResource(R.drawable.qrezzy_close))
+        QrezzyTopBarButton(
+            onClick = onExitDeleteMode,
+            iconPainter = painterResource(R.drawable.qrezzy_close),
+            iconTint = MaterialTheme.colorScheme.onSurface
+        )
         Spacer(modifier = Modifier.width(HistoryScreenDefaults.topBarActionSpacing))
         AnimatedVisibility(
             visible = true,
@@ -316,7 +320,7 @@ private fun HistorySection(
             modifier = modifier
                 .fillMaxWidth()
                 .border(
-                    color = BorderLight,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                     shape = HistoryScreenDefaults.Section.shape,
                     width = HistoryScreenDefaults.Section.borderWidth,
                 )
@@ -343,7 +347,7 @@ private fun FavoritesSectionHeader() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Surface)
+            .background(color = MaterialTheme.colorScheme.surface)
             .padding(
                 horizontal = HistoryScreenDefaults.FavoritesHeader.horizontalPadding,
                 vertical = HistoryScreenDefaults.FavoritesHeader.verticalPadding,
@@ -354,13 +358,13 @@ private fun FavoritesSectionHeader() {
         Icon(imageVector = Icons.Default.Star, tint = QrezzyYellowDark, contentDescription = null)
         Text(
             text = stringResource(R.string.history_section_favorites).uppercase(),
-            color = TextSecondary,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.ExtraBold,
         )
     }
     HorizontalDivider(
-        color = BorderLight,
+        color = MaterialTheme.colorScheme.surfaceContainer,
         thickness = HistoryScreenDefaults.Section.dividerThickness,
     )
 }
@@ -368,9 +372,8 @@ private fun FavoritesSectionHeader() {
 @Composable
 private fun HistorySectionDivider() {
     HorizontalDivider(
-        color = BorderLight,
+        color = MaterialTheme.colorScheme.surfaceContainer,
         thickness = HistoryScreenDefaults.Section.dividerThickness,
-        modifier = Modifier.padding(start = HistoryScreenDefaults.Section.dividerStartPadding),
     )
 }
 
@@ -407,7 +410,6 @@ object HistoryScreenDefaults {
         val shape = ShapeDefaults.Medium
         val borderWidth = 1.dp
         val dividerThickness = 1.dp
-        val dividerStartPadding = 70.dp
     }
 
     object TopBarAnimation {

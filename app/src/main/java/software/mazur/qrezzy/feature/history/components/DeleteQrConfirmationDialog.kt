@@ -27,13 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
-import software.mazur.qrezzy.core.designsystem.theme.BorderLight
-import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellow
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
-import software.mazur.qrezzy.core.designsystem.theme.Surface
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
-import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,7 +81,7 @@ private fun DeleteQrConfirmationDialogContent(
                 shape = DeleteQrConfirmationDialogDefaults.Container.shape,
             )
             .border(
-                color = BorderPrimary,
+                color = MaterialTheme.colorScheme.surfaceDim,
                 shape = DeleteQrConfirmationDialogDefaults.Container.shape,
                 width = DeleteQrConfirmationDialogDefaults.Container.borderWidth,
             )
@@ -115,11 +113,11 @@ private fun DeleteQrConfirmationMessageCard(
             .fillMaxWidth()
             .border(
                 width = DeleteQrConfirmationDialogDefaults.MessageCard.borderWidth,
-                color = BorderLight,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = DeleteQrConfirmationDialogDefaults.MessageCard.shape,
             )
             .background(
-                color = Surface,
+                color = MaterialTheme.colorScheme.surface,
                 shape = DeleteQrConfirmationDialogDefaults.MessageCard.shape,
             )
             .padding(
@@ -138,7 +136,7 @@ private fun DeleteQrConfirmationMessageCard(
 
         Text(
             text = title,
-            color = TextPrimary,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.ExtraBold,
             textAlign = TextAlign.Center,
@@ -149,7 +147,7 @@ private fun DeleteQrConfirmationMessageCard(
 
         Text(
             text = subtitle,
-            color = TextSecondary,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,
@@ -177,7 +175,8 @@ private fun DeleteQrConfirmationActions(
 
         QrezzyButton(
             text = stringResource(R.string.common_cancel),
-            containerColor = Surface,
+            containerColor = QrezzyYellow,
+            depthColor = QrezzyPinkDark,
             onClick = onCancelClick,
             elevation = DeleteQrConfirmationDialogDefaults.Actions.buttonElevation,
         )

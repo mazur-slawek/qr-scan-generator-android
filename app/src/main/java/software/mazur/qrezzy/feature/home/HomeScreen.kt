@@ -24,10 +24,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import software.mazur.qrezzy.core.designsystem.theme.Surface
-import software.mazur.qrezzy.core.designsystem.theme.TextDisabled
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
-import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 import software.mazur.qrezzy.feature.generator.GeneratorScreen
 import software.mazur.qrezzy.feature.history.HistoryNavHost
 import software.mazur.qrezzy.feature.history.components.HistoryEmptyAction
@@ -59,7 +55,7 @@ private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (Home
     val isKeyboardVisible = WindowInsets.ime.getBottom(LocalDensity.current) > 0
     AnimatedVisibility(visible = !isKeyboardVisible, enter = fadeIn()) {
         NavigationBar(
-            containerColor = Surface,
+            containerColor = MaterialTheme.colorScheme.surface,
             tonalElevation = HomeScreenDefaults.NavigationBar.tonalElevation,
             modifier = Modifier.shadow(elevation = HomeScreenDefaults.NavigationBar.shadowElevation),
         ) {
@@ -72,12 +68,12 @@ private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (Home
                     colors =
                         NavigationBarItemDefaults.colors(
                             selectedIconColor = tab.selectedIconColor,
-                            selectedTextColor = TextPrimary,
+                            selectedTextColor = MaterialTheme.colorScheme.onSurface,
                             indicatorColor = tab.indicatorColor,
-                            unselectedIconColor = TextSecondary,
-                            unselectedTextColor = TextSecondary,
-                            disabledIconColor = TextDisabled,
-                            disabledTextColor = TextDisabled,
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            disabledIconColor = MaterialTheme.colorScheme.surfaceTint,
+                            disabledTextColor = MaterialTheme.colorScheme.surfaceTint,
                         ),
                     icon = {
                         Icon(imageVector = tab.icon, contentDescription = title)

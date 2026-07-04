@@ -13,6 +13,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -103,6 +104,7 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
                 iconPainter = painterResource(
                     if (uiState.qr?.isFavorite == true) R.drawable.qrezzy_favorite_on else R.drawable.qrezzy_favorite_off
                 ),
+                iconTint = if (uiState.qr?.isFavorite == true) Color.Unspecified else QrezzyYellowDark,
                 onClick = viewModel::onFavoriteClick
             )
             Spacer(modifier = Modifier.width(10.dp))

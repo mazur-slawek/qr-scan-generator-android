@@ -24,10 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import software.mazur.qrezzy.core.designsystem.theme.BorderLight
-import software.mazur.qrezzy.core.designsystem.theme.Surface
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
-import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
+
 
 @Composable
 fun QrezzyPopup(
@@ -42,11 +39,11 @@ fun QrezzyPopup(
             .wrapContentHeight()
             .border(
                 width = QrezzyPopupDefaults.Border.width,
-                color = BorderLight,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = ShapeDefaults.Medium,
             )
             .background(
-                color = Surface,
+                color = MaterialTheme.colorScheme.surface,
                 shape = ShapeDefaults.Medium,
             )
             .padding(
@@ -64,14 +61,14 @@ fun QrezzyPopup(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = stringResource(titleResId),
-                color = TextPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.ExtraBold,
             )
             Spacer(modifier = Modifier.height(QrezzyPopupDefaults.Text.spacing))
             Text(
                 text = stringResource(descriptionResId),
-                color = TextSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
             )

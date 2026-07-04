@@ -43,12 +43,10 @@ import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedBackground
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyCircleButton
-import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellow
-import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 import software.mazur.qrezzy.feature.onboarding.model.OnboardingItem
 import software.mazur.qrezzy.feature.onboarding.model.OnboardingItemType
 
@@ -59,7 +57,11 @@ fun OnboardingScreen(onGetStartedClick: () -> Unit = {}) {
     val currentItem = items[currentPageIndex]
     val isLastPage = currentPageIndex == items.lastIndex
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface)
+    ) {
         key(currentItem.accentColor) {
             QrezzyAnimatedBackground(
                 leftColor = currentItem.accentColor,
@@ -235,12 +237,12 @@ private fun OnboardingPageIndicators(
                             },
                         )
                         .background(
-                            color = if (isSelected) currentItem.accentColor else OnboardingDefaults.Indicator.inactiveColor,
+                            color = if (isSelected) currentItem.accentColor else MaterialTheme.colorScheme.onSurfaceVariant,
                             shape = CircleShape,
                         )
                         .border(
                             width = OnboardingDefaults.Indicator.borderWidth,
-                            color = if (isSelected) BorderPrimary else OnboardingDefaults.Indicator.inactiveColor,
+                            color = if (isSelected) MaterialTheme.colorScheme.surfaceDim else MaterialTheme.colorScheme.onSurfaceVariant,
                             shape = CircleShape,
                         ),
             )
@@ -316,7 +318,6 @@ private object OnboardingDefaults {
         val defaultSize = 15.dp
         val horizontalPadding = 10.dp
         val borderWidth = 2.dp
-        val inactiveColor = TextSecondary
     }
 
     object Animation {

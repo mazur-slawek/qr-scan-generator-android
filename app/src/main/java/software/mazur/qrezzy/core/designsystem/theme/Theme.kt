@@ -1,76 +1,58 @@
 package software.mazur.qrezzy.core.designsystem.theme
 
-import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.graphics.Color
 import software.mazur.qrezzy.domain.settings.model.AppTheme
 
 private val LightColorScheme = lightColorScheme(
-    primary = QrezzyMintDark,
-    secondary = QrezzyPurpleDark,
-    tertiary = QrezzyPinkDark,
-    background = Surface,
-    surface = Surface,
-    error = Error,
-    onPrimary = TextPrimary,
-    onSecondary = TextPrimary,
-    onTertiary = TextPrimary,
-    onBackground = TextPrimary,
-    onSurface = TextPrimary,
-    onError = TextPrimary,
+    // Main app background and reusable surfaces.
+    background = Color(0xFFF9F9F9),
+    surface = Color(0xFFFFFFFF),
+    // Borders used for cards, inputs, tabs and outlined components.
+    surfaceContainer = Color(0xFFE5E5E5),
+    surfaceDim = Color(0xFF000000),
+    // Text colors used for titles, descriptions and disabled states.
+    onSurface = Color(0xFF222222),
+    onSurfaceVariant = Color(0xFF4D4D4D),
+    inverseOnSurface = Color(0xFF222222),
+    surfaceTint = Color(0xFFA0A0A0)
 )
 private val DarkColorScheme = darkColorScheme(
-    primary = QrezzyMint,
-    secondary = QrezzyPurple,
-    tertiary = QrezzyPink,
-    background = DarkSurface,
-    surface = DarkSurface,
-    error = Error,
-    onPrimary = DarkTextPrimary,
-    onSecondary = DarkTextPrimary,
-    onTertiary = DarkTextPrimary,
-    onBackground = DarkTextPrimary,
-    onSurface = DarkTextPrimary,
-    onError = DarkTextPrimary,
+    // Main app background and reusable surfaces.
+    background = Color(0xFF15161F),
+    surface = Color(0xFF1E2030),
+    // Borders used for cards, inputs, tabs and outlined components.
+    surfaceContainer = Color(0xFF3D4167),
+    surfaceDim = Color(0xFF434664),
+    // Text colors used for titles, descriptions and disabled states.
+    onSurface = Color(0xFFF7F4FF),
+    onSurfaceVariant = Color(0xFFCECECE),
+    inverseOnSurface = Color(0xFF222222),
+    surfaceTint = Color(0xFFA0A0A0)
 )
 
 @Composable
-fun QREZZYTheme(
-    appTheme: AppTheme = AppTheme.SYSTEM,
-    content: @Composable () -> Unit,
-) {
-    val systemDark = isSystemInDarkTheme()
-    val useDarkTheme =
-        when (appTheme) {
-            AppTheme.SYSTEM -> systemDark
-            AppTheme.LIGHT  -> false
-            AppTheme.DARK   -> true
-        }
-    val colorScheme = if (useDarkTheme) DarkColorScheme else LightColorScheme
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val activity = view.context as Activity
-            activity.window.statusBarColor = colorScheme.background.toArgb()
-            activity.window.navigationBarColor = colorScheme.background.toArgb()
-
-            WindowCompat.getInsetsController(activity.window, view).apply {
-                isAppearanceLightStatusBars = !useDarkTheme
-                isAppearanceLightNavigationBars = !useDarkTheme
-            }
+fun QREZZYTheme(appTheme: AppTheme = AppTheme.SYSTEM, content: @Composable () -> Unit) {
+    val isDarkTheme = resolveIsDarkTheme(appTheme)
+    val colorScheme = if (isDarkTheme) DarkColorScheme else LightColorScheme
+    MaterialTheme(colorScheme = colorScheme, typography = Typography) {
+        CompositionLocalProvider(LocalIsDarkTheme provides isDarkTheme) {
+            content()
         }
     }
+}
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content,
-    )
+@Composable
+private fun resolveIsDarkTheme(appTheme: AppTheme): Boolean {
+    val systemDark = isSystemInDarkTheme()
+    return when (appTheme) {
+        AppTheme.SYSTEM -> systemDark
+        AppTheme.LIGHT  -> false
+        AppTheme.DARK   -> true
+    }
 }

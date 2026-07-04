@@ -17,15 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
-import software.mazur.qrezzy.core.designsystem.theme.Error
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
-import software.mazur.qrezzy.core.designsystem.theme.Surface
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 
 @Composable
 fun QrezzyListSection(
@@ -44,13 +40,13 @@ fun QrezzyListSection(
     val borderColor = when {
         isError   -> QrezzyPinkDark
         isFocused -> QrezzyPurpleDark
-        else      -> BorderPrimary
+        else      -> MaterialTheme.colorScheme.surfaceDim
     }
     Column(modifier = modifier.fillMaxWidth()) {
         title?.let {
             Text(
                 text = it,
-                color = TextPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier.padding(
@@ -90,11 +86,11 @@ fun QrezzyListSection(
                         y = -QrezzyListSectionDefaults.Depth.offsetY
                     )
                     .background(
-                        color = Surface,
+                        color = MaterialTheme.colorScheme.surface,
                         shape = QrezzyListSectionDefaults.shape
                     )
                     .border(
-                        color = BorderPrimary,
+                        color = MaterialTheme.colorScheme.surfaceDim,
                         shape = QrezzyListSectionDefaults.shape,
                         width = QrezzyListSectionDefaults.borderWidth
                     )
@@ -105,7 +101,7 @@ fun QrezzyListSection(
         if (isError) {
             Text(
                 text = error,
-                color = Error,
+                color = QrezzyPinkDark,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(
                     start = QrezzyListSectionDefaults.Error.startPadding,

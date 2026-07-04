@@ -32,10 +32,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
-import software.mazur.qrezzy.core.designsystem.theme.BorderLight
-import software.mazur.qrezzy.core.designsystem.theme.Surface
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
-import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 import software.mazur.qrezzy.domain.qr.model.Qr
 import software.mazur.qrezzy.domain.qr.model.QrType
 
@@ -51,10 +47,10 @@ fun QrezzyQrInfoContent(qr: Qr, modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .border(
                     width = QrezzyQrInfoContentDefaults.Container.borderWidth,
-                    color = BorderLight,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                     shape = ShapeDefaults.Medium,
                 )
-                .background(color = Surface, shape = ShapeDefaults.Medium)
+                .background(color = MaterialTheme.colorScheme.surface, shape = ShapeDefaults.Medium)
                 .padding(QrezzyQrInfoContentDefaults.Container.padding),
         ) {
             rows.forEachIndexed { index, row ->
@@ -67,7 +63,7 @@ fun QrezzyQrInfoContent(qr: Qr, modifier: Modifier = Modifier) {
                 if (index != rows.lastIndex) {
                     HorizontalDivider(
                         modifier = Modifier.padding(vertical = QrezzyQrInfoContentDefaults.Divider.verticalPadding),
-                        color = BorderLight,
+                        color = MaterialTheme.colorScheme.surfaceContainer,
                     )
                 }
             }
@@ -81,7 +77,7 @@ private fun QrezzyQrInfoRow(row: QrInfoRow, onCopyClick: () -> Unit, onOpenLinkC
         Column(modifier = Modifier.weight(QrezzyQrInfoContentDefaults.Content.WEIGHT)) {
             Text(
                 text = stringResource(row.labelResId),
-                color = TextSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.ExtraBold,
                 style = MaterialTheme.typography.labelMedium,
             )
@@ -89,7 +85,7 @@ private fun QrezzyQrInfoRow(row: QrInfoRow, onCopyClick: () -> Unit, onOpenLinkC
                 text = row.value,
                 maxLines = QrezzyQrInfoContentDefaults.Value.MAX_LINES,
                 overflow = TextOverflow.Ellipsis,
-                color = TextPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.bodyMedium,
             )
@@ -104,7 +100,7 @@ private fun QrezzyQrInfoRow(row: QrInfoRow, onCopyClick: () -> Unit, onOpenLinkC
                 Icon(
                     imageVector = Icons.Outlined.CopyAll,
                     contentDescription = stringResource(R.string.qr_details_copy_content),
-                    tint = TextSecondary,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
@@ -118,7 +114,7 @@ private fun QrezzyQrInfoRow(row: QrInfoRow, onCopyClick: () -> Unit, onOpenLinkC
                 Icon(
                     imageVector = Icons.Default.OpenInNew,
                     contentDescription = stringResource(R.string.qr_details_open_link),
-                    tint = TextSecondary,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }

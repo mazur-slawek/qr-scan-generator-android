@@ -27,7 +27,6 @@ import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
 import software.mazur.qrezzy.core.designsystem.components.qrezzyQrDetails.QrezzyQrInfo
-import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
 import software.mazur.qrezzy.domain.qr.model.Qr
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,14 +46,18 @@ fun ScannedQrDialog(qr: Qr, onSaveClick: () -> Unit, onCancelClick: () -> Unit) 
                 .background(color = MaterialTheme.colorScheme.background, shape = ScannedQrDialogDefaults.shape)
                 .border(
                     width = ScannedQrDialogDefaults.Border.width,
-                    color = BorderPrimary,
+                    color = MaterialTheme.colorScheme.surfaceDim,
                     shape = ScannedQrDialogDefaults.shape,
                 )
                 .clip(ScannedQrDialogDefaults.shape)
                 .padding(ScannedQrDialogDefaults.padding)
         ) {
             QrezzyTopBar(titleResId = R.string.scanner_dialog_title, subtitleResId = R.string.scanner_dialog_subtitle) {
-                QrezzyTopBarButton(onClick = onCancelClick, iconPainter = painterResource(R.drawable.qrezzy_close))
+                QrezzyTopBarButton(
+                    onClick = onCancelClick,
+                    iconPainter = painterResource(R.drawable.qrezzy_close),
+                    iconTint = MaterialTheme.colorScheme.onSurface
+                )
             }
             Spacer(modifier = Modifier.height(ScannedQrDialogDefaults.contentSpacing))
             LazyColumn(modifier = Modifier.weight(1f)) {

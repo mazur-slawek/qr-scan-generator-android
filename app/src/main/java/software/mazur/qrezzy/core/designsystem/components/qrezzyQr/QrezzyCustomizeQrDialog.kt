@@ -40,13 +40,10 @@ import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
 import software.mazur.qrezzy.core.designsystem.extensions.toComposeColor
-import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
-import software.mazur.qrezzy.core.designsystem.theme.Surface
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
-import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellow
 import software.mazur.qrezzy.domain.qr.model.style.QrErrorCorrection
 import software.mazur.qrezzy.domain.qr.model.style.QrPatternStyle
 import software.mazur.qrezzy.domain.qr.model.style.QrStyle
@@ -78,7 +75,7 @@ fun QrezzyCustomizeQrDialog(
                     shape = CustomizeQrDialogDefaults.Container.shape,
                 )
                 .border(
-                    color = BorderPrimary,
+                    color = MaterialTheme.colorScheme.surfaceDim,
                     shape = CustomizeQrDialogDefaults.Container.shape,
                     width = CustomizeQrDialogDefaults.Container.borderWidth,
                 )
@@ -86,7 +83,11 @@ fun QrezzyCustomizeQrDialog(
                 .padding(CustomizeQrDialogDefaults.Container.contentPadding),
         ) {
             QrezzyTopBar(titleResId = R.string.customize_qr_title, subtitleResId = R.string.customize_qr_subtitle) {
-                QrezzyTopBarButton(onClick = onCancelClick, iconPainter = painterResource(R.drawable.qrezzy_close))
+                QrezzyTopBarButton(
+                    onClick = onCancelClick,
+                    iconPainter = painterResource(R.drawable.qrezzy_close),
+                    iconTint = MaterialTheme.colorScheme.onSurface
+                )
             }
             QrezzyQrPreview(qrBitmap = qrBitmap)
             LazyColumn(modifier = Modifier.weight(CustomizeQrDialogDefaults.CONTENT_WEIGHT)) {
@@ -172,7 +173,7 @@ private fun CustomizeQrColorOption(color: QrColorOption, isSelected: Boolean, on
                     CustomizeQrDialogDefaults.ColorOption.outerBorderWidth
                 },
                 shape = CustomizeQrDialogDefaults.ColorOption.containerShape,
-                color = if (isSelected) QrezzyPurpleDark else BorderPrimary
+                color = if (isSelected) QrezzyPurpleDark else MaterialTheme.colorScheme.surfaceDim
             )
             .background(
                 color = if (isSelected) QrezzyPurple else Color.Transparent,
@@ -194,7 +195,7 @@ private fun CustomizeQrColorOption(color: QrColorOption, isSelected: Boolean, on
                 }
             )
             .border(
-                color = if (isSelected) BorderPrimary else Color.Transparent,
+                color = if (isSelected) MaterialTheme.colorScheme.surfaceDim else Color.Transparent,
                 width = if (isSelected) {
                     CustomizeQrDialogDefaults.ColorOption.selectedInnerBorderWidth
                 } else {
@@ -294,7 +295,7 @@ private fun CustomizeQrOption(iconResId: Int, titleResId: Int, isSelected: Boole
             .border(
                 width = CustomizeQrDialogDefaults.Option.borderWidth,
                 shape = CustomizeQrDialogDefaults.Option.shape,
-                color = if (isSelected) QrezzyPurpleDark else TextSecondary,
+                color = if (isSelected) QrezzyPurpleDark else MaterialTheme.colorScheme.onSurfaceVariant,
             )
             .background(
                 color = if (isSelected) QrezzyPurple else Color.Transparent,
@@ -311,13 +312,13 @@ private fun CustomizeQrOption(iconResId: Int, titleResId: Int, isSelected: Boole
         Icon(
             painter = painterResource(iconResId),
             contentDescription = null,
-            tint = if (isSelected) TextPrimary else TextSecondary,
+            tint = if (isSelected) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.size(CustomizeQrDialogDefaults.Option.iconSize),
         )
         Spacer(modifier = Modifier.width(CustomizeQrDialogDefaults.Option.iconTextSpacing))
         Text(
             text = stringResource(titleResId),
-            color = if (isSelected) TextPrimary else TextSecondary,
+            color = if (isSelected) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.ExtraBold,
             modifier = Modifier.weight(CustomizeQrDialogDefaults.CONTENT_WEIGHT),
@@ -339,8 +340,8 @@ private fun CustomizeQrActions(
     Spacer(modifier = Modifier.height(CustomizeQrDialogDefaults.Actions.buttonSpacing))
     QrezzyButton(
         text = stringResource(R.string.customize_qr_reset),
-        containerColor = Surface,
-        depthColor = QrezzyPink,
+        containerColor = QrezzyYellow,
+        depthColor = QrezzyPinkDark,
         elevation = CustomizeQrDialogDefaults.Actions.buttonElevation,
         onClick = onResetClick,
     )

@@ -16,6 +16,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,11 +30,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
-import software.mazur.qrezzy.core.designsystem.theme.HighlightPrimary
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 
 @Composable
 fun QrezzyButton(
@@ -65,7 +63,7 @@ fun QrezzyButton(
                     .height(buttonHeight)
                     .align(Alignment.BottomEnd)
                     .border(
-                        color = BorderPrimary,
+                        color = MaterialTheme.colorScheme.surfaceDim,
                         shape = ShapeDefaults.Medium,
                         width = QrezzyButtonDefaults.Border.width,
                     ),
@@ -80,15 +78,15 @@ fun QrezzyButton(
             border =
                 BorderStroke(
                     width = QrezzyButtonDefaults.Border.width,
-                    color = BorderPrimary,
+                    color = MaterialTheme.colorScheme.surfaceDim,
                 ),
             contentPadding = PaddingValues.Zero,
             colors =
                 ButtonDefaults.buttonColors(
                     containerColor = containerColor,
-                    contentColor = TextPrimary,
+                    contentColor = MaterialTheme.colorScheme.inverseOnSurface,
                     disabledContainerColor = containerColor,
-                    disabledContentColor = TextPrimary,
+                    disabledContentColor = MaterialTheme.colorScheme.onSurface,
                 ),
             modifier =
                 Modifier
@@ -102,7 +100,9 @@ fun QrezzyButton(
                         .fillMaxSize()
                         .border(
                             width = QrezzyButtonDefaults.Border.highlightWidth,
-                            color = HighlightPrimary.copy(alpha = QrezzyButtonDefaults.Border.HIGHLIGHT_ALPHA),
+                            color = Color.White.copy(
+                                alpha = QrezzyButtonDefaults.Border.HIGHLIGHT_ALPHA
+                            ),
                             shape = ShapeDefaults.Medium,
                         ),
             ) {
@@ -114,18 +114,16 @@ fun QrezzyButton(
                             .fillMaxWidth()
                             .padding(
                                 horizontal =
-                                    QrezzyButtonDefaults.Icon.width +
-                                            QrezzyButtonDefaults.Content.horizontalPadding,
+                                    QrezzyButtonDefaults.Icon.width + QrezzyButtonDefaults.Content.horizontalPadding
                             )
                             .align(Alignment.Center),
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.ExtraBold,
-                    autoSize =
-                        TextAutoSize.StepBased(
-                            minFontSize = QrezzyButtonDefaults.Text.minSize,
-                            maxFontSize = QrezzyButtonDefaults.Text.maxSize,
-                            stepSize = QrezzyButtonDefaults.Text.stepSize,
-                        ),
+                    autoSize = TextAutoSize.StepBased(
+                        minFontSize = QrezzyButtonDefaults.Text.minSize,
+                        maxFontSize = QrezzyButtonDefaults.Text.maxSize,
+                        stepSize = QrezzyButtonDefaults.Text.stepSize,
+                    )
                 )
 
                 leftIcon?.let { icon ->
