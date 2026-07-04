@@ -115,10 +115,11 @@ fun QrezzyButton(
                             .padding(
                                 horizontal =
                                     QrezzyButtonDefaults.Icon.width +
-                                        QrezzyButtonDefaults.Content.horizontalPadding,
-                            ).align(Alignment.Center),
+                                            QrezzyButtonDefaults.Content.horizontalPadding,
+                            )
+                            .align(Alignment.Center),
                     textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = FontWeight.ExtraBold,
                     autoSize =
                         TextAutoSize.StepBased(
                             minFontSize = QrezzyButtonDefaults.Text.minSize,

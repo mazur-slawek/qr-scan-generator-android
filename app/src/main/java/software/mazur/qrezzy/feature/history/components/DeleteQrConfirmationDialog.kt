@@ -140,7 +140,7 @@ private fun DeleteQrConfirmationMessageCard(
             text = title,
             color = TextPrimary,
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.ExtraBold,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth(),
         )

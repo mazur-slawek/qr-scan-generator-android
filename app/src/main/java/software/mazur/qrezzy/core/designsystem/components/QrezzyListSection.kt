@@ -52,7 +52,7 @@ fun QrezzyListSection(
                 text = it,
                 color = TextPrimary,
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier.padding(
                     start = QrezzyListSectionDefaults.Title.startPadding,
                     bottom = QrezzyListSectionDefaults.Title.bottomPadding

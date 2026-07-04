@@ -102,7 +102,7 @@ fun SettingsListFooterCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
 
 @Composable
 private fun FooterText(text: String, style: androidx.compose.ui.text.TextStyle) {
-    Text(text = text, color = TextPrimary, fontWeight = FontWeight.SemiBold, style = style)
+    Text(text = text, color = TextPrimary, fontWeight = FontWeight.ExtraBold, style = style)
 }
 
 private object SettingsListFooterDefaults {

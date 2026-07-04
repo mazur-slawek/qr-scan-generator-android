@@ -319,7 +319,7 @@ private fun CustomizeQrOption(iconResId: Int, titleResId: Int, isSelected: Boole
             text = stringResource(titleResId),
             color = if (isSelected) TextPrimary else TextSecondary,
             style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.ExtraBold,
             modifier = Modifier.weight(CustomizeQrDialogDefaults.CONTENT_WEIGHT),
         )
     }

@@ -20,7 +20,7 @@ fun QrezzyAppVersion(modifier: Modifier = Modifier) {
     Text(
         text = "Version ${BuildConfig.VERSION_NAME}",
         color = TextPrimary,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.ExtraBold,
         style = MaterialTheme.typography.bodySmall,
         modifier = modifier
             .background(

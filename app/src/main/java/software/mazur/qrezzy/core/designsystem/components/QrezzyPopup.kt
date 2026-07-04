@@ -66,7 +66,7 @@ fun QrezzyPopup(
                 text = stringResource(titleResId),
                 color = TextPrimary,
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.ExtraBold,
             )
             Spacer(modifier = Modifier.height(QrezzyPopupDefaults.Text.spacing))
             Text(

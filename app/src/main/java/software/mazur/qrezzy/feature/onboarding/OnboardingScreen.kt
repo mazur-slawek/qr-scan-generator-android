@@ -75,15 +75,15 @@ fun OnboardingScreen(onGetStartedClick: () -> Unit = {}) {
                         animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
                         initialOffsetX = { fullWidth -> fullWidth },
                     ) +
-                        fadeIn(
-                            animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
-                        ) togetherWith slideOutHorizontally(
-                            animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
-                            targetOffsetX = { fullWidth -> -fullWidth },
-                        ) +
-                        fadeOut(
-                            animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
-                        )
+                            fadeIn(
+                                animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
+                            ) togetherWith slideOutHorizontally(
+                        animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
+                        targetOffsetX = { fullWidth -> -fullWidth },
+                    ) +
+                            fadeOut(
+                                animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
+                            )
                 },
                 label = OnboardingDefaults.Animation.CONTENT_TRANSITION_LABEL,
                 modifier = Modifier.weight(OnboardingDefaults.Layout.CONTENT_WEIGHT),
@@ -132,7 +132,7 @@ private fun OnboardingContent(
                 text = stringResource(id = item.titleResId),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier.fillMaxWidth(),
             )
 
@@ -233,10 +233,12 @@ private fun OnboardingPageIndicators(
                             } else {
                                 OnboardingDefaults.Indicator.defaultSize
                             },
-                        ).background(
+                        )
+                        .background(
                             color = if (isSelected) currentItem.accentColor else OnboardingDefaults.Indicator.inactiveColor,
                             shape = CircleShape,
-                        ).border(
+                        )
+                        .border(
                             width = OnboardingDefaults.Indicator.borderWidth,
                             color = if (isSelected) BorderPrimary else OnboardingDefaults.Indicator.inactiveColor,
                             shape = CircleShape,

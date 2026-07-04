@@ -71,7 +71,7 @@ fun QrezzyTopBar(
                     maxLines = QrezzyTopBarDefaults.TITLE_MAX_LINES,
                     textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = FontWeight.ExtraBold,
                     color = TextPrimary,
                 )
                 Spacer(modifier = Modifier.width(7.dp))

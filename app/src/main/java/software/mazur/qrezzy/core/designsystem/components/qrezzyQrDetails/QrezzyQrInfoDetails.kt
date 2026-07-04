@@ -98,7 +98,7 @@ private fun QrezzyQrInfoDetailsRow(
             Text(
                 text = label,
                 color = TextSecondary,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.ExtraBold,
                 style = MaterialTheme.typography.labelMedium,
             )
             Text(

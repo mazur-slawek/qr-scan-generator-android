@@ -48,7 +48,7 @@ fun HistoryListEmpty(selectedTab: QrezzyTabItem, onEmptyActionClick: (HistoryEmp
         Text(
             color = TextPrimary,
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.ExtraBold,
             text = stringResource(R.string.history_empty_title),
         )
 

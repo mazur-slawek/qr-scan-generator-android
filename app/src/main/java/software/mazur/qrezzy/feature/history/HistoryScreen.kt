@@ -356,7 +356,7 @@ private fun FavoritesSectionHeader() {
             text = stringResource(R.string.history_section_favorites).uppercase(),
             color = TextSecondary,
             style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.ExtraBold,
         )
     }
     HorizontalDivider(

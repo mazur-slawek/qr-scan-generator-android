@@ -145,7 +145,7 @@ private fun QrezzyListItemText(title: String, subtitle: String?, titleColor: Col
             text = title,
             color = titleColor,
             style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.ExtraBold,
         )
         subtitle?.let { text ->
             Text(

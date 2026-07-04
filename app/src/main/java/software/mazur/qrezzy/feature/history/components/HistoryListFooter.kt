@@ -38,7 +38,7 @@ fun HistoryListFooter() {
         Text(
             color = TextPrimary,
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.ExtraBold,
             text = stringResource(R.string.history_footer_title),
         )
         Spacer(modifier = Modifier.height(HistoryListFooterDefaults.titleSubtitleSpacing))

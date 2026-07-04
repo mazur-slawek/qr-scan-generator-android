@@ -82,7 +82,7 @@ private fun QrezzyQrInfoRow(row: QrInfoRow, onCopyClick: () -> Unit, onOpenLinkC
             Text(
                 text = stringResource(row.labelResId),
                 color = TextSecondary,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.ExtraBold,
                 style = MaterialTheme.typography.labelMedium,
             )
             Text(

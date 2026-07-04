@@ -89,7 +89,7 @@ fun HistoryListItem(
                     text = qr.label,
                     color = TextPrimary,
                     style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = FontWeight.ExtraBold,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = HistoryListItemDefaults.TITLE_MAX_LINES,
                 )
