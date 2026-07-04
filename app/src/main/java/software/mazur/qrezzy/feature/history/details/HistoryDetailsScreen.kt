@@ -94,13 +94,10 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
             onBackClick = onBackClick
         ) {
             QrezzyTopBarButton(
-                iconPainter = painterResource(if (uiState.qr?.isFavorite == true) {
-                    R.drawable.qrezzy_favorite_on
-                } else {
-                    R.drawable.qrezzy_favorite_off
-                }),
-                onClick = viewModel::onFavoriteClick,
-                iconTint = QrezzyYellowDark
+                iconPainter = painterResource(
+                    if (uiState.qr?.isFavorite == true) R.drawable.qrezzy_favorite_on else R.drawable.qrezzy_favorite_off
+                ),
+                onClick = viewModel::onFavoriteClick
             )
             Spacer(modifier = Modifier.width(10.dp))
             QrezzyTopBarButton(

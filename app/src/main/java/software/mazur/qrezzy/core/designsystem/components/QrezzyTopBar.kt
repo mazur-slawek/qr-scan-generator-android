@@ -56,11 +56,7 @@ fun QrezzyTopBar(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (onBackClick != null) {
-            QrezzyTopBarButton(
-                onClick = onBackClick,
-                iconPainter = painterResource(R.drawable.qrezzy_arrow_back),
-                iconTint = TextSecondary
-            )
+            QrezzyTopBarButton(onClick = onBackClick, iconPainter = painterResource(R.drawable.qrezzy_arrow_back))
             Spacer(modifier = Modifier.width(Content.onBackButtonPadding))
         }
         Column(

@@ -86,11 +86,7 @@ fun QrezzyCustomizeQrDialog(
                 .padding(CustomizeQrDialogDefaults.Container.contentPadding),
         ) {
             QrezzyTopBar(titleResId = R.string.customize_qr_title, subtitleResId = R.string.customize_qr_subtitle) {
-                QrezzyTopBarButton(
-                    onClick = onCancelClick,
-                    iconPainter = painterResource(R.drawable.qrezzy_close),
-                    iconTint = TextSecondary
-                )
+                QrezzyTopBarButton(onClick = onCancelClick, iconPainter = painterResource(R.drawable.qrezzy_close))
             }
             QrezzyQrPreview(qrBitmap = qrBitmap)
             LazyColumn(modifier = Modifier.weight(CustomizeQrDialogDefaults.CONTENT_WEIGHT)) {

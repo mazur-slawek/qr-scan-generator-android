@@ -158,7 +158,7 @@ private fun HistoryTopBar(
                 QrezzyTopBarButton(
                     enabled = hasItems,
                     onClick = onEnterDeleteMode,
-                    iconPainter = painterResource(R.drawable.qrezzy_select)
+                    iconPainter = painterResource(R.drawable.qrezzy_selection)
                 )
             }
         }
@@ -172,11 +172,7 @@ private fun HistoryDeleteModeActions(
     onDeleteSelected: () -> Unit,
 ) {
     Row {
-        QrezzyTopBarButton(
-            onClick = onExitDeleteMode,
-            iconPainter = painterResource(R.drawable.qrezzy_close),
-            iconTint = TextSecondary
-        )
+        QrezzyTopBarButton(onClick = onExitDeleteMode, iconPainter = painterResource(R.drawable.qrezzy_close))
         Spacer(modifier = Modifier.width(HistoryScreenDefaults.topBarActionSpacing))
         AnimatedVisibility(
             visible = true,
