@@ -21,9 +21,10 @@ import software.mazur.qrezzy.core.designsystem.components.QrezzyRadioButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
 import software.mazur.qrezzy.core.designsystem.theme.TextDisabled
+import software.mazur.qrezzy.domain.settings.model.AppTheme
 
 @Composable
-fun ThemeScreen(onBackClick: () -> Unit) {
+fun ThemeScreen(selectedTheme: AppTheme, onThemeSelected: (AppTheme) -> Unit, onBackClick: () -> Unit) {
     Column(modifier = Modifier.padding(horizontal = ThemeScreenDefaults.horizontalPadding)) {
         QrezzyTopBar(onBackClick = onBackClick, titleResId = R.string.theme_screen_title)
         QrezzyAnimatedStars(modifier = Modifier.fillMaxSize(), starsCount = ThemeScreenDefaults.STARS_COUNT) {
@@ -45,25 +46,52 @@ fun ThemeScreen(onBackClick: () -> Unit) {
                     QrezzyListSection(title = stringResource(R.string.theme_screen_subtitle)) {
                         Column {
                             QrezzyListItem(
+                                iconPainter = painterResource(R.drawable.theme_mode_system),
+                                iconSize = ThemeScreenDefaults.iconSize,
+                                title = stringResource(R.string.theme_mode_system),
+                                trailing = {
+                                    QrezzyRadioButton(
+                                        selected = selectedTheme == AppTheme.SYSTEM,
+                                        onClick = { onThemeSelected(AppTheme.SYSTEM) },
+                                    )
+                                },
+                                iconBackgroundColor = if (selectedTheme == AppTheme.SYSTEM) {
+                                    QrezzyMintDark
+                                } else {
+                                    TextDisabled.copy(alpha = 0.5f)
+                                }
+                            )
+                            QrezzyListItem(
                                 iconPainter = painterResource(R.drawable.theme_mode_light),
                                 iconSize = ThemeScreenDefaults.iconSize,
                                 title = stringResource(R.string.theme_mode_light),
-                                trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
-                                iconBackgroundColor = TextDisabled.copy(alpha = 0.5f),
+                                trailing = {
+                                    QrezzyRadioButton(
+                                        selected = selectedTheme == AppTheme.LIGHT,
+                                        onClick = { onThemeSelected(AppTheme.LIGHT) },
+                                    )
+                                },
+                                iconBackgroundColor = if (selectedTheme == AppTheme.LIGHT) {
+                                    QrezzyMintDark
+                                } else {
+                                    TextDisabled.copy(alpha = 0.5f)
+                                }
                             )
                             QrezzyListItem(
                                 iconPainter = painterResource(R.drawable.theme_mode_dark),
                                 iconSize = ThemeScreenDefaults.iconSize,
                                 title = stringResource(R.string.theme_mode_dark),
-                                trailing = { QrezzyRadioButton(selected = false, onClick = {}) },
-                                iconBackgroundColor = TextDisabled.copy(alpha = 0.5f),
-                            )
-                            QrezzyListItem(
-                                iconPainter = painterResource(R.drawable.theme_mode_system),
-                                iconSize = ThemeScreenDefaults.iconSize,
-                                title = stringResource(R.string.theme_mode_system),
-                                trailing = { QrezzyRadioButton(selected = true, onClick = {}) },
-                                iconBackgroundColor = QrezzyMintDark,
+                                trailing = {
+                                    QrezzyRadioButton(
+                                        selected = selectedTheme == AppTheme.DARK,
+                                        onClick = { onThemeSelected(AppTheme.DARK) },
+                                    )
+                                },
+                                iconBackgroundColor = if (selectedTheme == AppTheme.DARK) {
+                                    QrezzyMintDark
+                                } else {
+                                    TextDisabled.copy(alpha = 0.5f)
+                                }
                             )
                         }
                     }

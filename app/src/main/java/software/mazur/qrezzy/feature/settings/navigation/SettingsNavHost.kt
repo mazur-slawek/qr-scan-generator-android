@@ -1,11 +1,16 @@
-package software.mazur.qrezzy.feature.settings
+package software.mazur.qrezzy.feature.settings.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import software.mazur.qrezzy.feature.settings.SettingsScreen
+import software.mazur.qrezzy.feature.settings.SettingsViewModel
 import software.mazur.qrezzy.feature.settings.screens.ClearAllHistoryScreen
 import software.mazur.qrezzy.feature.settings.screens.ContactScreen
 import software.mazur.qrezzy.feature.settings.screens.DonateScreen
@@ -20,6 +25,8 @@ import software.mazur.qrezzy.feature.settings.screens.ThemeScreen
 @Composable
 fun SettingsNavHost() {
     val navController = rememberNavController()
+    val settingsViewModel: SettingsViewModel = hiltViewModel()
+    val settingsUiState by settingsViewModel.uiState.collectAsState()
 
     NavHost(
         navController = navController,
@@ -51,24 +58,35 @@ fun SettingsNavHost() {
     ) {
         composable(SettingsRoute.Settings.route) {
             SettingsScreen(
+                uiState = settingsUiState,
                 onLanguageClick = { navController.navigate(SettingsRoute.Language.route) },
                 onThemeClick = { navController.navigate(SettingsRoute.Theme.route) },
                 onPrivacyClick = { navController.navigate(SettingsRoute.Privacy.route) },
                 onPermissionsClick = { navController.navigate(SettingsRoute.Permissions.route) },
-                onMaximumHistoryItemsClick = { navController.navigate(SettingsRoute.MaximumHistoryItems.route) },
+                onMaximumHistoryItemsClick = { navController.navigate(SettingsRoute.MaxHistoryItems.route) },
                 onClearAllHistoryClick = { navController.navigate(SettingsRoute.ClearAllHistory.route) },
                 onRateAppClick = { navController.navigate(SettingsRoute.RateApp.route) },
                 onContactClick = { navController.navigate(SettingsRoute.Contact.route) },
-                onOpenSourceLicensesClick = { navController.navigate(SettingsRoute.OpenSourceLicense.route) },
+                onOpenSourceLicensesClick = { navController.navigate(SettingsRoute.OpenSourceLicenses.route) },
                 onDonateClick = { navController.navigate(SettingsRoute.Donate.route) },
+                onAutoSaveScansChanged = settingsViewModel::onAutoSaveScansChanged,
+                onVibrationEnabledChanged = settingsViewModel::onVibrationEnabledChanged,
             )
         }
         composable(SettingsRoute.Language.route) {
-            LanguageScreen(navController::popBackStack)
+            LanguageScreen(
+                selectedLanguage = settingsUiState.language,
+                onLanguageSelected = settingsViewModel::onLanguageSelected,
+                onBackClick = navController::popBackStack
+            )
         }
 
         composable(SettingsRoute.Theme.route) {
-            ThemeScreen(navController::popBackStack)
+            ThemeScreen(
+                selectedTheme = settingsUiState.theme,
+                onThemeSelected = settingsViewModel::onThemeSelected,
+                onBackClick = navController::popBackStack
+            )
         }
 
         composable(SettingsRoute.Privacy.route) {
@@ -79,8 +97,12 @@ fun SettingsNavHost() {
             PermissionsScreen(navController::popBackStack)
         }
 
-        composable(SettingsRoute.MaximumHistoryItems.route) {
-            MaxHistoryItemsScreen(navController::popBackStack)
+        composable(SettingsRoute.MaxHistoryItems.route) {
+            MaxHistoryItemsScreen(
+                selectedLimit = settingsUiState.historyLimit,
+                onHistoryLimitSelected = settingsViewModel::onHistoryLimitSelected,
+                onBackClick = navController::popBackStack
+            )
         }
 
         composable(SettingsRoute.ClearAllHistory.route) {
@@ -95,7 +117,7 @@ fun SettingsNavHost() {
             ContactScreen(navController::popBackStack)
         }
 
-        composable(SettingsRoute.OpenSourceLicense.route) {
+        composable(SettingsRoute.OpenSourceLicenses.route) {
             OpenSourceLicenseScreen(navController::popBackStack)
         }
 
