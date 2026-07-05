@@ -24,6 +24,7 @@ fun AppTheme.displayName(): String {
 
 fun HistoryLimit.displayName(): String {
     return when (this) {
+        HistoryLimit.ITEMS_50   -> "50"
         HistoryLimit.ITEMS_100  -> "100"
         HistoryLimit.ITEMS_200  -> "200"
         HistoryLimit.ITEMS_500  -> "500"

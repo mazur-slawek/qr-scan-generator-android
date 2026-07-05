@@ -214,7 +214,7 @@
     <string name="clear_history_screen_title">Wyczyść historię</string>
     <string name="clear_history_screen_subtitle">Podsumowanie historii</string>
     <string name="clear_history_current_items_title">Elementy w historii</string>
-    <string name="clear_history_oldest_item_title">Najstarszy zapisany element</string>
+    <string name="clear_history_latest_item_title">Najstarszy zapisany element</string>
     <string name="clear_history_button">Wyczyść całą historię</string>
     <string name="contact_screen_title">Kontakt</string>
     <string name="contact_screen_subtitle">Pytania, opinie i zgłoszenia błędów.</string>
@@ -239,4 +239,13 @@
     <string name="donate_buy_coffee_title">Postaw mi kawę</string>
     <string name="donate_buy_coffee_subtitle">Twoje wsparcie pomaga utrzymać aplikację darmową i rozwijać nowe funkcje!</string>
     <string name="donate_other_support_title">Inne sposoby wsparcia</string>
+    <string name="history_limit_changed">Limit historii został zmieniony</string>
+    <string name="history_limit_reached_title">Osiągnięto limit historii</string>
+    <string name="history_limit_reached_description">Zwiększ limit lub usuń starsze elementy, aby móc zapisać więcej kodów QR.</string>
+    <string name="history_limit_exceeded_title">Przekroczono limit historii</string>
+    <string name="history_limit_exceeded_description">Usuń starsze elementy lub wybierz wyższy limit.</string>
+    <string name="history_cleared">Historia została wyczyszczona</string>
+    <string name="clear_history_confirmation_title">Wyczyścić całą historię?</string>
+    <string name="clear_history_confirmation_subtitle">Wszystkie zapisane kody QR zostaną trwale usunięte. Tej operacji nie można cofnąć.</string>
+    <string name="clear_history_confirm_button">Wyczyść historię</string>
 </resources>

@@ -214,7 +214,7 @@
     <string name="clear_history_screen_title">Очистити історію</string>
     <string name="clear_history_screen_subtitle">Підсумок історії</string>
     <string name="clear_history_current_items_title">Елементи в історії</string>
-    <string name="clear_history_oldest_item_title">Найстаріший збережений елемент</string>
+    <string name="clear_history_latest_item_title">Найстаріший збережений елемент</string>
     <string name="clear_history_button">Очистити всю історію</string>
     <string name="contact_screen_title">Контакт</string>
     <string name="contact_screen_subtitle">Запитання, відгуки та повідомлення про помилки.</string>
@@ -239,4 +239,13 @@
     <string name="donate_buy_coffee_title">Пригостити мене кавою</string>
     <string name="donate_buy_coffee_subtitle">Ваша підтримка допомагає залишати застосунок безкоштовним і додавати нові функції!</string>
     <string name="donate_other_support_title">Інші способи підтримки</string>
+    <string name="history_limit_changed">Ліміт історії змінено</string>
+    <string name="history_limit_reached_title">Досягнуто ліміту історії</string>
+    <string name="history_limit_reached_description">Збільште ліміт або видаліть старі записи, щоб зберігати більше QR-кодів.</string>
+    <string name="history_limit_exceeded_title">Ліміт історії перевищено</string>
+    <string name="history_limit_exceeded_description">Видаліть старі записи або виберіть більший ліміт.</string>
+    <string name="history_cleared">Історію очищено</string>
+    <string name="clear_history_confirmation_title">Очистити всю історію?</string>
+    <string name="clear_history_confirmation_subtitle">Усі збережені QR-коди буде видалено назавжди. Цю дію неможливо скасувати.</string>
+    <string name="clear_history_confirm_button">Очистити історію</string>
 </resources>

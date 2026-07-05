@@ -1,16 +1,21 @@
 package software.mazur.qrezzy.feature.settings.navigation
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import software.mazur.qrezzy.R
 import software.mazur.qrezzy.feature.settings.SettingsScreen
 import software.mazur.qrezzy.feature.settings.SettingsViewModel
+import software.mazur.qrezzy.feature.settings.model.SettingsUiEvent
 import software.mazur.qrezzy.feature.settings.screens.ClearAllHistoryScreen
 import software.mazur.qrezzy.feature.settings.screens.ContactScreen
 import software.mazur.qrezzy.feature.settings.screens.DonateScreen
@@ -27,6 +32,31 @@ fun SettingsNavHost() {
     val navController = rememberNavController()
     val settingsViewModel: SettingsViewModel = hiltViewModel()
     val settingsUiState by settingsViewModel.uiState.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        settingsViewModel.events.collect { event ->
+            when (event) {
+                SettingsUiEvent.AutoSaveEnabled     ->
+                    Toast.makeText(context, R.string.settings_auto_save_enabled, Toast.LENGTH_SHORT).show()
+
+                SettingsUiEvent.AutoSaveDisabled    ->
+                    Toast.makeText(context, R.string.settings_auto_save_disabled, Toast.LENGTH_SHORT).show()
+
+                SettingsUiEvent.VibrationEnabled    ->
+                    Toast.makeText(context, R.string.settings_vibration_enabled, Toast.LENGTH_SHORT).show()
+
+                SettingsUiEvent.VibrationDisabled   ->
+                    Toast.makeText(context, R.string.settings_vibration_disabled, Toast.LENGTH_SHORT).show()
+
+                SettingsUiEvent.HistoryLimitChanged ->
+                    Toast.makeText(context, R.string.history_limit_changed, Toast.LENGTH_SHORT).show()
+
+                SettingsUiEvent.HistoryCleared      ->
+                    Toast.makeText(context, R.string.history_cleared, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     NavHost(
         navController = navController,
@@ -98,7 +128,11 @@ fun SettingsNavHost() {
         }
 
         composable(SettingsRoute.MaxHistoryItems.route) {
+            LaunchedEffect(Unit) {
+                settingsViewModel.refreshHistoryLimitState()
+            }
             MaxHistoryItemsScreen(
+                settingsUiState = settingsUiState,
                 selectedLimit = settingsUiState.historyLimit,
                 onHistoryLimitSelected = settingsViewModel::onHistoryLimitSelected,
                 onBackClick = navController::popBackStack
@@ -106,7 +140,18 @@ fun SettingsNavHost() {
         }
 
         composable(SettingsRoute.ClearAllHistory.route) {
-            ClearAllHistoryScreen(navController::popBackStack)
+            LaunchedEffect(Unit) {
+                settingsViewModel.refreshHistorySummary()
+            }
+            ClearAllHistoryScreen(
+                settingsUiState = settingsUiState,
+                onBackClick = navController::popBackStack,
+                itemsCount = settingsUiState.historyItemsCount,
+                latestCreatedAt = settingsUiState.latestHistoryItemCreatedAt,
+                onClearAllHistoryClick = settingsViewModel::onClearHistoryClick,
+                onClearHistoryConfirmed = settingsViewModel::onClearHistoryConfirmed,
+                onClearHistoryDialogDismissed = settingsViewModel::onClearHistoryDialogDismissed
+            )
         }
 
         composable(SettingsRoute.RateApp.route) {

@@ -210,7 +210,7 @@
     <string name="clear_history_screen_title">Historie löschen</string>
     <string name="clear_history_screen_subtitle">Historienübersicht</string>
     <string name="clear_history_current_items_title">Einträge in der Historie</string>
-    <string name="clear_history_oldest_item_title">Ältester gespeicherter Eintrag</string>
+    <string name="clear_history_latest_item_title">Ältester gespeicherter Eintrag</string>
     <string name="clear_history_button">Gesamte Historie löschen</string>
     <string name="contact_screen_title">Kontakt</string>
     <string name="contact_screen_subtitle">Fragen, Feedback und Fehlerberichte.</string>
@@ -235,4 +235,13 @@
     <string name="donate_buy_coffee_title">Spendiere mir einen Kaffee</string>
     <string name="donate_buy_coffee_subtitle">Deine Unterstützung hilft, die App kostenlos zu halten und neue Funktionen zu entwickeln!</string>
     <string name="donate_other_support_title">Weitere Möglichkeiten zur Unterstützung</string>
+    <string name="history_limit_changed">Verlaufslimit geändert</string>
+    <string name="history_limit_reached_title">Verlaufslimit erreicht</string>
+    <string name="history_limit_reached_description">Erhöhe das Limit oder lösche ältere Einträge, um weitere QR-Codes zu speichern.</string>
+    <string name="history_limit_exceeded_title">Verlaufslimit überschritten</string>
+    <string name="history_limit_exceeded_description">Lösche ältere Einträge oder wähle ein höheres Limit.</string>
+    <string name="history_cleared">Verlauf gelöscht</string>
+    <string name="clear_history_confirmation_title">Gesamten Verlauf löschen?</string>
+    <string name="clear_history_confirmation_subtitle">Alle gespeicherten QR-Codes werden dauerhaft gelöscht. Dieser Vorgang kann nicht rückgängig gemacht werden.</string>
+    <string name="clear_history_confirm_button">Verlauf löschen</string>
 </resources>

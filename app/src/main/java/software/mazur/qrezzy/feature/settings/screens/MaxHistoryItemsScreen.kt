@@ -15,14 +15,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
+import software.mazur.qrezzy.core.designsystem.components.QrezzyHistoryLimitPopup
 import software.mazur.qrezzy.core.designsystem.components.QrezzyListItem
 import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.components.QrezzyRadioButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.domain.settings.model.HistoryLimit
+import software.mazur.qrezzy.feature.settings.model.SettingsUiState
 
 @Composable
 fun MaxHistoryItemsScreen(
+    settingsUiState: SettingsUiState,
     selectedLimit: HistoryLimit,
     onHistoryLimitSelected: (HistoryLimit) -> Unit,
     onBackClick: () -> Unit
@@ -62,6 +65,9 @@ fun MaxHistoryItemsScreen(
                         }
                     }
                 }
+                if (settingsUiState.showHistoryLimitReachedPopup) {
+                    item { QrezzyHistoryLimitPopup() }
+                }
             }
         }
     }
@@ -74,6 +80,7 @@ private object MaxHistoryItemsScreenDefaults {
     val imageTopPadding = 16.dp
     val imageHeight = 150.dp
     val options = listOf(
+        HistoryLimitOption(R.string.history_limit_50, HistoryLimit.ITEMS_50),
         HistoryLimitOption(R.string.history_limit_100, HistoryLimit.ITEMS_100),
         HistoryLimitOption(R.string.history_limit_200, HistoryLimit.ITEMS_200),
         HistoryLimitOption(R.string.history_limit_500, HistoryLimit.ITEMS_500),

@@ -31,7 +31,13 @@ import software.mazur.qrezzy.domain.qr.model.Qr
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScannedQrDialog(qr: Qr, onSaveClick: () -> Unit, onCancelClick: () -> Unit) {
+fun ScannedQrDialog(
+    qr: Qr,
+    showSaveButton: Boolean,
+    isSaveEnabled: Boolean,
+    onSaveClick: () -> Unit,
+    onCancelClick: () -> Unit
+) {
     AlertDialog(
         onDismissRequest = onCancelClick,
         properties = DialogProperties(usePlatformDefaultWidth = false),
@@ -76,7 +82,14 @@ fun ScannedQrDialog(qr: Qr, onSaveClick: () -> Unit, onCancelClick: () -> Unit) 
                 item { QrezzyQrInfo(qr = qr) }
             }
             Spacer(modifier = Modifier.height(ScannedQrDialogDefaults.contentSpacing))
-            QrezzyButton(text = stringResource(R.string.common_save), onClick = onSaveClick, elevation = 0.dp)
+            if (showSaveButton) {
+                QrezzyButton(
+                    text = stringResource(R.string.common_save),
+                    onClick = onSaveClick,
+                    enabled = isSaveEnabled,
+                    elevation = 0.dp
+                )
+            }
         }
     }
 }

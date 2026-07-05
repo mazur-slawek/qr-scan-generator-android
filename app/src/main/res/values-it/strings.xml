@@ -210,7 +210,7 @@
     <string name="clear_history_screen_title">Cancella cronologia</string>
     <string name="clear_history_screen_subtitle">Riepilogo cronologia</string>
     <string name="clear_history_current_items_title">Elementi nella cronologia</string>
-    <string name="clear_history_oldest_item_title">Elemento salvato meno recente</string>
+    <string name="clear_history_latest_item_title">Elemento salvato meno recente</string>
     <string name="clear_history_button">Cancella tutta la cronologia</string>
     <string name="contact_screen_title">Contatto</string>
     <string name="contact_screen_subtitle">Domande, feedback e segnalazioni di bug.</string>
@@ -235,4 +235,13 @@
     <string name="donate_buy_coffee_title">Offrimi un caffè</string>
     <string name="donate_buy_coffee_subtitle">Il tuo supporto aiuta a mantenere l’app gratuita e a introdurre nuove funzionalità!</string>
     <string name="donate_other_support_title">Altri modi per supportare</string>
+    <string name="history_limit_changed">Limite della cronologia aggiornato</string>
+    <string name="history_limit_reached_title">Limite della cronologia raggiunto</string>
+    <string name="history_limit_reached_description">Aumenta il limite o elimina gli elementi meno recenti per salvare altri codici QR.</string>
+    <string name="history_limit_exceeded_title">Limite della cronologia superato</string>
+    <string name="history_limit_exceeded_description">La cronologia contiene più codici QR rispetto al limite selezionato. Elimina gli elementi meno recenti oppure scegli un limite più alto.</string>
+    <string name="history_cleared">Cronologia cancellata</string>
+    <string name="clear_history_confirmation_title">Cancellare tutta la cronologia?</string>
+    <string name="clear_history_confirmation_subtitle">Tutti i codici QR salvati verranno eliminati definitivamente. Questa operazione non può essere annullata.</string>
+    <string name="clear_history_confirm_button">Cancella cronologia</string>
 </resources>

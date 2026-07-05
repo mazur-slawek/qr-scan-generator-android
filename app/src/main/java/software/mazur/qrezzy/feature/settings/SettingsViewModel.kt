@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import software.mazur.qrezzy.core.common.vibration.VibrationService
 import software.mazur.qrezzy.core.localization.QrezzyLocaleManager
 import software.mazur.qrezzy.domain.qr.model.HistorySummary
 import software.mazur.qrezzy.domain.qr.usecase.ClearHistoryUseCase
@@ -40,12 +41,21 @@ class SettingsViewModel @Inject constructor(
     private val getHistorySummaryUseCase: GetHistorySummaryUseCase,
     private val clearHistoryUseCase: ClearHistoryUseCase,
     private val localeManager: QrezzyLocaleManager,
+    private val vibrationService: VibrationService,
 ) : ViewModel() {
-    private val historySummary = MutableStateFlow(HistorySummary(itemsCount = 0, latestCreatedAt = null))
+    private val historySummary =
+        MutableStateFlow(HistorySummary(itemsCount = 0, latestCreatedAt = null))
+    private val showClearHistoryDialog = MutableStateFlow(false)
+    private val showHistoryLimitReachedPopup = MutableStateFlow(false)
     private val _events = MutableSharedFlow<SettingsUiEvent>()
     val events = _events.asSharedFlow()
     val uiState =
-        combine(observeAppSettingsUseCase(), historySummary) { settings, summary ->
+        combine(
+            observeAppSettingsUseCase(),
+            historySummary,
+            showClearHistoryDialog,
+            showHistoryLimitReachedPopup,
+        ) { settings, summary, showClearDialog, showLimitReachedPopup ->
             SettingsUiState(
                 theme = settings.theme,
                 language = settings.language,
@@ -54,6 +64,8 @@ class SettingsViewModel @Inject constructor(
                 vibrationEnabled = settings.vibrationEnabled,
                 historyItemsCount = summary.itemsCount,
                 latestHistoryItemCreatedAt = summary.latestCreatedAt,
+                showClearHistoryDialog = showClearDialog,
+                showHistoryLimitReachedPopup = showLimitReachedPopup,
             )
         }.stateIn(
             scope = viewModelScope,
@@ -79,11 +91,8 @@ class SettingsViewModel @Inject constructor(
             setAutoSaveScansUseCase(value)
 
             _events.emit(
-                if (value) {
-                    SettingsUiEvent.AutoSaveEnabled
-                } else {
-                    SettingsUiEvent.AutoSaveDisabled
-                },
+                if (value) SettingsUiEvent.AutoSaveEnabled
+                else SettingsUiEvent.AutoSaveDisabled,
             )
         }
     }
@@ -92,12 +101,13 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             setVibrationEnabledUseCase(value)
 
+            if (value) {
+                vibrationService.vibrateShort()
+            }
+
             _events.emit(
-                if (value) {
-                    SettingsUiEvent.VibrationEnabled
-                } else {
-                    SettingsUiEvent.VibrationDisabled
-                },
+                if (value) SettingsUiEvent.VibrationEnabled
+                else SettingsUiEvent.VibrationDisabled,
             )
         }
     }
@@ -106,13 +116,14 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             setHistoryLimitUseCase(limit)
             refreshHistorySummary()
-
+            refreshHistoryLimitState()
             _events.emit(SettingsUiEvent.HistoryLimitChanged)
-            val status = getHistoryLimitStatusUseCase()
-            if (status.isLimitExceeded) {
-                _events.emit(SettingsUiEvent.HistoryLimitExceeded)
-            }
         }
+    }
+
+    suspend fun refreshHistoryLimitState() {
+        val status = getHistoryLimitStatusUseCase()
+        showHistoryLimitReachedPopup.value = status.isLimitReached
     }
 
     fun refreshHistorySummary() {
@@ -121,10 +132,20 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun onClearHistoryClick() {
+        showClearHistoryDialog.value = true
+    }
+
+    fun onClearHistoryDialogDismissed() {
+        showClearHistoryDialog.value = false
+    }
+
     fun onClearHistoryConfirmed() {
         viewModelScope.launch {
             clearHistoryUseCase()
+            showClearHistoryDialog.value = false
             refreshHistorySummary()
+            refreshHistoryLimitState()
             _events.emit(SettingsUiEvent.HistoryCleared)
         }
     }
