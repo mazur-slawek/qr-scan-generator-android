@@ -57,6 +57,7 @@ class SettingsViewModel @Inject constructor(
             showHistoryLimitReachedPopup,
         ) { settings, summary, showClearDialog, showLimitReachedPopup ->
             SettingsUiState(
+                isLoading = false,
                 theme = settings.theme,
                 language = settings.language,
                 historyLimit = settings.historyLimit,
@@ -69,7 +70,7 @@ class SettingsViewModel @Inject constructor(
             )
         }.stateIn(
             scope = viewModelScope,
-            initialValue = SettingsUiState(),
+            initialValue = SettingsUiState(isLoading = true),
             started = SharingStarted.WhileSubscribed(5_000),
         )
 

@@ -5,6 +5,7 @@ import software.mazur.qrezzy.domain.settings.model.AppTheme
 import software.mazur.qrezzy.domain.settings.model.HistoryLimit
 
 data class SettingsUiState(
+    val isLoading: Boolean = false,
     val language: AppLanguage = AppLanguage.ENGLISH,
     val theme: AppTheme = AppTheme.SYSTEM,
     val autoSaveScans: Boolean = false,
