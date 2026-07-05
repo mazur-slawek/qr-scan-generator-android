@@ -25,8 +25,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import software.mazur.qrezzy.core.designsystem.theme.TextDisabled
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
+
 
 @Composable
 fun QrezzyTextInput(
@@ -47,7 +46,7 @@ fun QrezzyTextInput(
         QrezzyTextInputDefaults.Container.textAreaHeight
     },
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge.copy(
-        color = TextPrimary,
+        color = MaterialTheme.colorScheme.onSurface,
         fontSize = QrezzyTextInputDefaults.Text.fontSize,
         fontWeight = FontWeight.Medium,
         lineHeight = QrezzyTextInputDefaults.Text.lineHeight,
@@ -90,7 +89,11 @@ fun QrezzyTextInput(
                         contentAlignment = contentAlignment
                     ) {
                         if (value.isEmpty() && placeholder.isNotEmpty()) {
-                            Text(text = placeholder, color = TextDisabled, style = textStyle)
+                            Text(
+                                text = placeholder,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = textStyle
+                            )
                         }
                         innerTextField()
                     }

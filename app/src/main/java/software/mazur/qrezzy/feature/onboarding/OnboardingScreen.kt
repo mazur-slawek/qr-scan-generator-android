@@ -43,12 +43,10 @@ import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedBackground
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyCircleButton
-import software.mazur.qrezzy.core.designsystem.theme.BorderPrimary
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellow
-import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 import software.mazur.qrezzy.feature.onboarding.model.OnboardingItem
 import software.mazur.qrezzy.feature.onboarding.model.OnboardingItemType
 
@@ -59,7 +57,11 @@ fun OnboardingScreen(onGetStartedClick: () -> Unit = {}) {
     val currentItem = items[currentPageIndex]
     val isLastPage = currentPageIndex == items.lastIndex
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface)
+    ) {
         key(currentItem.accentColor) {
             QrezzyAnimatedBackground(
                 leftColor = currentItem.accentColor,
@@ -75,15 +77,15 @@ fun OnboardingScreen(onGetStartedClick: () -> Unit = {}) {
                         animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
                         initialOffsetX = { fullWidth -> fullWidth },
                     ) +
-                        fadeIn(
-                            animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
-                        ) togetherWith slideOutHorizontally(
-                            animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
-                            targetOffsetX = { fullWidth -> -fullWidth },
-                        ) +
-                        fadeOut(
-                            animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
-                        )
+                            fadeIn(
+                                animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
+                            ) togetherWith slideOutHorizontally(
+                        animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
+                        targetOffsetX = { fullWidth -> -fullWidth },
+                    ) +
+                            fadeOut(
+                                animationSpec = tween(OnboardingDefaults.Animation.DURATION_MILLIS),
+                            )
                 },
                 label = OnboardingDefaults.Animation.CONTENT_TRANSITION_LABEL,
                 modifier = Modifier.weight(OnboardingDefaults.Layout.CONTENT_WEIGHT),
@@ -109,21 +111,17 @@ fun OnboardingScreen(onGetStartedClick: () -> Unit = {}) {
 }
 
 @Composable
-private fun OnboardingContent(
-    item: OnboardingItem,
-    modifier: Modifier = Modifier,
-) {
+private fun OnboardingContent(item: OnboardingItem, modifier: Modifier = Modifier) {
     Box(modifier = modifier) {
         Column(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.Center),
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center)
         ) {
             Image(
                 painter = painterResource(id = item.iconResId),
                 contentDescription = null,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(OnboardingDefaults.Content.imageTitleSpacing))
@@ -132,8 +130,9 @@ private fun OnboardingContent(
                 text = stringResource(id = item.titleResId),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             Spacer(modifier = Modifier.height(OnboardingDefaults.Content.titleDescriptionSpacing))
@@ -143,10 +142,10 @@ private fun OnboardingContent(
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Normal,
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = OnboardingDefaults.Content.descriptionHorizontalPadding),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = OnboardingDefaults.Content.descriptionHorizontalPadding),
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
@@ -233,12 +232,14 @@ private fun OnboardingPageIndicators(
                             } else {
                                 OnboardingDefaults.Indicator.defaultSize
                             },
-                        ).background(
-                            color = if (isSelected) currentItem.accentColor else OnboardingDefaults.Indicator.inactiveColor,
+                        )
+                        .background(
+                            color = if (isSelected) currentItem.accentColor else MaterialTheme.colorScheme.onSurfaceVariant,
                             shape = CircleShape,
-                        ).border(
+                        )
+                        .border(
                             width = OnboardingDefaults.Indicator.borderWidth,
-                            color = if (isSelected) BorderPrimary else OnboardingDefaults.Indicator.inactiveColor,
+                            color = if (isSelected) MaterialTheme.colorScheme.surfaceDim else MaterialTheme.colorScheme.onSurfaceVariant,
                             shape = CircleShape,
                         ),
             )
@@ -314,7 +315,6 @@ private object OnboardingDefaults {
         val defaultSize = 15.dp
         val horizontalPadding = 10.dp
         val borderWidth = 2.dp
-        val inactiveColor = TextSecondary
     }
 
     object Animation {

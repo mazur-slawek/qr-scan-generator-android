@@ -31,6 +31,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
+import software.mazur.qrezzy.core.designsystem.components.QrezzyHistoryLimitPopup
 import software.mazur.qrezzy.core.designsystem.components.QrezzyPopup
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
@@ -62,6 +63,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     val popupContent = ScannerPopupContent.resolve(isPermissionDenied = uiState.mode == Mode.PermissionDenied)
 
     LaunchedEffect(Unit) {
+        viewModel.onScreenOpened()
         if (!context.hasCameraPermission()) {
             cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
@@ -70,8 +72,11 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                ScannerUiEvent.QrSaved      -> Toast.makeText(context, qrSavedMessage, Toast.LENGTH_SHORT).show()
-                is ScannerUiEvent.ShowError -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                ScannerUiEvent.QrSaved      ->
+                    Toast.makeText(context, qrSavedMessage, Toast.LENGTH_SHORT).show()
+
+                is ScannerUiEvent.ShowError ->
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -98,16 +103,15 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     uiState.detectedQr?.let { qr ->
         ScannedQrDialog(
             qr = qr,
+            showSaveButton = !uiState.autoSaveScans,
+            isSaveEnabled = !uiState.isSaveBlockedByHistoryLimit,
             onSaveClick = viewModel::onSaveScannedQrClick,
-            onCancelClick = viewModel::clearScannedQr,
+            onCancelClick = viewModel::clearScannedQr
         )
     }
 
     Column(modifier = Modifier.padding(horizontal = ScannerScreenDefaults.horizontalPadding)) {
-        QrezzyTopBar(
-            titleResId = R.string.navigation_title_scan,
-            subtitleResId = R.string.navigation_subtitle_scan
-        ) {
+        QrezzyTopBar(titleResId = R.string.navigation_title_scan, subtitleResId = R.string.navigation_subtitle_scan) {
             QrezzyTopBarButton(
                 onClick = viewModel::onTorchClick,
                 enabled = uiState.isScanning,
@@ -122,6 +126,10 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
             isScanning = uiState.isScanning,
             onQrCodeScanned = viewModel::onQrCodeScanned,
         )
+        if (uiState.showHistoryLimitReachedPopup) {
+            Spacer(modifier = Modifier.height(ScannerScreenDefaults.previewButtonSpacing))
+            QrezzyHistoryLimitPopup()
+        }
         if (uiState.mode == Mode.Idle) {
             Spacer(modifier = Modifier.height(ScannerScreenDefaults.previewButtonSpacing))
             QrezzyButton(

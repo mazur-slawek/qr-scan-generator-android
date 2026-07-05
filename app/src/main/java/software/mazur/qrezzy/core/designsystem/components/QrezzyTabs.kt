@@ -22,12 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import software.mazur.qrezzy.core.designsystem.theme.BorderLight
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
-import software.mazur.qrezzy.core.designsystem.theme.Surface
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
-import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
+
 
 data class QrezzyTabItem(
     val key: Int,
@@ -45,10 +42,10 @@ fun QrezzyTabs(
         modifier = Modifier
             .fillMaxWidth()
             .alpha(if (enabled) 1f else 0.4f)
-            .background(color = Surface, shape = ShapeDefaults.Medium)
+            .background(color = MaterialTheme.colorScheme.surface, shape = ShapeDefaults.Medium)
             .border(
                 width = QrezzyTabsDefaults.borderWidth,
-                color = BorderLight,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = ShapeDefaults.Medium,
             )
             .padding(all = 1.dp)
@@ -90,7 +87,7 @@ private fun QrezzyTabItem(
         colors =
             ButtonDefaults.buttonColors(
                 containerColor = if (isSelected) QrezzyMint else Color.Transparent,
-                contentColor = TextSecondary,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
             ),
         enabled = enabled,
     ) {
@@ -98,7 +95,7 @@ private fun QrezzyTabItem(
             text = text,
             maxLines = 1,
             style = MaterialTheme.typography.labelLarge,
-            color = if (isSelected) TextPrimary else TextSecondary,
+            color = if (isSelected) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurfaceVariant,
             fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
         )
     }

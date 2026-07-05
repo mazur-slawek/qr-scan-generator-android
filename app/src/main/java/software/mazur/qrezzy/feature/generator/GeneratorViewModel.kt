@@ -14,6 +14,9 @@ import software.mazur.qrezzy.domain.qr.model.style.QrPatternStyle
 import software.mazur.qrezzy.domain.qr.model.style.QrStyle
 import software.mazur.qrezzy.domain.qr.usecase.CreateGeneratedQrUseCase
 import software.mazur.qrezzy.domain.qr.usecase.SaveQrUseCase
+import software.mazur.qrezzy.domain.settings.usecase.CanSaveQrUseCase
+import software.mazur.qrezzy.domain.settings.usecase.GetHistoryLimitStatusUseCase
+import software.mazur.qrezzy.domain.settings.usecase.ObserveAppSettingsUseCase
 import software.mazur.qrezzy.feature.generator.mapper.maxLength
 import software.mazur.qrezzy.feature.generator.mapper.toQrContent
 import software.mazur.qrezzy.feature.generator.mapper.toQrType
@@ -32,11 +35,26 @@ constructor(
     private val createGeneratedQrUseCase: CreateGeneratedQrUseCase,
     private val qrBitmapGenerator: QrBitmapGenerator,
     private val saveQrUseCase: SaveQrUseCase,
+    private val observeAppSettingsUseCase: ObserveAppSettingsUseCase,
+    private val canSaveQrUseCase: CanSaveQrUseCase,
+    private val getHistoryLimitStatusUseCase: GetHistoryLimitStatusUseCase
 ) : ViewModel() {
     var uiState = mutableStateOf(createInitialState())
         private set
     private val _events = MutableSharedFlow<GeneratorUiEvent>()
     val events = _events.asSharedFlow()
+
+    init {
+        observeHistoryLimit()
+    }
+
+    private fun observeHistoryLimit() {
+        viewModelScope.launch {
+            observeAppSettingsUseCase().collect {
+                refreshHistoryLimitState()
+            }
+        }
+    }
 
     fun onFormEvent(field: QrInputField, value: String) {
         val fieldErrors = updateFieldError(field = field, value = value)
@@ -126,13 +144,21 @@ constructor(
         val qrContent = uiState.value.qrContent
 
         if (qrContent.isBlank()) return
-        val qr = createGeneratedQrUseCase(
-            type = selectedQrInput.toQrType(),
-            content = qrContent,
-            style = uiState.value.qrStyle
-        )
 
         viewModelScope.launch {
+            if (!canSaveQrUseCase()) {
+                uiState.value = uiState.value.copy(
+                    isSaveBlockedByHistoryLimit = true,
+                    showHistoryLimitReachedPopup = true
+                )
+                return@launch
+            }
+            val qr = createGeneratedQrUseCase(
+                type = selectedQrInput.toQrType(),
+                content = qrContent,
+                style = uiState.value.qrStyle,
+            )
+
             runCatching {
                 saveQrUseCase(qr)
             }.onSuccess {
@@ -142,6 +168,7 @@ constructor(
                 _events.emit(GeneratorUiEvent.QrSaveFailed)
             }
         }
+
     }
 
     private fun updateEmailInput(field: QrInputField, value: String, fieldErrors: Map<QrInputField, QrFieldError>) {
@@ -211,8 +238,12 @@ constructor(
         uiState.value = uiState.value.copy(qrStyleEditor = update(uiState.value.qrStyleEditor))
     }
 
-    private fun resetForm() {
-        uiState.value = createInitialState()
+    private suspend fun resetForm() {
+        val status = getHistoryLimitStatusUseCase()
+        uiState.value = createInitialState().copy(
+            isSaveBlockedByHistoryLimit = status.isLimitReached,
+            showHistoryLimitReachedPopup = status.isLimitReached
+        )
     }
 
     private fun createInitialState(): GeneratorUiState {
@@ -241,6 +272,20 @@ constructor(
             qrInputs = uiState.value.qrInputs.map { currentInput ->
                 if (currentInput.isSameTypeAs(qrInput)) qrInput else currentInput
             }
+        )
+    }
+
+    fun onScreenOpened() {
+        viewModelScope.launch {
+            refreshHistoryLimitState()
+        }
+    }
+
+    private suspend fun refreshHistoryLimitState() {
+        val status = getHistoryLimitStatusUseCase()
+        uiState.value = uiState.value.copy(
+            isSaveBlockedByHistoryLimit = status.isLimitReached,
+            showHistoryLimitReachedPopup = status.isLimitReached
         )
     }
 }

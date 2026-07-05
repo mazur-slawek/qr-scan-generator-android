@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -32,7 +33,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
-import software.mazur.qrezzy.core.designsystem.theme.Surface
 import software.mazur.qrezzy.feature.scanner.analyzer.QrCodeAnalyzer
 
 @Composable
@@ -45,7 +45,7 @@ fun ScannerPreview(
     Card(
         modifier = modifier,
         shape = ShapeDefaults.Medium,
-        colors = CardDefaults.cardColors(containerColor = Surface),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = ScannerPreviewDefaults.Container.elevation),
     ) {
         QrezzyAnimatedStars(modifier = Modifier.fillMaxSize()) {

@@ -34,8 +34,6 @@ import kotlinx.coroutines.delay
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.extensions.ui
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
-import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 import software.mazur.qrezzy.feature.generator.mapper.toQrType
 import software.mazur.qrezzy.feature.generator.model.QrInput
 import software.mazur.qrezzy.feature.generator.model.isSameTypeAs
@@ -90,7 +88,7 @@ fun QrTypeTabs(qrInputs: List<QrInput>, selectedQrInput: QrInput, onQrInputSelec
                     Icon(
                         imageVector = typeUi.icon,
                         contentDescription = null,
-                        tint = if (isSelected) TextPrimary else TextSecondary,
+                        tint = if (isSelected) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     Spacer(modifier = Modifier.height(QrTypeTabsDefaults.iconTextSpacing))
                     Text(
@@ -99,7 +97,7 @@ fun QrTypeTabs(qrInputs: List<QrInput>, selectedQrInput: QrInput, onQrInputSelec
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.labelLarge,
-                        color = if (isSelected) TextPrimary else TextSecondary,
+                        color = if (isSelected) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                         fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
                     )
                 }

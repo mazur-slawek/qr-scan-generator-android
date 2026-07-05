@@ -18,8 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
-import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
+
 
 @Composable
 fun HistoryListFooter() {
@@ -36,14 +35,14 @@ fun HistoryListFooter() {
         )
         Spacer(modifier = Modifier.height(HistoryListFooterDefaults.imageTitleSpacing))
         Text(
-            color = TextPrimary,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.ExtraBold,
             text = stringResource(R.string.history_footer_title),
         )
         Spacer(modifier = Modifier.height(HistoryListFooterDefaults.titleSubtitleSpacing))
         Text(
-            color = TextSecondary,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,

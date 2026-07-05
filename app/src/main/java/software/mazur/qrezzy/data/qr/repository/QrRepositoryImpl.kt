@@ -43,6 +43,14 @@ constructor(private val qrDao: QrDao) : QrRepository {
         qrDao.deleteByIds(ids)
     }
 
+    override suspend fun getCount(): Int {
+        return qrDao.getCount()
+    }
+
+    override suspend fun getLatestCreatedAt(): Long? {
+        return qrDao.getLatestCreatedAt()
+    }
+
     override suspend fun deleteAll() {
         qrDao.deleteAll()
     }

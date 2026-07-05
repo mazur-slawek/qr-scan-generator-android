@@ -17,5 +17,9 @@ interface QrRepository {
 
     suspend fun deleteByIds(ids: List<Long>)
 
+    suspend fun getCount(): Int
+
+    suspend fun getLatestCreatedAt(): Long?
+    
     suspend fun deleteAll()
 }

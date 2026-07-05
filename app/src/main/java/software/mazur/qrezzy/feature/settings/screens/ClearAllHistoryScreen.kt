@@ -24,9 +24,25 @@ import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
+import software.mazur.qrezzy.feature.settings.components.ClearHistoryConfirmationDialog
+import software.mazur.qrezzy.feature.settings.model.SettingsUiState
 
 @Composable
-fun ClearAllHistoryScreen(onBackClick: () -> Unit) {
+fun ClearAllHistoryScreen(
+    settingsUiState: SettingsUiState,
+    itemsCount: Int,
+    latestCreatedAt: Long?,
+    onBackClick: () -> Unit,
+    onClearAllHistoryClick: () -> Unit,
+    onClearHistoryConfirmed: () -> Unit,
+    onClearHistoryDialogDismissed: () -> Unit,
+) {
+    if (settingsUiState.showClearHistoryDialog) {
+        ClearHistoryConfirmationDialog(
+            onConfirmClick = onClearHistoryConfirmed,
+            onCancelClick = onClearHistoryDialogDismissed
+        )
+    }
     Column(modifier = Modifier.padding(horizontal = ClearAllHistoryScreenDefaults.contentPadding)) {
         QrezzyTopBar(onBackClick = onBackClick, titleResId = R.string.clear_history_screen_title)
         QrezzyAnimatedStars(
@@ -56,14 +72,14 @@ fun ClearAllHistoryScreen(onBackClick: () -> Unit) {
                                 iconPainter = painterResource(R.drawable.qrezzy_delete),
                                 iconSize = ClearAllHistoryScreenDefaults.iconSize,
                                 title = stringResource(R.string.clear_history_current_items_title),
-                                value = "324",
+                                value = itemsCount.toString(),
                                 iconBackgroundColor = QrezzyPinkDark,
                             )
                             QrezzyListItem(
                                 iconPainter = painterResource(R.drawable.qrezzy_calendar),
                                 iconSize = ClearAllHistoryScreenDefaults.iconSize,
-                                title = stringResource(R.string.clear_history_oldest_item_title),
-                                value = "24.06.2026",
+                                title = stringResource(R.string.clear_history_latest_item_title),
+                                value = latestCreatedAt.toDisplayDate(),
                                 iconBackgroundColor = QrezzyPurpleDark,
                                 showDivider = false,
                             )
@@ -74,7 +90,8 @@ fun ClearAllHistoryScreen(onBackClick: () -> Unit) {
         }
         QrezzyButton(
             text = stringResource(R.string.clear_history_button),
-            onClick = {},
+            onClick = onClearAllHistoryClick,
+            enabled = itemsCount > 0,
             elevation = 0.dp,
             containerColor = QrezzyPink,
             depthColor = QrezzyYellowDark,
@@ -83,6 +100,11 @@ fun ClearAllHistoryScreen(onBackClick: () -> Unit) {
     }
 }
 
+private fun Long?.toDisplayDate(): String {
+    if (this == null) return "—"
+    val formatter = java.text.SimpleDateFormat("dd.MM.yyyy HH:mm", java.util.Locale.getDefault())
+    return formatter.format(java.util.Date(this))
+}
 
 private object ClearAllHistoryScreenDefaults {
     const val STARS_COUNT = 150

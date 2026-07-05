@@ -37,6 +37,12 @@ interface QrDao {
     @Query("""DELETE FROM qr WHERE id IN (:ids)""")
     suspend fun deleteByIds(ids: List<Long>)
 
+    @Query("SELECT COUNT(*) FROM qr")
+    suspend fun getCount(): Int
+
+    @Query("SELECT createdAt FROM qr ORDER BY createdAt DESC LIMIT 1")
+    suspend fun getLatestCreatedAt(): Long?
+
     @Query("DELETE FROM qr")
     suspend fun deleteAll()
 }

@@ -26,12 +26,8 @@ import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.extensions.ui
-import software.mazur.qrezzy.core.designsystem.theme.BorderLight
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
-import software.mazur.qrezzy.core.designsystem.theme.Surface
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
-import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
 import software.mazur.qrezzy.domain.qr.model.Qr
 import java.time.Instant
 import java.time.ZoneId
@@ -46,10 +42,10 @@ fun QrezzyQrInfoDetails(qr: Qr, modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .border(
                     width = QrezzyQrInfoDetailsDefaults.Container.borderWidth,
-                    color = BorderLight,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                     shape = ShapeDefaults.Medium,
                 )
-                .background(color = Surface, shape = ShapeDefaults.Medium)
+                .background(color = MaterialTheme.colorScheme.surface, shape = ShapeDefaults.Medium)
                 .padding(QrezzyQrInfoDetailsDefaults.Container.padding),
         ) {
             QrezzyQrInfoDetailsRow(
@@ -62,7 +58,7 @@ fun QrezzyQrInfoDetails(qr: Qr, modifier: Modifier = Modifier) {
             )
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = QrezzyQrInfoDetailsDefaults.Divider.verticalPadding),
-                color = BorderLight,
+                color = MaterialTheme.colorScheme.surfaceContainer,
             )
             QrezzyQrInfoDetailsRow(
                 icon = Icons.Default.MoreTime,
@@ -97,13 +93,13 @@ private fun QrezzyQrInfoDetailsRow(
         Column {
             Text(
                 text = label,
-                color = TextSecondary,
-                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontWeight = FontWeight.ExtraBold,
                 style = MaterialTheme.typography.labelMedium,
             )
             Text(
                 text = value,
-                color = TextPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.bodyMedium,
             )
@@ -122,7 +118,7 @@ private fun QrezzyQrInfoDetailsIcon(
     Icon(
         imageVector = icon,
         contentDescription = contentDescription,
-        tint = TextPrimary,
+        tint = MaterialTheme.colorScheme.inverseOnSurface,
         modifier = modifier
             .border(
                 color = iconBorderColor,

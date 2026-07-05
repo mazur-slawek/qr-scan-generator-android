@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
+import software.mazur.qrezzy.core.designsystem.components.QrezzyHistoryLimitPopup
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
 import software.mazur.qrezzy.core.designsystem.components.qrezzyQr.QrezzyCustomizeQrDialog
@@ -42,7 +43,9 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
     val qrBitmap = remember(uiState.qrContent, uiState.qrStyle) {
         viewModel.generateQrBitmap(content = uiState.qrContent)
     }
-
+    LaunchedEffect(Unit) {
+        viewModel.onScreenOpened()
+    }
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
@@ -57,7 +60,7 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
         }
     }
     GeneratorCustomizeQrDialog(uiState = uiState, viewModel = viewModel)
-    
+
     Column(modifier = Modifier.padding(horizontal = GeneratorScreenDefaults.screenHorizontalPadding)) {
         QrezzyTopBar(
             titleResId = R.string.navigation_title_generate,
@@ -75,7 +78,7 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
             onQrInputSelected = viewModel::onQrInputSelected,
             onFormEvent = viewModel::onFormEvent,
             onSaveClick = viewModel::saveQrCode,
-            onClearFocus = focusManager::clearFocus,
+            onClearFocus = focusManager::clearFocus
         )
     }
 }
@@ -106,7 +109,7 @@ private fun GeneratorContent(
     onQrInputSelected: (software.mazur.qrezzy.feature.generator.model.QrInput) -> Unit,
     onFormEvent: (software.mazur.qrezzy.feature.generator.model.QrInputField, String) -> Unit,
     onSaveClick: () -> Unit,
-    onClearFocus: () -> Unit,
+    onClearFocus: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -130,6 +133,7 @@ private fun GeneratorContent(
                 onChange = onFormEvent,
             )
         }
+        if (uiState.showHistoryLimitReachedPopup) item { QrezzyHistoryLimitPopup() }
         item {
             QrezzyButton(
                 modifier = Modifier.padding(

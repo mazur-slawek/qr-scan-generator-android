@@ -182,9 +182,7 @@
     <string name="settings_section_support">About app</string>
 
     <string name="settings_language">Language</string>
-    <string name="settings_language_polish">Polski</string>
     <string name="settings_theme">Theme</string>
-    <string name="settings_theme_system">System</string>
     <string name="settings_privacy">Privacy</string>
     <string name="settings_permission">Permission</string>
 
@@ -245,7 +243,7 @@
     <string name="clear_history_screen_title">Clear History</string>
     <string name="clear_history_screen_subtitle">History summary</string>
     <string name="clear_history_current_items_title">Items in history</string>
-    <string name="clear_history_oldest_item_title">Oldest saved item</string>
+    <string name="clear_history_latest_item_title">Oldest saved item</string>
     <string name="clear_history_button">Clear all history</string>
     <!-- Contact -->
     <string name="contact_screen_title">Contact</string>
@@ -268,16 +266,32 @@
     <!-- Open Source -->
     <string name="open_source_screen_title">Open Source Licenses</string>
     <string name="open_source_screen_subtitle">Libraries and licenses used by QREZZY</string>
-    <!-- Open source licenses -->
-    <string name="open_source_license_apache_2">Apache License 2.0</string>
-    <string name="open_source_license_zxing_title">ZXing</string>
-    <string name="open_source_license_zxing_version">4.3.0</string>
-    <string name="open_source_license_mlkit_barcode_title">ML Kit Barcode Scanning</string>
-    <string name="open_source_license_mlkit_barcode_version">17.3.0</string>
     <!-- Donate -->
     <string name="donate_screen_title">Support QREZZY</string>
     <string name="donate_support_section_title">Help support future development</string>
     <string name="donate_buy_coffee_title">Buy me a coffee</string>
     <string name="donate_buy_coffee_subtitle">Your support helps keep the app free and brings new features!</string>
     <string name="donate_other_support_title">Other ways to support</string>
+    <!-- Open source licenses -->
+    <string name="open_source_license_apache_2" translatable="false">Apache License 2.0</string>
+    <string name="open_source_license_zxing_title" translatable="false">ZXing</string>
+    <string name="open_source_license_zxing_version" translatable="false">4.3.0</string>
+    <string name="open_source_license_mlkit_barcode_title" translatable="false">ML Kit Barcode Scanning</string>
+    <string name="open_source_license_mlkit_barcode_version" translatable="false">17.3.0</string>
+
+    <string name="settings_auto_save_enabled">Auto save enabled</string>
+    <string name="settings_auto_save_disabled">Auto save disabled</string>
+    <string name="settings_vibration_enabled">Vibration enabled</string>
+    <string name="settings_vibration_disabled">Vibration disabled</string>
+
+    <string name="history_limit_changed">History limit changed</string>
+    <string name="history_limit_reached_title">History limit reached</string>
+    <string name="history_limit_reached_description">Increase the limit or delete old items to save more.</string>
+    <string name="history_limit_exceeded_title">History limit exceeded</string>
+    <string name="history_limit_exceeded_description">Your current history contains more QR codes than the selected limit. Delete old items or choose a higher limit.</string>
+
+    <string name="history_cleared">History cleared</string>
+    <string name="clear_history_confirmation_title">Clear all history?</string>
+    <string name="clear_history_confirmation_subtitle">This will permanently delete all saved QR codes. This action cannot be undone.</string>
+    <string name="clear_history_confirm_button">Clear history</string>
 </resources>

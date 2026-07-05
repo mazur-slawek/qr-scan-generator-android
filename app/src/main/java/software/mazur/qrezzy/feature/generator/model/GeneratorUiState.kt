@@ -19,10 +19,12 @@ data class GeneratorUiState(
             QrInput.GeoLocation(),
         ),
     val fieldErrors: Map<QrInputField, QrFieldError> = emptyMap(),
-    val qrStyleEditor: QrStyleEditorState = QrStyleEditorState()
+    val qrStyleEditor: QrStyleEditorState = QrStyleEditorState(),
+    val isSaveBlockedByHistoryLimit: Boolean = false,
+    val showHistoryLimitReachedPopup: Boolean = false
 ) {
     val canSave: Boolean
-        get() = qrContent.isNotBlank() && currentFieldErrors.isEmpty()
+        get() = qrContent.isNotBlank() && currentFieldErrors.isEmpty() && !isSaveBlockedByHistoryLimit
     val currentFieldErrors: Map<QrInputField, QrFieldError>
         get() = fieldErrors.filterKeys { field -> field in selectedQrInput.fields }
     val qrStyle: QrStyle

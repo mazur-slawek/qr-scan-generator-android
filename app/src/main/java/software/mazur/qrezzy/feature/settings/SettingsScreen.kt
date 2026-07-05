@@ -23,9 +23,12 @@ import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
 import software.mazur.qrezzy.feature.settings.components.SettingsListFooterCard
 import software.mazur.qrezzy.feature.settings.components.SettingsListHeaderCard
+import software.mazur.qrezzy.feature.settings.mapper.displayName
+import software.mazur.qrezzy.feature.settings.model.SettingsUiState
 
 @Composable
 fun SettingsScreen(
+    uiState: SettingsUiState,
     onLanguageClick: () -> Unit,
     onThemeClick: () -> Unit,
     onPrivacyClick: () -> Unit,
@@ -36,6 +39,8 @@ fun SettingsScreen(
     onContactClick: () -> Unit,
     onOpenSourceLicensesClick: () -> Unit,
     onDonateClick: () -> Unit,
+    onAutoSaveScansChanged: (Boolean) -> Unit,
+    onVibrationEnabledChanged: (Boolean) -> Unit,
 ) {
     Column(modifier = Modifier.padding(horizontal = SettingsScreenDefaults.horizontalPadding)) {
         QrezzyTopBar(
@@ -57,7 +62,7 @@ fun SettingsScreen(
                         QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_language),
                             title = stringResource(R.string.settings_language),
-                            value = stringResource(R.string.settings_language_polish),
+                            value = uiState.language.displayName(),
                             iconSize = SettingsScreenDefaults.iconSize,
                             iconBackgroundColor = QrezzyYellowDark,
                             onClick = onLanguageClick
@@ -65,7 +70,7 @@ fun SettingsScreen(
                         QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_theme),
                             title = stringResource(R.string.settings_theme),
-                            value = stringResource(R.string.settings_theme_system),
+                            value = uiState.theme.displayName(),
                             iconSize = SettingsScreenDefaults.iconSize,
                             iconBackgroundColor = QrezzyMintDark,
                             onClick = onThemeClick,
@@ -80,14 +85,24 @@ fun SettingsScreen(
                         QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_autosave),
                             title = stringResource(R.string.settings_auto_save_scanned_qr),
-                            trailing = { QrezzySwitch(checked = true, onCheckedChange = {}) },
+                            trailing = {
+                                QrezzySwitch(
+                                    checked = uiState.autoSaveScans,
+                                    onCheckedChange = onAutoSaveScansChanged
+                                )
+                            },
                             iconSize = SettingsScreenDefaults.iconSize,
                             iconBackgroundColor = QrezzyMintDark,
                         )
                         QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_vibro),
                             title = stringResource(R.string.settings_vibrate_on_scan),
-                            trailing = { QrezzySwitch(checked = true, onCheckedChange = {}) },
+                            trailing = {
+                                QrezzySwitch(
+                                    checked = uiState.vibrationEnabled,
+                                    onCheckedChange = onVibrationEnabledChanged
+                                )
+                            },
                             iconSize = SettingsScreenDefaults.iconSize,
                             iconBackgroundColor = QrezzyPurpleDark,
                         )
@@ -101,7 +116,7 @@ fun SettingsScreen(
                         QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_history_limit),
                             title = stringResource(R.string.settings_max_history_items),
-                            value = "500",
+                            value = uiState.historyLimit.displayName(),
                             onClick = onMaximumHistoryItemsClick,
                             iconSize = SettingsScreenDefaults.iconSize,
                             iconBackgroundColor = QrezzyYellowDark,

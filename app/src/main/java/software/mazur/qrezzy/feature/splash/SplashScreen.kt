@@ -4,6 +4,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -64,22 +66,22 @@ fun SplashScreen(onGetStartedClick: () -> Unit) {
     )
 
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface),
         contentAlignment = Alignment.Center,
     ) {
         QrezzyAnimatedBackground()
 
         Column(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = SplashScreenDefaults.Layout.contentHorizontalPadding),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = SplashScreenDefaults.Layout.contentHorizontalPadding),
         ) {
             Column(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .weight(SplashScreenDefaults.Layout.BRANDING_WEIGHT),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(SplashScreenDefaults.Layout.BRANDING_WEIGHT),
                 verticalArrangement = Arrangement.Center,
             ) {
                 Image(
@@ -97,11 +99,10 @@ fun SplashScreen(onGetStartedClick: () -> Unit) {
                 text = stringResource(id = R.string.button_get_started),
                 onClick = onGetStartedClick,
                 rightIcon = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
-                modifier =
-                    Modifier
-                        .alpha(buttonAlpha)
-                        .offset(y = buttonOffsetY)
-                        .padding(bottom = SplashScreenDefaults.Layout.buttonBottomPadding),
+                modifier = Modifier
+                    .alpha(buttonAlpha)
+                    .offset(y = buttonOffsetY)
+                    .padding(bottom = SplashScreenDefaults.Layout.buttonBottomPadding),
             )
         }
     }

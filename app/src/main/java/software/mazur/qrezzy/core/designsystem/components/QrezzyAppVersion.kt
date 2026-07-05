@@ -13,14 +13,13 @@ import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.BuildConfig
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 
 @Composable
 fun QrezzyAppVersion(modifier: Modifier = Modifier) {
     Text(
         text = "Version ${BuildConfig.VERSION_NAME}",
-        color = TextPrimary,
-        fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colorScheme.onSurface,
+        fontWeight = FontWeight.ExtraBold,
         style = MaterialTheme.typography.bodySmall,
         modifier = modifier
             .background(

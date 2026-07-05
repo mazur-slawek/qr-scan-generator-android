@@ -17,9 +17,11 @@ import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAppVersion
 import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
+import software.mazur.qrezzy.core.designsystem.theme.LocalIsDarkTheme
 
 @Composable
 fun SettingsListHeaderCard(modifier: Modifier = Modifier) {
+    val isDarkTheme = LocalIsDarkTheme.current
     QrezzyListSection(modifier = modifier.wrapContentSize()) {
         QrezzyAnimatedStars(
             starsCount = SettingsListHeaderDefaults.STARTS_COUNT,
@@ -43,7 +45,8 @@ fun SettingsListHeaderCard(modifier: Modifier = Modifier) {
                             modifier = Modifier.height(SettingsListHeaderDefaults.logoHeight),
                         )
                         Image(
-                            painter = painterResource(R.drawable.qrezzy_slogan),
+                            painter = painterResource(
+                                if (isDarkTheme) R.drawable.qrezzy_slogan_dark else R.drawable.qrezzy_slogan),
                             modifier = Modifier
                                 .padding(
                                     top = SettingsListHeaderDefaults.sloganTopSpacing,

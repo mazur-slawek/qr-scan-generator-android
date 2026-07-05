@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
-import software.mazur.qrezzy.core.designsystem.theme.Surface
 
 @Composable
 fun QrezzyQrPreview(qrBitmap: Bitmap?, modifier: Modifier = Modifier) {
@@ -35,7 +35,7 @@ fun QrezzyQrPreview(qrBitmap: Bitmap?, modifier: Modifier = Modifier) {
             )
             .height(QrezzyQrPreviewDefaults.Container.height),
         shape = ShapeDefaults.Medium,
-        colors = CardDefaults.cardColors(containerColor = Surface),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(
             defaultElevation = QrezzyQrPreviewDefaults.Container.elevation,
         ),

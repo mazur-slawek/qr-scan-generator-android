@@ -30,7 +30,6 @@ import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
-import software.mazur.qrezzy.core.designsystem.theme.TextPrimary
 
 @Composable
 fun SettingsListFooterCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
@@ -102,7 +101,7 @@ fun SettingsListFooterCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
 
 @Composable
 private fun FooterText(text: String, style: androidx.compose.ui.text.TextStyle) {
-    Text(text = text, color = TextPrimary, fontWeight = FontWeight.SemiBold, style = style)
+    Text(text = text, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.ExtraBold, style = style)
 }
 
 private object SettingsListFooterDefaults {

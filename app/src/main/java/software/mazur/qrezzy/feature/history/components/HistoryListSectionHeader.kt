@@ -9,13 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import software.mazur.qrezzy.core.designsystem.theme.TextSecondary
+
 
 @Composable
 fun HistoryListSectionHeader(text: String, modifier: Modifier = Modifier) {
     Text(
         text = text,
-        color = TextSecondary,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
         style = MaterialTheme.typography.labelLarge,
         fontWeight = FontWeight.Medium,
         maxLines = HistoryListSectionHeaderDefaults.MAX_LINES,
