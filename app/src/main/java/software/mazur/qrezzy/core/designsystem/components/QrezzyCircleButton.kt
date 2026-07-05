@@ -43,6 +43,7 @@ fun QrezzyCircleButton(
             imageVector = icon,
             contentDescription = null,
             modifier = Modifier.size(QrezzyCircleButtonDefaults.Icon.size),
+            tint = MaterialTheme.colorScheme.inverseOnSurface
         )
     }
 }

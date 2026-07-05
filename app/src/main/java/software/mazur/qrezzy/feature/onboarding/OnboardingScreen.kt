@@ -111,21 +111,17 @@ fun OnboardingScreen(onGetStartedClick: () -> Unit = {}) {
 }
 
 @Composable
-private fun OnboardingContent(
-    item: OnboardingItem,
-    modifier: Modifier = Modifier,
-) {
+private fun OnboardingContent(item: OnboardingItem, modifier: Modifier = Modifier) {
     Box(modifier = modifier) {
         Column(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.Center),
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center)
         ) {
             Image(
                 painter = painterResource(id = item.iconResId),
                 contentDescription = null,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(OnboardingDefaults.Content.imageTitleSpacing))
@@ -136,6 +132,7 @@ private fun OnboardingContent(
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             Spacer(modifier = Modifier.height(OnboardingDefaults.Content.titleDescriptionSpacing))
@@ -145,10 +142,10 @@ private fun OnboardingContent(
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Normal,
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = OnboardingDefaults.Content.descriptionHorizontalPadding),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = OnboardingDefaults.Content.descriptionHorizontalPadding),
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
