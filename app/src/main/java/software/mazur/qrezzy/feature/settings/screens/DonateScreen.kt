@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -61,6 +62,7 @@ fun DonateScreen(onBackClick: () -> Unit) {
                 item {
                     QrezzyRateApp(title = stringResource(R.string.donate_other_support_title))
                 }
+                item { Spacer(modifier = Modifier.height(DonateScreenDefaults.itemSpacing)) }
             }
         }
     }

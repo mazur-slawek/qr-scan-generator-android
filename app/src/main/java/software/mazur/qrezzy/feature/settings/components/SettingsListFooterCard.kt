@@ -1,14 +1,13 @@
 package software.mazur.qrezzy.feature.settings.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,17 +26,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
-import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
 
 @Composable
 fun SettingsListFooterCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
-    QrezzyAnimatedStars(
-        starsCount = SettingsListFooterDefaults.STARS_COUNT,
+    Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(SettingsListFooterDefaults.height)
             .clickable(onClick = onClick),
     ) {
         Row(
@@ -90,11 +86,6 @@ fun SettingsListFooterCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
                     )
                 }
             }
-            Image(
-                painter = painterResource(R.drawable.qrezzy_mascot_donate),
-                modifier = Modifier.fillMaxHeight(),
-                contentDescription = null,
-            )
         }
     }
 }
@@ -105,14 +96,11 @@ private fun FooterText(text: String, style: androidx.compose.ui.text.TextStyle) 
 }
 
 private object SettingsListFooterDefaults {
-    val height = 100.dp
-
     object Border {
         val width = 0.5.dp
         const val ALPHA = 0.5f
     }
 
-    const val STARS_COUNT = 40
     const val BACKGROUND_ALPHA = 0.5f
     val contentPadding = 16.dp
     val contentSpacing = 16.dp

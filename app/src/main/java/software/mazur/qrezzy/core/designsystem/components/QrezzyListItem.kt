@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
@@ -141,6 +142,8 @@ private fun QrezzyListItemText(title: String, subtitle: String?, titleColor: Col
             color = titleColor,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.ExtraBold,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
         )
         subtitle?.let { text ->
             Text(
@@ -148,6 +151,8 @@ private fun QrezzyListItemText(title: String, subtitle: String?, titleColor: Col
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Medium,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }

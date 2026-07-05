@@ -3,6 +3,7 @@ package software.mazur.qrezzy.feature.settings.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -68,6 +69,7 @@ fun MaxHistoryItemsScreen(
                 if (settingsUiState.showHistoryLimitReachedPopup) {
                     item { QrezzyHistoryLimitPopup() }
                 }
+                item { Spacer(modifier = Modifier.height(MaxHistoryItemsScreenDefaults.itemSpacing)) }
             }
         }
     }

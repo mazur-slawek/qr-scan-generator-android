@@ -196,4 +196,5 @@ private object SettingsScreenDefaults {
     val bottomPadding = 16.dp
     const val LIST_WEIGHT = 1f
     val iconSize = 40.dp
+    val imageHeight = 90.dp
 }

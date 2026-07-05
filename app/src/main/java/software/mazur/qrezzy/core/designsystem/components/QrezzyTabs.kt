@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
@@ -94,9 +95,11 @@ private fun QrezzyTabItem(
         Text(
             text = text,
             maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.labelLarge,
             color = if (isSelected) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurfaceVariant,
             fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
+            modifier = Modifier.padding(horizontal = QrezzyTabsDefaults.Tab.padding)
         )
     }
 }
@@ -109,5 +112,6 @@ private object QrezzyTabsDefaults {
         val cornerRadius = 10.dp
         val borderWidth = 1.5.dp
         val outerPadding = 1.dp
+        val padding = 7.dp
     }
 }

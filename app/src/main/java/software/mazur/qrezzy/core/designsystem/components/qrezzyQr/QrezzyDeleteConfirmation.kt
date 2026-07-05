@@ -24,8 +24,6 @@ import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
-import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellow
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
 
 @Composable
@@ -129,8 +127,6 @@ private fun DeleteQrConfirmationActions(
 
         QrezzyButton(
             text = stringResource(R.string.common_cancel),
-            containerColor = QrezzyYellow,
-            depthColor = QrezzyPinkDark,
             onClick = onCancelClick,
             elevation = QrezzyDeleteConfirmationDefault.Actions.buttonElevation,
         )

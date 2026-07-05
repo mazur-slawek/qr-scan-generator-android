@@ -86,6 +86,7 @@ fun ClearAllHistoryScreen(
                         }
                     }
                 }
+                item { Spacer(modifier = Modifier.height(ClearAllHistoryScreenDefaults.itemSpacing)) }
             }
         }
         QrezzyButton(

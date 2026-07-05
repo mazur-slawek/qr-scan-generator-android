@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPink
@@ -52,7 +53,9 @@ fun QrezzyListSection(
                 modifier = Modifier.padding(
                     start = QrezzyListSectionDefaults.Title.startPadding,
                     bottom = QrezzyListSectionDefaults.Title.bottomPadding
-                )
+                ),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
         Box(

@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import software.mazur.qrezzy.feature.generator.GeneratorScreen
@@ -81,8 +82,11 @@ private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (Home
                     label = {
                         Text(
                             text = title,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                             style = MaterialTheme.typography.bodySmall,
                             fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
+                            modifier = Modifier.padding(horizontal = 7.dp)
                         )
                     },
                 )

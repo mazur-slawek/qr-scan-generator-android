@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -23,6 +24,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.extensions.ui
@@ -97,11 +99,13 @@ private fun QrezzyQrInfoDetailsRow(
                 fontWeight = FontWeight.ExtraBold,
                 style = MaterialTheme.typography.labelMedium,
             )
+            Spacer(modifier = Modifier.height(QrezzyQrInfoDetailsDefaults.Text.spacing))
             Text(
                 text = value,
                 color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.bodyMedium,
+                lineHeight = 14.sp
             )
         }
     }
@@ -126,7 +130,7 @@ private fun QrezzyQrInfoDetailsIcon(
                 width = QrezzyQrInfoDetailsDefaults.Icon.borderWidth
             )
             .background(color = backgroundColor, shape = ShapeDefaults.Small)
-            .padding(QrezzyQrInfoDetailsDefaults.Icon.padding),
+            .padding(QrezzyQrInfoDetailsDefaults.Icon.padding)
     )
 }
 
@@ -147,8 +151,12 @@ private object QrezzyQrInfoDetailsDefaults {
         val verticalPadding = 8.dp
     }
 
+    object Text {
+        val spacing = 3.dp
+    }
+
     object Icon {
         val borderWidth = 1.5.dp
-        val padding = 10.dp
+        val padding = 12.dp
     }
 }
