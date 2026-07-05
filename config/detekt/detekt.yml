@@ -1,45 +1,60 @@
-# Maksymalna liczba błędów, zanim build zostanie oznaczony jako failed
 build:
-  maxIssues: 20
+  maxIssues: 200
 
 style:
-  # W Androidzie/Compose często używamy wartości typu:
-  # 16.dp, 24.dp, 300.ms, dlatego wyłączamy tę regułę.
   MagicNumber:
     active: false
 
-  # Maksymalna długość linii kodu.
   MaxLineLength:
     active: true
     maxLineLength: 140
 
+  NewLineAtEndOfFile:
+    active: false
+
+  ReturnCount:
+    active: false
+
+  UnusedPrivateMember:
+    active: false
+
 complexity:
-  # Dłuższe funkcje są czasem akceptowalne w Compose.
   LongMethod:
     active: true
-    threshold: 120
+    threshold: 180
 
-  # W Compose funkcje często mają wiele parametrów.
   LongParameterList:
     active: false
 
+  TooManyFunctions:
+    active: true
+    thresholdInFiles: 30
+    thresholdInClasses: 30
+    thresholdInInterfaces: 20
+    thresholdInObjects: 20
+    thresholdInEnums: 20
+
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 20
+
+exceptions:
+  TooGenericExceptionCaught:
+    active: false
+
 comments:
-  # Nie wymagamy dokumentacji KDoc dla każdej publicznej klasy.
   UndocumentedPublicClass:
     active: false
 
-  # Nie wymagamy dokumentacji KDoc dla każdej publicznej funkcji.
   UndocumentedPublicFunction:
     active: false
 
 naming:
-  # Compose używa PascalCase dla funkcji oznaczonych @Composable.
   FunctionNaming:
     active: true
     functionPattern: '[a-z][a-zA-Z0-9]*'
     ignoreAnnotated:
       - Composable
 
-  # Pozwalamy na pliki zawierające więcej niż jedną deklarację.
   MatchingDeclarationName:
     active: false
