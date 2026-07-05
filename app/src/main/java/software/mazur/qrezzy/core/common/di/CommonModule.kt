@@ -5,7 +5,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import software.mazur.qrezzy.core.common.time.SystemTimeProvider
-import software.mazur.qrezzy.core.common.time.TimeProvider
+import software.mazur.qrezzy.domain.common.TimeProvider
 import javax.inject.Singleton
 
 @Module

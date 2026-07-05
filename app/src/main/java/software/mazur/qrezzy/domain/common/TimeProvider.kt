@@ -1,4 +1,4 @@
-package software.mazur.qrezzy.core.common.time
+package software.mazur.qrezzy.domain.common
 
 interface TimeProvider {
     fun nowMillis(): Long

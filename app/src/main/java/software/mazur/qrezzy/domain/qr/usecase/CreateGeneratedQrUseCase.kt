@@ -1,6 +1,6 @@
 package software.mazur.qrezzy.domain.qr.usecase
 
-import software.mazur.qrezzy.core.common.time.TimeProvider
+import software.mazur.qrezzy.domain.common.TimeProvider
 import software.mazur.qrezzy.domain.qr.model.Qr
 import software.mazur.qrezzy.domain.qr.model.QrSource
 import software.mazur.qrezzy.domain.qr.model.QrType
