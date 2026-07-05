@@ -26,7 +26,7 @@
     <string name="onboarding_summary_description">Scanne, erstelle und teile QR-Codes mit einer einfachen App.</string>
     <string name="qr_type_text">Text</string>
     <string name="qr_type_url">URL</string>
-    <string name="qr_type_wifi">WLAN</string>
+    <string name="qr_type_wifi">Wi-Fi</string>
     <string name="qr_type_contact">Kontakt</string>
     <string name="qr_type_email">E-Mail</string>
     <string name="qr_type_phone">Telefon</string>

@@ -26,7 +26,7 @@
     <string name="onboarding_summary_description">Скануйте, створюйте й діліться QR-кодами в одному простому застосунку.</string>
     <string name="qr_type_text">Текст</string>
     <string name="qr_type_url">URL</string>
-    <string name="qr_type_wifi">Wi‑Fi</string>
+    <string name="qr_type_wifi">Wi-Fi</string>
     <string name="qr_type_contact">Контакт</string>
     <string name="qr_type_email">Email</string>
     <string name="qr_type_phone">Телефон</string>

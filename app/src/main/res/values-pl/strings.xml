@@ -26,7 +26,7 @@
     <string name="onboarding_summary_description">Skanuj, twórz i udostępniaj kody QR w jednej prostej aplikacji.</string>
     <string name="qr_type_text">Tekst</string>
     <string name="qr_type_url">URL</string>
-    <string name="qr_type_wifi">qr_type_wifi</string>
+    <string name="qr_type_wifi">Wi-Fi</string>
     <string name="qr_type_contact">Kontakt</string>
     <string name="qr_type_email">Email</string>
     <string name="qr_type_phone">Telefon</string>

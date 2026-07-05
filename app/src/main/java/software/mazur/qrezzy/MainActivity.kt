@@ -28,10 +28,10 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         window.statusBarColor = android.graphics.Color.TRANSPARENT
         window.navigationBarColor = android.graphics.Color.TRANSPARENT
-        WindowCompat.getInsetsController(window, window.decorView).apply {
-            isAppearanceLightStatusBars = true
-            isAppearanceLightNavigationBars = true
-        }
+//        WindowCompat.getInsetsController(window, window.decorView).apply {
+//            isAppearanceLightStatusBars = true
+//            isAppearanceLightNavigationBars = true
+//        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
