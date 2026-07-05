@@ -10,4 +10,6 @@ data class SettingsUiState(
     val autoSaveScans: Boolean = false,
     val vibrationEnabled: Boolean = true,
     val historyLimit: HistoryLimit = HistoryLimit.ITEMS_200,
+    val historyItemsCount: Int = 0,
+    val latestHistoryItemCreatedAt: Long? = null,
 )
