@@ -1,7 +1,6 @@
 package software.mazur.qrezzy.core.designsystem.theme
 
 import android.app.Activity
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -11,7 +10,6 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import software.mazur.qrezzy.domain.settings.model.AppTheme
 
 private val LightColorScheme = lightColorScheme(
     // Main app background and reusable surfaces.
@@ -41,9 +39,8 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 @Composable
-fun QREZZYTheme(appTheme: AppTheme = AppTheme.SYSTEM, content: @Composable () -> Unit) {
+fun QREZZYTheme(isDarkTheme: Boolean, content: @Composable () -> Unit) {
     val view = LocalView.current
-    val isDarkTheme = resolveIsDarkTheme(appTheme)
     val colorScheme = if (isDarkTheme) DarkColorScheme else LightColorScheme
     if (!view.isInEditMode) {
         SideEffect {
@@ -56,19 +53,10 @@ fun QREZZYTheme(appTheme: AppTheme = AppTheme.SYSTEM, content: @Composable () ->
             }
         }
     }
+
     MaterialTheme(colorScheme = colorScheme, typography = Typography) {
         CompositionLocalProvider(LocalIsDarkTheme provides isDarkTheme) {
             content()
         }
-    }
-}
-
-@Composable
-private fun resolveIsDarkTheme(appTheme: AppTheme): Boolean {
-    val systemDark = isSystemInDarkTheme()
-    return when (appTheme) {
-        AppTheme.SYSTEM -> systemDark
-        AppTheme.LIGHT  -> false
-        AppTheme.DARK   -> true
     }
 }

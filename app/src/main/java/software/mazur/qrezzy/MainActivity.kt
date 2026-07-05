@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import software.mazur.qrezzy.core.designsystem.theme.QREZZYTheme
+import software.mazur.qrezzy.core.designsystem.theme.resolveIsDarkTheme
 import software.mazur.qrezzy.core.navigation.QrezzyNavHost
 import software.mazur.qrezzy.domain.settings.model.AppSettings
 import software.mazur.qrezzy.domain.settings.usecase.InitializeAppSettingsUseCase
@@ -28,10 +29,6 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         window.statusBarColor = android.graphics.Color.TRANSPARENT
         window.navigationBarColor = android.graphics.Color.TRANSPARENT
-//        WindowCompat.getInsetsController(window, window.decorView).apply {
-//            isAppearanceLightStatusBars = true
-//            isAppearanceLightNavigationBars = true
-//        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +42,8 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             val appSettings by observeAppSettingsUseCase().collectAsState(initial = AppSettings())
-            QREZZYTheme(appTheme = appSettings.theme) {
+            val isDarkTheme = resolveIsDarkTheme(appSettings.theme)
+            QREZZYTheme(isDarkTheme = isDarkTheme) {
                 QrezzyNavHost()
             }
         }
