@@ -1,4 +1,4 @@
-package software.mazur.qrezzy.core.navigation
+package software.mazur.qrezzy.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
