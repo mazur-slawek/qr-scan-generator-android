@@ -9,7 +9,7 @@ fun resolveIsDarkTheme(appTheme: AppTheme): Boolean {
     val systemDark = isSystemInDarkTheme()
     return when (appTheme) {
         AppTheme.SYSTEM -> systemDark
-        AppTheme.LIGHT  -> false
-        AppTheme.DARK   -> true
+        AppTheme.LIGHT -> false
+        AppTheme.DARK -> true
     }
 }

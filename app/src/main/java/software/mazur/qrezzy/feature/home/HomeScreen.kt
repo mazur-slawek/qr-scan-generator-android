@@ -48,7 +48,6 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                 .padding(innerPadding)
         )
     }
-
 }
 
 @Composable
@@ -58,7 +57,7 @@ private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (Home
         NavigationBar(
             containerColor = MaterialTheme.colorScheme.surface,
             tonalElevation = HomeScreenDefaults.NavigationBar.tonalElevation,
-            modifier = Modifier.shadow(elevation = HomeScreenDefaults.NavigationBar.shadowElevation),
+            modifier = Modifier.shadow(elevation = HomeScreenDefaults.NavigationBar.shadowElevation)
         ) {
             HomeTab.entries.forEach { tab ->
                 val title = stringResource(id = tab.titleResId)
@@ -67,15 +66,15 @@ private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (Home
                     selected = isSelected,
                     onClick = { onTabSelected(tab) },
                     colors =
-                        NavigationBarItemDefaults.colors(
-                            selectedIconColor = tab.selectedIconColor,
-                            selectedTextColor = MaterialTheme.colorScheme.onSurface,
-                            indicatorColor = tab.indicatorColor,
-                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            disabledIconColor = MaterialTheme.colorScheme.surfaceTint,
-                            disabledTextColor = MaterialTheme.colorScheme.surfaceTint,
-                        ),
+                    NavigationBarItemDefaults.colors(
+                        selectedIconColor = tab.selectedIconColor,
+                        selectedTextColor = MaterialTheme.colorScheme.onSurface,
+                        indicatorColor = tab.indicatorColor,
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledIconColor = MaterialTheme.colorScheme.surfaceTint,
+                        disabledTextColor = MaterialTheme.colorScheme.surfaceTint
+                    ),
                     icon = {
                         Icon(imageVector = tab.icon, contentDescription = title)
                     },
@@ -88,7 +87,7 @@ private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (Home
                             fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
                             modifier = Modifier.padding(horizontal = 7.dp)
                         )
-                    },
+                    }
                 )
             }
         }
@@ -99,12 +98,12 @@ private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (Home
 private fun QrezzyHomeScreenContent(modifier: Modifier, selectedTab: HomeTab, onTabSelected: (HomeTab) -> Unit) {
     Box(modifier = modifier) {
         when (selectedTab) {
-            HomeTab.SCAN     -> ScannerScreen()
+            HomeTab.SCAN -> ScannerScreen()
             HomeTab.GENERATE -> GeneratorScreen()
-            HomeTab.HISTORY  -> HistoryNavHost(
+            HomeTab.HISTORY -> HistoryNavHost(
                 onEmptyActionClick = { action ->
                     when (action) {
-                        HistoryEmptyAction.Scan     -> onTabSelected(HomeTab.SCAN)
+                        HistoryEmptyAction.Scan -> onTabSelected(HomeTab.SCAN)
                         HistoryEmptyAction.Generate -> onTabSelected(HomeTab.GENERATE)
                     }
                 }
@@ -114,7 +113,6 @@ private fun QrezzyHomeScreenContent(modifier: Modifier, selectedTab: HomeTab, on
         }
     }
 }
-
 
 private object HomeScreenDefaults {
     object NavigationBar {

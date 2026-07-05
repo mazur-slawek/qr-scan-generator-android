@@ -14,5 +14,5 @@ data class SettingsUiState(
     val historyItemsCount: Int = 0,
     val latestHistoryItemCreatedAt: Long? = null,
     val showClearHistoryDialog: Boolean = false,
-    val showHistoryLimitReachedPopup: Boolean = false,
+    val showHistoryLimitReachedPopup: Boolean = false
 )

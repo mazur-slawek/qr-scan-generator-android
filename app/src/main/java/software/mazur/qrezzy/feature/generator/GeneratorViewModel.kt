@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -26,7 +27,6 @@ import software.mazur.qrezzy.feature.generator.model.QrFieldError
 import software.mazur.qrezzy.feature.generator.model.QrInput
 import software.mazur.qrezzy.feature.generator.model.QrInputField
 import software.mazur.qrezzy.feature.generator.model.isSameTypeAs
-import javax.inject.Inject
 
 @HiltViewModel
 class GeneratorViewModel
@@ -60,27 +60,27 @@ constructor(
         val fieldErrors = updateFieldError(field = field, value = value)
 
         when (field) {
-            QrInputField.Text           -> updateSelectedQrInput(
+            QrInputField.Text -> updateSelectedQrInput(
                 qrInput = QrInput.Text(text = value),
-                fieldErrors = fieldErrors,
+                fieldErrors = fieldErrors
             )
 
-            QrInputField.Url            -> updateSelectedQrInput(
+            QrInputField.Url -> updateSelectedQrInput(
                 qrInput = QrInput.Url(url = value),
-                fieldErrors = fieldErrors,
+                fieldErrors = fieldErrors
             )
 
-            QrInputField.Phone          -> updateSelectedQrInput(
+            QrInputField.Phone -> updateSelectedQrInput(
                 qrInput = QrInput.Phone(phoneNumber = value),
-                fieldErrors = fieldErrors,
+                fieldErrors = fieldErrors
             )
 
             QrInputField.EmailAddress,
             QrInputField.EmailSubject,
-            QrInputField.EmailBody      -> updateEmailInput(field = field, value = value, fieldErrors = fieldErrors)
+            QrInputField.EmailBody -> updateEmailInput(field = field, value = value, fieldErrors = fieldErrors)
 
             QrInputField.WifiSsid,
-            QrInputField.WifiPassword   -> updateWifiInput(field = field, value = value, fieldErrors = fieldErrors)
+            QrInputField.WifiPassword -> updateWifiInput(field = field, value = value, fieldErrors = fieldErrors)
 
             QrInputField.ContactFirstName,
             QrInputField.ContactLastName,
@@ -89,10 +89,10 @@ constructor(
             QrInputField.ContactCompany -> updateContactInput(field = field, value = value, fieldErrors = fieldErrors)
 
             QrInputField.SmsPhone,
-            QrInputField.SmsMessage     -> updateSmsInput(field, value, fieldErrors)
+            QrInputField.SmsMessage -> updateSmsInput(field, value, fieldErrors)
 
             QrInputField.GeoLatitude,
-            QrInputField.GeoLongitude   -> updateGeoLocationInput(field, value, fieldErrors)
+            QrInputField.GeoLongitude -> updateGeoLocationInput(field, value, fieldErrors)
         }
     }
 
@@ -101,11 +101,9 @@ constructor(
         updateSelectedQrInput(qrInput = existingInput)
     }
 
-    fun generateQrBitmap(content: String) =
-        qrBitmapGenerator.generate(content = content, style = uiState.value.qrStyle)
+    fun generateQrBitmap(content: String) = qrBitmapGenerator.generate(content = content, style = uiState.value.qrStyle)
 
-    fun generatePreviewQrBitmap(content: String, style: QrStyle) =
-        qrBitmapGenerator.generate(content = content, style = style)
+    fun generatePreviewQrBitmap(content: String, style: QrStyle) = qrBitmapGenerator.generate(content = content, style = style)
 
     fun onCustomizeQrClick() {
         updateQrStyleEditor { editor -> editor.open() }
@@ -156,7 +154,7 @@ constructor(
             val qr = createGeneratedQrUseCase(
                 type = selectedQrInput.toQrType(),
                 content = qrContent,
-                style = uiState.value.qrStyle,
+                style = uiState.value.qrStyle
             )
 
             runCatching {
@@ -168,7 +166,6 @@ constructor(
                 _events.emit(GeneratorUiEvent.QrSaveFailed)
             }
         }
-
     }
 
     private fun updateEmailInput(field: QrInputField, value: String, fieldErrors: Map<QrInputField, QrFieldError>) {
@@ -176,8 +173,8 @@ constructor(
         val updatedInput = when (field) {
             QrInputField.EmailAddress -> currentInput.copy(email = value)
             QrInputField.EmailSubject -> currentInput.copy(subject = value)
-            QrInputField.EmailBody    -> currentInput.copy(body = value)
-            else                      -> currentInput
+            QrInputField.EmailBody -> currentInput.copy(body = value)
+            else -> currentInput
         }
         updateSelectedQrInput(qrInput = updatedInput, fieldErrors = fieldErrors)
     }
@@ -185,9 +182,9 @@ constructor(
     private fun updateWifiInput(field: QrInputField, value: String, fieldErrors: Map<QrInputField, QrFieldError>) {
         val currentInput = uiState.value.selectedQrInput as? QrInput.Wifi ?: QrInput.Wifi()
         val updatedInput = when (field) {
-            QrInputField.WifiSsid     -> currentInput.copy(ssid = value)
+            QrInputField.WifiSsid -> currentInput.copy(ssid = value)
             QrInputField.WifiPassword -> currentInput.copy(password = value)
-            else                      -> currentInput
+            else -> currentInput
         }
         updateSelectedQrInput(qrInput = updatedInput, fieldErrors = fieldErrors)
     }
@@ -196,40 +193,31 @@ constructor(
         val currentInput = uiState.value.selectedQrInput as? QrInput.Contact ?: QrInput.Contact()
         val updatedInput = when (field) {
             QrInputField.ContactFirstName -> currentInput.copy(firstName = value)
-            QrInputField.ContactLastName  -> currentInput.copy(lastName = value)
-            QrInputField.ContactPhone     -> currentInput.copy(phone = value)
-            QrInputField.ContactEmail     -> currentInput.copy(email = value)
-            QrInputField.ContactCompany   -> currentInput.copy(company = value)
-            else                          -> currentInput
+            QrInputField.ContactLastName -> currentInput.copy(lastName = value)
+            QrInputField.ContactPhone -> currentInput.copy(phone = value)
+            QrInputField.ContactEmail -> currentInput.copy(email = value)
+            QrInputField.ContactCompany -> currentInput.copy(company = value)
+            else -> currentInput
         }
         updateSelectedQrInput(qrInput = updatedInput, fieldErrors = fieldErrors)
     }
 
-    private fun updateSmsInput(
-        field: QrInputField,
-        value: String,
-        fieldErrors: Map<QrInputField, QrFieldError>
-    ) {
+    private fun updateSmsInput(field: QrInputField, value: String, fieldErrors: Map<QrInputField, QrFieldError>) {
         val currentInput = uiState.value.selectedQrInput as? QrInput.Sms ?: QrInput.Sms()
         val updatedInput = when (field) {
-            QrInputField.SmsPhone   -> currentInput.copy(phoneNumber = value)
+            QrInputField.SmsPhone -> currentInput.copy(phoneNumber = value)
             QrInputField.SmsMessage -> currentInput.copy(message = value)
-            else                    -> currentInput
+            else -> currentInput
         }
         updateSelectedQrInput(qrInput = updatedInput, fieldErrors = fieldErrors)
     }
 
-
-    private fun updateGeoLocationInput(
-        field: QrInputField,
-        value: String,
-        fieldErrors: Map<QrInputField, QrFieldError>
-    ) {
+    private fun updateGeoLocationInput(field: QrInputField, value: String, fieldErrors: Map<QrInputField, QrFieldError>) {
         val currentInput = uiState.value.selectedQrInput as? QrInput.GeoLocation ?: QrInput.GeoLocation()
         val updatedInput = when (field) {
-            QrInputField.GeoLatitude  -> currentInput.copy(latitude = value)
+            QrInputField.GeoLatitude -> currentInput.copy(latitude = value)
             QrInputField.GeoLongitude -> currentInput.copy(longitude = value)
-            else                      -> currentInput
+            else -> currentInput
         }
         updateSelectedQrInput(qrInput = updatedInput, fieldErrors = fieldErrors)
     }
@@ -253,7 +241,7 @@ constructor(
 
     private fun validateField(field: QrInputField, value: String): QrFieldError? = when {
         value.length > field.maxLength -> QrFieldError("Maximum length is ${field.maxLength} characters")
-        else                           -> null
+        else -> null
     }
 
     private fun updateFieldError(field: QrInputField, value: String): Map<QrInputField, QrFieldError> {
@@ -261,10 +249,7 @@ constructor(
         return if (error == null) uiState.value.fieldErrors - field else uiState.value.fieldErrors + (field to error)
     }
 
-    private fun updateSelectedQrInput(
-        qrInput: QrInput,
-        fieldErrors: Map<QrInputField, QrFieldError> = uiState.value.fieldErrors
-    ) {
+    private fun updateSelectedQrInput(qrInput: QrInput, fieldErrors: Map<QrInputField, QrFieldError> = uiState.value.fieldErrors) {
         uiState.value = uiState.value.copy(
             selectedQrInput = qrInput,
             qrContent = qrInput.toQrContent(),

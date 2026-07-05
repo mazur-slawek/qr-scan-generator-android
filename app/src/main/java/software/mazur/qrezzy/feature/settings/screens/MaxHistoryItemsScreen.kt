@@ -45,7 +45,7 @@ fun MaxHistoryItemsScreen(
                             .fillMaxWidth()
                             .padding(top = MaxHistoryItemsScreenDefaults.imageTopPadding)
                             .height(MaxHistoryItemsScreenDefaults.imageHeight),
-                        contentDescription = null,
+                        contentDescription = null
                     )
                 }
                 item {
@@ -87,11 +87,8 @@ private object MaxHistoryItemsScreenDefaults {
         HistoryLimitOption(R.string.history_limit_200, HistoryLimit.ITEMS_200),
         HistoryLimitOption(R.string.history_limit_500, HistoryLimit.ITEMS_500),
         HistoryLimitOption(R.string.history_limit_1000, HistoryLimit.ITEMS_1000),
-        HistoryLimitOption(R.string.history_limit_unlimited, HistoryLimit.UNLIMITED),
+        HistoryLimitOption(R.string.history_limit_unlimited, HistoryLimit.UNLIMITED)
     )
 }
 
-private data class HistoryLimitOption(
-    val titleResId: Int,
-    val limit: HistoryLimit
-)
+private data class HistoryLimitOption(val titleResId: Int, val limit: HistoryLimit)

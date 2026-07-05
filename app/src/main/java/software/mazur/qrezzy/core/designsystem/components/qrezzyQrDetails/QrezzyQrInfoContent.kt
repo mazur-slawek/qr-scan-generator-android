@@ -48,22 +48,22 @@ fun QrezzyQrInfoContent(qr: Qr, modifier: Modifier = Modifier) {
                 .border(
                     width = QrezzyQrInfoContentDefaults.Container.borderWidth,
                     color = MaterialTheme.colorScheme.surfaceContainer,
-                    shape = ShapeDefaults.Medium,
+                    shape = ShapeDefaults.Medium
                 )
                 .background(color = MaterialTheme.colorScheme.surface, shape = ShapeDefaults.Medium)
-                .padding(QrezzyQrInfoContentDefaults.Container.padding),
+                .padding(QrezzyQrInfoContentDefaults.Container.padding)
         ) {
             rows.forEachIndexed { index, row ->
                 QrezzyQrInfoRow(
                     row = row,
                     onCopyClick = { clipboardManager.setText(AnnotatedString(row.value)) },
-                    onOpenLinkClick = { uriHandler.openUri(row.value.toBrowserUrl()) },
+                    onOpenLinkClick = { uriHandler.openUri(row.value.toBrowserUrl()) }
                 )
 
                 if (index != rows.lastIndex) {
                     HorizontalDivider(
                         modifier = Modifier.padding(vertical = QrezzyQrInfoContentDefaults.Divider.verticalPadding),
-                        color = MaterialTheme.colorScheme.surfaceContainer,
+                        color = MaterialTheme.colorScheme.surfaceContainer
                     )
                 }
             }
@@ -79,7 +79,7 @@ private fun QrezzyQrInfoRow(row: QrInfoRow, onCopyClick: () -> Unit, onOpenLinkC
                 text = stringResource(row.labelResId),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.ExtraBold,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelMedium
             )
             Text(
                 text = row.value,
@@ -87,7 +87,7 @@ private fun QrezzyQrInfoRow(row: QrInfoRow, onCopyClick: () -> Unit, onOpenLinkC
                 overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium
             )
         }
 
@@ -100,7 +100,7 @@ private fun QrezzyQrInfoRow(row: QrInfoRow, onCopyClick: () -> Unit, onOpenLinkC
                 Icon(
                     imageVector = Icons.Outlined.CopyAll,
                     contentDescription = stringResource(R.string.qr_details_copy_content),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -114,30 +114,28 @@ private fun QrezzyQrInfoRow(row: QrInfoRow, onCopyClick: () -> Unit, onOpenLinkC
                 Icon(
                     imageVector = Icons.Default.OpenInNew,
                     contentDescription = stringResource(R.string.qr_details_open_link),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
     }
 }
 
-private fun Qr.toInfoRows(): List<QrInfoRow> {
-    return when (type) {
-        QrType.TEXT         ->
-            listOf(QrInfoRow(labelResId = R.string.qr_details_field_text, value = content))
+private fun Qr.toInfoRows(): List<QrInfoRow> = when (type) {
+    QrType.TEXT ->
+        listOf(QrInfoRow(labelResId = R.string.qr_details_field_text, value = content))
 
-        QrType.URL          ->
-            listOf(QrInfoRow(labelResId = R.string.qr_details_field_url, value = content, isOpenLinkEnabled = true))
+    QrType.URL ->
+        listOf(QrInfoRow(labelResId = R.string.qr_details_field_url, value = content, isOpenLinkEnabled = true))
 
-        QrType.PHONE        ->
-            listOf(QrInfoRow(labelResId = R.string.qr_details_field_phone, value = content.removePrefix("tel:")))
+    QrType.PHONE ->
+        listOf(QrInfoRow(labelResId = R.string.qr_details_field_phone, value = content.removePrefix("tel:")))
 
-        QrType.EMAIL        -> parseEmailRows(content)
-        QrType.WIFI         -> parseWifiRows(content)
-        QrType.CONTACT      -> parseContactRows(content)
-        QrType.SMS          -> parseSmsRows(content)
-        QrType.GEO_LOCATION -> parseGeoLocationRows(content)
-    }
+    QrType.EMAIL -> parseEmailRows(content)
+    QrType.WIFI -> parseWifiRows(content)
+    QrType.CONTACT -> parseContactRows(content)
+    QrType.SMS -> parseSmsRows(content)
+    QrType.GEO_LOCATION -> parseGeoLocationRows(content)
 }
 
 private fun parseWifiRows(content: String): List<QrInfoRow> {
@@ -146,7 +144,7 @@ private fun parseWifiRows(content: String): List<QrInfoRow> {
     return listOf(
         QrInfoRow(labelResId = R.string.qr_details_field_wifi_network_name, value = values["S"].orEmpty()),
         QrInfoRow(labelResId = R.string.qr_details_field_wifi_security, value = values["T"].orDash()),
-        QrInfoRow(labelResId = R.string.qr_details_field_wifi_password, value = values["P"].orDash()),
+        QrInfoRow(labelResId = R.string.qr_details_field_wifi_password, value = values["P"].orDash())
     )
 }
 
@@ -155,8 +153,8 @@ private fun parseEmailRows(content: String): List<QrInfoRow> {
         return listOf(
             QrInfoRow(
                 labelResId = R.string.qr_details_field_email_address,
-                value = content.removePrefix("mailto:"),
-            ),
+                value = content.removePrefix("mailto:")
+            )
         )
     }
     val email = content.extractBetween("TO:", ";")
@@ -166,7 +164,7 @@ private fun parseEmailRows(content: String): List<QrInfoRow> {
     return listOfNotNull(
         QrInfoRow(labelResId = R.string.qr_details_field_email_address, value = email).takeIfValueNotBlank(),
         QrInfoRow(labelResId = R.string.qr_details_field_email_subject, value = subject).takeIfValueNotBlank(),
-        QrInfoRow(labelResId = R.string.qr_details_field_email_message, value = body).takeIfValueNotBlank(),
+        QrInfoRow(labelResId = R.string.qr_details_field_email_message, value = body).takeIfValueNotBlank()
     )
 }
 
@@ -181,7 +179,7 @@ private fun parseContactRows(content: String): List<QrInfoRow> {
         QrInfoRow(labelResId = R.string.qr_details_field_contact_name, value = name).takeIfValueNotBlank(),
         QrInfoRow(labelResId = R.string.qr_details_field_contact_phone, value = phone).takeIfValueNotBlank(),
         QrInfoRow(labelResId = R.string.qr_details_field_contact_email, value = email).takeIfValueNotBlank(),
-        QrInfoRow(labelResId = R.string.qr_details_field_contact_company, value = company).takeIfValueNotBlank(),
+        QrInfoRow(labelResId = R.string.qr_details_field_contact_company, value = company).takeIfValueNotBlank()
     ).ifEmpty {
         listOf(QrInfoRow(labelResId = R.string.qr_details_field_contact_raw, value = content))
     }
@@ -196,11 +194,10 @@ private fun parseSmsRows(content: String): List<QrInfoRow> {
 
         return listOfNotNull(
             QrInfoRow(labelResId = R.string.qr_details_field_sms_phone, value = phone).takeIfValueNotBlank(),
-            QrInfoRow(labelResId = R.string.qr_details_field_sms_message, value = message).takeIfValueNotBlank(),
+            QrInfoRow(labelResId = R.string.qr_details_field_sms_message, value = message).takeIfValueNotBlank()
         ).ifEmpty {
             listOf(QrInfoRow(labelResId = R.string.qr_details_field_sms_raw, value = content))
         }
-
     }
     val payload = normalizedContent.removePrefixIgnoreCase("sms:")
     val phone = payload.substringBefore("?").trim()
@@ -210,7 +207,7 @@ private fun parseSmsRows(content: String): List<QrInfoRow> {
         .trim()
     return listOfNotNull(
         QrInfoRow(labelResId = R.string.qr_details_field_sms_phone, value = phone).takeIfValueNotBlank(),
-        QrInfoRow(labelResId = R.string.qr_details_field_sms_message, value = message).takeIfValueNotBlank(),
+        QrInfoRow(labelResId = R.string.qr_details_field_sms_message, value = message).takeIfValueNotBlank()
     ).ifEmpty {
         listOf(QrInfoRow(labelResId = R.string.qr_details_field_sms_raw, value = content))
     }
@@ -226,15 +223,13 @@ private fun parseGeoLocationRows(content: String): List<QrInfoRow> {
 
     return listOfNotNull(
         QrInfoRow(labelResId = R.string.qr_details_field_geo_latitude, value = latitude).takeIfValueNotBlank(),
-        QrInfoRow(labelResId = R.string.qr_details_field_geo_longitude, value = longitude).takeIfValueNotBlank(),
+        QrInfoRow(labelResId = R.string.qr_details_field_geo_longitude, value = longitude).takeIfValueNotBlank()
     ).ifEmpty {
         listOf(QrInfoRow(labelResId = R.string.qr_details_field_geo_raw, value = content))
     }
 }
 
-private fun String.removePrefixIgnoreCase(prefix: String): String {
-    return if (startsWith(prefix, ignoreCase = true)) drop(prefix.length) else this
-}
+private fun String.removePrefixIgnoreCase(prefix: String): String = if (startsWith(prefix, ignoreCase = true)) drop(prefix.length) else this
 
 private fun String.toWifiValues(): Map<String, String> {
     return removePrefix("WIFI:")
@@ -248,18 +243,14 @@ private fun String.toWifiValues(): Map<String, String> {
         .toMap()
 }
 
-private fun List<String>.findValue(prefix: String): String {
-    return firstOrNull { line -> line.startsWith(prefix, ignoreCase = true) }
-        ?.substringAfter(prefix)
-        ?.trim()
-        .orEmpty()
-}
+private fun List<String>.findValue(prefix: String): String = firstOrNull { line -> line.startsWith(prefix, ignoreCase = true) }
+    ?.substringAfter(prefix)
+    ?.trim()
+    .orEmpty()
 
-private fun String.extractBetween(start: String, end: String): String {
-    return substringAfter(start, "")
-        .substringBefore(end, "")
-        .trim()
-}
+private fun String.extractBetween(start: String, end: String): String = substringAfter(start, "")
+    .substringBefore(end, "")
+    .trim()
 
 private fun String.toBrowserUrl(): String {
     val trimmedValue = trim()
@@ -274,19 +265,15 @@ private fun String.toBrowserUrl(): String {
     }
 }
 
-private fun String?.orDash(): String {
-    return orEmpty().ifBlank { QrezzyQrInfoContentDefaults.EMPTY_VALUE }
-}
+private fun String?.orDash(): String = orEmpty().ifBlank { QrezzyQrInfoContentDefaults.EMPTY_VALUE }
 
-private fun QrInfoRow.takeIfValueNotBlank(): QrInfoRow? {
-    return takeIf { row -> row.value.isNotBlank() }
-}
+private fun QrInfoRow.takeIfValueNotBlank(): QrInfoRow? = takeIf { row -> row.value.isNotBlank() }
 
 private data class QrInfoRow(
     @param:StringRes val labelResId: Int,
     val value: String,
     val isCopyEnabled: Boolean = true,
-    val isOpenLinkEnabled: Boolean = false,
+    val isOpenLinkEnabled: Boolean = false
 )
 
 private object QrezzyQrInfoContentDefaults {

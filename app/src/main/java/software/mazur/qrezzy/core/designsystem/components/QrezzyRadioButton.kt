@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
 
-
 @Composable
 fun QrezzyRadioButton(selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
     CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
@@ -23,13 +22,15 @@ fun QrezzyRadioButton(selected: Boolean, onClick: () -> Unit, modifier: Modifier
             modifier = modifier
                 .size(QrezzyRadioButtonDefaults.size)
                 .clickable(onClick = onClick),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.Center
         ) {
             RadioButton(
                 selected = selected,
                 onClick = onClick,
-                colors = RadioButtonDefaults.colors(selectedColor = QrezzyMintDark,
-                    unselectedColor = MaterialTheme.colorScheme.surfaceTint),
+                colors = RadioButtonDefaults.colors(
+                    selectedColor = QrezzyMintDark,
+                    unselectedColor = MaterialTheme.colorScheme.surfaceTint
+                )
             )
         }
     }

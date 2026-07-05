@@ -21,118 +21,118 @@ fun QrTypeForm(
     qrInput: QrInput,
     fieldErrors: Map<QrInputField, QrFieldError>,
     onChange: (field: QrInputField, value: String) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     when (qrInput) {
-        is QrInput.Text        -> {
+        is QrInput.Text -> {
             QrTextField(
                 title = stringResource(R.string.generator_enter_data),
                 field = QrInputField.Text,
                 value = qrInput.text,
                 fieldErrors = fieldErrors,
-                onChange = onChange,
+                onChange = onChange
             )
         }
 
-        is QrInput.Url         -> {
+        is QrInput.Url -> {
             QrTextField(
                 title = stringResource(R.string.generator_enter_data),
                 field = QrInputField.Url,
                 value = qrInput.url,
                 fieldErrors = fieldErrors,
-                onChange = onChange,
+                onChange = onChange
             )
         }
 
-        is QrInput.Phone       -> {
+        is QrInput.Phone -> {
             QrTextField(
                 title = stringResource(R.string.generator_enter_data),
                 field = QrInputField.Phone,
                 value = qrInput.phoneNumber,
                 fieldErrors = fieldErrors,
-                onChange = onChange,
+                onChange = onChange
             )
         }
 
-        is QrInput.Email       -> {
+        is QrInput.Email -> {
             FormColumn(modifier = modifier) {
                 QrTextField(
                     title = stringResource(R.string.generator_enter_data),
                     field = QrInputField.EmailAddress,
                     value = qrInput.email,
                     fieldErrors = fieldErrors,
-                    onChange = onChange,
+                    onChange = onChange
                 )
                 QrTextField(
                     field = QrInputField.EmailSubject,
                     value = qrInput.subject,
                     fieldErrors = fieldErrors,
-                    onChange = onChange,
+                    onChange = onChange
                 )
                 QrTextField(
                     field = QrInputField.EmailBody,
                     value = qrInput.body,
                     fieldErrors = fieldErrors,
-                    onChange = onChange,
+                    onChange = onChange
                 )
             }
         }
 
-        is QrInput.Wifi        -> {
+        is QrInput.Wifi -> {
             FormColumn(modifier = modifier) {
                 QrTextField(
                     title = stringResource(R.string.generator_enter_data),
                     field = QrInputField.WifiSsid,
                     value = qrInput.ssid,
                     fieldErrors = fieldErrors,
-                    onChange = onChange,
+                    onChange = onChange
                 )
                 QrTextField(
                     field = QrInputField.WifiPassword,
                     value = qrInput.password,
                     fieldErrors = fieldErrors,
-                    onChange = onChange,
+                    onChange = onChange
                 )
             }
         }
 
-        is QrInput.Contact     -> {
+        is QrInput.Contact -> {
             FormColumn(modifier = modifier) {
                 QrTextField(
                     title = stringResource(R.string.generator_enter_data),
                     field = QrInputField.ContactFirstName,
                     value = qrInput.firstName,
                     fieldErrors = fieldErrors,
-                    onChange = onChange,
+                    onChange = onChange
                 )
                 QrTextField(
                     field = QrInputField.ContactLastName,
                     value = qrInput.lastName,
                     fieldErrors = fieldErrors,
-                    onChange = onChange,
+                    onChange = onChange
                 )
                 QrTextField(
                     field = QrInputField.ContactPhone,
                     value = qrInput.phone,
                     fieldErrors = fieldErrors,
-                    onChange = onChange,
+                    onChange = onChange
                 )
                 QrTextField(
                     field = QrInputField.ContactEmail,
                     value = qrInput.email,
                     fieldErrors = fieldErrors,
-                    onChange = onChange,
+                    onChange = onChange
                 )
                 QrTextField(
                     field = QrInputField.ContactCompany,
                     value = qrInput.company,
                     fieldErrors = fieldErrors,
-                    onChange = onChange,
+                    onChange = onChange
                 )
             }
         }
 
-        is QrInput.Sms         -> {
+        is QrInput.Sms -> {
             FormColumn(modifier = modifier) {
                 QrTextField(
                     title = stringResource(R.string.generator_enter_data),
@@ -149,7 +149,6 @@ fun QrTypeForm(
                     onChange = onChange
                 )
             }
-
         }
 
         is QrInput.GeoLocation -> {
@@ -174,13 +173,10 @@ fun QrTypeForm(
 }
 
 @Composable
-private fun FormColumn(
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
-) {
+private fun FormColumn(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         content()
     }
@@ -193,7 +189,7 @@ private fun QrTextField(
     fieldErrors: Map<QrInputField, QrFieldError>,
     onChange: (field: QrInputField, value: String) -> Unit,
     modifier: Modifier = Modifier,
-    title: String? = null,
+    title: String? = null
 ) {
     val error = fieldErrors[field]
     QrezzyTextInput(
@@ -205,6 +201,6 @@ private fun QrTextField(
         singleLine = field !== QrInputField.Text && field !== QrInputField.EmailBody,
         maxLength = field.maxLength,
         keyboardOptions = field.keyboardOptions,
-        errorText = error?.message,
+        errorText = error?.message
     )
 }

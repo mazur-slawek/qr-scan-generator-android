@@ -4,9 +4,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import software.mazur.qrezzy.core.common.sharing.AndroidQrSharingService
 import software.mazur.qrezzy.core.common.sharing.QrSharingService
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)

@@ -13,13 +13,13 @@ import software.mazur.qrezzy.core.designsystem.components.qrezzyQr.QrezzyDeleteC
 fun ClearHistoryConfirmationDialog(onConfirmClick: () -> Unit, onCancelClick: () -> Unit) {
     AlertDialog(
         onDismissRequest = onCancelClick,
-        properties = DialogProperties(usePlatformDefaultWidth = false),
+        properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
         QrezzyDeleteConfirmation(
             title = stringResource(R.string.clear_history_confirmation_title),
             subtitle = stringResource(R.string.clear_history_confirmation_subtitle),
             onCancelClick = onCancelClick,
-            onConfirmClick = onConfirmClick,
+            onConfirmClick = onConfirmClick
         )
     }
 }

@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
-
 @Composable
 fun HistoryListSectionHeader(text: String, modifier: Modifier = Modifier) {
     Text(
@@ -20,14 +19,14 @@ fun HistoryListSectionHeader(text: String, modifier: Modifier = Modifier) {
         fontWeight = FontWeight.Medium,
         maxLines = HistoryListSectionHeaderDefaults.MAX_LINES,
         modifier =
-            modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(
-                    top = HistoryListSectionHeaderDefaults.topPadding,
-                    start = HistoryListSectionHeaderDefaults.startPadding,
-                    bottom = HistoryListSectionHeaderDefaults.bottomPadding,
-                ),
+        modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(
+                top = HistoryListSectionHeaderDefaults.topPadding,
+                start = HistoryListSectionHeaderDefaults.startPadding,
+                bottom = HistoryListSectionHeaderDefaults.bottomPadding
+            )
     )
 }
 

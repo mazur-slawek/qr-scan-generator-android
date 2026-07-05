@@ -19,14 +19,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.R
 
-
 @Composable
 fun HistoryListFooter() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = HistoryListFooterDefaults.horizontalPadding),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Image(
             painter = painterResource(R.drawable.qrezzy_mascot_list_footer),
             contentDescription = null,
@@ -38,7 +38,7 @@ fun HistoryListFooter() {
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.ExtraBold,
-            text = stringResource(R.string.history_footer_title),
+            text = stringResource(R.string.history_footer_title)
         )
         Spacer(modifier = Modifier.height(HistoryListFooterDefaults.titleSubtitleSpacing))
         Text(
@@ -46,7 +46,7 @@ fun HistoryListFooter() {
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,
-            text = stringResource(R.string.history_footer_subtitle),
+            text = stringResource(R.string.history_footer_subtitle)
         )
     }
 }

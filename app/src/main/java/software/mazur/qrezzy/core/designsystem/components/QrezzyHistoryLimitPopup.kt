@@ -33,15 +33,15 @@ fun QrezzyHistoryLimitPopup() {
             .border(
                 width = QrezzyHistoryLimitPopupDefaults.Border.width,
                 color = QrezzyYellowDark.copy(alpha = QrezzyHistoryLimitPopupDefaults.Border.ALPHA),
-                shape = ShapeDefaults.Medium,
+                shape = ShapeDefaults.Medium
             )
             .background(
                 color = QrezzyYellow.copy(alpha = QrezzyHistoryLimitPopupDefaults.BACKGROUND_ALPHA),
-                shape = ShapeDefaults.Medium,
+                shape = ShapeDefaults.Medium
             )
             .padding(QrezzyHistoryLimitPopupDefaults.contentPadding),
         horizontalArrangement = Arrangement.spacedBy(QrezzyHistoryLimitPopupDefaults.contentSpacing),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
@@ -63,7 +63,7 @@ fun QrezzyHistoryLimitPopup() {
         Image(
             painter = painterResource(R.drawable.qrezzy_mascot_max_items),
             modifier = Modifier.height(QrezzyHistoryLimitPopupDefaults.imageHeight),
-            contentDescription = null,
+            contentDescription = null
         )
     }
 }

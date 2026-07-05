@@ -1,23 +1,21 @@
 package software.mazur.qrezzy.domain.qr.usecase
 
+import javax.inject.Inject
 import software.mazur.qrezzy.domain.common.TimeProvider
 import software.mazur.qrezzy.domain.qr.model.Qr
 import software.mazur.qrezzy.domain.qr.model.QrSource
 import software.mazur.qrezzy.domain.qr.model.QrType
-import javax.inject.Inject
 
 class CreateScannedQrUseCase
 @Inject
-constructor(
-    private val timeProvider: TimeProvider,
-) {
+constructor(private val timeProvider: TimeProvider) {
     operator fun invoke(content: String): Qr {
         val trimmedContent = content.trim()
         return Qr(
             type = detectQrType(trimmedContent),
             source = QrSource.SCANNED,
             content = trimmedContent,
-            createdAt = timeProvider.nowMillis(),
+            createdAt = timeProvider.nowMillis()
         )
     }
 

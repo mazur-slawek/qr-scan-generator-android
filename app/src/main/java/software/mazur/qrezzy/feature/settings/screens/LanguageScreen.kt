@@ -53,7 +53,7 @@ fun LanguageScreen(selectedLanguage: AppLanguage, onLanguageSelected: (AppLangua
                                 trailing = {
                                     QrezzyRadioButton(
                                         selected = selectedLanguage == AppLanguage.ENGLISH,
-                                        onClick = { onLanguageSelected(AppLanguage.ENGLISH) },
+                                        onClick = { onLanguageSelected(AppLanguage.ENGLISH) }
                                     )
                                 },
                                 iconBackgroundColor = if (selectedLanguage == AppLanguage.ENGLISH) {
@@ -69,7 +69,7 @@ fun LanguageScreen(selectedLanguage: AppLanguage, onLanguageSelected: (AppLangua
                                 trailing = {
                                     QrezzyRadioButton(
                                         selected = selectedLanguage == AppLanguage.POLISH,
-                                        onClick = { onLanguageSelected(AppLanguage.POLISH) },
+                                        onClick = { onLanguageSelected(AppLanguage.POLISH) }
                                     )
                                 },
                                 iconBackgroundColor = if (selectedLanguage == AppLanguage.POLISH) {
@@ -85,7 +85,7 @@ fun LanguageScreen(selectedLanguage: AppLanguage, onLanguageSelected: (AppLangua
                                 trailing = {
                                     QrezzyRadioButton(
                                         selected = selectedLanguage == AppLanguage.GERMAN,
-                                        onClick = { onLanguageSelected(AppLanguage.GERMAN) },
+                                        onClick = { onLanguageSelected(AppLanguage.GERMAN) }
                                     )
                                 },
                                 iconBackgroundColor = if (selectedLanguage == AppLanguage.GERMAN) {
@@ -101,7 +101,7 @@ fun LanguageScreen(selectedLanguage: AppLanguage, onLanguageSelected: (AppLangua
                                 trailing = {
                                     QrezzyRadioButton(
                                         selected = selectedLanguage == AppLanguage.UKRAINIAN,
-                                        onClick = { onLanguageSelected(AppLanguage.UKRAINIAN) },
+                                        onClick = { onLanguageSelected(AppLanguage.UKRAINIAN) }
                                     )
                                 },
                                 iconBackgroundColor = if (selectedLanguage == AppLanguage.UKRAINIAN) {
@@ -117,7 +117,7 @@ fun LanguageScreen(selectedLanguage: AppLanguage, onLanguageSelected: (AppLangua
                                 trailing = {
                                     QrezzyRadioButton(
                                         selected = selectedLanguage == AppLanguage.ITALIAN,
-                                        onClick = { onLanguageSelected(AppLanguage.ITALIAN) },
+                                        onClick = { onLanguageSelected(AppLanguage.ITALIAN) }
                                     )
                                 },
                                 iconBackgroundColor = if (selectedLanguage == AppLanguage.ITALIAN) {

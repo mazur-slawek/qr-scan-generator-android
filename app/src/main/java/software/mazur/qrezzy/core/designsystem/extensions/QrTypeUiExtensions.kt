@@ -27,65 +27,60 @@ import software.mazur.qrezzy.domain.qr.model.Qr
 import software.mazur.qrezzy.domain.qr.model.QrType
 
 @Immutable
-data class QrTypeUi(
-    @get:StringRes val labelResId: Int,
-    val icon: ImageVector,
-    val containerColor: Color,
-    val contentColor: Color,
-)
+data class QrTypeUi(@get:StringRes val labelResId: Int, val icon: ImageVector, val containerColor: Color, val contentColor: Color)
 
 val QrType.ui: QrTypeUi
     get() =
         when (this) {
-            QrType.TEXT         ->
+            QrType.TEXT ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_text,
                     icon = Icons.Outlined.Textsms,
                     containerColor = QrezzyYellowDark,
-                    contentColor = QrezzyYellow,
+                    contentColor = QrezzyYellow
                 )
 
-            QrType.URL          ->
+            QrType.URL ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_url,
                     icon = Icons.Outlined.InsertLink,
                     containerColor = QrezzyMintDark,
-                    contentColor = QrezzyMint,
+                    contentColor = QrezzyMint
                 )
 
-            QrType.WIFI         ->
+            QrType.WIFI ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_wifi,
                     icon = Icons.Outlined.Wifi,
                     containerColor = QrezzyPurpleDark,
-                    contentColor = QrezzyPurple,
+                    contentColor = QrezzyPurple
                 )
 
-            QrType.CONTACT      ->
+            QrType.CONTACT ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_contact,
                     icon = Icons.Outlined.AccountCircle,
                     containerColor = QrezzyYellowDark,
-                    contentColor = QrezzyYellow,
+                    contentColor = QrezzyYellow
                 )
 
-            QrType.EMAIL        ->
+            QrType.EMAIL ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_email,
                     icon = Icons.Outlined.AlternateEmail,
                     containerColor = QrezzyPinkDark,
-                    contentColor = QrezzyPink,
+                    contentColor = QrezzyPink
                 )
 
-            QrType.PHONE        ->
+            QrType.PHONE ->
                 QrTypeUi(
                     labelResId = R.string.qr_type_phone,
                     icon = Icons.Outlined.Smartphone,
                     containerColor = QrezzyPurpleDark,
-                    contentColor = QrezzyPurple,
+                    contentColor = QrezzyPurple
                 )
 
-            QrType.SMS          -> QrTypeUi(
+            QrType.SMS -> QrTypeUi(
                 labelResId = R.string.qr_type_sms,
                 icon = Icons.Outlined.Sms,
                 containerColor = QrezzyPinkDark,
@@ -102,44 +97,36 @@ val QrType.ui: QrTypeUi
 val Qr.label: String
     get() =
         when (type) {
-            QrType.TEXT         -> content.toReadableTextLabel()
-            QrType.URL          -> content.toReadableUrlLabel()
-            QrType.WIFI         -> content.toReadableWifiLabel()
-            QrType.CONTACT      -> content.toReadableContactLabel()
-            QrType.EMAIL        -> content.toReadableEmailLabel()
-            QrType.PHONE        -> content.toReadablePhoneLabel()
-            QrType.SMS          -> content.toReadableSmsLabel()
+            QrType.TEXT -> content.toReadableTextLabel()
+            QrType.URL -> content.toReadableUrlLabel()
+            QrType.WIFI -> content.toReadableWifiLabel()
+            QrType.CONTACT -> content.toReadableContactLabel()
+            QrType.EMAIL -> content.toReadableEmailLabel()
+            QrType.PHONE -> content.toReadablePhoneLabel()
+            QrType.SMS -> content.toReadableSmsLabel()
             QrType.GEO_LOCATION -> content.toReadableGeoLocationLabel()
         }
 
-private fun String.toReadableTextLabel(): String {
-    return trim()
-        .ifBlank { QrTypeUiDefaults.TEXT_FALLBACK_LABEL }
-}
+private fun String.toReadableTextLabel(): String = trim()
+    .ifBlank { QrTypeUiDefaults.TEXT_FALLBACK_LABEL }
 
-private fun String.toReadableUrlLabel(): String {
-    return trim()
-        .removePrefix("https://")
-        .removePrefix("http://")
-        .substringBefore("/")
-        .ifBlank { QrTypeUiDefaults.URL_FALLBACK_LABEL }
-}
+private fun String.toReadableUrlLabel(): String = trim()
+    .removePrefix("https://")
+    .removePrefix("http://")
+    .substringBefore("/")
+    .ifBlank { QrTypeUiDefaults.URL_FALLBACK_LABEL }
 
-private fun String.toReadableWifiLabel(): String {
-    return substringAfter("S:", "")
-        .substringBefore(";")
-        .trim()
-        .ifBlank { QrTypeUiDefaults.WIFI_FALLBACK_LABEL }
-}
+private fun String.toReadableWifiLabel(): String = substringAfter("S:", "")
+    .substringBefore(";")
+    .trim()
+    .ifBlank { QrTypeUiDefaults.WIFI_FALLBACK_LABEL }
 
-private fun String.toReadableContactLabel(): String {
-    return lineSequence()
-        .firstOrNull { line -> line.startsWith("FN:", ignoreCase = true) }
-        ?.substringAfter("FN:")
-        ?.trim()
-        ?.takeIf { value -> value.isNotBlank() }
-            ?: QrTypeUiDefaults.CONTACT_FALLBACK_LABEL
-}
+private fun String.toReadableContactLabel(): String = lineSequence()
+    .firstOrNull { line -> line.startsWith("FN:", ignoreCase = true) }
+    ?.substringAfter("FN:")
+    ?.trim()
+    ?.takeIf { value -> value.isNotBlank() }
+    ?: QrTypeUiDefaults.CONTACT_FALLBACK_LABEL
 
 private fun String.toReadableEmailLabel(): String {
     if (startsWith("mailto:", ignoreCase = true)) {
@@ -155,11 +142,9 @@ private fun String.toReadableEmailLabel(): String {
         .ifBlank { QrTypeUiDefaults.EMAIL_FALLBACK_LABEL }
 }
 
-private fun String.toReadablePhoneLabel(): String {
-    return removePrefix("tel:")
-        .trim()
-        .ifBlank { QrTypeUiDefaults.PHONE_FALLBACK_LABEL }
-}
+private fun String.toReadablePhoneLabel(): String = removePrefix("tel:")
+    .trim()
+    .ifBlank { QrTypeUiDefaults.PHONE_FALLBACK_LABEL }
 
 private fun String.toReadableSmsLabel(): String {
     val normalizedContent = trim()

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<baseline version="1.0">
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzyAnimatedBackground.kt">
+        <error line="66" column="5" source="standard:function-naming" />
+        <error line="133" column="13" source="standard:function-naming" />
+        <error line="198" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzyAnimatedStars.kt">
+        <error line="31" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzyAppVersion.kt">
+        <error line="18" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzyBranding.kt">
+        <error line="34" column="5" source="standard:function-naming" />
+        <error line="89" column="13" source="standard:function-naming" />
+        <error line="104" column="13" source="standard:function-naming" />
+        <error line="131" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzyButton.kt">
+        <error line="37" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzyCircleButton.kt">
+        <error line="18" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzyCopyright.kt">
+        <error line="13" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzyHistoryLimitPopup.kt">
+        <error line="29" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzyListItem.kt">
+        <error line="36" column="5" source="standard:function-naming" />
+        <error line="98" column="13" source="standard:function-naming" />
+        <error line="134" column="13" source="standard:function-naming" />
+        <error line="158" column="13" source="standard:function-naming" />
+        <error line="169" column="13" source="standard:function-naming" />
+        <error line="179" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzyListSection.kt">
+        <error line="28" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzyPopup.kt">
+        <error line="30" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzyRadioButton.kt">
+        <error line="19" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzyRateApp.kt">
+        <error line="18" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzySwitch.kt">
+        <error line="14" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzyTabs.kt">
+        <error line="32" column="5" source="standard:function-naming" />
+        <error line="58" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzyTextInput.kt">
+        <error line="30" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/QrezzyTopBar.kt">
+        <error line="42" column="5" source="standard:function-naming" />
+        <error line="116" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/qrezzyQr/QrezzyCustomizeQrDialog.kt">
+        <error line="53" column="5" source="standard:function-naming" />
+        <error line="138" column="13" source="standard:function-naming" />
+        <error line="160" column="13" source="standard:function-naming" />
+        <error line="207" column="13" source="standard:function-naming" />
+        <error line="240" column="13" source="standard:function-naming" />
+        <error line="282" column="13" source="standard:function-naming" />
+        <error line="322" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/qrezzyQr/QrezzyDeleteConfirmation.kt">
+        <error line="30" column="5" source="standard:function-naming" />
+        <error line="62" column="13" source="standard:function-naming" />
+        <error line="112" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/qrezzyQr/QrezzyQrPreview.kt">
+        <error line="27" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/qrezzyQrDetails/QrezzyQrInfo.kt">
+        <error line="15" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/qrezzyQrDetails/QrezzyQrInfoContent.kt">
+        <error line="39" column="5" source="standard:function-naming" />
+        <error line="75" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/components/qrezzyQrDetails/QrezzyQrInfoDetails.kt">
+        <error line="39" column="5" source="standard:function-naming" />
+        <error line="78" column="13" source="standard:function-naming" />
+        <error line="115" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/core/designsystem/theme/Theme.kt">
+        <error line="42" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/generator/GeneratorScreen.kt">
+        <error line="37" column="5" source="standard:function-naming" />
+        <error line="87" column="13" source="standard:function-naming" />
+        <error line="107" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/generator/components/QrForm.kt">
+        <error line="20" column="5" source="standard:function-naming" />
+        <error line="176" column="13" source="standard:function-naming" />
+        <error line="186" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/generator/components/QrTabs.kt">
+        <error line="43" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/history/HistoryNavHost.kt">
+        <error line="15" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/history/HistoryScreen.kt">
+        <error line="66" column="5" source="standard:function-naming" />
+        <error line="121" column="13" source="standard:function-naming" />
+        <error line="174" column="13" source="standard:function-naming" />
+        <error line="198" column="13" source="standard:function-naming" />
+        <error line="237" column="13" source="standard:function-naming" />
+        <error line="310" column="13" source="standard:function-naming" />
+        <error line="347" column="13" source="standard:function-naming" />
+        <error line="374" column="13" source="standard:function-naming" />
+        <error line="382" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/history/components/DeleteQrConfirmationDialog.kt">
+        <error line="13" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/history/components/HistoryListEmpty.kt">
+        <error line="29" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/history/components/HistoryListFooter.kt">
+        <error line="23" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/history/components/HistoryListItem.kt">
+        <error line="48" column="5" source="standard:function-naming" />
+        <error line="115" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/history/components/HistoryListSectionHeader.kt">
+        <error line="14" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/history/components/HistorySearchBar.kt">
+        <error line="36" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/history/details/HistoryDetailsScreen.kt">
+        <error line="38" column="5" source="standard:function-naming" />
+        <error line="131" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/home/HomeScreen.kt">
+        <error line="35" column="5" source="standard:function-naming" />
+        <error line="54" column="13" source="standard:function-naming" />
+        <error line="98" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/onboarding/OnboardingScreen.kt">
+        <error line="54" column="5" source="standard:function-naming" />
+        <error line="114" column="13" source="standard:function-naming" />
+        <error line="155" column="13" source="standard:function-naming" />
+        <error line="189" column="13" source="standard:function-naming" />
+        <error line="213" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/scanner/ScannerScreen.kt">
+        <error line="48" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/scanner/components/ScannedQrDialog.kt">
+        <error line="34" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/scanner/components/ScannerPreview.kt">
+        <error line="39" column="5" source="standard:function-naming" />
+        <error line="67" column="5" source="standard:function-naming" />
+        <error line="141" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/settings/SettingsScreen.kt">
+        <error line="30" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/settings/components/ClearHistoryConfirmationDialog.kt">
+        <error line="13" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/settings/components/SettingsListFooterCard.kt">
+        <error line="33" column="5" source="standard:function-naming" />
+        <error line="94" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/settings/components/SettingsListHeaderCard.kt">
+        <error line="23" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/settings/navigation/SettingsNavHost.kt">
+        <error line="36" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/settings/screens/ClearAllHistoryScreen.kt">
+        <error line="31" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/settings/screens/ContactScreen.kt">
+        <error line="29" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/settings/screens/DonateScreen.kt">
+        <error line="29" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/settings/screens/LanguageScreen.kt">
+        <error line="28" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/settings/screens/MaxHistoryItemsScreen.kt">
+        <error line="28" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/settings/screens/OpenSourceLicenseScreen.kt">
+        <error line="37" column="5" source="standard:function-naming" />
+        <error line="97" column="13" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/settings/screens/PermissionsScreen.kt">
+        <error line="30" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/settings/screens/PrivacyScreen.kt">
+        <error line="28" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/settings/screens/RateAppScreen.kt">
+        <error line="23" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/settings/screens/ThemeScreen.kt">
+        <error line="28" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/feature/splash/SplashScreen.kt">
+        <error line="40" column="5" source="standard:function-naming" />
+    </file>
+    <file name="src/main/java/software/mazur/qrezzy/navigation/QrezzyNavHost.kt">
+        <error line="19" column="5" source="standard:function-naming" />
+    </file>
+</baseline>

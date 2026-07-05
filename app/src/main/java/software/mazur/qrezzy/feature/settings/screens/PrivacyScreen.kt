@@ -40,7 +40,7 @@ fun PrivacyScreen(onBackClick: () -> Unit) {
                             .fillMaxWidth()
                             .padding(top = PrivacyScreenDefaults.imageTopPadding)
                             .height(PrivacyScreenDefaults.imageHeight),
-                        contentDescription = null,
+                        contentDescription = null
                     )
                 }
                 item {

@@ -43,7 +43,7 @@ fun ContactScreen(onBackClick: () -> Unit) {
                             .fillMaxWidth()
                             .padding(top = ContactScreenDefaults.imageTopPadding)
                             .height(ContactScreenDefaults.imageHeight),
-                        contentDescription = null,
+                        contentDescription = null
                     )
                 }
                 item {

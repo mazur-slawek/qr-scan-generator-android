@@ -22,27 +22,21 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlin.random.Random
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
-import kotlin.random.Random
 
 /**
  * Zakres przezroczystości wykorzystywany podczas animowania blob-ów.
  */
 @Immutable
-data class QrezzyBackgroundAlphaRange(
-    val min: Float = 0.45f,
-    val max: Float = 0.95f,
-)
+data class QrezzyBackgroundAlphaRange(val min: Float = 0.45f, val max: Float = 0.95f)
 
 /**
  * Proporcje pojedynczego blob-a.
  * `widthFactor` i `heightFactor` określają, jak bardzo blob jest rozciągnięty w poziomie i pionie.
  */
-private data class BlobShape(
-    val widthFactor: Float,
-    val heightFactor: Float,
-)
+private data class BlobShape(val widthFactor: Float, val heightFactor: Float)
 
 /**
  * Konfiguracja animacji pojedynczego blob-a.
@@ -54,28 +48,19 @@ private data class BlobAnimationConfig(
     val initialScale: Float,
     val targetScale: Float,
     val initialAlpha: Float,
-    val targetAlpha: Float,
+    val targetAlpha: Float
 )
 
 /**
  * Czasy trwania animacji dla pojedynczego blob-a.
  */
-private data class BlobAnimationDurations(
-    val offsetMillis: Int,
-    val scaleMillis: Int,
-    val alphaMillis: Int,
-)
+private data class BlobAnimationDurations(val offsetMillis: Int, val scaleMillis: Int, val alphaMillis: Int)
 
 /**
  * Aktualny stan animowanego blob-a.
  * Przechowuje kształt oraz bieżące wartości animacji wykorzystywane podczas rysowania na Canvas.
  */
-private data class AnimatedBlob(
-    val shape: BlobShape,
-    val offsetY: Float,
-    val scale: Float,
-    val alpha: Float,
-)
+private data class AnimatedBlob(val shape: BlobShape, val offsetY: Float, val scale: Float, val alpha: Float)
 
 @Composable
 fun QrezzyAnimatedBackground(
@@ -84,7 +69,7 @@ fun QrezzyAnimatedBackground(
     rightColor: Color = QrezzyMint,
     centerGap: Dp = 10.dp,
     blur: Dp = 52.dp,
-    alphaRange: QrezzyBackgroundAlphaRange = QrezzyBackgroundAlphaRange(),
+    alphaRange: QrezzyBackgroundAlphaRange = QrezzyBackgroundAlphaRange()
 ) {
     val transition =
         rememberInfiniteTransition(label = "qrezzy_background_transition")
@@ -93,7 +78,7 @@ fun QrezzyAnimatedBackground(
             transition = transition,
             alphaRange = alphaRange,
             durations = BlobDurations.LeftPrimary,
-            labelPrefix = "left_primary",
+            labelPrefix = "left_primary"
         )
     val leftSecondaryBlob =
         rememberAnimatedBlob(
@@ -101,22 +86,21 @@ fun QrezzyAnimatedBackground(
             alphaRange = alphaRange,
             durations = BlobDurations.LeftSecondary,
             alphaMultiplier = BlobAlpha.SECONDARY_MULTIPLIER,
-            labelPrefix = "left_secondary",
+            labelPrefix = "left_secondary"
         )
-    val rightPrimaryBlob =
-        rememberAnimatedBlob(
-            transition = transition,
-            alphaRange = alphaRange,
-            durations = BlobDurations.RightPrimary,
-            labelPrefix = "right_primary",
-        )
+    val rightPrimaryBlob = rememberAnimatedBlob(
+        transition = transition,
+        alphaRange = alphaRange,
+        durations = BlobDurations.RightPrimary,
+        labelPrefix = "right_primary"
+    )
     val rightSecondaryBlob =
         rememberAnimatedBlob(
             transition = transition,
             alphaRange = alphaRange,
             durations = BlobDurations.RightSecondary,
             alphaMultiplier = BlobAlpha.SECONDARY_MULTIPLIER,
-            labelPrefix = "right_secondary",
+            labelPrefix = "right_secondary"
         )
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -129,7 +113,7 @@ fun QrezzyAnimatedBackground(
             leftPrimaryBlob = leftPrimaryBlob,
             leftSecondaryBlob = leftSecondaryBlob,
             rightPrimaryBlob = rightPrimaryBlob,
-            rightSecondaryBlob = rightSecondaryBlob,
+            rightSecondaryBlob = rightSecondaryBlob
         )
     } else {
         QrezzySoftAnimatedBackground(
@@ -139,7 +123,7 @@ fun QrezzyAnimatedBackground(
             leftPrimaryBlob = leftPrimaryBlob,
             leftSecondaryBlob = leftSecondaryBlob,
             rightPrimaryBlob = rightPrimaryBlob,
-            rightSecondaryBlob = rightSecondaryBlob,
+            rightSecondaryBlob = rightSecondaryBlob
         )
     }
 }
@@ -154,12 +138,12 @@ private fun QrezzyBlurredAnimatedBackground(
     leftPrimaryBlob: AnimatedBlob,
     leftSecondaryBlob: AnimatedBlob,
     rightPrimaryBlob: AnimatedBlob,
-    rightSecondaryBlob: AnimatedBlob,
+    rightSecondaryBlob: AnimatedBlob
 ) {
     Canvas(
         modifier = modifier
             .fillMaxSize()
-            .blur(blur),
+            .blur(blur)
     ) {
         val gapPx = centerGap.toPx()
         val halfWidth = size.width / 2f
@@ -217,36 +201,35 @@ private fun QrezzySoftAnimatedBackground(
     leftPrimaryBlob: AnimatedBlob,
     leftSecondaryBlob: AnimatedBlob,
     rightPrimaryBlob: AnimatedBlob,
-    rightSecondaryBlob: AnimatedBlob,
+    rightSecondaryBlob: AnimatedBlob
 ) {
     Canvas(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize()
     ) {
         drawSoftCircle(
             color = leftColor.copy(alpha = leftPrimaryBlob.alpha * 0.24f),
             center = Offset(x = size.width * 0.00f, y = size.height * (0.55f + leftPrimaryBlob.offsetY)),
-            radius = size.height * 0.46f * leftPrimaryBlob.scale,
+            radius = size.height * 0.46f * leftPrimaryBlob.scale
         )
 
         drawSoftCircle(
             color = leftColor.copy(alpha = leftSecondaryBlob.alpha * 0.12f),
             center = Offset(x = size.width * 0.22f, y = size.height * (0.20f + leftSecondaryBlob.offsetY)),
-            radius = size.height * 0.36f * leftSecondaryBlob.scale,
+            radius = size.height * 0.36f * leftSecondaryBlob.scale
         )
 
         drawSoftCircle(
             color = rightColor.copy(alpha = rightPrimaryBlob.alpha * 0.22f),
             center = Offset(x = size.width * 1.00f, y = size.height * (0.26f + rightPrimaryBlob.offsetY)),
-            radius = size.height * 0.48f * rightPrimaryBlob.scale,
+            radius = size.height * 0.48f * rightPrimaryBlob.scale
         )
 
         drawSoftCircle(
             color = rightColor.copy(alpha = rightSecondaryBlob.alpha * 0.12f),
             center = Offset(x = size.width * 0.82f, y = size.height * (0.72f + rightSecondaryBlob.offsetY)),
-            radius = size.height * 0.38f * rightSecondaryBlob.scale,
+            radius = size.height * 0.38f * rightSecondaryBlob.scale
         )
     }
-
 }
 
 private fun DrawScope.drawSoftCircle(color: Color, center: Offset, radius: Float) {
@@ -258,10 +241,10 @@ private fun DrawScope.drawSoftCircle(color: Color, center: Offset, radius: Float
                 1.00f to color.copy(alpha = 0f)
             ),
             center = center,
-            radius = radius,
+            radius = radius
         ),
         radius = radius,
-        center = center,
+        center = center
     )
 }
 
@@ -280,7 +263,7 @@ private fun rememberAnimatedBlob(
     alphaRange: QrezzyBackgroundAlphaRange,
     durations: BlobAnimationDurations,
     labelPrefix: String,
-    alphaMultiplier: Float = 1f,
+    alphaMultiplier: Float = 1f
 ): AnimatedBlob {
     val shape = remember { randomBlobShape() }
     val animationConfig = remember { randomBlobAnimationConfig(alphaRange) }
@@ -290,7 +273,7 @@ private fun rememberAnimatedBlob(
         targetValue = animationConfig.targetOffsetY,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = durations.offsetMillis),
-            repeatMode = RepeatMode.Reverse,
+            repeatMode = RepeatMode.Reverse
         )
     )
     val scale = transition.animateFloat(
@@ -299,7 +282,7 @@ private fun rememberAnimatedBlob(
         targetValue = animationConfig.targetScale,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = durations.scaleMillis),
-            repeatMode = RepeatMode.Reverse,
+            repeatMode = RepeatMode.Reverse
         )
     )
     val alpha = transition.animateFloat(
@@ -308,7 +291,7 @@ private fun rememberAnimatedBlob(
         targetValue = animationConfig.targetAlpha * alphaMultiplier,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = durations.alphaMillis),
-            repeatMode = RepeatMode.Reverse,
+            repeatMode = RepeatMode.Reverse
         )
     )
     return AnimatedBlob(shape = shape, offsetY = offsetY.value, scale = scale.value, alpha = alpha.value)
@@ -322,14 +305,7 @@ private fun rememberAnimatedBlob(
  * Parametr `visibleFactor` pozwala kontrolować,
  * jaka część blob-a pozostaje widoczna na ekranie.
  */
-private fun DrawScope.drawBlob(
-    color: Color,
-    blob: AnimatedBlob,
-    baseHeight: Float,
-    visibleFactor: Float,
-    centerX: Float,
-    centerY: Float,
-) {
+private fun DrawScope.drawBlob(color: Color, blob: AnimatedBlob, baseHeight: Float, visibleFactor: Float, centerX: Float, centerY: Float) {
     val blobWidth = baseHeight * blob.shape.widthFactor * blob.scale
     val blobHeight = baseHeight * blob.shape.heightFactor * blob.scale
     drawOval(
@@ -353,7 +329,7 @@ private fun DrawScope.drawSoftBlob(
     visibleFactor: Float,
     centerX: Float,
     centerY: Float,
-    softEdgePx: Float,
+    softEdgePx: Float
 ) {
     val blobWidth = baseHeight * blob.shape.widthFactor * blob.scale
     val blobHeight = baseHeight * blob.shape.heightFactor * blob.scale
@@ -366,13 +342,13 @@ private fun DrawScope.drawSoftBlob(
     drawOval(
         brush = Brush.radialGradient(
             colorStops =
-                arrayOf(
-                    0.00f to color.copy(alpha = color.alpha * SoftBlob.CENTER_ALPHA_MULTIPLIER),
-                    0.55f to color.copy(alpha = color.alpha * SoftBlob.MIDDLE_ALPHA_MULTIPLIER),
-                    1.00f to color.copy(alpha = 0f),
-                ),
+            arrayOf(
+                0.00f to color.copy(alpha = color.alpha * SoftBlob.CENTER_ALPHA_MULTIPLIER),
+                0.55f to color.copy(alpha = color.alpha * SoftBlob.MIDDLE_ALPHA_MULTIPLIER),
+                1.00f to color.copy(alpha = 0f)
+            ),
             center = gradientCenter,
-            radius = maxOf(softBlobWidth, softBlobHeight) * SoftBlob.RADIUS_FACTOR,
+            radius = maxOf(softBlobWidth, softBlobHeight) * SoftBlob.RADIUS_FACTOR
         ),
         topLeft = Offset(x = topLeftX, y = topLeftY),
         size = Size(width = softBlobWidth, height = softBlobHeight)
@@ -392,7 +368,7 @@ private fun randomBlobShape(): BlobShape = BlobShape(
     ),
     heightFactor = randomFloat(
         min = BlobShapeConfig.RANDOM_HEIGHT_FACTOR_MIN,
-        max = BlobShapeConfig.RANDOM_HEIGHT_FACTOR_MAX,
+        max = BlobShapeConfig.RANDOM_HEIGHT_FACTOR_MAX
     )
 )
 
@@ -402,15 +378,14 @@ private fun randomBlobShape(): BlobShape = BlobShape(
  * Dzięki temu każde uruchomienie ekranu może wyglądać trochę inaczej,
  * ale wartości nadal mieszczą się w bezpiecznych zakresach.
  */
-private fun randomBlobAnimationConfig(alphaRange: QrezzyBackgroundAlphaRange): BlobAnimationConfig =
-    BlobAnimationConfig(
-        initialOffsetY = randomFloat(min = BlobAnimationValue.OFFSET_Y_MIN, max = BlobAnimationValue.OFFSET_Y_MAX),
-        targetOffsetY = randomFloat(min = BlobAnimationValue.OFFSET_Y_MIN, max = BlobAnimationValue.OFFSET_Y_MAX),
-        initialScale = randomFloat(min = BlobAnimationValue.SCALE_MIN, max = BlobAnimationValue.SCALE_MAX),
-        targetScale = randomFloat(min = BlobAnimationValue.SCALE_MIN, max = BlobAnimationValue.SCALE_MAX),
-        initialAlpha = randomFloat(min = alphaRange.min, max = alphaRange.max),
-        targetAlpha = randomFloat(min = alphaRange.min, max = alphaRange.max),
-    )
+private fun randomBlobAnimationConfig(alphaRange: QrezzyBackgroundAlphaRange): BlobAnimationConfig = BlobAnimationConfig(
+    initialOffsetY = randomFloat(min = BlobAnimationValue.OFFSET_Y_MIN, max = BlobAnimationValue.OFFSET_Y_MAX),
+    targetOffsetY = randomFloat(min = BlobAnimationValue.OFFSET_Y_MIN, max = BlobAnimationValue.OFFSET_Y_MAX),
+    initialScale = randomFloat(min = BlobAnimationValue.SCALE_MIN, max = BlobAnimationValue.SCALE_MAX),
+    targetScale = randomFloat(min = BlobAnimationValue.SCALE_MIN, max = BlobAnimationValue.SCALE_MAX),
+    initialAlpha = randomFloat(min = alphaRange.min, max = alphaRange.max),
+    targetAlpha = randomFloat(min = alphaRange.min, max = alphaRange.max)
+)
 
 /**
  * Generuje losową wartość Float z zakresu min max.
@@ -418,8 +393,7 @@ private fun randomBlobAnimationConfig(alphaRange: QrezzyBackgroundAlphaRange): B
  * Wykorzystywane do losowania parametrów animacji blob-ów,
  * dzięki czemu każde uruchomienie aplikacji może wyglądać nieco inaczej.
  */
-private fun randomFloat(min: Float, max: Float): Float =
-    Random.nextDouble(from = min.toDouble(), until = max.toDouble()).toFloat()
+private fun randomFloat(min: Float, max: Float): Float = Random.nextDouble(from = min.toDouble(), until = max.toDouble()).toFloat()
 
 /**
  * Czasy trwania poszczególnych animacji blob-ów.

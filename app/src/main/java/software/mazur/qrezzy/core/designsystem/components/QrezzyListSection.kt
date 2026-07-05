@@ -30,18 +30,18 @@ fun QrezzyListSection(
     isFocused: Boolean = false,
     title: String? = null,
     error: String? = null,
-    content: @Composable BoxScope.() -> Unit,
+    content: @Composable BoxScope.() -> Unit
 ) {
     val isError = !error.isNullOrBlank()
     val backgroundColor = when {
-        isError   -> QrezzyPink
+        isError -> QrezzyPink
         isFocused -> QrezzyPurple
-        else      -> QrezzyMint
+        else -> QrezzyMint
     }
     val borderColor = when {
-        isError   -> QrezzyPinkDark
+        isError -> QrezzyPinkDark
         isFocused -> QrezzyPurpleDark
-        else      -> MaterialTheme.colorScheme.surfaceDim
+        else -> MaterialTheme.colorScheme.surfaceDim
     }
     Column(modifier = modifier.fillMaxWidth()) {
         title?.let {
@@ -77,7 +77,7 @@ fun QrezzyListSection(
                     .border(
                         color = borderColor,
                         shape = QrezzyListSectionDefaults.shape,
-                        width = QrezzyListSectionDefaults.borderWidth,
+                        width = QrezzyListSectionDefaults.borderWidth
                     )
             )
             Box(

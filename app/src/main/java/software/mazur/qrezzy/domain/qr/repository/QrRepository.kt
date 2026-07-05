@@ -20,6 +20,6 @@ interface QrRepository {
     suspend fun getCount(): Int
 
     suspend fun getLatestCreatedAt(): Long?
-    
+
     suspend fun deleteAll()
 }

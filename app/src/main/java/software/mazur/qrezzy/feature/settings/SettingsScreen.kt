@@ -40,7 +40,7 @@ fun SettingsScreen(
     onOpenSourceLicensesClick: () -> Unit,
     onDonateClick: () -> Unit,
     onAutoSaveScansChanged: (Boolean) -> Unit,
-    onVibrationEnabledChanged: (Boolean) -> Unit,
+    onVibrationEnabledChanged: (Boolean) -> Unit
 ) {
     Column(modifier = Modifier.padding(horizontal = SettingsScreenDefaults.horizontalPadding)) {
         QrezzyTopBar(
@@ -73,7 +73,7 @@ fun SettingsScreen(
                             value = uiState.theme.displayName(),
                             iconSize = SettingsScreenDefaults.iconSize,
                             iconBackgroundColor = QrezzyMintDark,
-                            onClick = onThemeClick,
+                            onClick = onThemeClick
                         )
                     }
                 }
@@ -92,7 +92,7 @@ fun SettingsScreen(
                                 )
                             },
                             iconSize = SettingsScreenDefaults.iconSize,
-                            iconBackgroundColor = QrezzyMintDark,
+                            iconBackgroundColor = QrezzyMintDark
                         )
                         QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_vibro),
@@ -104,7 +104,7 @@ fun SettingsScreen(
                                 )
                             },
                             iconSize = SettingsScreenDefaults.iconSize,
-                            iconBackgroundColor = QrezzyPurpleDark,
+                            iconBackgroundColor = QrezzyPurpleDark
                         )
                     }
                 }
@@ -119,7 +119,7 @@ fun SettingsScreen(
                             value = uiState.historyLimit.displayName(),
                             onClick = onMaximumHistoryItemsClick,
                             iconSize = SettingsScreenDefaults.iconSize,
-                            iconBackgroundColor = QrezzyYellowDark,
+                            iconBackgroundColor = QrezzyYellowDark
                         )
                         QrezzyListItem(
                             iconPainter = painterResource(R.drawable.qrezzy_delete),
@@ -128,7 +128,7 @@ fun SettingsScreen(
                             showDivider = false,
                             onClick = onClearAllHistoryClick,
                             iconSize = SettingsScreenDefaults.iconSize,
-                            iconBackgroundColor = QrezzyPinkDark,
+                            iconBackgroundColor = QrezzyPinkDark
                         )
                     }
                 }
@@ -181,9 +181,11 @@ fun SettingsScreen(
                     onClick = onDonateClick,
                     modifier = Modifier.padding(bottom = SettingsScreenDefaults.bottomPadding)
                 )
-                QrezzyCopyright(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = SettingsScreenDefaults.bottomPadding))
+                QrezzyCopyright(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = SettingsScreenDefaults.bottomPadding)
+                )
             }
         }
     }

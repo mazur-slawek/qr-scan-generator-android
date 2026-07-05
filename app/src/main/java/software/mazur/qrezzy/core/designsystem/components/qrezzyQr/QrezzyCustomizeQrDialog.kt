@@ -60,7 +60,7 @@ fun QrezzyCustomizeQrDialog(
     onErrorCorrectionSelected: (QrErrorCorrection) -> Unit,
     onCancelClick: () -> Unit,
     onResetClick: () -> Unit,
-    onApplyClick: () -> Unit,
+    onApplyClick: () -> Unit
 ) {
     AlertDialog(onDismissRequest = onCancelClick, properties = DialogProperties(usePlatformDefaultWidth = false)) {
         Column(
@@ -68,19 +68,19 @@ fun QrezzyCustomizeQrDialog(
                 .fillMaxWidth()
                 .padding(
                     vertical = CustomizeQrDialogDefaults.Container.outerVerticalPadding,
-                    horizontal = CustomizeQrDialogDefaults.Container.outerHorizontalPadding,
+                    horizontal = CustomizeQrDialogDefaults.Container.outerHorizontalPadding
                 )
                 .background(
                     color = MaterialTheme.colorScheme.background,
-                    shape = CustomizeQrDialogDefaults.Container.shape,
+                    shape = CustomizeQrDialogDefaults.Container.shape
                 )
                 .border(
                     color = MaterialTheme.colorScheme.surfaceDim,
                     shape = CustomizeQrDialogDefaults.Container.shape,
-                    width = CustomizeQrDialogDefaults.Container.borderWidth,
+                    width = CustomizeQrDialogDefaults.Container.borderWidth
                 )
                 .clip(CustomizeQrDialogDefaults.Container.shape)
-                .padding(CustomizeQrDialogDefaults.Container.contentPadding),
+                .padding(CustomizeQrDialogDefaults.Container.contentPadding)
         ) {
             QrezzyTopBar(titleResId = R.string.customize_qr_title, subtitleResId = R.string.customize_qr_subtitle) {
                 QrezzyTopBarButton(
@@ -97,7 +97,7 @@ fun QrezzyCustomizeQrDialog(
                         title = stringResource(R.string.customize_qr_qr_color),
                         colors = CustomizeQrDialogDefaults.Colors.qrColors,
                         selectedColor = style.qrColor,
-                        onColorSelected = onQrColorSelected,
+                        onColorSelected = onQrColorSelected
                     )
                 }
                 item { Spacer(modifier = Modifier.height(CustomizeQrDialogDefaults.Section.spacing)) }
@@ -106,21 +106,21 @@ fun QrezzyCustomizeQrDialog(
                         title = stringResource(R.string.customize_qr_background_color),
                         colors = CustomizeQrDialogDefaults.Colors.backgroundColors,
                         selectedColor = style.backgroundColor,
-                        onColorSelected = onBackgroundColorSelected,
+                        onColorSelected = onBackgroundColorSelected
                     )
                 }
                 item { Spacer(modifier = Modifier.height(CustomizeQrDialogDefaults.Section.spacing)) }
                 item {
                     CustomizeQrPatternSelector(
                         selectedPatternStyle = style.patternStyle,
-                        onPatternStyleSelected = onPatternStyleSelected,
+                        onPatternStyleSelected = onPatternStyleSelected
                     )
                 }
                 item { Spacer(modifier = Modifier.height(CustomizeQrDialogDefaults.Section.spacing)) }
                 item {
                     CustomizeQrErrorCorrectionSelector(
                         selectedErrorCorrection = style.errorCorrection,
-                        onErrorCorrectionSelected = onErrorCorrectionSelected,
+                        onErrorCorrectionSelected = onErrorCorrectionSelected
                     )
                 }
                 item { Spacer(modifier = Modifier.height(CustomizeQrDialogDefaults.Section.bottomSpacing)) }
@@ -135,12 +135,7 @@ fun QrezzyCustomizeQrDialog(
 }
 
 @Composable
-private fun CustomizeQrColorSelector(
-    title: String,
-    selectedColor: Long,
-    colors: List<QrColorOption>,
-    onColorSelected: (Long) -> Unit
-) {
+private fun CustomizeQrColorSelector(title: String, selectedColor: Long, colors: List<QrColorOption>, onColorSelected: (Long) -> Unit) {
     QrezzyListSection(title = title) {
         Row(
             modifier = Modifier
@@ -154,7 +149,7 @@ private fun CustomizeQrColorSelector(
                 CustomizeQrColorOption(
                     color = color,
                     isSelected = selectedColor == color.value,
-                    onClick = { onColorSelected(color.value) },
+                    onClick = { onColorSelected(color.value) }
                 )
             }
         }
@@ -204,15 +199,12 @@ private fun CustomizeQrColorOption(color: QrColorOption, isSelected: Boolean, on
                 shape = CustomizeQrDialogDefaults.ColorOption.selectedColorShape
             )
             .clip(CustomizeQrDialogDefaults.ColorOption.containerShape)
-            .clickable(onClick = onClick),
+            .clickable(onClick = onClick)
     )
 }
 
 @Composable
-private fun CustomizeQrPatternSelector(
-    selectedPatternStyle: QrPatternStyle,
-    onPatternStyleSelected: (QrPatternStyle) -> Unit,
-) {
+private fun CustomizeQrPatternSelector(selectedPatternStyle: QrPatternStyle, onPatternStyleSelected: (QrPatternStyle) -> Unit) {
     QrezzyListSection(title = stringResource(R.string.customize_qr_pattern_style)) {
         Row(
             modifier = Modifier
@@ -247,7 +239,7 @@ private fun CustomizeQrPatternSelector(
 @Composable
 private fun CustomizeQrErrorCorrectionSelector(
     selectedErrorCorrection: QrErrorCorrection,
-    onErrorCorrectionSelected: (QrErrorCorrection) -> Unit,
+    onErrorCorrectionSelected: (QrErrorCorrection) -> Unit
 ) {
     QrezzyListSection(title = stringResource(R.string.customize_qr_error_correction)) {
         Row(
@@ -262,25 +254,25 @@ private fun CustomizeQrErrorCorrectionSelector(
                 iconResId = R.drawable.qr_error_correction,
                 titleResId = R.string.customize_qr_error_low,
                 isSelected = selectedErrorCorrection == QrErrorCorrection.LOW,
-                onClick = { onErrorCorrectionSelected(QrErrorCorrection.LOW) },
+                onClick = { onErrorCorrectionSelected(QrErrorCorrection.LOW) }
             )
             CustomizeQrOption(
                 iconResId = R.drawable.qr_error_correction,
                 titleResId = R.string.customize_qr_error_medium,
                 isSelected = selectedErrorCorrection == QrErrorCorrection.MEDIUM,
-                onClick = { onErrorCorrectionSelected(QrErrorCorrection.MEDIUM) },
+                onClick = { onErrorCorrectionSelected(QrErrorCorrection.MEDIUM) }
             )
             CustomizeQrOption(
                 iconResId = R.drawable.qr_error_correction,
                 titleResId = R.string.customize_qr_error_quartile,
                 isSelected = selectedErrorCorrection == QrErrorCorrection.QUARTILE,
-                onClick = { onErrorCorrectionSelected(QrErrorCorrection.QUARTILE) },
+                onClick = { onErrorCorrectionSelected(QrErrorCorrection.QUARTILE) }
             )
             CustomizeQrOption(
                 iconResId = R.drawable.qr_error_correction,
                 titleResId = R.string.customize_qr_error_high,
                 isSelected = selectedErrorCorrection == QrErrorCorrection.HIGH,
-                onClick = { onErrorCorrectionSelected(QrErrorCorrection.HIGH) },
+                onClick = { onErrorCorrectionSelected(QrErrorCorrection.HIGH) }
             )
         }
     }
@@ -295,25 +287,25 @@ private fun CustomizeQrOption(iconResId: Int, titleResId: Int, isSelected: Boole
             .border(
                 width = CustomizeQrDialogDefaults.Option.borderWidth,
                 shape = CustomizeQrDialogDefaults.Option.shape,
-                color = if (isSelected) QrezzyPurpleDark else MaterialTheme.colorScheme.onSurfaceVariant,
+                color = if (isSelected) QrezzyPurpleDark else MaterialTheme.colorScheme.onSurfaceVariant
             )
             .background(
                 color = if (isSelected) QrezzyPurple else Color.Transparent,
-                shape = CustomizeQrDialogDefaults.Option.shape,
+                shape = CustomizeQrDialogDefaults.Option.shape
             )
             .clip(CustomizeQrDialogDefaults.Option.shape)
             .clickable(onClick = onClick)
             .padding(
                 vertical = CustomizeQrDialogDefaults.Option.verticalPadding,
-                horizontal = CustomizeQrDialogDefaults.Option.horizontalPadding,
+                horizontal = CustomizeQrDialogDefaults.Option.horizontalPadding
             ),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             painter = painterResource(iconResId),
             contentDescription = null,
             tint = if (isSelected) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(CustomizeQrDialogDefaults.Option.iconSize),
+            modifier = Modifier.size(CustomizeQrDialogDefaults.Option.iconSize)
         )
         Spacer(modifier = Modifier.width(CustomizeQrDialogDefaults.Option.iconTextSpacing))
         Text(
@@ -321,21 +313,17 @@ private fun CustomizeQrOption(iconResId: Int, titleResId: Int, isSelected: Boole
             color = if (isSelected) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.ExtraBold,
-            modifier = Modifier.weight(CustomizeQrDialogDefaults.CONTENT_WEIGHT),
+            modifier = Modifier.weight(CustomizeQrDialogDefaults.CONTENT_WEIGHT)
         )
     }
 }
 
 @Composable
-private fun CustomizeQrActions(
-    isEditMode: Boolean = false,
-    onResetClick: () -> Unit,
-    onApplyClick: () -> Unit
-) {
+private fun CustomizeQrActions(isEditMode: Boolean = false, onResetClick: () -> Unit, onApplyClick: () -> Unit) {
     QrezzyButton(
         text = stringResource(id = if (isEditMode) R.string.customize_qr_save else R.string.customize_qr_apply),
         elevation = CustomizeQrDialogDefaults.Actions.buttonElevation,
-        onClick = onApplyClick,
+        onClick = onApplyClick
     )
     Spacer(modifier = Modifier.height(CustomizeQrDialogDefaults.Actions.buttonSpacing))
     QrezzyButton(
@@ -343,13 +331,11 @@ private fun CustomizeQrActions(
         containerColor = QrezzyYellow,
         depthColor = QrezzyPinkDark,
         elevation = CustomizeQrDialogDefaults.Actions.buttonElevation,
-        onClick = onResetClick,
+        onClick = onResetClick
     )
 }
 
-private data class QrColorOption(
-    val value: Long
-)
+private data class QrColorOption(val value: Long)
 
 private object CustomizeQrDialogDefaults {
     const val CONTENT_WEIGHT = 1f

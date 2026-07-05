@@ -29,12 +29,12 @@ fun QrezzyAppVersion(modifier: Modifier = Modifier) {
             .border(
                 width = QrezzyAppVersionDefaults.borderWidth,
                 color = QrezzyPurpleDark,
-                shape = ShapeDefaults.ExtraLarge,
+                shape = ShapeDefaults.ExtraLarge
             )
             .padding(
                 horizontal = QrezzyAppVersionDefaults.horizontalPadding,
-                vertical = QrezzyAppVersionDefaults.verticalPadding,
-            ),
+                vertical = QrezzyAppVersionDefaults.verticalPadding
+            )
     )
 }
 

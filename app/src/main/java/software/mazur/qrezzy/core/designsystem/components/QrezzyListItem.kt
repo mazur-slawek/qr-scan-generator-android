@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
 
-
 @Composable
 fun QrezzyListItem(
     title: String,
@@ -47,7 +46,7 @@ fun QrezzyListItem(
     iconBackgroundColor: Color = QrezzyMintDark,
     trailing: @Composable (() -> Unit)? = null,
     onClick: (() -> Unit)? = null,
-    showDivider: Boolean = true,
+    showDivider: Boolean = true
 ) {
     val hasIcon = icon != null || iconPainter != null
     Box {
@@ -56,28 +55,31 @@ fun QrezzyListItem(
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .then(
-                    if (onClick != null) Modifier.clickable(onClick = onClick)
-                    else Modifier
+                    if (onClick != null) {
+                        Modifier.clickable(onClick = onClick)
+                    } else {
+                        Modifier
+                    }
                 )
                 .padding(
                     vertical = QrezzyListItemDefaults.Container.verticalPadding,
-                    horizontal = QrezzyListItemDefaults.Container.horizontalPadding,
+                    horizontal = QrezzyListItemDefaults.Container.horizontalPadding
                 ),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             QrezzyListItemIcon(
                 icon = icon,
                 iconPainter = iconPainter,
                 size = iconSize,
                 tintColor = iconTintColor,
-                backgroundColor = iconBackgroundColor,
+                backgroundColor = iconBackgroundColor
             )
             if (hasIcon) Spacer(modifier = Modifier.width(QrezzyListItemDefaults.Text.startPadding))
             QrezzyListItemText(
                 title = title,
                 subtitle = subtitle,
                 titleColor = titleColor,
-                modifier = Modifier.weight(QrezzyListItemDefaults.Text.WEIGHT),
+                modifier = Modifier.weight(QrezzyListItemDefaults.Text.WEIGHT)
             )
             Spacer(modifier = Modifier.width(QrezzyListItemDefaults.Text.startPadding))
             value?.let {
@@ -93,33 +95,27 @@ fun QrezzyListItem(
 }
 
 @Composable
-private fun QrezzyListItemIcon(
-    icon: ImageVector?,
-    iconPainter: Painter?,
-    size: Dp,
-    backgroundColor: Color,
-    tintColor: Color? = null,
-) {
+private fun QrezzyListItemIcon(icon: ImageVector?, iconPainter: Painter?, size: Dp, backgroundColor: Color, tintColor: Color? = null) {
     val iconModifier = Modifier
         .size(size)
         .background(
             color = backgroundColor.copy(alpha = QrezzyListItemDefaults.Icon.BACKGROUND_ALPHA),
-            shape = ShapeDefaults.Small,
+            shape = ShapeDefaults.Small
         )
         .border(
             width = QrezzyListItemDefaults.Icon.borderWidth,
             color = backgroundColor,
-            shape = ShapeDefaults.Small,
+            shape = ShapeDefaults.Small
         )
         .padding(QrezzyListItemDefaults.Icon.padding)
 
     when {
-        icon != null        -> {
+        icon != null -> {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
                 tint = tintColor ?: Color.Unspecified,
-                modifier = iconModifier,
+                modifier = iconModifier
             )
         }
 
@@ -128,7 +124,7 @@ private fun QrezzyListItemIcon(
                 painter = iconPainter,
                 contentDescription = null,
                 tint = tintColor ?: Color.Unspecified,
-                modifier = iconModifier,
+                modifier = iconModifier
             )
         }
     }
@@ -165,7 +161,7 @@ private fun QrezzyListItemValue(value: String) {
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         style = MaterialTheme.typography.bodySmall,
         fontWeight = FontWeight.Medium,
-        modifier = Modifier.padding(end = QrezzyListItemDefaults.Value.endPadding),
+        modifier = Modifier.padding(end = QrezzyListItemDefaults.Value.endPadding)
     )
 }
 
@@ -175,7 +171,7 @@ private fun QrezzyListItemArrow() {
         imageVector = Icons.Outlined.KeyboardArrowRight,
         contentDescription = null,
         tint = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier.size(QrezzyListItemDefaults.Arrow.size),
+        modifier = Modifier.size(QrezzyListItemDefaults.Arrow.size)
     )
 }
 
@@ -184,7 +180,7 @@ private fun QrezzyListItemDivider(modifier: Modifier = Modifier) {
     HorizontalDivider(
         modifier = modifier,
         thickness = QrezzyListItemDefaults.Divider.thickness,
-        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = QrezzyListItemDefaults.Divider.ALPHA),
+        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = QrezzyListItemDefaults.Divider.ALPHA)
     )
 }
 

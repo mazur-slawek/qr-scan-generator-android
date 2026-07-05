@@ -35,7 +35,7 @@ fun ClearAllHistoryScreen(
     onBackClick: () -> Unit,
     onClearAllHistoryClick: () -> Unit,
     onClearHistoryConfirmed: () -> Unit,
-    onClearHistoryDialogDismissed: () -> Unit,
+    onClearHistoryDialogDismissed: () -> Unit
 ) {
     if (settingsUiState.showClearHistoryDialog) {
         ClearHistoryConfirmationDialog(
@@ -62,7 +62,7 @@ fun ClearAllHistoryScreen(
                             .fillMaxWidth()
                             .padding(top = ClearAllHistoryScreenDefaults.imageTopPadding)
                             .height(ClearAllHistoryScreenDefaults.imageHeight),
-                        contentDescription = null,
+                        contentDescription = null
                     )
                 }
                 item {
@@ -73,7 +73,7 @@ fun ClearAllHistoryScreen(
                                 iconSize = ClearAllHistoryScreenDefaults.iconSize,
                                 title = stringResource(R.string.clear_history_current_items_title),
                                 value = itemsCount.toString(),
-                                iconBackgroundColor = QrezzyPinkDark,
+                                iconBackgroundColor = QrezzyPinkDark
                             )
                             QrezzyListItem(
                                 iconPainter = painterResource(R.drawable.qrezzy_calendar),
@@ -81,7 +81,7 @@ fun ClearAllHistoryScreen(
                                 title = stringResource(R.string.clear_history_latest_item_title),
                                 value = latestCreatedAt.toDisplayDate(),
                                 iconBackgroundColor = QrezzyPurpleDark,
-                                showDivider = false,
+                                showDivider = false
                             )
                         }
                     }
@@ -95,7 +95,7 @@ fun ClearAllHistoryScreen(
             enabled = itemsCount > 0,
             elevation = 0.dp,
             containerColor = QrezzyPink,
-            depthColor = QrezzyYellowDark,
+            depthColor = QrezzyYellowDark
         )
         Spacer(modifier = Modifier.height(ClearAllHistoryScreenDefaults.contentPadding))
     }

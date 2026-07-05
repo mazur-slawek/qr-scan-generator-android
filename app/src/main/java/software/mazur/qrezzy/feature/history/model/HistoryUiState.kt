@@ -10,7 +10,7 @@ data class HistoryUiState(
     val isInitialLoading: Boolean = true,
     val isDeleteModeEnabled: Boolean = false,
     val selectedItemIds: Set<Long> = emptySet(),
-    val isDeleteConfirmationVisible: Boolean = false,
+    val isDeleteConfirmationVisible: Boolean = false
 ) {
     val hasItems: Boolean
         get() = favoriteItems.isNotEmpty() || sections.isNotEmpty()

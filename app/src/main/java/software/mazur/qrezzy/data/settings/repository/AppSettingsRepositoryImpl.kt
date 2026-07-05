@@ -1,5 +1,6 @@
 package software.mazur.qrezzy.data.settings.repository
 
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import software.mazur.qrezzy.data.database.dao.AppSettingsDao
@@ -10,12 +11,9 @@ import software.mazur.qrezzy.domain.settings.model.AppSettings
 import software.mazur.qrezzy.domain.settings.model.AppTheme
 import software.mazur.qrezzy.domain.settings.model.HistoryLimit
 import software.mazur.qrezzy.domain.settings.repository.AppSettingsRepository
-import javax.inject.Inject
 
 class AppSettingsRepositoryImpl @Inject constructor(private val dao: AppSettingsDao) : AppSettingsRepository {
-    override fun observeSettings(): Flow<AppSettings> {
-        return dao.observeSettings().map { entity -> entity?.toDomain() ?: AppSettings() }
-    }
+    override fun observeSettings(): Flow<AppSettings> = dao.observeSettings().map { entity -> entity?.toDomain() ?: AppSettings() }
 
     override suspend fun initializeSettingsIfNeeded(language: AppLanguage) {
         dao.insertIfMissing(AppSettingsEntity(language = language))

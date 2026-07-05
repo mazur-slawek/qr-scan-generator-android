@@ -9,22 +9,22 @@ val QrezzyFontFamily =
     FontFamily(
         Font(
             resId = R.font.ubuntu_sans_regular,
-            weight = FontWeight.Normal,
+            weight = FontWeight.Normal
         ),
         Font(
             resId = R.font.ubuntu_sans_medium,
-            weight = FontWeight.Medium,
+            weight = FontWeight.Medium
         ),
         Font(
             resId = R.font.ubuntu_sans_semibold,
-            weight = FontWeight.SemiBold,
+            weight = FontWeight.SemiBold
         ),
         Font(
             resId = R.font.ubuntu_sans_bold,
-            weight = FontWeight.Bold,
+            weight = FontWeight.Bold
         ),
         Font(
             resId = R.font.ubuntu_sans_extrabold,
-            weight = FontWeight.ExtraBold,
-        ),
+            weight = FontWeight.ExtraBold
+        )
     )

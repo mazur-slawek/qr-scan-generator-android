@@ -42,7 +42,7 @@ fun DonateScreen(onBackClick: () -> Unit) {
                             .fillMaxWidth()
                             .padding(top = DonateScreenDefaults.imageTopPadding)
                             .height(DonateScreenDefaults.imageHeight),
-                        contentDescription = null,
+                        contentDescription = null
                     )
                 }
                 item {
@@ -54,7 +54,7 @@ fun DonateScreen(onBackClick: () -> Unit) {
                                 subtitle = stringResource(R.string.donate_buy_coffee_subtitle),
                                 iconSize = DonateScreenDefaults.iconSize,
                                 showDivider = false,
-                                onClick = { openBuyMeACoffee(context) },
+                                onClick = { openBuyMeACoffee(context) }
                             )
                         }
                     }
@@ -71,7 +71,7 @@ fun DonateScreen(onBackClick: () -> Unit) {
 private fun openBuyMeACoffee(context: Context) {
     val intent = Intent(
         Intent.ACTION_VIEW,
-        DonateScreenDefaults.BUY_ME_A_COFFEE_URL.toUri(),
+        DonateScreenDefaults.BUY_ME_A_COFFEE_URL.toUri()
     )
     context.startActivity(intent)
 }

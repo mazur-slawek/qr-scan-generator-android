@@ -9,7 +9,7 @@ data class ScannerUiState(
     val autoSaveScans: Boolean = false,
     val vibrationEnabled: Boolean = true,
     val isSaveBlockedByHistoryLimit: Boolean = false,
-    val showHistoryLimitReachedPopup: Boolean = false,
+    val showHistoryLimitReachedPopup: Boolean = false
 ) {
     enum class Mode { Idle, Scanning, PermissionDenied }
 

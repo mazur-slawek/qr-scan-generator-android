@@ -11,16 +11,16 @@ import software.mazur.qrezzy.data.settings.local.AppSettingsEntity
 @Database(
     entities = [
         QrEntity::class,
-        AppSettingsEntity::class,
+        AppSettingsEntity::class
     ],
     version = QrezzyDatabase.DATABASE_VERSION,
-    exportSchema = true,
+    exportSchema = true
 )
 @TypeConverters(QrezzyTypeConverters::class)
 abstract class QrezzyDatabase : RoomDatabase() {
     abstract fun qrDao(): QrDao
     abstract fun appSettingsDao(): AppSettingsDao
-    
+
     companion object {
         const val DATABASE_NAME = "qrezzy_database"
         const val DATABASE_VERSION = 4

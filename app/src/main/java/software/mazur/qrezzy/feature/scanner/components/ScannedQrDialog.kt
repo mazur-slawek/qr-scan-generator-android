@@ -31,29 +31,23 @@ import software.mazur.qrezzy.domain.qr.model.Qr
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScannedQrDialog(
-    qr: Qr,
-    showSaveButton: Boolean,
-    isSaveEnabled: Boolean,
-    onSaveClick: () -> Unit,
-    onCancelClick: () -> Unit
-) {
+fun ScannedQrDialog(qr: Qr, showSaveButton: Boolean, isSaveEnabled: Boolean, onSaveClick: () -> Unit, onCancelClick: () -> Unit) {
     AlertDialog(
         onDismissRequest = onCancelClick,
-        properties = DialogProperties(usePlatformDefaultWidth = false),
+        properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
                     vertical = ScannedQrDialogDefaults.outerVerticalPadding,
-                    horizontal = ScannedQrDialogDefaults.outerHorizontalPadding,
+                    horizontal = ScannedQrDialogDefaults.outerHorizontalPadding
                 )
                 .background(color = MaterialTheme.colorScheme.background, shape = ScannedQrDialogDefaults.shape)
                 .border(
                     width = ScannedQrDialogDefaults.Border.width,
                     color = MaterialTheme.colorScheme.surfaceDim,
-                    shape = ScannedQrDialogDefaults.shape,
+                    shape = ScannedQrDialogDefaults.shape
                 )
                 .clip(ScannedQrDialogDefaults.shape)
                 .padding(ScannedQrDialogDefaults.padding)
@@ -71,11 +65,12 @@ fun ScannedQrDialog(
                     QrezzyAnimatedStars(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(ScannedQrDialogDefaults.Image.size)) {
+                            .height(ScannedQrDialogDefaults.Image.size)
+                    ) {
                         Image(
                             painter = painterResource(id = R.drawable.qrezzy_mascot_detected),
                             contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
                 }

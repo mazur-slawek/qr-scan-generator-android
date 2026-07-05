@@ -5,5 +5,5 @@ enum class OnboardingItemType {
     EDIT,
     HISTORY,
     SHARE,
-    SUMMARY,
+    SUMMARY
 }

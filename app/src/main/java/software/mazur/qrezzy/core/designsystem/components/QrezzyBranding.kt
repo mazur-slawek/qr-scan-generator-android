@@ -25,10 +25,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.theme.LocalIsDarkTheme
-import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun QrezzyBranding(modifier: Modifier = Modifier) {
@@ -55,73 +55,65 @@ fun QrezzyBranding(modifier: Modifier = Modifier) {
 
     BoxWithConstraints(
         modifier = modifier,
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.Center
     ) {
         val letterWidth =
             QrezzyBrandingDefaults.calculateLetterWidth(
-                availableWidth = maxWidth,
+                availableWidth = maxWidth
             )
         val sloganWidth = maxWidth * QrezzyBrandingDefaults.Slogan.WIDTH_FACTOR
 
         Column(
             modifier = Modifier.width(maxWidth),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             QrezzyLogo(
                 letters = QrezzyBrandingDefaults.logoLetters,
                 visibleLetterCount = visibleLetterCount,
-                letterWidth = letterWidth,
+                letterWidth = letterWidth
             )
 
             Spacer(
-                modifier = Modifier.height(QrezzyBrandingDefaults.Slogan.topSpacing),
+                modifier = Modifier.height(QrezzyBrandingDefaults.Slogan.topSpacing)
             )
 
             QrezzySlogan(
                 width = sloganWidth,
-                isVisible = isSloganVisible,
+                isVisible = isSloganVisible
             )
         }
     }
 }
 
 @Composable
-private fun QrezzyLogo(
-    letters: List<QrezzyLogoLetterData>,
-    visibleLetterCount: Int,
-    letterWidth: Dp,
-) {
+private fun QrezzyLogo(letters: List<QrezzyLogoLetterData>, visibleLetterCount: Int, letterWidth: Dp) {
     Row(
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         letters.forEach { letter ->
             QrezzyLogoLetter(
                 resId = letter.resId,
                 width = letterWidth,
-                isVisible = visibleLetterCount >= letter.visibleAtCount,
+                isVisible = visibleLetterCount >= letter.visibleAtCount
             )
         }
     }
 }
 
 @Composable
-private fun QrezzyLogoLetter(
-    resId: Int,
-    width: Dp,
-    isVisible: Boolean,
-) {
+private fun QrezzyLogoLetter(resId: Int, width: Dp, isVisible: Boolean) {
     val animatedAlpha by animateFloatAsState(
         targetValue =
-            if (isVisible) {
-                QrezzyBrandingDefaults.Animation.VISIBLE_ALPHA
-            } else {
-                QrezzyBrandingDefaults.Animation.INVISIBLE_ALPHA
-            },
+        if (isVisible) {
+            QrezzyBrandingDefaults.Animation.VISIBLE_ALPHA
+        } else {
+            QrezzyBrandingDefaults.Animation.INVISIBLE_ALPHA
+        },
         animationSpec =
-            tween(
-                durationMillis = QrezzyBrandingDefaults.Animation.LETTER_FADE_DURATION_MILLIS,
-            ),
-        label = QrezzyBrandingDefaults.Animation.LETTER_ALPHA_LABEL,
+        tween(
+            durationMillis = QrezzyBrandingDefaults.Animation.LETTER_FADE_DURATION_MILLIS
+        ),
+        label = QrezzyBrandingDefaults.Animation.LETTER_ALPHA_LABEL
     )
 
     Image(
@@ -129,9 +121,9 @@ private fun QrezzyLogoLetter(
         contentDescription = null,
         contentScale = ContentScale.FillBounds,
         modifier =
-            Modifier
-                .width(width)
-                .alpha(animatedAlpha),
+        Modifier
+            .width(width)
+            .alpha(animatedAlpha)
     )
 }
 
@@ -140,16 +132,16 @@ private fun QrezzySlogan(width: Dp, isVisible: Boolean) {
     val isDarkTheme = LocalIsDarkTheme.current
     val animatedAlpha by animateFloatAsState(
         targetValue =
-            if (isVisible) {
-                QrezzyBrandingDefaults.Animation.VISIBLE_ALPHA
-            } else {
-                QrezzyBrandingDefaults.Animation.INVISIBLE_ALPHA
-            },
+        if (isVisible) {
+            QrezzyBrandingDefaults.Animation.VISIBLE_ALPHA
+        } else {
+            QrezzyBrandingDefaults.Animation.INVISIBLE_ALPHA
+        },
         animationSpec =
-            tween(
-                durationMillis = QrezzyBrandingDefaults.Animation.SLOGAN_FADE_DURATION_MILLIS,
-            ),
-        label = QrezzyBrandingDefaults.Animation.SLOGAN_ALPHA_LABEL,
+        tween(
+            durationMillis = QrezzyBrandingDefaults.Animation.SLOGAN_FADE_DURATION_MILLIS
+        ),
+        label = QrezzyBrandingDefaults.Animation.SLOGAN_ALPHA_LABEL
     )
 
     Image(
@@ -157,51 +149,47 @@ private fun QrezzySlogan(width: Dp, isVisible: Boolean) {
         contentDescription = QrezzyBrandingDefaults.Slogan.CONTENT_DESCRIPTION,
         contentScale = ContentScale.Fit,
         modifier =
-            Modifier
-                .width(width)
-                .alpha(animatedAlpha)
-                .padding(start = QrezzyBrandingDefaults.Slogan.startPadding),
+        Modifier
+            .width(width)
+            .alpha(animatedAlpha)
+            .padding(start = QrezzyBrandingDefaults.Slogan.startPadding)
     )
 }
 
 @Immutable
-private data class QrezzyLogoLetterData(
-    val resId: Int,
-    val visibleAtCount: Int,
-)
+private data class QrezzyLogoLetterData(val resId: Int, val visibleAtCount: Int)
 
 private object QrezzyBrandingDefaults {
     val logoLetters =
         listOf(
             QrezzyLogoLetterData(
                 resId = R.drawable.logo_q,
-                visibleAtCount = 1,
+                visibleAtCount = 1
             ),
             QrezzyLogoLetterData(
                 resId = R.drawable.logo_r,
-                visibleAtCount = 2,
+                visibleAtCount = 2
             ),
             QrezzyLogoLetterData(
                 resId = R.drawable.logo_e,
-                visibleAtCount = 3,
+                visibleAtCount = 3
             ),
             QrezzyLogoLetterData(
                 resId = R.drawable.logo_z_1,
-                visibleAtCount = 4,
+                visibleAtCount = 4
             ),
             QrezzyLogoLetterData(
                 resId = R.drawable.logo_z_2,
-                visibleAtCount = 5,
+                visibleAtCount = 5
             ),
             QrezzyLogoLetterData(
                 resId = R.drawable.logo_y,
-                visibleAtCount = 6,
-            ),
+                visibleAtCount = 6
+            )
         )
 
-    fun calculateLetterWidth(availableWidth: Dp): Dp =
-        (availableWidth / logoLetters.size)
-            .coerceAtMost(Logo.maxLetterWidth)
+    fun calculateLetterWidth(availableWidth: Dp): Dp = (availableWidth / logoLetters.size)
+        .coerceAtMost(Logo.maxLetterWidth)
 
     object Logo {
         val maxLetterWidth = 60.dp

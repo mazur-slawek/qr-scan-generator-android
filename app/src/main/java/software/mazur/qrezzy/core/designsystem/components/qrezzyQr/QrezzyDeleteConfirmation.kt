@@ -34,26 +34,26 @@ fun QrezzyDeleteConfirmation(title: String, subtitle: String, onCancelClick: () 
             .padding(QrezzyDeleteConfirmationDefault.Container.outerPadding)
             .background(
                 color = MaterialTheme.colorScheme.background,
-                shape = QrezzyDeleteConfirmationDefault.Container.shape,
+                shape = QrezzyDeleteConfirmationDefault.Container.shape
             )
             .border(
                 color = MaterialTheme.colorScheme.surfaceDim,
                 shape = QrezzyDeleteConfirmationDefault.Container.shape,
-                width = QrezzyDeleteConfirmationDefault.Container.borderWidth,
+                width = QrezzyDeleteConfirmationDefault.Container.borderWidth
             )
             .clip(QrezzyDeleteConfirmationDefault.Container.shape)
-            .padding(QrezzyDeleteConfirmationDefault.Container.contentPadding),
+            .padding(QrezzyDeleteConfirmationDefault.Container.contentPadding)
     ) {
         DeleteQrConfirmationMessageCard(
             title = title,
-            subtitle = subtitle,
+            subtitle = subtitle
         )
 
         Spacer(modifier = Modifier.height(QrezzyDeleteConfirmationDefault.Actions.topSpacing))
 
         DeleteQrConfirmationActions(
             onCancelClick = onCancelClick,
-            onConfirmClick = onConfirmClick,
+            onConfirmClick = onConfirmClick
         )
     }
 }
@@ -66,22 +66,22 @@ private fun DeleteQrConfirmationMessageCard(title: String, subtitle: String, mod
             .border(
                 width = QrezzyDeleteConfirmationDefault.MessageCard.borderWidth,
                 color = MaterialTheme.colorScheme.surfaceContainer,
-                shape = QrezzyDeleteConfirmationDefault.MessageCard.shape,
+                shape = QrezzyDeleteConfirmationDefault.MessageCard.shape
             )
             .background(
                 color = MaterialTheme.colorScheme.surface,
-                shape = QrezzyDeleteConfirmationDefault.MessageCard.shape,
+                shape = QrezzyDeleteConfirmationDefault.MessageCard.shape
             )
             .padding(
                 horizontal = QrezzyDeleteConfirmationDefault.MessageCard.horizontalPadding,
-                vertical = QrezzyDeleteConfirmationDefault.MessageCard.verticalPadding,
+                vertical = QrezzyDeleteConfirmationDefault.MessageCard.verticalPadding
             ),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = painterResource(R.drawable.qrezzy_mascot_delete),
             contentDescription = null,
-            modifier = Modifier.size(QrezzyDeleteConfirmationDefault.Illustration.size),
+            modifier = Modifier.size(QrezzyDeleteConfirmationDefault.Illustration.size)
         )
 
         Spacer(modifier = Modifier.height(QrezzyDeleteConfirmationDefault.MessageCard.imageTextSpacing))
@@ -92,7 +92,7 @@ private fun DeleteQrConfirmationMessageCard(title: String, subtitle: String, mod
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.ExtraBold,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(QrezzyDeleteConfirmationDefault.MessageCard.textSpacing))
@@ -103,24 +103,20 @@ private fun DeleteQrConfirmationMessageCard(title: String, subtitle: String, mod
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
 
 @Composable
-private fun DeleteQrConfirmationActions(
-    onCancelClick: () -> Unit,
-    onConfirmClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun DeleteQrConfirmationActions(onCancelClick: () -> Unit, onConfirmClick: () -> Unit, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         QrezzyButton(
             text = stringResource(R.string.common_delete),
             containerColor = QrezzyPink,
             depthColor = QrezzyYellowDark,
             onClick = onConfirmClick,
-            elevation = QrezzyDeleteConfirmationDefault.Actions.buttonElevation,
+            elevation = QrezzyDeleteConfirmationDefault.Actions.buttonElevation
         )
 
         Spacer(modifier = Modifier.height(QrezzyDeleteConfirmationDefault.Actions.buttonSpacing))
@@ -128,7 +124,7 @@ private fun DeleteQrConfirmationActions(
         QrezzyButton(
             text = stringResource(R.string.common_cancel),
             onClick = onCancelClick,
-            elevation = QrezzyDeleteConfirmationDefault.Actions.buttonElevation,
+            elevation = QrezzyDeleteConfirmationDefault.Actions.buttonElevation
         )
     }
 }

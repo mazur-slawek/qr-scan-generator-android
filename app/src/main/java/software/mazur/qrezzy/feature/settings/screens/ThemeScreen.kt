@@ -40,7 +40,7 @@ fun ThemeScreen(selectedTheme: AppTheme, onThemeSelected: (AppTheme) -> Unit, on
                             .fillMaxWidth()
                             .padding(top = ThemeScreenDefaults.imageTopPadding)
                             .height(ThemeScreenDefaults.imageHeight),
-                        contentDescription = null,
+                        contentDescription = null
                     )
                 }
                 item {
@@ -53,7 +53,7 @@ fun ThemeScreen(selectedTheme: AppTheme, onThemeSelected: (AppTheme) -> Unit, on
                                 trailing = {
                                     QrezzyRadioButton(
                                         selected = selectedTheme == AppTheme.SYSTEM,
-                                        onClick = { onThemeSelected(AppTheme.SYSTEM) },
+                                        onClick = { onThemeSelected(AppTheme.SYSTEM) }
                                     )
                                 },
                                 iconBackgroundColor = if (selectedTheme == AppTheme.SYSTEM) {
@@ -69,7 +69,7 @@ fun ThemeScreen(selectedTheme: AppTheme, onThemeSelected: (AppTheme) -> Unit, on
                                 trailing = {
                                     QrezzyRadioButton(
                                         selected = selectedTheme == AppTheme.LIGHT,
-                                        onClick = { onThemeSelected(AppTheme.LIGHT) },
+                                        onClick = { onThemeSelected(AppTheme.LIGHT) }
                                     )
                                 },
                                 iconBackgroundColor = if (selectedTheme == AppTheme.LIGHT) {
@@ -85,7 +85,7 @@ fun ThemeScreen(selectedTheme: AppTheme, onThemeSelected: (AppTheme) -> Unit, on
                                 trailing = {
                                     QrezzyRadioButton(
                                         selected = selectedTheme == AppTheme.DARK,
-                                        onClick = { onThemeSelected(AppTheme.DARK) },
+                                        onClick = { onThemeSelected(AppTheme.DARK) }
                                     )
                                 },
                                 iconBackgroundColor = if (selectedTheme == AppTheme.DARK) {
