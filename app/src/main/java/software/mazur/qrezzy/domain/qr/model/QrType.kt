@@ -8,5 +8,5 @@ enum class QrType {
     EMAIL,
     PHONE,
     SMS,
-    GEO_LOCATION,
+    GEO_LOCATION
 }

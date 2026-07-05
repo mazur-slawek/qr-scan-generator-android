@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +23,6 @@ import software.mazur.qrezzy.domain.settings.usecase.GetHistoryLimitStatusUseCas
 import software.mazur.qrezzy.domain.settings.usecase.ObserveAppSettingsUseCase
 import software.mazur.qrezzy.feature.scanner.model.ScannerUiEvent
 import software.mazur.qrezzy.feature.scanner.model.ScannerUiState
-import javax.inject.Inject
 
 @HiltViewModel
 class ScannerViewModel @Inject constructor(
@@ -32,7 +32,7 @@ class ScannerViewModel @Inject constructor(
     private val observeAppSettingsUseCase: ObserveAppSettingsUseCase,
     private val canSaveQrUseCase: CanSaveQrUseCase,
     private val vibrationService: VibrationService,
-    private val getHistoryLimitStatusUseCase: GetHistoryLimitStatusUseCase,
+    private val getHistoryLimitStatusUseCase: GetHistoryLimitStatusUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ScannerUiState())
     val uiState = _uiState.asStateFlow()
@@ -53,7 +53,7 @@ class ScannerViewModel @Inject constructor(
                         autoSaveScans = settings.autoSaveScans,
                         vibrationEnabled = settings.vibrationEnabled,
                         isSaveBlockedByHistoryLimit = limitStatus.isLimitReached,
-                        showHistoryLimitReachedPopup = limitStatus.isLimitReached,
+                        showHistoryLimitReachedPopup = limitStatus.isLimitReached
                     )
                 }
             }
@@ -67,7 +67,7 @@ class ScannerViewModel @Inject constructor(
             _uiState.update { state ->
                 state.copy(
                     isSaveBlockedByHistoryLimit = status.isLimitReached,
-                    showHistoryLimitReachedPopup = status.isLimitReached,
+                    showHistoryLimitReachedPopup = status.isLimitReached
                 )
             }
         }
@@ -137,7 +137,7 @@ class ScannerViewModel @Inject constructor(
             state.copy(
                 mode = ScannerUiState.Mode.Idle,
                 isTorchEnabled = false,
-                detectedQr = detectedQr,
+                detectedQr = detectedQr
             )
         }
 
@@ -153,7 +153,7 @@ class ScannerViewModel @Inject constructor(
                 _uiState.update { state ->
                     state.copy(
                         isSaveBlockedByHistoryLimit = true,
-                        showHistoryLimitReachedPopup = true,
+                        showHistoryLimitReachedPopup = true
                     )
                 }
                 return@launch
@@ -168,15 +168,15 @@ class ScannerViewModel @Inject constructor(
                 }.onFailure { exception ->
                     _events.emit(
                         ScannerUiEvent.ShowError(
-                            message = exception.message ?: "Failed to save QR code",
-                        ),
+                            message = exception.message ?: "Failed to save QR code"
+                        )
                     )
                 }
             } else {
                 _uiState.update { state ->
                     state.copy(
                         isSaveBlockedByHistoryLimit = false,
-                        showHistoryLimitReachedPopup = false,
+                        showHistoryLimitReachedPopup = false
                     )
                 }
             }
@@ -191,7 +191,7 @@ class ScannerViewModel @Inject constructor(
                 _uiState.update { state ->
                     state.copy(
                         isSaveBlockedByHistoryLimit = true,
-                        showHistoryLimitReachedPopup = true,
+                        showHistoryLimitReachedPopup = true
                     )
                 }
                 return@launch
@@ -206,8 +206,8 @@ class ScannerViewModel @Inject constructor(
             }.onFailure { exception ->
                 _events.emit(
                     ScannerUiEvent.ShowError(
-                        message = exception.message ?: "Failed to save QR code",
-                    ),
+                        message = exception.message ?: "Failed to save QR code"
+                    )
                 )
             }
         }
@@ -218,7 +218,7 @@ class ScannerViewModel @Inject constructor(
         _uiState.update { state ->
             state.copy(
                 isSaveBlockedByHistoryLimit = status.isLimitReached,
-                showHistoryLimitReachedPopup = status.isLimitReached,
+                showHistoryLimitReachedPopup = status.isLimitReached
             )
         }
     }

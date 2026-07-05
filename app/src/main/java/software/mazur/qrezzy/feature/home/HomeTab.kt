@@ -16,34 +16,29 @@ import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellow
 
-enum class HomeTab(
-    val titleResId: Int,
-    val icon: ImageVector,
-    val indicatorColor: Color,
-    val selectedIconColor: Color,
-) {
+enum class HomeTab(val titleResId: Int, val icon: ImageVector, val indicatorColor: Color, val selectedIconColor: Color) {
     SCAN(
         titleResId = R.string.navigation_tab_scan,
         icon = Icons.Rounded.QrCodeScanner,
         indicatorColor = QrezzyMint,
-        selectedIconColor = QrezzyPinkDark,
+        selectedIconColor = QrezzyPinkDark
     ),
     GENERATE(
         titleResId = R.string.navigation_tab_generate,
         icon = Icons.Rounded.QrCode,
         indicatorColor = QrezzyYellow,
-        selectedIconColor = QrezzyPurpleDark,
+        selectedIconColor = QrezzyPurpleDark
     ),
     HISTORY(
         titleResId = R.string.navigation_tab_history,
         icon = Icons.Rounded.History,
         indicatorColor = QrezzyPink,
-        selectedIconColor = QrezzyMintDark,
+        selectedIconColor = QrezzyMintDark
     ),
     SETTINGS(
         titleResId = R.string.navigation_tab_settings,
         icon = Icons.Rounded.Settings,
         indicatorColor = QrezzyPurple,
-        selectedIconColor = QrezzyYellow,
-    ),
+        selectedIconColor = QrezzyYellow
+    )
 }

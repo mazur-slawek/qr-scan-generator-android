@@ -1,8 +1,6 @@
 package software.mazur.qrezzy.feature.history
 
-sealed class HistoryRoute(
-    val route: String,
-) {
+sealed class HistoryRoute(val route: String) {
     data object List : HistoryRoute("history_list")
 
     data object Details : HistoryRoute("history_details/{historyId}") {

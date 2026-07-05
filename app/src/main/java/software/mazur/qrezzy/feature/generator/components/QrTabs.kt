@@ -1,6 +1,5 @@
 package software.mazur.qrezzy.feature.generator.components
 
-
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
@@ -38,7 +38,6 @@ import software.mazur.qrezzy.core.designsystem.extensions.ui
 import software.mazur.qrezzy.feature.generator.mapper.toQrType
 import software.mazur.qrezzy.feature.generator.model.QrInput
 import software.mazur.qrezzy.feature.generator.model.isSameTypeAs
-import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun QrTypeTabs(qrInputs: List<QrInput>, selectedQrInput: QrInput, onQrInputSelected: (QrInput) -> Unit) {
@@ -75,7 +74,7 @@ fun QrTypeTabs(qrInputs: List<QrInput>, selectedQrInput: QrInput, onQrInputSelec
                                 QrTypeTabsDefaults.defaultBorderWidth
                             },
                             color = if (isSelected) typeUi.containerColor else Color.Transparent,
-                            shape = QrTypeTabsDefaults.shape,
+                            shape = QrTypeTabsDefaults.shape
                         )
                         .background(
                             color = if (isSelected) typeUi.contentColor else Color.Transparent,
@@ -84,12 +83,12 @@ fun QrTypeTabs(qrInputs: List<QrInput>, selectedQrInput: QrInput, onQrInputSelec
                         .clip(shape = QrTypeTabsDefaults.shape)
                         .clickable(onClick = { onQrInputSelected(input) }),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Icon(
                         imageVector = typeUi.icon,
                         contentDescription = null,
-                        tint = if (isSelected) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+                        tint = if (isSelected) MaterialTheme.colorScheme.inverseOnSurface else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(QrTypeTabsDefaults.iconTextSpacing))
                     Text(

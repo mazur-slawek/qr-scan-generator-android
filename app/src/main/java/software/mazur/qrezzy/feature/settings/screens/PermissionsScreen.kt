@@ -43,7 +43,7 @@ fun PermissionsScreen(onBackClick: () -> Unit) {
                             .fillMaxWidth()
                             .padding(top = PermissionsScreenDefaults.imageTopPadding)
                             .height(PermissionsScreenDefaults.imageHeight),
-                        contentDescription = null,
+                        contentDescription = null
                     )
                 }
                 item {
@@ -69,7 +69,7 @@ fun PermissionsScreen(onBackClick: () -> Unit) {
 fun openAppPermissionsSettings(context: Context) {
     val intent = Intent(
         Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-        Uri.fromParts("package", context.packageName, null),
+        Uri.fromParts("package", context.packageName, null)
     ).apply {
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }

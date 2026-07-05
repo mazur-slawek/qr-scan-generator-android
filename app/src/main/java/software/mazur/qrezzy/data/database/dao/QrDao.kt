@@ -23,15 +23,17 @@ interface QrDao {
     @Query("""UPDATE qr SET isFavorite = :isFavorite WHERE id = :id""")
     suspend fun updateFavoriteStatus(id: Long, isFavorite: Boolean)
 
-    @Query("""UPDATE qr SET
+    @Query(
+        """UPDATE qr SET
             qrColor = :qrColor, backgroundColor = :backgroundColor,
-            patternStyle = :patternStyle, errorCorrection = :errorCorrection WHERE id = :id""")
+            patternStyle = :patternStyle, errorCorrection = :errorCorrection WHERE id = :id"""
+    )
     suspend fun updateStyle(
         id: Long,
         qrColor: Long,
         backgroundColor: Long,
         patternStyle: QrPatternStyle,
-        errorCorrection: QrErrorCorrection,
+        errorCorrection: QrErrorCorrection
     )
 
     @Query("""DELETE FROM qr WHERE id IN (:ids)""")

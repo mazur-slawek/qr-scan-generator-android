@@ -7,11 +7,10 @@ import software.mazur.qrezzy.feature.history.model.HistoryTab
 val historyTabs: List<QrezzyTabItem> =
     HistoryTab.entries.map { tab -> tab.toTabItem() }
 
-fun HistoryTab.toTabItem(): QrezzyTabItem =
-    QrezzyTabItem(
-        key = id,
-        titleResId = titleResId,
-    )
+fun HistoryTab.toTabItem(): QrezzyTabItem = QrezzyTabItem(
+    key = id,
+    titleResId = titleResId
+)
 
 private val HistoryTab.titleResId: Int
     get() =

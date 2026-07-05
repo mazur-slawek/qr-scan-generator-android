@@ -4,29 +4,27 @@ import software.mazur.qrezzy.domain.qr.model.QrType
 import software.mazur.qrezzy.feature.generator.model.QrInput
 import software.mazur.qrezzy.feature.generator.model.WifiEncryption
 
-fun QrInput.toQrType(): QrType =
-    when (this) {
-        is QrInput.Text        -> QrType.TEXT
-        is QrInput.Url         -> QrType.URL
-        is QrInput.Wifi        -> QrType.WIFI
-        is QrInput.Contact     -> QrType.CONTACT
-        is QrInput.Email       -> QrType.EMAIL
-        is QrInput.Phone       -> QrType.PHONE
-        is QrInput.Sms         -> QrType.SMS
-        is QrInput.GeoLocation -> QrType.GEO_LOCATION
-    }
+fun QrInput.toQrType(): QrType = when (this) {
+    is QrInput.Text -> QrType.TEXT
+    is QrInput.Url -> QrType.URL
+    is QrInput.Wifi -> QrType.WIFI
+    is QrInput.Contact -> QrType.CONTACT
+    is QrInput.Email -> QrType.EMAIL
+    is QrInput.Phone -> QrType.PHONE
+    is QrInput.Sms -> QrType.SMS
+    is QrInput.GeoLocation -> QrType.GEO_LOCATION
+}
 
-fun QrInput.toQrContent(): String =
-    when (this) {
-        is QrInput.Text        -> text.trim()
-        is QrInput.Url         -> url.trim()
-        is QrInput.Phone       -> toQrContent()
-        is QrInput.Email       -> toQrContent()
-        is QrInput.Wifi        -> toQrContent()
-        is QrInput.Contact     -> toQrContent()
-        is QrInput.Sms         -> toQrContent()
-        is QrInput.GeoLocation -> toQrContent()
-    }
+fun QrInput.toQrContent(): String = when (this) {
+    is QrInput.Text -> text.trim()
+    is QrInput.Url -> url.trim()
+    is QrInput.Phone -> toQrContent()
+    is QrInput.Email -> toQrContent()
+    is QrInput.Wifi -> toQrContent()
+    is QrInput.Contact -> toQrContent()
+    is QrInput.Sms -> toQrContent()
+    is QrInput.GeoLocation -> toQrContent()
+}
 
 private fun QrInput.Phone.toQrContent(): String {
     val phone = phoneNumber.trim()
@@ -60,12 +58,11 @@ private fun QrInput.Wifi.toQrContent(): String {
     }
 }
 
-private fun WifiEncryption.toQrValue(): String =
-    when (this) {
-        WifiEncryption.WPA  -> "WPA"
-        WifiEncryption.WEP  -> "WEP"
-        WifiEncryption.NONE -> "nopass"
-    }
+private fun WifiEncryption.toQrValue(): String = when (this) {
+    WifiEncryption.WPA -> "WPA"
+    WifiEncryption.WEP -> "WEP"
+    WifiEncryption.NONE -> "nopass"
+}
 
 private fun QrInput.Contact.toQrContent(): String {
     val contactFirstName = firstName.trim()
@@ -79,7 +76,7 @@ private fun QrInput.Contact.toQrContent(): String {
             contactLastName,
             contactPhone,
             contactEmail,
-            contactCompany,
+            contactCompany
         ).any { value -> value.isNotBlank() }
     if (!hasAnyContactValue) return ""
     return buildString {
@@ -97,7 +94,7 @@ private fun QrInput.Contact.toQrContent(): String {
 private fun QrInput.GeoLocation.toQrContent(): String {
     val lat = latitude.trim()
     val lng = longitude.trim()
-    
+
     if (lat.isBlank() || lng.isBlank()) return ""
     return "geo:$lat,$lng"
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +25,6 @@ import software.mazur.qrezzy.domain.qr.usecase.UpdateQrStyleUseCase
 import software.mazur.qrezzy.feature.history.HistoryRoute
 import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiEvent
 import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiState
-import javax.inject.Inject
 
 @HiltViewModel
 class HistoryDetailsViewModel @Inject constructor(
@@ -33,7 +33,7 @@ class HistoryDetailsViewModel @Inject constructor(
     private val qrBitmapGenerator: QrBitmapGenerator,
     private val deleteQrItemsUseCase: DeleteQrItemsUseCase,
     private val toggleQrFavoriteUseCase: ToggleQrFavoriteUseCase,
-    private val updateQrStyleUseCase: UpdateQrStyleUseCase,
+    private val updateQrStyleUseCase: UpdateQrStyleUseCase
 ) : ViewModel() {
     private val historyId: Long = checkNotNull(savedStateHandle[HistoryRoute.Details.HISTORY_ID_ARG])
     private val _uiState = MutableStateFlow(HistoryDetailsUiState())
@@ -96,7 +96,6 @@ class HistoryDetailsViewModel @Inject constructor(
                 _uiState.update { state -> state.copy(qr = currentQr) }
             }
         }
-
     }
 
     private suspend fun loadQr() {
@@ -215,17 +214,12 @@ class HistoryDetailsViewModel @Inject constructor(
         return QrShareData(fileName = qr.content.toQrFileName(), bitmap = bitmap)
     }
 
-    private fun String.toQrFileName(): String {
-        return trim()
-            .take(QR_SHARE_TITLE_MAX_LENGTH)
-            .replace(Regex("\\s+"), "_")
-            .ifBlank { DEFAULT_FILE_NAME }
-    }
+    private fun String.toQrFileName(): String = trim()
+        .take(QR_SHARE_TITLE_MAX_LENGTH)
+        .replace(Regex("\\s+"), "_")
+        .ifBlank { DEFAULT_FILE_NAME }
 
-    private data class QrShareData(
-        val fileName: String,
-        val bitmap: Bitmap,
-    )
+    private data class QrShareData(val fileName: String, val bitmap: Bitmap)
 
     private companion object {
         private const val QR_SHARE_TITLE_MAX_LENGTH = 10

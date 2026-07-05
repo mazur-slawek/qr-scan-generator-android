@@ -52,7 +52,7 @@ fun OpenSourceLicenseScreen(onBackClick: () -> Unit) {
                             .fillMaxWidth()
                             .padding(top = OpenSourceLicenseScreenDefaults.imageTopPadding)
                             .height(OpenSourceLicenseScreenDefaults.imageHeight),
-                        contentDescription = null,
+                        contentDescription = null
                     )
                 }
                 item {
@@ -69,7 +69,7 @@ fun OpenSourceLicenseScreen(onBackClick: () -> Unit) {
                                     )
                                 },
                                 iconTintColor = QrezzyMintDark,
-                                iconBackgroundColor = QrezzyMintDark,
+                                iconBackgroundColor = QrezzyMintDark
                             )
                             QrezzyListItem(
                                 icon = Icons.Outlined.CenterFocusStrong,
@@ -82,7 +82,7 @@ fun OpenSourceLicenseScreen(onBackClick: () -> Unit) {
                                     )
                                 },
                                 iconTintColor = QrezzyPinkDark,
-                                iconBackgroundColor = QrezzyPinkDark,
+                                iconBackgroundColor = QrezzyPinkDark
                             )
                         }
                     }
@@ -99,19 +99,19 @@ private fun LicenseVersionBadge(version: String) {
         modifier = Modifier
             .background(
                 color = QrezzyPurpleDark.copy(alpha = OpenSourceLicenseScreenDefaults.Badge.BACKGROUND_ALPHA),
-                shape = ShapeDefaults.Small,
+                shape = ShapeDefaults.Small
             )
             .padding(
                 horizontal = OpenSourceLicenseScreenDefaults.Badge.horizontalPadding,
-                vertical = OpenSourceLicenseScreenDefaults.Badge.verticalPadding,
+                vertical = OpenSourceLicenseScreenDefaults.Badge.verticalPadding
             ),
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.Center
     ) {
         Text(
             text = version,
             color = QrezzyPurpleDark,
             style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.ExtraBold,
+            fontWeight = FontWeight.ExtraBold
         )
     }
 }

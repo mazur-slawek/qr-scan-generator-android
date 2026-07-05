@@ -25,15 +25,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyListSection
 import software.mazur.qrezzy.core.designsystem.extensions.ui
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurpleDark
 import software.mazur.qrezzy.domain.qr.model.Qr
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun QrezzyQrInfoDetails(qr: Qr, modifier: Modifier = Modifier) {
@@ -45,10 +45,10 @@ fun QrezzyQrInfoDetails(qr: Qr, modifier: Modifier = Modifier) {
                 .border(
                     width = QrezzyQrInfoDetailsDefaults.Container.borderWidth,
                     color = MaterialTheme.colorScheme.surfaceContainer,
-                    shape = ShapeDefaults.Medium,
+                    shape = ShapeDefaults.Medium
                 )
                 .background(color = MaterialTheme.colorScheme.surface, shape = ShapeDefaults.Medium)
-                .padding(QrezzyQrInfoDetailsDefaults.Container.padding),
+                .padding(QrezzyQrInfoDetailsDefaults.Container.padding)
         ) {
             QrezzyQrInfoDetailsRow(
                 icon = qrTypeUi.icon,
@@ -56,11 +56,11 @@ fun QrezzyQrInfoDetails(qr: Qr, modifier: Modifier = Modifier) {
                 iconBackgroundColor = qrTypeUi.contentColor,
                 label = stringResource(R.string.qr_details_type),
                 value = stringResource(qrTypeUi.labelResId),
-                contentDescription = stringResource(qrTypeUi.labelResId),
+                contentDescription = stringResource(qrTypeUi.labelResId)
             )
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = QrezzyQrInfoDetailsDefaults.Divider.verticalPadding),
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surfaceContainer
             )
             QrezzyQrInfoDetailsRow(
                 icon = Icons.Default.MoreTime,
@@ -68,7 +68,7 @@ fun QrezzyQrInfoDetails(qr: Qr, modifier: Modifier = Modifier) {
                 iconBackgroundColor = QrezzyPurple,
                 label = stringResource(R.string.qr_details_scanned),
                 value = qr.createdAt.toQrDateTime(),
-                contentDescription = null,
+                contentDescription = null
             )
         }
     }
@@ -82,14 +82,14 @@ private fun QrezzyQrInfoDetailsRow(
     label: String,
     value: String,
     contentDescription: String?,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         QrezzyQrInfoDetailsIcon(
             icon = icon,
             iconBorderColor = iconBorderColor,
             backgroundColor = iconBackgroundColor,
-            contentDescription = contentDescription,
+            contentDescription = contentDescription
         )
         Spacer(modifier = Modifier.width(QrezzyQrInfoDetailsDefaults.Container.padding))
         Column {
@@ -97,7 +97,7 @@ private fun QrezzyQrInfoDetailsRow(
                 text = label,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.ExtraBold,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelMedium
             )
             Spacer(modifier = Modifier.height(QrezzyQrInfoDetailsDefaults.Text.spacing))
             Text(
@@ -117,7 +117,7 @@ private fun QrezzyQrInfoDetailsIcon(
     iconBorderColor: Color,
     backgroundColor: Color,
     contentDescription: String?,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Icon(
         imageVector = icon,

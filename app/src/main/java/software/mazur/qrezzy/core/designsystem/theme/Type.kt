@@ -23,6 +23,6 @@ val Typography =
             //
             labelLarge = labelLarge.copy(fontFamily = QrezzyFontFamily), // Def: 14sp | 20sp | Medium
             labelMedium = labelMedium.copy(fontFamily = QrezzyFontFamily), // Def: 12sp | 16sp | Medium
-            labelSmall = labelSmall.copy(fontFamily = QrezzyFontFamily), // Def: 11sp | 16sp | Medium
+            labelSmall = labelSmall.copy(fontFamily = QrezzyFontFamily) // Def: 11sp | 16sp | Medium
         )
     }

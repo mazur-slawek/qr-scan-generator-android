@@ -12,5 +12,5 @@ data class OnboardingItem(
     @StringRes
     val titleResId: Int,
     @StringRes
-    val descriptionResId: Int,
+    val descriptionResId: Int
 )

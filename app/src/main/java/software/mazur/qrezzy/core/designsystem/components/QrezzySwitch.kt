@@ -10,7 +10,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
 
-
 @Composable
 fun QrezzySwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
@@ -22,9 +21,11 @@ fun QrezzySwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
                 checkedTrackColor = QrezzyMintDark,
                 uncheckedThumbColor = Color.White,
                 uncheckedBorderColor = MaterialTheme.colorScheme.surfaceTint.copy(
-                    alpha = SettingsScreenDefaults.UNCHECKED_SWITCH_ALPHA),
+                    alpha = SettingsScreenDefaults.UNCHECKED_SWITCH_ALPHA
+                ),
                 uncheckedTrackColor = MaterialTheme.colorScheme.surfaceTint.copy(
-                    alpha = SettingsScreenDefaults.UNCHECKED_SWITCH_ALPHA)
+                    alpha = SettingsScreenDefaults.UNCHECKED_SWITCH_ALPHA
+                )
             )
         )
     }

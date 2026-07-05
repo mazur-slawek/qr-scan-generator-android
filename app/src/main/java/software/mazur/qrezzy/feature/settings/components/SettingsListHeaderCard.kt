@@ -25,12 +25,12 @@ fun SettingsListHeaderCard(modifier: Modifier = Modifier) {
     QrezzyListSection(modifier = modifier.wrapContentSize()) {
         QrezzyAnimatedStars(
             starsCount = SettingsListHeaderDefaults.STARTS_COUNT,
-            modifier = Modifier.height(SettingsListHeaderDefaults.headerHeight),
+            modifier = Modifier.height(SettingsListHeaderDefaults.headerHeight)
         ) {
             Row(
                 modifier = Modifier.padding(all = SettingsListHeaderDefaults.padding),
                 horizontalArrangement = Arrangement.spacedBy(SettingsListHeaderDefaults.contentSpacing),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(
                     modifier = Modifier
@@ -42,11 +42,12 @@ fun SettingsListHeaderCard(modifier: Modifier = Modifier) {
                         Image(
                             painter = painterResource(R.drawable.qrezzy),
                             contentDescription = null,
-                            modifier = Modifier.height(SettingsListHeaderDefaults.logoHeight),
+                            modifier = Modifier.height(SettingsListHeaderDefaults.logoHeight)
                         )
                         Image(
                             painter = painterResource(
-                                if (isDarkTheme) R.drawable.qrezzy_slogan_dark else R.drawable.qrezzy_slogan),
+                                if (isDarkTheme) R.drawable.qrezzy_slogan_dark else R.drawable.qrezzy_slogan
+                            ),
                             modifier = Modifier
                                 .padding(
                                     top = SettingsListHeaderDefaults.sloganTopSpacing,
@@ -61,7 +62,7 @@ fun SettingsListHeaderCard(modifier: Modifier = Modifier) {
                 Image(
                     painter = painterResource(R.drawable.qrezzy_mascot_settings),
                     contentDescription = null,
-                    modifier = Modifier.fillMaxHeight(),
+                    modifier = Modifier.fillMaxHeight()
                 )
             }
         }

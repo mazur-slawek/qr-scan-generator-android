@@ -3,6 +3,7 @@ package software.mazur.qrezzy.feature.history
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -19,7 +20,6 @@ import software.mazur.qrezzy.feature.history.mapper.toHistorySections
 import software.mazur.qrezzy.feature.history.mapper.toTabItem
 import software.mazur.qrezzy.feature.history.model.HistoryTab
 import software.mazur.qrezzy.feature.history.model.HistoryUiState
-import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel
@@ -27,7 +27,7 @@ class HistoryViewModel
 constructor(
     observeQrItemsUseCase: ObserveQrItemsUseCase,
     private val deleteQrItemsUseCase: DeleteQrItemsUseCase,
-    private val toggleQrFavoriteUseCase: ToggleQrFavoriteUseCase,
+    private val toggleQrFavoriteUseCase: ToggleQrFavoriteUseCase
 ) : ViewModel() {
     private val selectedTab = MutableStateFlow(HistoryTab.ALL)
     private val deleteModeState = MutableStateFlow(DeleteModeState())
@@ -37,7 +37,7 @@ constructor(
             observeQrItemsUseCase(),
             selectedTab,
             deleteModeState,
-            searchQuery,
+            searchQuery
         ) { historyItems, selectedTab, deleteModeState, searchQuery ->
             val visibleItems = historyItems
                 .filterByTab(selectedTab)
@@ -51,12 +51,12 @@ constructor(
                 isInitialLoading = false,
                 isDeleteModeEnabled = deleteModeState.isEnabled,
                 selectedItemIds = deleteModeState.selectedItemIds,
-                isDeleteConfirmationVisible = deleteModeState.isDeleteConfirmationVisible,
+                isDeleteConfirmationVisible = deleteModeState.isDeleteConfirmationVisible
             )
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = HistoryUiState(),
+            initialValue = HistoryUiState()
         )
     val selectedTabItem =
         selectedTab
@@ -64,7 +64,7 @@ constructor(
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = HistoryTab.ALL.toTabItem(),
+                initialValue = HistoryTab.ALL.toTabItem()
             )
 
     fun onSearchQueryChange(query: String) {
@@ -85,7 +85,7 @@ constructor(
         deleteModeState.value = DeleteModeState(
             isEnabled = true,
             selectedItemIds = emptySet(),
-            isDeleteConfirmationVisible = false,
+            isDeleteConfirmationVisible = false
         )
     }
 
@@ -149,14 +149,14 @@ constructor(
 
         return filter { qr ->
             qr.label.contains(normalizedQuery, ignoreCase = true) ||
-                    qr.content.contains(normalizedQuery, ignoreCase = true)
+                qr.content.contains(normalizedQuery, ignoreCase = true)
         }
     }
 
     private data class DeleteModeState(
         val isEnabled: Boolean = false,
         val selectedItemIds: Set<Long> = emptySet(),
-        val isDeleteConfirmationVisible: Boolean = false,
+        val isDeleteConfirmationVisible: Boolean = false
     )
 
     private companion object {

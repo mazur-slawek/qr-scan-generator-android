@@ -2,10 +2,10 @@ package software.mazur.qrezzy.core.localization
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
-import software.mazur.qrezzy.domain.settings.mapper.toLanguageTag
-import software.mazur.qrezzy.domain.settings.model.AppLanguage
 import javax.inject.Inject
 import javax.inject.Singleton
+import software.mazur.qrezzy.domain.settings.mapper.toLanguageTag
+import software.mazur.qrezzy.domain.settings.model.AppLanguage
 
 @Singleton
 class QrezzyLocaleManager @Inject constructor() {

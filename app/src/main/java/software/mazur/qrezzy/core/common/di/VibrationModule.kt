@@ -4,9 +4,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import software.mazur.qrezzy.core.common.vibration.AndroidVibrationService
 import software.mazur.qrezzy.core.common.vibration.VibrationService
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)

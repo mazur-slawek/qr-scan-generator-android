@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-
 @Composable
 fun QrezzyTextInput(
     value: String,
@@ -49,11 +48,11 @@ fun QrezzyTextInput(
         color = MaterialTheme.colorScheme.onSurface,
         fontSize = QrezzyTextInputDefaults.Text.fontSize,
         fontWeight = FontWeight.Medium,
-        lineHeight = QrezzyTextInputDefaults.Text.lineHeight,
+        lineHeight = QrezzyTextInputDefaults.Text.lineHeight
     ),
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -82,10 +81,11 @@ fun QrezzyTextInput(
                 keyboardActions = keyboardActions,
                 modifier = Modifier.fillMaxSize(),
                 decorationBox = { innerTextField ->
-                    Box(modifier = Modifier
-                        .fillMaxSize()
-                        .height(containerHeight)
-                        .padding(contentPadding),
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .height(containerHeight)
+                            .padding(contentPadding),
                         contentAlignment = contentAlignment
                     ) {
                         if (value.isEmpty() && placeholder.isNotEmpty()) {

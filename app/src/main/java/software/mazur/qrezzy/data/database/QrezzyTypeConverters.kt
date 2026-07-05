@@ -38,28 +38,26 @@ class QrezzyTypeConverters {
     fun fromAppLanguage(value: AppLanguage): String = value.name
 
     @TypeConverter
-    fun toAppLanguage(value: String): AppLanguage =
-        when (value) {
-            "POLISH"    -> AppLanguage.POLISH
-            "GERMAN"    -> AppLanguage.GERMAN
-            "UKRAINIAN" -> AppLanguage.UKRAINIAN
-            "ITALIAN"   -> AppLanguage.ITALIAN
-            "ENGLISH"   -> AppLanguage.ENGLISH
-            "SYSTEM"    -> AppLanguage.ENGLISH
-            else        -> AppLanguage.ENGLISH
-        }
+    fun toAppLanguage(value: String): AppLanguage = when (value) {
+        "POLISH" -> AppLanguage.POLISH
+        "GERMAN" -> AppLanguage.GERMAN
+        "UKRAINIAN" -> AppLanguage.UKRAINIAN
+        "ITALIAN" -> AppLanguage.ITALIAN
+        "ENGLISH" -> AppLanguage.ENGLISH
+        "SYSTEM" -> AppLanguage.ENGLISH
+        else -> AppLanguage.ENGLISH
+    }
 
     @TypeConverter
     fun fromAppTheme(value: AppTheme): String = value.name
 
     @TypeConverter
-    fun toAppTheme(value: String): AppTheme =
-        when (value) {
-            "LIGHT"  -> AppTheme.LIGHT
-            "DARK"   -> AppTheme.DARK
-            "SYSTEM" -> AppTheme.SYSTEM
-            else     -> AppTheme.SYSTEM
-        }
+    fun toAppTheme(value: String): AppTheme = when (value) {
+        "LIGHT" -> AppTheme.LIGHT
+        "DARK" -> AppTheme.DARK
+        "SYSTEM" -> AppTheme.SYSTEM
+        else -> AppTheme.SYSTEM
+    }
 
     @TypeConverter
     fun fromHistoryLimit(value: HistoryLimit): String = value.name

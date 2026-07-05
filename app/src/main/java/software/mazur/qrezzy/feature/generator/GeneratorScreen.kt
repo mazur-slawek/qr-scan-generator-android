@@ -49,7 +49,7 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                GeneratorUiEvent.QrSaved      -> {
+                GeneratorUiEvent.QrSaved -> {
                     Toast.makeText(context, qrSavedMessage, Toast.LENGTH_SHORT).show()
                 }
 
@@ -64,12 +64,12 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
     Column(modifier = Modifier.padding(horizontal = GeneratorScreenDefaults.screenHorizontalPadding)) {
         QrezzyTopBar(
             titleResId = R.string.navigation_title_generate,
-            subtitleResId = R.string.navigation_subtitle_generate,
+            subtitleResId = R.string.navigation_subtitle_generate
         ) {
             QrezzyTopBarButton(
                 enabled = uiState.canSave,
                 iconPainter = painterResource(R.drawable.qrezzy_edit),
-                onClick = viewModel::onCustomizeQrClick,
+                onClick = viewModel::onCustomizeQrClick
             )
         }
         QrezzyQrPreview(qrBitmap = qrBitmap)
@@ -99,7 +99,7 @@ private fun GeneratorCustomizeQrDialog(uiState: GeneratorUiState, viewModel: Gen
         onErrorCorrectionSelected = viewModel::onErrorCorrectionSelected,
         onCancelClick = viewModel::onDismissCustomizeQrDialog,
         onResetClick = viewModel::onResetQrStyleClick,
-        onApplyClick = viewModel::onApplyQrStyleClick,
+        onApplyClick = viewModel::onApplyQrStyleClick
     )
 }
 
@@ -116,21 +116,21 @@ private fun GeneratorContent(
             .fillMaxHeight()
             .imePadding()
             .pointerInput(Unit) { detectTapGestures(onTap = { onClearFocus() }) },
-        verticalArrangement = Arrangement.spacedBy(GeneratorScreenDefaults.sectionSpacing),
+        verticalArrangement = Arrangement.spacedBy(GeneratorScreenDefaults.sectionSpacing)
     ) {
         item {
             Spacer(modifier = Modifier.height(GeneratorScreenDefaults.sectionSpacing))
             QrTypeTabs(
                 qrInputs = uiState.qrInputs,
                 selectedQrInput = uiState.selectedQrInput,
-                onQrInputSelected = onQrInputSelected,
+                onQrInputSelected = onQrInputSelected
             )
         }
         item {
             QrTypeForm(
                 qrInput = uiState.selectedQrInput,
                 fieldErrors = uiState.fieldErrors,
-                onChange = onFormEvent,
+                onChange = onFormEvent
             )
         }
         if (uiState.showHistoryLimitReachedPopup) item { QrezzyHistoryLimitPopup() }
@@ -138,12 +138,12 @@ private fun GeneratorContent(
             QrezzyButton(
                 modifier = Modifier.padding(
                     top = GeneratorScreenDefaults.saveButtonTopPadding,
-                    bottom = GeneratorScreenDefaults.saveButtonBottomPadding,
+                    bottom = GeneratorScreenDefaults.saveButtonBottomPadding
                 ),
                 elevation = GeneratorScreenDefaults.saveButtonElevation,
                 text = stringResource(R.string.generator_save_qr_code),
                 enabled = uiState.canSave,
-                onClick = onSaveClick,
+                onClick = onSaveClick
             )
         }
     }

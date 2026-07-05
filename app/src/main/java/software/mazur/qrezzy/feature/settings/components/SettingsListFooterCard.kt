@@ -34,7 +34,7 @@ fun SettingsListFooterCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick),
+            .clickable(onClick = onClick)
     ) {
         Row(
             modifier = Modifier
@@ -42,15 +42,15 @@ fun SettingsListFooterCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
                 .border(
                     width = SettingsListFooterDefaults.Border.width,
                     color = QrezzyMintDark.copy(alpha = SettingsListFooterDefaults.Border.ALPHA),
-                    shape = ShapeDefaults.Medium,
+                    shape = ShapeDefaults.Medium
                 )
                 .background(
                     color = QrezzyMint.copy(alpha = SettingsListFooterDefaults.BACKGROUND_ALPHA),
-                    shape = ShapeDefaults.Medium,
+                    shape = ShapeDefaults.Medium
                 )
                 .padding(SettingsListFooterDefaults.contentPadding),
             horizontalArrangement = Arrangement.spacedBy(SettingsListFooterDefaults.contentSpacing),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -63,7 +63,7 @@ fun SettingsListFooterCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
                         painter = painterResource(R.drawable.qrezzy_heart_purple),
                         contentDescription = null,
                         tint = Color.Unspecified,
-                        modifier = Modifier.size(SettingsListFooterDefaults.titleHeartSize),
+                        modifier = Modifier.size(SettingsListFooterDefaults.titleHeartSize)
                     )
                 }
                 Spacer(Modifier.height(SettingsListFooterDefaults.textSpacing))
@@ -77,7 +77,7 @@ fun SettingsListFooterCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
                         painter = painterResource(R.drawable.qrezzy_heart_red),
                         contentDescription = null,
                         tint = Color.Unspecified,
-                        modifier = Modifier.size(SettingsListFooterDefaults.bodyHeartSize),
+                        modifier = Modifier.size(SettingsListFooterDefaults.bodyHeartSize)
                     )
                     Spacer(Modifier.size(SettingsListFooterDefaults.tinySpacing))
                     FooterText(

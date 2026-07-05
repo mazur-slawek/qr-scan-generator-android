@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import software.mazur.qrezzy.core.designsystem.theme.QREZZYTheme
 import software.mazur.qrezzy.core.designsystem.theme.resolveIsDarkTheme
@@ -15,7 +16,6 @@ import software.mazur.qrezzy.domain.settings.model.AppSettings
 import software.mazur.qrezzy.domain.settings.usecase.InitializeAppSettingsUseCase
 import software.mazur.qrezzy.domain.settings.usecase.ObserveAppSettingsUseCase
 import software.mazur.qrezzy.navigation.QrezzyNavHost
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

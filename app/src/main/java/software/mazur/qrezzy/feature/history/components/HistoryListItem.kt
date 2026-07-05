@@ -33,6 +33,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.extensions.label
 import software.mazur.qrezzy.core.designsystem.extensions.ui
@@ -40,30 +43,23 @@ import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyYellowDark
 import software.mazur.qrezzy.domain.qr.model.Qr
 import software.mazur.qrezzy.domain.qr.model.QrSource
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @Composable
-fun HistoryListItem(
-    qr: Qr,
-    isDeleteModeEnabled: Boolean,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    onFavoriteClick: () -> Unit
-) {
+fun HistoryListItem(qr: Qr, isDeleteModeEnabled: Boolean, isSelected: Boolean, onClick: () -> Unit, onFavoriteClick: () -> Unit) {
     Button(
         onClick = onClick,
         contentPadding = PaddingValues.Zero,
         shape = RoundedCornerShape(0.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = qr.type.ui.containerColor),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = qr.type.ui.containerColor
+        )
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(HistoryListItemDefaults.contentPadding),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = qr.type.ui.icon,
@@ -73,11 +69,11 @@ fun HistoryListItem(
                     .border(
                         width = HistoryListItemDefaults.Icon.borderWidth,
                         color = qr.type.ui.containerColor,
-                        shape = ShapeDefaults.Small,
+                        shape = ShapeDefaults.Small
                     )
                     .shadow(elevation = HistoryListItemDefaults.Icon.elevation, shape = ShapeDefaults.Small)
                     .background(color = qr.type.ui.contentColor, shape = ShapeDefaults.Small)
-                    .padding(HistoryListItemDefaults.Icon.padding),
+                    .padding(HistoryListItemDefaults.Icon.padding)
             )
 
             Spacer(modifier = Modifier.width(HistoryListItemDefaults.iconTextSpacing))
@@ -89,7 +85,7 @@ fun HistoryListItem(
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.ExtraBold,
                     overflow = TextOverflow.Ellipsis,
-                    maxLines = HistoryListItemDefaults.TITLE_MAX_LINES,
+                    maxLines = HistoryListItemDefaults.TITLE_MAX_LINES
                 )
 
                 Spacer(modifier = Modifier.height(HistoryListItemDefaults.textSpacing))
@@ -99,7 +95,7 @@ fun HistoryListItem(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Medium,
-                    maxLines = HistoryListItemDefaults.SUBTITLE_MAX_LINES,
+                    maxLines = HistoryListItemDefaults.SUBTITLE_MAX_LINES
                 )
             }
 
@@ -113,16 +109,10 @@ fun HistoryListItem(
             )
         }
     }
-
 }
 
 @Composable
-private fun HistoryTrailingIcon(
-    isDeleteModeEnabled: Boolean,
-    isSelected: Boolean,
-    isFavorite: Boolean,
-    onFavoriteClick: () -> Unit
-) {
+private fun HistoryTrailingIcon(isDeleteModeEnabled: Boolean, isSelected: Boolean, isFavorite: Boolean, onFavoriteClick: () -> Unit) {
     if (isDeleteModeEnabled) {
         Icon(
             imageVector = if (isSelected) Icons.Outlined.CheckCircle else Icons.Outlined.Circle,
@@ -145,7 +135,7 @@ private fun HistoryTrailingIcon(
         Icon(
             imageVector = Icons.Default.KeyboardArrowRight,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
@@ -154,11 +144,10 @@ private fun HistoryTrailingIcon(
 private fun Qr.subtitle(): String = "${source.toDisplayName()} • ${createdAt.toHistoryTime()}"
 
 @Composable
-private fun QrSource.toDisplayName(): String =
-    when (this) {
-        QrSource.GENERATED -> stringResource(R.string.history_source_generated)
-        QrSource.SCANNED   -> stringResource(R.string.history_source_scanned)
-    }
+private fun QrSource.toDisplayName(): String = when (this) {
+    QrSource.GENERATED -> stringResource(R.string.history_source_generated)
+    QrSource.SCANNED -> stringResource(R.string.history_source_scanned)
+}
 
 private fun Long.toHistoryTime(): String =
     SimpleDateFormat(HistoryListItemDefaults.Date.TIME_FORMAT, Locale.getDefault()).format(Date(this))

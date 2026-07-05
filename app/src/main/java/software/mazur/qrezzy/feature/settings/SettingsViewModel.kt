@@ -3,6 +3,7 @@ package software.mazur.qrezzy.feature.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -27,7 +28,6 @@ import software.mazur.qrezzy.domain.settings.usecase.SetHistoryLimitUseCase
 import software.mazur.qrezzy.domain.settings.usecase.SetVibrationEnabledUseCase
 import software.mazur.qrezzy.feature.settings.model.SettingsUiEvent
 import software.mazur.qrezzy.feature.settings.model.SettingsUiState
-import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -41,7 +41,7 @@ class SettingsViewModel @Inject constructor(
     private val getHistorySummaryUseCase: GetHistorySummaryUseCase,
     private val clearHistoryUseCase: ClearHistoryUseCase,
     private val localeManager: QrezzyLocaleManager,
-    private val vibrationService: VibrationService,
+    private val vibrationService: VibrationService
 ) : ViewModel() {
     private val historySummary =
         MutableStateFlow(HistorySummary(itemsCount = 0, latestCreatedAt = null))
@@ -54,7 +54,7 @@ class SettingsViewModel @Inject constructor(
             observeAppSettingsUseCase(),
             historySummary,
             showClearHistoryDialog,
-            showHistoryLimitReachedPopup,
+            showHistoryLimitReachedPopup
         ) { settings, summary, showClearDialog, showLimitReachedPopup ->
             SettingsUiState(
                 isLoading = false,
@@ -66,12 +66,12 @@ class SettingsViewModel @Inject constructor(
                 historyItemsCount = summary.itemsCount,
                 latestHistoryItemCreatedAt = summary.latestCreatedAt,
                 showClearHistoryDialog = showClearDialog,
-                showHistoryLimitReachedPopup = showLimitReachedPopup,
+                showHistoryLimitReachedPopup = showLimitReachedPopup
             )
         }.stateIn(
             scope = viewModelScope,
             initialValue = SettingsUiState(isLoading = true),
-            started = SharingStarted.WhileSubscribed(5_000),
+            started = SharingStarted.WhileSubscribed(5_000)
         )
 
     fun onLanguageSelected(language: AppLanguage) {
@@ -92,8 +92,11 @@ class SettingsViewModel @Inject constructor(
             setAutoSaveScansUseCase(value)
 
             _events.emit(
-                if (value) SettingsUiEvent.AutoSaveEnabled
-                else SettingsUiEvent.AutoSaveDisabled,
+                if (value) {
+                    SettingsUiEvent.AutoSaveEnabled
+                } else {
+                    SettingsUiEvent.AutoSaveDisabled
+                }
             )
         }
     }
@@ -107,8 +110,11 @@ class SettingsViewModel @Inject constructor(
             }
 
             _events.emit(
-                if (value) SettingsUiEvent.VibrationEnabled
-                else SettingsUiEvent.VibrationDisabled,
+                if (value) {
+                    SettingsUiEvent.VibrationEnabled
+                } else {
+                    SettingsUiEvent.VibrationDisabled
+                }
             )
         }
     }

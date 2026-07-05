@@ -9,31 +9,25 @@ import software.mazur.qrezzy.domain.qr.model.style.QrStyle
 data class QrStyleEditorState(
     val appliedStyle: QrStyle = QrStyle(),
     val draftStyle: QrStyle = QrStyle(),
-    val isDialogVisible: Boolean = false,
+    val isDialogVisible: Boolean = false
 ) {
-    fun open(): QrStyleEditorState =
-        copy(
-            draftStyle = appliedStyle,
-            isDialogVisible = true,
-        )
+    fun open(): QrStyleEditorState = copy(
+        draftStyle = appliedStyle,
+        isDialogVisible = true
+    )
 
-    fun dismiss(): QrStyleEditorState =
-        copy(isDialogVisible = false)
+    fun dismiss(): QrStyleEditorState = copy(isDialogVisible = false)
 
-    fun resetDraft(): QrStyleEditorState =
-        copy(draftStyle = QrStyle())
+    fun resetDraft(): QrStyleEditorState = copy(draftStyle = QrStyle())
 
-    fun applyDraft(): QrStyleEditorState =
-        copy(
-            appliedStyle = draftStyle,
-            isDialogVisible = false,
-        )
+    fun applyDraft(): QrStyleEditorState = copy(
+        appliedStyle = draftStyle,
+        isDialogVisible = false
+    )
 
-    fun updateQrColor(color: Long): QrStyleEditorState =
-        copy(draftStyle = draftStyle.copy(qrColor = color))
+    fun updateQrColor(color: Long): QrStyleEditorState = copy(draftStyle = draftStyle.copy(qrColor = color))
 
-    fun updateBackgroundColor(color: Long): QrStyleEditorState =
-        copy(draftStyle = draftStyle.copy(backgroundColor = color))
+    fun updateBackgroundColor(color: Long): QrStyleEditorState = copy(draftStyle = draftStyle.copy(backgroundColor = color))
 
     fun updatePatternStyle(patternStyle: QrPatternStyle): QrStyleEditorState =
         copy(draftStyle = draftStyle.copy(patternStyle = patternStyle))

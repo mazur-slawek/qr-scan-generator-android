@@ -14,7 +14,7 @@ data class AppSettingsEntity(
     val theme: AppTheme = AppTheme.SYSTEM,
     val autoSaveScans: Boolean = false,
     val vibrationEnabled: Boolean = true,
-    val historyLimit: HistoryLimit = HistoryLimit.ITEMS_200,
+    val historyLimit: HistoryLimit = HistoryLimit.ITEMS_200
 ) {
     companion object {
         const val TABLE_NAME = "app_settings"

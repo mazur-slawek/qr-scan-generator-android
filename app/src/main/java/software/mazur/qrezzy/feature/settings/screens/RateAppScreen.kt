@@ -35,7 +35,7 @@ fun RateAppScreen(onBackClick: () -> Unit) {
                             .fillMaxWidth()
                             .padding(top = RateAppScreenDefaults.imageTopPadding)
                             .height(RateAppScreenDefaults.imageHeight),
-                        contentDescription = null,
+                        contentDescription = null
                     )
                 }
                 item {

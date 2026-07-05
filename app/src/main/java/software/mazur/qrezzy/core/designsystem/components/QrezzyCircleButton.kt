@@ -21,23 +21,25 @@ fun QrezzyCircleButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    iconTint: Color = MaterialTheme.colorScheme.onSurface,
+    iconTint: Color = MaterialTheme.colorScheme.onSurface
 ) {
     Button(
         onClick = onClick,
         enabled = enabled,
         modifier = modifier.size(QrezzyCircleButtonDefaults.Container.size),
         shape = CircleShape,
-        border = BorderStroke(width = QrezzyCircleButtonDefaults.Border.width,
-            color = MaterialTheme.colorScheme.surfaceDim),
+        border = BorderStroke(
+            width = QrezzyCircleButtonDefaults.Border.width,
+            color = MaterialTheme.colorScheme.surfaceDim
+        ),
         contentPadding = PaddingValues.Zero,
         colors =
-            ButtonDefaults.buttonColors(
-                containerColor = color,
-                contentColor = iconTint,
-                disabledContainerColor = color.copy(alpha = QrezzyCircleButtonDefaults.DISABLED_ALPHA),
-                disabledContentColor = iconTint.copy(alpha = QrezzyCircleButtonDefaults.DISABLED_ALPHA),
-            ),
+        ButtonDefaults.buttonColors(
+            containerColor = color,
+            contentColor = iconTint,
+            disabledContainerColor = color.copy(alpha = QrezzyCircleButtonDefaults.DISABLED_ALPHA),
+            disabledContentColor = iconTint.copy(alpha = QrezzyCircleButtonDefaults.DISABLED_ALPHA)
+        )
     ) {
         Icon(
             imageVector = icon,

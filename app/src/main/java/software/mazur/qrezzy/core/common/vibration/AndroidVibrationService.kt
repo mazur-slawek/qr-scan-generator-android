@@ -29,7 +29,7 @@ class AndroidVibrationService @Inject constructor(@ApplicationContext private va
         if (!vibrator.hasVibrator()) return
         val effect = VibrationEffect.createOneShot(
             VIBRATION_DURATION_MILLIS,
-            VibrationEffect.DEFAULT_AMPLITUDE,
+            VibrationEffect.DEFAULT_AMPLITUDE
         )
         vibrator.vibrate(effect)
     }

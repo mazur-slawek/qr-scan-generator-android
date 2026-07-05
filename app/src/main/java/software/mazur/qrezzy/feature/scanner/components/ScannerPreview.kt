@@ -36,32 +36,27 @@ import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
 import software.mazur.qrezzy.feature.scanner.analyzer.QrCodeAnalyzer
 
 @Composable
-fun ScannerPreview(
-    isScanning: Boolean,
-    isTorchEnabled: Boolean,
-    onQrCodeScanned: (String) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun ScannerPreview(isScanning: Boolean, isTorchEnabled: Boolean, onQrCodeScanned: (String) -> Unit, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
         shape = ShapeDefaults.Medium,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = ScannerPreviewDefaults.Container.elevation),
+        elevation = CardDefaults.cardElevation(defaultElevation = ScannerPreviewDefaults.Container.elevation)
     ) {
         QrezzyAnimatedStars(modifier = Modifier.fillMaxSize()) {
             BoxWithConstraints(
                 modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
+                contentAlignment = Alignment.Center
             ) {
                 if (isScanning) {
                     LiveCameraPreview(
                         modifier = Modifier.matchParentSize(),
                         onQrCodeScanned = onQrCodeScanned,
-                        isTorchEnabled = isTorchEnabled,
+                        isTorchEnabled = isTorchEnabled
                     )
                 }
                 ScannerFocusIndicator(
-                    modifier = Modifier.width(maxWidth * ScannerPreviewDefaults.FOCUS_INDICATOR_WIDTH_RATIO),
+                    modifier = Modifier.width(maxWidth * ScannerPreviewDefaults.FOCUS_INDICATOR_WIDTH_RATIO)
                 )
             }
         }
@@ -69,11 +64,7 @@ fun ScannerPreview(
 }
 
 @Composable
-fun LiveCameraPreview(
-    isTorchEnabled: Boolean,
-    onQrCodeScanned: (String) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun LiveCameraPreview(isTorchEnabled: Boolean, onQrCodeScanned: (String) -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     var camera by remember { mutableStateOf<Camera?>(null) }
@@ -95,7 +86,7 @@ fun LiveCameraPreview(
                     layoutParams =
                         FrameLayout.LayoutParams(
                             FrameLayout.LayoutParams.MATCH_PARENT,
-                            FrameLayout.LayoutParams.MATCH_PARENT,
+                            FrameLayout.LayoutParams.MATCH_PARENT
                         )
                 }
             container.addView(previewView)
@@ -116,7 +107,7 @@ fun LiveCameraPreview(
                             .also { analysis ->
                                 analysis.setAnalyzer(
                                     ContextCompat.getMainExecutor(previewContext),
-                                    QrCodeAnalyzer(onQrCodeScanned),
+                                    QrCodeAnalyzer(onQrCodeScanned)
                                 )
                             }
 
@@ -127,13 +118,13 @@ fun LiveCameraPreview(
                             lifecycleOwner,
                             CameraSelector.DEFAULT_BACK_CAMERA,
                             preview,
-                            imageAnalysis,
+                            imageAnalysis
                         )
                 },
-                ContextCompat.getMainExecutor(previewContext),
+                ContextCompat.getMainExecutor(previewContext)
             )
             container
-        },
+        }
     )
     LaunchedEffect(camera, isTorchEnabled) {
         camera?.cameraControl?.enableTorch(isTorchEnabled)
@@ -151,7 +142,7 @@ private fun ScannerFocusIndicator(modifier: Modifier = Modifier) {
     Image(
         modifier = modifier,
         contentDescription = null,
-        painter = painterResource(R.drawable.qr_frame),
+        painter = painterResource(R.drawable.qr_frame)
     )
 }
 

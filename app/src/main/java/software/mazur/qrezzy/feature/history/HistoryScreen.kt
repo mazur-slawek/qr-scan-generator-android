@@ -66,7 +66,7 @@ import software.mazur.qrezzy.feature.history.model.HistoryUiState
 fun HistoryScreen(
     onHistoryItemClick: (Long) -> Unit,
     viewModel: HistoryViewModel = hiltViewModel(),
-    onEmptyActionClick: (HistoryEmptyAction) -> Unit,
+    onEmptyActionClick: (HistoryEmptyAction) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     val uiState by viewModel.uiState.collectAsState()
@@ -77,7 +77,7 @@ fun HistoryScreen(
         DeleteQrConfirmationDialog(
             count = uiState.selectedItemIds.size,
             onCancelClick = viewModel::onDeleteConfirmationDialogDismiss,
-            onConfirmClick = viewModel::onDeleteConfirmationDialogConfirm,
+            onConfirmClick = viewModel::onDeleteConfirmationDialogConfirm
         )
     }
 
@@ -88,21 +88,21 @@ fun HistoryScreen(
             hasItems = uiState.hasItems,
             onEnterDeleteMode = viewModel::onEnterDeleteMode,
             onExitDeleteMode = viewModel::onExitDeleteMode,
-            onDeleteSelected = viewModel::onDeleteSelected,
+            onDeleteSelected = viewModel::onDeleteSelected
         )
         Spacer(modifier = Modifier.height(HistoryScreenDefaults.topBarSearchSpacing))
         HistorySearchBar(
             query = searchQuery,
             enabled = !uiState.isDeleteModeEnabled,
             onQueryChange = viewModel::onSearchQueryChange,
-            onClearClick = viewModel::onClearSearchQuery,
+            onClearClick = viewModel::onClearSearchQuery
         )
         Spacer(modifier = Modifier.height(HistoryScreenDefaults.searchBarTabBarSpacing))
         QrezzyTabs(
             tabs = historyTabs,
             selectedTab = selectedTab,
             onSelect = { tab -> viewModel.onTabSelected(tab.key) },
-            enabled = !uiState.isDeleteModeEnabled,
+            enabled = !uiState.isDeleteModeEnabled
         )
         HistoryContent(
             uiState = uiState,
@@ -112,7 +112,7 @@ fun HistoryScreen(
             onEmptyActionClick = onEmptyActionClick,
             onDeleteModeItemClick = viewModel::onHistoryItemClick,
             onFavoriteClick = viewModel::onFavoriteClick,
-            onClearFocus = focusManager::clearFocus,
+            onClearFocus = focusManager::clearFocus
         )
     }
 }
@@ -124,41 +124,46 @@ private fun HistoryTopBar(
     hasItems: Boolean,
     onEnterDeleteMode: () -> Unit,
     onExitDeleteMode: () -> Unit,
-    onDeleteSelected: () -> Unit,
+    onDeleteSelected: () -> Unit
 ) {
     val isDarkTheme = LocalIsDarkTheme.current
     QrezzyTopBar(titleResId = R.string.navigation_title_history, subtitleResId = R.string.navigation_subtitle_history) {
         AnimatedContent(
             targetState = isDeleteModeEnabled,
             transitionSpec = {
-                (fadeIn(
-                    animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.FADE_IN_DURATION_MILLIS),
-                ) + scaleIn(
-                    initialScale = HistoryScreenDefaults.TopBarAnimation.INITIAL_SCALE,
-                    animationSpec = tween(
-                        HistoryScreenDefaults.TopBarAnimation.SCALE_IN_DURATION_MILLIS),
-                )).togetherWith(
+                (
+                    fadeIn(
+                        animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.FADE_IN_DURATION_MILLIS)
+                    ) + scaleIn(
+                        initialScale = HistoryScreenDefaults.TopBarAnimation.INITIAL_SCALE,
+                        animationSpec = tween(
+                            HistoryScreenDefaults.TopBarAnimation.SCALE_IN_DURATION_MILLIS
+                        )
+                    )
+                    ).togetherWith(
                     fadeOut(
-                        animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.FADE_OUT_DURATION_MILLIS),
+                        animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.FADE_OUT_DURATION_MILLIS)
                     ) + scaleOut(
                         targetScale = HistoryScreenDefaults.TopBarAnimation.TARGET_SCALE,
-                        animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.SCALE_OUT_DURATION_MILLIS))
+                        animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.SCALE_OUT_DURATION_MILLIS)
+                    )
                 ).using(SizeTransform(clip = false))
             },
-            label = "history_top_bar_actions_animation",
+            label = "history_top_bar_actions_animation"
         ) { isDeleteMode ->
             if (isDeleteMode) {
                 HistoryDeleteModeActions(
                     canDeleteSelected = canDeleteSelected,
                     onExitDeleteMode = onExitDeleteMode,
-                    onDeleteSelected = onDeleteSelected,
+                    onDeleteSelected = onDeleteSelected
                 )
             } else {
                 QrezzyTopBarButton(
                     enabled = hasItems,
                     onClick = onEnterDeleteMode,
                     iconPainter = painterResource(
-                        if (isDarkTheme) R.drawable.qrezzy_selection_dark else R.drawable.qrezzy_selection)
+                        if (isDarkTheme) R.drawable.qrezzy_selection_dark else R.drawable.qrezzy_selection
+                    )
                 )
             }
         }
@@ -166,11 +171,7 @@ private fun HistoryTopBar(
 }
 
 @Composable
-private fun HistoryDeleteModeActions(
-    canDeleteSelected: Boolean,
-    onExitDeleteMode: () -> Unit,
-    onDeleteSelected: () -> Unit,
-) {
+private fun HistoryDeleteModeActions(canDeleteSelected: Boolean, onExitDeleteMode: () -> Unit, onDeleteSelected: () -> Unit) {
     Row {
         QrezzyTopBarButton(
             onClick = onExitDeleteMode,
@@ -181,7 +182,7 @@ private fun HistoryDeleteModeActions(
         AnimatedVisibility(
             visible = true,
             enter = fadeIn(
-                animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.DELETE_BUTTON_DELAY_MILLIS),
+                animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.DELETE_BUTTON_DELAY_MILLIS)
             ) + scaleIn(initialScale = HistoryScreenDefaults.TopBarAnimation.INITIAL_SCALE)
         ) {
             QrezzyTopBarButton(
@@ -202,30 +203,30 @@ private fun HistoryContent(
     onEmptyActionClick: (HistoryEmptyAction) -> Unit,
     onDeleteModeItemClick: (Long) -> Unit,
     onFavoriteClick: (Qr) -> Unit,
-    onClearFocus: () -> Unit,
+    onClearFocus: () -> Unit
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .pointerInput(Unit) { detectTapGestures(onTap = { onClearFocus() }) },
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.Center
     ) {
         when {
             uiState.isInitialLoading -> {
                 CircularProgressIndicator()
             }
 
-            !uiState.hasItems        -> {
+            !uiState.hasItems -> {
                 HistoryListEmpty(selectedTab = selectedTab, onEmptyActionClick = onEmptyActionClick)
             }
 
-            else                     -> {
+            else -> {
                 HistoryList(
                     uiState = uiState,
                     searchQuery = searchQuery,
                     onHistoryItemClick = onHistoryItemClick,
                     onDeleteModeItemClick = onDeleteModeItemClick,
-                    onFavoriteClick = onFavoriteClick,
+                    onFavoriteClick = onFavoriteClick
                 )
             }
         }
@@ -238,11 +239,11 @@ private fun HistoryList(
     searchQuery: String,
     onHistoryItemClick: (Long) -> Unit,
     onDeleteModeItemClick: (Long) -> Unit,
-    onFavoriteClick: (Qr) -> Unit,
+    onFavoriteClick: (Qr) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(bottom = HistoryScreenDefaults.screenPadding),
+        contentPadding = PaddingValues(bottom = HistoryScreenDefaults.screenPadding)
     ) {
         if (uiState.favoriteItems.isNotEmpty()) {
             item(key = HistoryScreenDefaults.Favorites.KEY) {
@@ -258,11 +259,11 @@ private fun HistoryList(
                             qrId = qrId,
                             isDeleteModeEnabled = uiState.isDeleteModeEnabled,
                             onDeleteModeItemClick = onDeleteModeItemClick,
-                            onHistoryItemClick = onHistoryItemClick,
+                            onHistoryItemClick = onHistoryItemClick
                         )
                     },
                     onFavoriteClick = onFavoriteClick,
-                    modifier = Modifier.animateItem(),
+                    modifier = Modifier.animateItem()
                 )
             }
         }
@@ -280,11 +281,11 @@ private fun HistoryList(
                             qrId = qrId,
                             isDeleteModeEnabled = uiState.isDeleteModeEnabled,
                             onDeleteModeItemClick = onDeleteModeItemClick,
-                            onHistoryItemClick = onHistoryItemClick,
+                            onHistoryItemClick = onHistoryItemClick
                         )
                     },
                     onFavoriteClick = onFavoriteClick,
-                    modifier = Modifier.animateItem(),
+                    modifier = Modifier.animateItem()
                 )
             }
         }
@@ -300,7 +301,7 @@ private fun handleHistoryItemClick(
     qrId: Long,
     isDeleteModeEnabled: Boolean,
     onDeleteModeItemClick: (Long) -> Unit,
-    onHistoryItemClick: (Long) -> Unit,
+    onHistoryItemClick: (Long) -> Unit
 ) {
     if (isDeleteModeEnabled) onDeleteModeItemClick(qrId) else onHistoryItemClick(qrId)
 }
@@ -313,7 +314,7 @@ private fun HistorySection(
     onHistoryItemClick: (Long) -> Unit,
     onFavoriteClick: (Qr) -> Unit,
     modifier: Modifier = Modifier,
-    isFavoritesSection: Boolean = false,
+    isFavoritesSection: Boolean = false
 ) {
     Column {
         Column(
@@ -322,9 +323,9 @@ private fun HistorySection(
                 .border(
                     color = MaterialTheme.colorScheme.surfaceContainer,
                     shape = HistoryScreenDefaults.Section.shape,
-                    width = HistoryScreenDefaults.Section.borderWidth,
+                    width = HistoryScreenDefaults.Section.borderWidth
                 )
-                .clip(HistoryScreenDefaults.Section.shape),
+                .clip(HistoryScreenDefaults.Section.shape)
         ) {
             if (isFavoritesSection) FavoritesSectionHeader()
             items.forEachIndexed { index, qr ->
@@ -333,7 +334,7 @@ private fun HistorySection(
                     isDeleteModeEnabled = isDeleteModeEnabled,
                     isSelected = qr.id in selectedItemIds,
                     onClick = { onHistoryItemClick(qr.id) },
-                    onFavoriteClick = { onFavoriteClick(qr) },
+                    onFavoriteClick = { onFavoriteClick(qr) }
                 )
                 if (index != items.lastIndex) HistorySectionDivider()
             }
@@ -350,22 +351,22 @@ private fun FavoritesSectionHeader() {
             .background(color = MaterialTheme.colorScheme.surface)
             .padding(
                 horizontal = HistoryScreenDefaults.FavoritesHeader.horizontalPadding,
-                vertical = HistoryScreenDefaults.FavoritesHeader.verticalPadding,
+                vertical = HistoryScreenDefaults.FavoritesHeader.verticalPadding
             ),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(HistoryScreenDefaults.FavoritesHeader.iconTextSpacing),
+        horizontalArrangement = Arrangement.spacedBy(HistoryScreenDefaults.FavoritesHeader.iconTextSpacing)
     ) {
         Icon(imageVector = Icons.Default.Star, tint = QrezzyYellowDark, contentDescription = null)
         Text(
             text = stringResource(R.string.history_section_favorites).uppercase(),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.ExtraBold,
+            fontWeight = FontWeight.ExtraBold
         )
     }
     HorizontalDivider(
         color = MaterialTheme.colorScheme.surfaceContainer,
-        thickness = HistoryScreenDefaults.Section.dividerThickness,
+        thickness = HistoryScreenDefaults.Section.dividerThickness
     )
 }
 
@@ -373,7 +374,7 @@ private fun FavoritesSectionHeader() {
 private fun HistorySectionDivider() {
     HorizontalDivider(
         color = MaterialTheme.colorScheme.surfaceContainer,
-        thickness = HistoryScreenDefaults.Section.dividerThickness,
+        thickness = HistoryScreenDefaults.Section.dividerThickness
     )
 }
 

@@ -8,10 +8,10 @@ import android.graphics.RectF
 import com.google.zxing.EncodeHintType
 import com.google.zxing.qrcode.encoder.ByteMatrix
 import com.google.zxing.qrcode.encoder.Encoder
-import software.mazur.qrezzy.domain.qr.model.style.QrPatternStyle
-import software.mazur.qrezzy.domain.qr.model.style.QrStyle
 import java.util.EnumMap
 import javax.inject.Inject
+import software.mazur.qrezzy.domain.qr.model.style.QrPatternStyle
+import software.mazur.qrezzy.domain.qr.model.style.QrStyle
 
 class QrBitmapGenerator @Inject constructor() {
     fun generate(content: String, size: Int = DEFAULT_SIZE, style: QrStyle = QrStyle()): Bitmap? {
@@ -50,7 +50,7 @@ class QrBitmapGenerator @Inject constructor() {
                         top = startY + y * moduleSize,
                         size = moduleSize,
                         patternStyle = style.patternStyle,
-                        paint = paint,
+                        paint = paint
                     )
                 }
             }
@@ -60,11 +60,11 @@ class QrBitmapGenerator @Inject constructor() {
 
     private fun Canvas.drawQrModule(left: Float, top: Float, size: Float, patternStyle: QrPatternStyle, paint: Paint) {
         when (patternStyle) {
-            QrPatternStyle.SQUARE  -> {
+            QrPatternStyle.SQUARE -> {
                 drawRect(left, top, left + size, top + size, paint)
             }
 
-            QrPatternStyle.DOTS    -> {
+            QrPatternStyle.DOTS -> {
                 drawCircle(left + size / 2f, top + size / 2f, size * DOT_RADIUS_FACTOR, paint)
             }
 
@@ -76,7 +76,7 @@ class QrBitmapGenerator @Inject constructor() {
                     RectF(left + inset, top + inset, left + size - inset, top + size - inset),
                     radius,
                     radius,
-                    paint,
+                    paint
                 )
             }
         }

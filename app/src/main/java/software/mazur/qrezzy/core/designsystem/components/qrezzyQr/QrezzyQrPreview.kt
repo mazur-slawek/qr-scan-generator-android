@@ -31,31 +31,31 @@ fun QrezzyQrPreview(qrBitmap: Bitmap?, modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(
                 top = QrezzyQrPreviewDefaults.Container.topPadding,
-                bottom = QrezzyQrPreviewDefaults.Container.bottomPadding,
+                bottom = QrezzyQrPreviewDefaults.Container.bottomPadding
             )
             .height(QrezzyQrPreviewDefaults.Container.height),
         shape = ShapeDefaults.Medium,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = QrezzyQrPreviewDefaults.Container.elevation,
-        ),
+            defaultElevation = QrezzyQrPreviewDefaults.Container.elevation
+        )
     ) {
         QrezzyAnimatedStars(modifier = Modifier.fillMaxSize()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 androidx.compose.animation.AnimatedVisibility(
                     visible = latestQrBitmap != null,
                     enter = fadeIn(
-                        animationSpec = tween(QrezzyQrPreviewDefaults.Animation.FADE_IN_DURATION_MILLIS),
+                        animationSpec = tween(QrezzyQrPreviewDefaults.Animation.FADE_IN_DURATION_MILLIS)
                     ),
                     exit = fadeOut(
-                        animationSpec = tween(QrezzyQrPreviewDefaults.Animation.FADE_OUT_DURATION_MILLIS),
+                        animationSpec = tween(QrezzyQrPreviewDefaults.Animation.FADE_OUT_DURATION_MILLIS)
                     ),
-                    label = "qr_preview_visibility_animation",
+                    label = "qr_preview_visibility_animation"
                 ) {
                     latestQrBitmap?.let { bitmap ->
                         Image(
                             bitmap = bitmap.asImageBitmap(),
-                            contentDescription = QrezzyQrPreviewDefaults.ContentDescription.QR_PREVIEW,
+                            contentDescription = QrezzyQrPreviewDefaults.ContentDescription.QR_PREVIEW
                         )
                     }
                 }

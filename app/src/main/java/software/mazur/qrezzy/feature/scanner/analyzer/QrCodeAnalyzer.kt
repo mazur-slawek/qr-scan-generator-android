@@ -8,15 +8,13 @@ import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 
-class QrCodeAnalyzer(
-    private val onQrCodeScanned: (String) -> Unit,
-) : ImageAnalysis.Analyzer {
+class QrCodeAnalyzer(private val onQrCodeScanned: (String) -> Unit) : ImageAnalysis.Analyzer {
     private val scanner =
         BarcodeScanning.getClient(
             BarcodeScannerOptions
                 .Builder()
                 .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-                .build(),
+                .build()
         )
     private var isProcessing = false
 

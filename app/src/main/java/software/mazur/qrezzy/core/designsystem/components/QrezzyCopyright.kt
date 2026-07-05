@@ -9,7 +9,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import software.mazur.qrezzy.R
 
-
 @Composable
 fun QrezzyCopyright(modifier: Modifier = Modifier) {
     Text(

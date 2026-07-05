@@ -55,7 +55,7 @@ private fun launchPlayStore(context: Context) {
     val marketIntent = Intent(Intent.ACTION_VIEW, "market://details?id=$packageName".toUri())
     val browserIntent = Intent(
         Intent.ACTION_VIEW,
-        "https://play.google.com/store/apps/details?id=$packageName".toUri(),
+        "https://play.google.com/store/apps/details?id=$packageName".toUri()
     )
     runCatching {
         context.startActivity(marketIntent)
@@ -72,7 +72,7 @@ private fun shareApplication(context: Context, text: String) {
     context.startActivity(
         Intent.createChooser(
             shareIntent,
-            context.getString(R.string.rate_app_share_chooser_title),
+            context.getString(R.string.rate_app_share_chooser_title)
         )
     )
 }

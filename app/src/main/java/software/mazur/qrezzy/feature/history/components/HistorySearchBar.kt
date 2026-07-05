@@ -32,14 +32,8 @@ import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyPurple
 
-
 @Composable
-fun HistorySearchBar(
-    query: String,
-    onQueryChange: (String) -> Unit,
-    onClearClick: () -> Unit,
-    enabled: Boolean = true
-) {
+fun HistorySearchBar(query: String, onQueryChange: (String) -> Unit, onClearClick: () -> Unit, enabled: Boolean = true) {
     var isFocused by remember { mutableStateOf(false) }
     val borderColor = if (isFocused && enabled) QrezzyPurple else MaterialTheme.colorScheme.surfaceContainer
 
@@ -51,25 +45,30 @@ fun HistorySearchBar(
             .border(
                 width = HistorySearchBarDefaults.borderWidth,
                 color = borderColor,
-                shape = ShapeDefaults.ExtraLarge,
+                shape = ShapeDefaults.ExtraLarge
             )
             .background(color = MaterialTheme.colorScheme.surface, shape = ShapeDefaults.ExtraLarge)
             .padding(
                 start = HistorySearchBarDefaults.horizontalPadding,
                 end = HistorySearchBarDefaults.horizontalPadding / 2
             ),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(imageVector = Icons.Outlined.Search, contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant)
+        Icon(
+            imageVector = Icons.Outlined.Search,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
+        )
         BasicTextField(
             value = query,
             onValueChange = onQueryChange,
             enabled = enabled,
             singleLine = true,
             cursorBrush = SolidColor(QrezzyMint),
-            textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Medium),
+            textStyle = MaterialTheme.typography.bodyMedium.copy(
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Medium
+            ),
             modifier = Modifier
                 .weight(HistorySearchBarDefaults.TEXT_FIELD_WEIGHT)
                 .padding(horizontal = HistorySearchBarDefaults.textHorizontalPadding)
@@ -80,21 +79,23 @@ fun HistorySearchBar(
                         text = stringResource(R.string.history_search_placeholder),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Medium,
+                        fontWeight = FontWeight.Medium
                     )
                 }
                 innerTextField()
-            },
+            }
         )
 
         if (query.isNotBlank()) {
             IconButton(onClick = onClearClick) {
-                Icon(imageVector = Icons.Outlined.Close, contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                Icon(
+                    imageVector = Icons.Outlined.Close,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }
-
 }
 
 private object HistorySearchBarDefaults {

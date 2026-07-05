@@ -26,14 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
-
 @Composable
-fun QrezzyPopup(
-    @DrawableRes imageResId: Int,
-    @StringRes titleResId: Int,
-    @StringRes descriptionResId: Int,
-    modifier: Modifier = Modifier,
-) {
+fun QrezzyPopup(@DrawableRes imageResId: Int, @StringRes titleResId: Int, @StringRes descriptionResId: Int, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -41,22 +35,22 @@ fun QrezzyPopup(
             .border(
                 width = QrezzyPopupDefaults.Border.width,
                 color = MaterialTheme.colorScheme.surfaceContainer,
-                shape = ShapeDefaults.Medium,
+                shape = ShapeDefaults.Medium
             )
             .background(
                 color = MaterialTheme.colorScheme.surface,
-                shape = ShapeDefaults.Medium,
+                shape = ShapeDefaults.Medium
             )
             .padding(
                 horizontal = QrezzyPopupDefaults.Container.horizontalPadding,
-                vertical = QrezzyPopupDefaults.Container.verticalPadding,
+                vertical = QrezzyPopupDefaults.Container.verticalPadding
             ),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painter = painterResource(imageResId),
             contentDescription = null,
-            modifier = Modifier.size(QrezzyPopupDefaults.Image.size),
+            modifier = Modifier.size(QrezzyPopupDefaults.Image.size)
         )
         Spacer(modifier = Modifier.width(QrezzyPopupDefaults.Container.contentSpacing))
         Column(modifier = Modifier.weight(1f)) {

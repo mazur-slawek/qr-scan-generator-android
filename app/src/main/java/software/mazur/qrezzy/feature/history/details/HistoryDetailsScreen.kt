@@ -47,7 +47,7 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                is HistoryDetailsUiEvent.ShareQrCode    -> {
+                is HistoryDetailsUiEvent.ShareQrCode -> {
                     qrSharingService.shareBitmap(bitmap = event.bitmap, fileName = event.title)
                 }
 
@@ -57,7 +57,7 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
                     Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
                 }
 
-                HistoryDetailsUiEvent.QrStyleSaved      -> {
+                HistoryDetailsUiEvent.QrStyleSaved -> {
                     Toast.makeText(context, qrStyleSavedMessage, Toast.LENGTH_SHORT).show()
                 }
 
@@ -65,7 +65,7 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
                     Toast.makeText(context, qrStyleSaveFailedMessage, Toast.LENGTH_SHORT).show()
                 }
 
-                HistoryDetailsUiEvent.OnBack            -> {
+                HistoryDetailsUiEvent.OnBack -> {
                     onBackClick()
                 }
             }
@@ -110,7 +110,7 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
             Spacer(modifier = Modifier.width(10.dp))
             QrezzyTopBarButton(
                 iconPainter = painterResource(R.drawable.qrezzy_edit),
-                onClick = viewModel::onCustomizeQrClick,
+                onClick = viewModel::onCustomizeQrClick
             )
         }
         LazyColumn {
@@ -120,7 +120,7 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
                 HistoryDetailsActions(
                     onShareClick = viewModel::onShareQrCodeClick,
                     onDownloadClick = viewModel::onDownloadQrCodeClick,
-                    onDeleteClick = viewModel::onDeleteQrCodeClick,
+                    onDeleteClick = viewModel::onDeleteQrCodeClick
                 )
             }
         }
@@ -134,13 +134,13 @@ private fun HistoryDetailsActions(onShareClick: () -> Unit, onDownloadClick: () 
         QrezzyButton(
             elevation = 0.dp,
             onClick = onShareClick,
-            text = stringResource(R.string.history_details_share),
+            text = stringResource(R.string.history_details_share)
         )
         Spacer(modifier = Modifier.height(HistoryDetailsScreenDefaults.buttonSpacing))
         QrezzyButton(
             elevation = 0.dp,
             onClick = onDownloadClick,
-            text = stringResource(R.string.history_details_download),
+            text = stringResource(R.string.history_details_download)
         )
         Spacer(modifier = Modifier.height(HistoryDetailsScreenDefaults.buttonSpacing * 2))
         QrezzyButton(
@@ -148,7 +148,7 @@ private fun HistoryDetailsActions(onShareClick: () -> Unit, onDownloadClick: () 
             containerColor = QrezzyPink,
             depthColor = QrezzyYellowDark,
             onClick = onDeleteClick,
-            text = stringResource(R.string.history_details_delete),
+            text = stringResource(R.string.history_details_delete)
         )
         Spacer(modifier = Modifier.height(HistoryDetailsScreenDefaults.buttonSpacing * 2))
     }

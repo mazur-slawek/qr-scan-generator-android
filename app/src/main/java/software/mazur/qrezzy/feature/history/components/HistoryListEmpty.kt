@@ -20,10 +20,9 @@ import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTabItem
 
-
 enum class HistoryEmptyAction {
     Scan,
-    Generate,
+    Generate
 }
 
 @Composable
@@ -33,7 +32,7 @@ fun HistoryListEmpty(selectedTab: QrezzyTabItem, onEmptyActionClick: (HistoryEmp
 
     Column(
         modifier = Modifier.padding(horizontal = HistoryListEmptyDefaults.horizontalPadding),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = painterResource(R.drawable.qrezzy_mascot_list_empty),
@@ -48,7 +47,7 @@ fun HistoryListEmpty(selectedTab: QrezzyTabItem, onEmptyActionClick: (HistoryEmp
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.ExtraBold,
-            text = stringResource(R.string.history_empty_title),
+            text = stringResource(R.string.history_empty_title)
         )
 
         Spacer(modifier = Modifier.height(HistoryListEmptyDefaults.titleSubtitleSpacing))
@@ -58,7 +57,7 @@ fun HistoryListEmpty(selectedTab: QrezzyTabItem, onEmptyActionClick: (HistoryEmp
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,
-            text = stringResource(R.string.history_empty_subtitle),
+            text = stringResource(R.string.history_empty_subtitle)
         )
 
         Spacer(modifier = Modifier.height(HistoryListEmptyDefaults.buttonPadding))
@@ -71,15 +70,11 @@ fun HistoryListEmpty(selectedTab: QrezzyTabItem, onEmptyActionClick: (HistoryEmp
     }
 }
 
-private fun QrezzyTabItem.toEmptyAction(): HistoryEmptyAction {
-    return if (this.key == 2) HistoryEmptyAction.Generate else HistoryEmptyAction.Scan
-}
+private fun QrezzyTabItem.toEmptyAction(): HistoryEmptyAction = if (this.key == 2) HistoryEmptyAction.Generate else HistoryEmptyAction.Scan
 
-private fun HistoryEmptyAction.toButtonTextResId(): Int {
-    return when (this) {
-        HistoryEmptyAction.Scan     -> R.string.navigation_title_scan
-        HistoryEmptyAction.Generate -> R.string.navigation_title_generate
-    }
+private fun HistoryEmptyAction.toButtonTextResId(): Int = when (this) {
+    HistoryEmptyAction.Scan -> R.string.navigation_title_scan
+    HistoryEmptyAction.Generate -> R.string.navigation_title_generate
 }
 
 private object HistoryListEmptyDefaults {

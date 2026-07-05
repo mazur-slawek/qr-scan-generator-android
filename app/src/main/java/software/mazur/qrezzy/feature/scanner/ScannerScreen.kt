@@ -51,12 +51,12 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
     val qrSavedMessage = stringResource(R.string.scanner_qr_saved)
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
+        contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) viewModel.onStartScanning() else viewModel.onPermissionDenied()
     }
     val imagePickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
+        contract = ActivityResultContracts.GetContent()
     ) { uri ->
         uri?.let(viewModel::onImageSelected)
     }
@@ -72,7 +72,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                ScannerUiEvent.QrSaved      ->
+                ScannerUiEvent.QrSaved ->
                     Toast.makeText(context, qrSavedMessage, Toast.LENGTH_SHORT).show()
 
                 is ScannerUiEvent.ShowError ->
@@ -84,11 +84,11 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
-                Lifecycle.Event.ON_RESUME                         ->
+                Lifecycle.Event.ON_RESUME ->
                     if (context.hasCameraPermission()) viewModel.onPermissionRestored()
 
                 Lifecycle.Event.ON_PAUSE, Lifecycle.Event.ON_STOP -> viewModel.onStopScanning()
-                else                                              -> Unit
+                else -> Unit
             }
         }
 
@@ -116,7 +116,8 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
                 onClick = viewModel::onTorchClick,
                 enabled = uiState.isScanning,
                 iconPainter = painterResource(
-                    if (uiState.isTorchEnabled) R.drawable.qrezzy_torch_on else R.drawable.qrezzy_torch_off),
+                    if (uiState.isTorchEnabled) R.drawable.qrezzy_torch_on else R.drawable.qrezzy_torch_off
+                )
             )
         }
         Spacer(modifier = Modifier.height(ScannerScreenDefaults.topBarPreviewSpacing))
@@ -124,7 +125,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
             modifier = Modifier.weight(ScannerScreenDefaults.PREVIEW_WEIGHT),
             isTorchEnabled = uiState.isTorchEnabled,
             isScanning = uiState.isScanning,
-            onQrCodeScanned = viewModel::onQrCodeScanned,
+            onQrCodeScanned = viewModel::onQrCodeScanned
         )
         if (uiState.showHistoryLimitReachedPopup) {
             Spacer(modifier = Modifier.height(ScannerScreenDefaults.previewButtonSpacing))
@@ -141,7 +142,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
                     }
                 },
                 text = stringResource(R.string.scanner_action_scan),
-                elevation = 0.dp,
+                elevation = 0.dp
             )
         } else if (uiState.mode == Mode.Scanning) {
             Spacer(modifier = Modifier.height(ScannerScreenDefaults.previewButtonSpacing))
@@ -150,7 +151,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
                 text = stringResource(R.string.scanner_action_stop),
                 containerColor = QrezzyPink,
                 depthColor = QrezzyYellow,
-                elevation = 0.dp,
+                elevation = 0.dp
             )
         }
         Spacer(modifier = Modifier.height(ScannerScreenDefaults.buttonsSpacing))
@@ -174,7 +175,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
                 text = stringResource(R.string.scanner_action_open_settings),
                 containerColor = QrezzyYellow,
                 depthColor = QrezzyMint,
-                elevation = 0.dp,
+                elevation = 0.dp
             )
         }
         Spacer(modifier = Modifier.height(ScannerScreenDefaults.bottomSpacing))
@@ -184,20 +185,19 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
 @Immutable
 private data class ScannerPopupContent(val imageResId: Int, val titleResId: Int, val descriptionResId: Int) {
     companion object {
-        fun resolve(isPermissionDenied: Boolean): ScannerPopupContent =
-            if (isPermissionDenied) {
-                ScannerPopupContent(
-                    imageResId = R.drawable.qrezzy_mascot_camera_permission_denied,
-                    titleResId = R.string.scanner_popup_permission_denied_title,
-                    descriptionResId = R.string.scanner_popup_permission_denied_desc,
-                )
-            } else {
-                ScannerPopupContent(
-                    imageResId = R.drawable.qrezzy_mascot_scanner,
-                    titleResId = R.string.scanner_popup_idle_title,
-                    descriptionResId = R.string.scanner_popup_idle_desc,
-                )
-            }
+        fun resolve(isPermissionDenied: Boolean): ScannerPopupContent = if (isPermissionDenied) {
+            ScannerPopupContent(
+                imageResId = R.drawable.qrezzy_mascot_camera_permission_denied,
+                titleResId = R.string.scanner_popup_permission_denied_title,
+                descriptionResId = R.string.scanner_popup_permission_denied_desc
+            )
+        } else {
+            ScannerPopupContent(
+                imageResId = R.drawable.qrezzy_mascot_scanner,
+                titleResId = R.string.scanner_popup_idle_title,
+                descriptionResId = R.string.scanner_popup_idle_desc
+            )
+        }
     }
 }
 

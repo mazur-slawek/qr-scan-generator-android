@@ -26,19 +26,10 @@ import androidx.compose.ui.unit.dp
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMint
 import software.mazur.qrezzy.core.designsystem.theme.QrezzyMintDark
 
-
-data class QrezzyTabItem(
-    val key: Int,
-    @param:StringRes val titleResId: Int,
-)
+data class QrezzyTabItem(val key: Int, @param:StringRes val titleResId: Int)
 
 @Composable
-fun QrezzyTabs(
-    tabs: List<QrezzyTabItem>,
-    selectedTab: QrezzyTabItem,
-    onSelect: (QrezzyTabItem) -> Unit,
-    enabled: Boolean = true,
-) {
+fun QrezzyTabs(tabs: List<QrezzyTabItem>, selectedTab: QrezzyTabItem, onSelect: (QrezzyTabItem) -> Unit, enabled: Boolean = true) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -47,7 +38,7 @@ fun QrezzyTabs(
             .border(
                 width = QrezzyTabsDefaults.borderWidth,
                 color = MaterialTheme.colorScheme.surfaceContainer,
-                shape = ShapeDefaults.Medium,
+                shape = ShapeDefaults.Medium
             )
             .padding(all = 1.dp)
     ) {
@@ -57,40 +48,33 @@ fun QrezzyTabs(
                 text = stringResource(tab.titleResId),
                 isSelected = tab.key == selectedTab.key,
                 onClick = { onSelect(tab) },
-                enabled = enabled,
+                enabled = enabled
             )
         }
     }
-
 }
 
 @Composable
-private fun QrezzyTabItem(
-    text: String,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-) {
+private fun QrezzyTabItem(text: String, isSelected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true) {
     Button(
         onClick = onClick,
         modifier =
-            modifier
-                .padding(QrezzyTabsDefaults.Tab.outerPadding)
-                .height(QrezzyTabsDefaults.Tab.height),
+        modifier
+            .padding(QrezzyTabsDefaults.Tab.outerPadding)
+            .height(QrezzyTabsDefaults.Tab.height),
         shape = ShapeDefaults.Medium.copy(all = CornerSize(QrezzyTabsDefaults.Tab.cornerRadius)),
         border =
-            BorderStroke(
-                width = QrezzyTabsDefaults.Tab.borderWidth,
-                color = if (isSelected) QrezzyMintDark else Color.Transparent,
-            ),
+        BorderStroke(
+            width = QrezzyTabsDefaults.Tab.borderWidth,
+            color = if (isSelected) QrezzyMintDark else Color.Transparent
+        ),
         contentPadding = PaddingValues.Zero,
         colors =
-            ButtonDefaults.buttonColors(
-                containerColor = if (isSelected) QrezzyMint else Color.Transparent,
-                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            ),
-        enabled = enabled,
+        ButtonDefaults.buttonColors(
+            containerColor = if (isSelected) QrezzyMint else Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        ),
+        enabled = enabled
     ) {
         Text(
             text = text,
