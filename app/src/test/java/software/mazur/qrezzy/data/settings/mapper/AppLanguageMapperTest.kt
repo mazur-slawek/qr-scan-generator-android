@@ -1,9 +1,9 @@
 package software.mazur.qrezzy.domain.settings.mapper
 
+import java.util.Locale
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import software.mazur.qrezzy.domain.settings.model.AppLanguage
-import java.util.Locale
 
 class AppLanguageMapperTest {
     @Test

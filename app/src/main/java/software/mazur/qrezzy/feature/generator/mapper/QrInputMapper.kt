@@ -1,30 +1,30 @@
 package software.mazur.qrezzy.feature.generator.mapper
 
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import software.mazur.qrezzy.domain.qr.model.QrType
 import software.mazur.qrezzy.feature.generator.model.QrInput
 import software.mazur.qrezzy.feature.generator.model.WifiEncryption
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 fun QrInput.toQrType(): QrType = when (this) {
-    is QrInput.Text        -> QrType.TEXT
-    is QrInput.Url         -> QrType.URL
-    is QrInput.Wifi        -> QrType.WIFI
-    is QrInput.Contact     -> QrType.CONTACT
-    is QrInput.Email       -> QrType.EMAIL
-    is QrInput.Phone       -> QrType.PHONE
-    is QrInput.Sms         -> QrType.SMS
+    is QrInput.Text -> QrType.TEXT
+    is QrInput.Url -> QrType.URL
+    is QrInput.Wifi -> QrType.WIFI
+    is QrInput.Contact -> QrType.CONTACT
+    is QrInput.Email -> QrType.EMAIL
+    is QrInput.Phone -> QrType.PHONE
+    is QrInput.Sms -> QrType.SMS
     is QrInput.GeoLocation -> QrType.GEO_LOCATION
 }
 
 fun QrInput.toQrContent(): String = when (this) {
-    is QrInput.Text        -> text.trim()
-    is QrInput.Url         -> url.trim()
-    is QrInput.Phone       -> toQrContent()
-    is QrInput.Email       -> toQrContent()
-    is QrInput.Wifi        -> toQrContent()
-    is QrInput.Contact     -> toQrContent()
-    is QrInput.Sms         -> toQrContent()
+    is QrInput.Text -> text.trim()
+    is QrInput.Url -> url.trim()
+    is QrInput.Phone -> toQrContent()
+    is QrInput.Email -> toQrContent()
+    is QrInput.Wifi -> toQrContent()
+    is QrInput.Contact -> toQrContent()
+    is QrInput.Sms -> toQrContent()
     is QrInput.GeoLocation -> toQrContent()
 }
 
@@ -63,8 +63,8 @@ private fun QrInput.Wifi.toQrContent(): String {
 }
 
 private fun WifiEncryption.toQrValue(): String = when (this) {
-    WifiEncryption.WPA  -> "WPA"
-    WifiEncryption.WEP  -> "WEP"
+    WifiEncryption.WPA -> "WPA"
+    WifiEncryption.WEP -> "WEP"
     WifiEncryption.NONE -> "nopass"
 }
 
@@ -118,40 +118,36 @@ private fun QrInput.Sms.toQrContent(): String {
     }
 }
 
-private fun String.escapeWifi(): String =
-    buildString(length) {
-        this@escapeWifi.forEach { char ->
-            when (char) {
-                '\\', ';', ',', ':', '"' -> {
-                    append('\\')
-                    append(char)
-                }
-
-                else                     -> append(char)
+private fun String.escapeWifi(): String = buildString(length) {
+    this@escapeWifi.forEach { char ->
+        when (char) {
+            '\\', ';', ',', ':', '"' -> {
+                append('\\')
+                append(char)
             }
+
+            else -> append(char)
         }
     }
+}
 
-private fun String.escapeMatMsg(): String =
-    buildString(length) {
-        this@escapeMatMsg.forEach { char ->
-            when (char) {
-                '\\', ';', ':' -> {
-                    append('\\')
-                    append(char)
-                }
-
-                else           -> append(char)
+private fun String.escapeMatMsg(): String = buildString(length) {
+    this@escapeMatMsg.forEach { char ->
+        when (char) {
+            '\\', ';', ':' -> {
+                append('\\')
+                append(char)
             }
+
+            else -> append(char)
         }
     }
+}
 
-private fun String.escapeVCard(): String =
-    this
-        .replace("\\", "\\\\")
-        .replace("\n", "\\n")
-        .replace(";", "\\;")
-        .replace(",", "\\,")
+private fun String.escapeVCard(): String = this
+    .replace("\\", "\\\\")
+    .replace("\n", "\\n")
+    .replace(";", "\\;")
+    .replace(",", "\\,")
 
-private fun String.encodeUrl(): String =
-    URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
+private fun String.encodeUrl(): String = URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
