@@ -8,7 +8,7 @@ import software.mazur.qrezzy.domain.settings.model.AppTheme
 import software.mazur.qrezzy.domain.settings.model.HistoryLimit
 import software.mazur.qrezzy.domain.settings.repository.AppSettingsRepository
 
-class FakeAppSettingsRepository(initialSettings: AppSettings? = AppSettings()) : AppSettingsRepository {
+open class FakeAppSettingsRepository(initialSettings: AppSettings? = AppSettings()) : AppSettingsRepository {
     private val settings = MutableStateFlow(initialSettings ?: AppSettings())
     private var hasSettings = initialSettings != null
 

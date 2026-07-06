@@ -5,9 +5,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import software.mazur.qrezzy.MainDispatcherRule
@@ -17,6 +15,7 @@ import software.mazur.qrezzy.domain.qr.usecase.DeleteQrItemsUseCase
 import software.mazur.qrezzy.domain.qr.usecase.ObserveQrItemsUseCase
 import software.mazur.qrezzy.domain.qr.usecase.ToggleQrFavoriteUseCase
 import software.mazur.qrezzy.feature.history.model.HistoryTab
+import software.mazur.qrezzy.feature.history.model.HistoryUiState
 import software.mazur.qrezzy.test.FakeQrRepository
 import software.mazur.qrezzy.test.createQr
 
@@ -38,7 +37,7 @@ class HistoryViewModelTest {
         viewModel.onTabSelected(HistoryTab.SCANNED.id)
         advanceUntilIdle()
 
-        assertEquals(listOf(scannedQr), viewModel.uiState.value.visibleRegularItems())
+        Assert.assertEquals(listOf(scannedQr), viewModel.uiState.value.visibleRegularItems())
     }
 
     @Test
@@ -54,7 +53,7 @@ class HistoryViewModelTest {
         viewModel.onTabSelected(HistoryTab.GENERATED.id)
         advanceUntilIdle()
 
-        assertEquals(listOf(generatedQr), viewModel.uiState.value.visibleRegularItems())
+        Assert.assertEquals(listOf(generatedQr), viewModel.uiState.value.visibleRegularItems())
     }
 
     @Test
@@ -70,7 +69,7 @@ class HistoryViewModelTest {
         viewModel.onSearchQueryChange("qrezzy")
         advanceUntilIdle()
 
-        assertEquals(listOf(matchingQr), viewModel.uiState.value.visibleRegularItems())
+        Assert.assertEquals(listOf(matchingQr), viewModel.uiState.value.visibleRegularItems())
     }
 
     @Test
@@ -84,7 +83,7 @@ class HistoryViewModelTest {
         viewModel.onFavoriteClick(qr)
         advanceUntilIdle()
 
-        assertEquals(1L to true, repository.updatedFavorite)
+        Assert.assertEquals(1L to true, repository.updatedFavorite)
     }
 
     @Test
@@ -99,13 +98,13 @@ class HistoryViewModelTest {
         viewModel.onHistoryItemClick(1L)
         advanceUntilIdle()
 
-        assertTrue(viewModel.uiState.value.isDeleteModeEnabled)
-        assertEquals(setOf(1L), viewModel.uiState.value.selectedItemIds)
+        Assert.assertTrue(viewModel.uiState.value.isDeleteModeEnabled)
+        Assert.assertEquals(setOf(1L), viewModel.uiState.value.selectedItemIds)
 
         viewModel.onHistoryItemClick(1L)
         advanceUntilIdle()
 
-        assertTrue(viewModel.uiState.value.selectedItemIds.isEmpty())
+        Assert.assertTrue(viewModel.uiState.value.selectedItemIds.isEmpty())
     }
 
     @Test
@@ -119,7 +118,7 @@ class HistoryViewModelTest {
         viewModel.onDeleteSelected()
         advanceUntilIdle()
 
-        assertTrue(viewModel.uiState.value.isDeleteConfirmationVisible)
+        Assert.assertTrue(viewModel.uiState.value.isDeleteConfirmationVisible)
     }
 
     @Test
@@ -137,9 +136,9 @@ class HistoryViewModelTest {
         viewModel.onDeleteConfirmationDialogConfirm()
         advanceUntilIdle()
 
-        assertEquals(listOf(1L), repository.deletedIds)
-        assertFalse(viewModel.uiState.value.isDeleteModeEnabled)
-        assertEquals(listOf(secondQr), viewModel.uiState.value.visibleRegularItems())
+        Assert.assertEquals(listOf(1L), repository.deletedIds)
+        Assert.assertFalse(viewModel.uiState.value.isDeleteModeEnabled)
+        Assert.assertEquals(listOf(secondQr), viewModel.uiState.value.visibleRegularItems())
     }
 
     private fun createViewModel(repository: FakeQrRepository = FakeQrRepository()): HistoryViewModel = HistoryViewModel(
@@ -154,6 +153,5 @@ class HistoryViewModelTest {
         }
     }
 
-    private fun software.mazur.qrezzy.feature.history.model.HistoryUiState.visibleRegularItems(): List<Qr> =
-        sections.flatMap { section -> section.items }
+    private fun HistoryUiState.visibleRegularItems(): List<Qr> = sections.flatMap { section -> section.items }
 }
