@@ -1,10 +1,10 @@
 package software.mazur.qrezzy.domain.qr.usecase
 
-import javax.inject.Inject
 import software.mazur.qrezzy.domain.common.TimeProvider
 import software.mazur.qrezzy.domain.qr.model.Qr
 import software.mazur.qrezzy.domain.qr.model.QrSource
 import software.mazur.qrezzy.domain.qr.model.QrType
+import javax.inject.Inject
 
 class CreateScannedQrUseCase
 @Inject
