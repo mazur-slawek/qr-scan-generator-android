@@ -38,13 +38,7 @@ class CreateScannedQrUseCaseTest {
         val useCase = createUseCase(now = 987654321L)
         val result = useCase("QREZZY")
         assertEquals(
-            createQr(
-                id = 0L,
-                content = "QREZZY",
-                type = QrType.TEXT,
-                source = QrSource.SCANNED,
-                createdAt = 987654321L
-            ),
+            createQr(id = 0L, content = "QREZZY", type = QrType.TEXT, source = QrSource.SCANNED, createdAt = 987654321L),
             result
         )
     }
@@ -107,6 +101,46 @@ class CreateScannedQrUseCaseTest {
     fun `should return text for unknown content`() {
         val result = createUseCase()("regular text")
         assertEquals(QrType.TEXT, result.type)
+    }
+
+    @Test
+    fun `should detect email for MATMSG content`() {
+        val result = createUseCase()("MATMSG:TO:contact@qrezzy.com;SUB:Hello;BODY:Message;;")
+        assertEquals(QrType.EMAIL, result.type)
+    }
+
+    @Test
+    fun `should detect email for lowercase MATMSG content`() {
+        val result = createUseCase()("matmsg:TO:contact@qrezzy.com;SUB:Hello;BODY:Message;;")
+        assertEquals(QrType.EMAIL, result.type)
+    }
+
+    @Test
+    fun `should detect types ignoring prefix case`() {
+        val useCase = createUseCase()
+        assertEquals(QrType.URL, useCase("HTTPS://qrezzy.com").type)
+        assertEquals(QrType.EMAIL, useCase("MAILTO:contact@qrezzy.com").type)
+        assertEquals(QrType.PHONE, useCase("TEL:+48123456789").type)
+        assertEquals(QrType.WIFI, useCase("wifi:T:WPA;S:QREZZY;P:password;;").type)
+        assertEquals(QrType.CONTACT, useCase("begin:vcard\nFN:User Name\nEND:VCARD").type)
+        assertEquals(QrType.SMS, useCase("SMS:+48123456789?body=Hello").type)
+        assertEquals(QrType.SMS, useCase("SMSTO:+48123456789:Hello").type)
+        assertEquals(QrType.GEO_LOCATION, useCase("GEO:52.4064,16.9252").type)
+    }
+
+    @Test
+    fun `should detect type after trimming content whitespace`() {
+        val useCase = createUseCase()
+        assertEquals(QrType.URL, useCase("  https://qrezzy.com  ").type)
+        assertEquals(QrType.EMAIL, useCase("\nMATMSG:TO:contact@qrezzy.com;SUB:Hello;BODY:Message;;\n").type)
+        assertEquals(QrType.WIFI, useCase("\tWIFI:T:WPA;S:QREZZY;P:password;;\t").type)
+    }
+
+    @Test
+    fun `should return text type and empty content for blank input`() {
+        val result = createUseCase()("   ")
+        assertEquals(QrType.TEXT, result.type)
+        assertEquals("", result.content)
     }
 
     private companion object {
