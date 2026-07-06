@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import software.mazur.qrezzy.core.common.crash.CrashReporter
 import software.mazur.qrezzy.core.qr.renderer.QrBitmapGenerator
 import software.mazur.qrezzy.core.qr.style.QrStyleEditorState
 import software.mazur.qrezzy.domain.qr.model.style.QrErrorCorrection
@@ -25,10 +25,12 @@ import software.mazur.qrezzy.domain.qr.usecase.UpdateQrStyleUseCase
 import software.mazur.qrezzy.feature.history.HistoryRoute
 import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiEvent
 import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiState
+import javax.inject.Inject
 
 @HiltViewModel
 class HistoryDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val crashReporter: CrashReporter,
     private val getQrByIdUseCase: GetQrByIdUseCase,
     private val qrBitmapGenerator: QrBitmapGenerator,
     private val deleteQrItemsUseCase: DeleteQrItemsUseCase,
@@ -58,6 +60,7 @@ class HistoryDetailsViewModel @Inject constructor(
     }
 
     fun onDownloadQrCodeClick() {
+        crashReporter.log("HistoryDetails: load QR requested")
         val shareData = getShareData() ?: return
 
         viewModelScope.launch {
@@ -76,10 +79,20 @@ class HistoryDetailsViewModel @Inject constructor(
     }
 
     fun onDeleteConfirmationDialogConfirm() {
+        crashReporter.log("HistoryDetails: delete QR confirmed")
+
         viewModelScope.launch {
-            deleteQrItemsUseCase(ids = listOf(historyId))
-            _uiState.update { it.copy(isDeleteConfirmationVisible = false) }
-            _events.emit(HistoryDetailsUiEvent.OnBack)
+            runCatching {
+                deleteQrItemsUseCase(ids = listOf(historyId))
+            }.onSuccess {
+                crashReporter.log("HistoryDetails: QR deleted successfully")
+                _uiState.update { it.copy(isDeleteConfirmationVisible = false) }
+                _events.emit(HistoryDetailsUiEvent.OnBack)
+            }.onFailure { error ->
+                crashReporter.log("HistoryDetails: QR delete failed")
+                crashReporter.recordException(error)
+                _uiState.update { it.copy(isDeleteConfirmationVisible = false) }
+            }
         }
     }
 
@@ -87,21 +100,29 @@ class HistoryDetailsViewModel @Inject constructor(
         val currentQr = _uiState.value.qr ?: return
         val updatedQr = currentQr.copy(isFavorite = !currentQr.isFavorite)
 
+        crashReporter.log("HistoryDetails: toggle favorite requested")
+
         _uiState.update { state -> state.copy(qr = updatedQr) }
 
         viewModelScope.launch {
             runCatching {
                 toggleQrFavoriteUseCase(id = updatedQr.id, isFavorite = updatedQr.isFavorite)
-            }.onFailure {
+            }.onSuccess {
+                crashReporter.log("HistoryDetails: favorite updated successfully")
+            }.onFailure { error ->
+                crashReporter.log("HistoryDetails: favorite update failed")
+                crashReporter.recordException(error)
                 _uiState.update { state -> state.copy(qr = currentQr) }
             }
         }
     }
 
     private suspend fun loadQr() {
+        crashReporter.log("HistoryDetails: load QR requested")
         val qr = getQrByIdUseCase(historyId)
 
         if (qr == null) {
+            crashReporter.log("HistoryDetails: QR not found")
             _uiState.update { it.copy(isLoading = false, isMissing = true) }
             return
         }
@@ -163,6 +184,9 @@ class HistoryDetailsViewModel @Inject constructor(
         val newStyle = currentState.qrStyleEditor.draftStyle
         val updatedQr = currentQr.copy(style = newStyle)
         val previewBitmap = currentState.editPreviewBitmap ?: currentState.qrBitmap
+
+        crashReporter.log("HistoryDetails: save QR style requested")
+
         _uiState.update {
             it.copy(
                 qr = updatedQr,
@@ -171,12 +195,17 @@ class HistoryDetailsViewModel @Inject constructor(
                 qrStyleEditor = it.qrStyleEditor.applyDraft()
             )
         }
+
         viewModelScope.launch {
             runCatching {
                 updateQrStyleUseCase(id = currentQr.id, style = newStyle)
             }.onSuccess {
+                crashReporter.log("HistoryDetails: QR style saved successfully")
                 _events.emit(HistoryDetailsUiEvent.QrStyleSaved)
-            }.onFailure {
+            }.onFailure { error ->
+                crashReporter.log("HistoryDetails: QR style save failed")
+                crashReporter.recordException(error)
+
                 _uiState.update {
                     it.copy(
                         qr = currentQr,

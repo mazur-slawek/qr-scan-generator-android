@@ -3,7 +3,6 @@ package software.mazur.qrezzy.feature.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -11,6 +10,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import software.mazur.qrezzy.core.common.crash.CrashReporter
 import software.mazur.qrezzy.core.common.vibration.VibrationService
 import software.mazur.qrezzy.core.localization.QrezzyLocaleManager
 import software.mazur.qrezzy.domain.qr.model.HistorySummary
@@ -28,9 +28,11 @@ import software.mazur.qrezzy.domain.settings.usecase.SetHistoryLimitUseCase
 import software.mazur.qrezzy.domain.settings.usecase.SetVibrationEnabledUseCase
 import software.mazur.qrezzy.feature.settings.model.SettingsUiEvent
 import software.mazur.qrezzy.feature.settings.model.SettingsUiState
+import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
+    private val crashReporter: CrashReporter,
     observeAppSettingsUseCase: ObserveAppSettingsUseCase,
     private val setAppLanguageUseCase: SetAppLanguageUseCase,
     private val setAppThemeUseCase: SetAppThemeUseCase,
@@ -120,10 +122,15 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun onHistoryLimitSelected(limit: HistoryLimit) {
+        crashReporter.log("Settings: history limit selected")
         viewModelScope.launch {
             setHistoryLimitUseCase(limit)
             refreshHistorySummary()
             refreshHistoryLimitState()
+
+            if (showHistoryLimitReachedPopup.value) {
+                crashReporter.log("Settings: selected history limit already reached")
+            }
             _events.emit(SettingsUiEvent.HistoryLimitChanged)
         }
     }
@@ -140,6 +147,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun onClearHistoryClick() {
+        crashReporter.log("Settings: clear history dialog opened")
         showClearHistoryDialog.value = true
     }
 
@@ -148,12 +156,21 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun onClearHistoryConfirmed() {
+        crashReporter.log("Settings: clear history confirmed")
         viewModelScope.launch {
-            clearHistoryUseCase()
-            showClearHistoryDialog.value = false
-            refreshHistorySummary()
-            refreshHistoryLimitState()
-            _events.emit(SettingsUiEvent.HistoryCleared)
+            runCatching {
+                clearHistoryUseCase()
+            }.onSuccess {
+                crashReporter.log("Settings: history cleared successfully")
+                showClearHistoryDialog.value = false
+                refreshHistorySummary()
+                refreshHistoryLimitState()
+                _events.emit(SettingsUiEvent.HistoryCleared)
+            }.onFailure { error ->
+                crashReporter.log("Settings: clear history failed")
+                crashReporter.recordException(error)
+                showClearHistoryDialog.value = false
+            }
         }
     }
 }

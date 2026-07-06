@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +13,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import software.mazur.qrezzy.core.common.crash.CrashReporter
 import software.mazur.qrezzy.core.common.vibration.VibrationService
 import software.mazur.qrezzy.core.qr.decoder.QrImageDecoder
 import software.mazur.qrezzy.domain.qr.usecase.CreateScannedQrUseCase
@@ -23,9 +23,11 @@ import software.mazur.qrezzy.domain.settings.usecase.GetHistoryLimitStatusUseCas
 import software.mazur.qrezzy.domain.settings.usecase.ObserveAppSettingsUseCase
 import software.mazur.qrezzy.feature.scanner.model.ScannerUiEvent
 import software.mazur.qrezzy.feature.scanner.model.ScannerUiState
+import javax.inject.Inject
 
 @HiltViewModel
 class ScannerViewModel @Inject constructor(
+    private val crashReporter: CrashReporter,
     private val createScannedQrUseCase: CreateScannedQrUseCase,
     private val saveQrUseCase: SaveQrUseCase,
     private val qrImageDecoder: QrImageDecoder,
@@ -74,6 +76,8 @@ class ScannerViewModel @Inject constructor(
     }
 
     fun onStartScanning() {
+        crashReporter.log("Scanner: scanning started")
+
         _uiState.update { state ->
             state.copy(mode = ScannerUiState.Mode.Scanning, isTorchEnabled = false)
         }
@@ -112,6 +116,7 @@ class ScannerViewModel @Inject constructor(
 
     fun onImageSelected(uri: Uri) {
         if (_uiState.value.detectedQr != null) return
+        crashReporter.log("Scanner: image QR decode requested")
 
         viewModelScope.launch {
             val content = withContext(Dispatchers.Default) {
@@ -119,18 +124,24 @@ class ScannerViewModel @Inject constructor(
             }
 
             if (content.isNullOrBlank()) {
+                crashReporter.log("Scanner: no QR found in selected image")
                 _events.emit(ScannerUiEvent.ShowError("No QR code found in this image"))
                 return@launch
             }
 
+            crashReporter.log("Scanner: QR decoded from selected image")
             handleDetectedQr(content)
         }
     }
 
     private fun handleDetectedQr(content: String) {
         val trimmedContent = content.trim()
-        if (trimmedContent.isBlank()) return
+        if (trimmedContent.isBlank()) {
+            crashReporter.log("Scanner: blank QR ignored")
+            return
+        }
         if (_uiState.value.detectedQr != null) return
+        crashReporter.log("Scanner: QR detected")
         val detectedQr = createScannedQrUseCase(trimmedContent)
 
         _uiState.update { state ->
@@ -150,6 +161,7 @@ class ScannerViewModel @Inject constructor(
             }
 
             if (!canSave) {
+                crashReporter.log("Scanner: save blocked by history limit")
                 _uiState.update { state ->
                     state.copy(
                         isSaveBlockedByHistoryLimit = true,
@@ -160,12 +172,15 @@ class ScannerViewModel @Inject constructor(
             }
 
             if (settings.autoSaveScans) {
+                crashReporter.log("Scanner: auto-save requested")
                 runCatching {
                     saveQrUseCase(detectedQr)
                 }.onSuccess {
+                    crashReporter.log("Scanner: auto-save completed")
                     refreshHistoryLimitState()
                     _events.emit(ScannerUiEvent.QrSaved)
                 }.onFailure { exception ->
+                    crashReporter.log("Scanner: auto-save failed")
                     _events.emit(
                         ScannerUiEvent.ShowError(
                             message = exception.message ?: "Failed to save QR code"
@@ -185,9 +200,10 @@ class ScannerViewModel @Inject constructor(
 
     fun onSaveScannedQrClick() {
         val detectedQr = _uiState.value.detectedQr ?: return
-
+        crashReporter.log("Scanner: manual save requested")
         viewModelScope.launch {
             if (!canSaveQrUseCase()) {
+                crashReporter.log("Scanner: manual save blocked by history limit")
                 _uiState.update { state ->
                     state.copy(
                         isSaveBlockedByHistoryLimit = true,
@@ -200,14 +216,14 @@ class ScannerViewModel @Inject constructor(
             runCatching {
                 saveQrUseCase(detectedQr)
             }.onSuccess {
+                crashReporter.log("Scanner: manual save completed")
                 clearScannedQr()
                 refreshHistoryLimitState()
                 _events.emit(ScannerUiEvent.QrSaved)
             }.onFailure { exception ->
+                crashReporter.log("Scanner: manual save failed")
                 _events.emit(
-                    ScannerUiEvent.ShowError(
-                        message = exception.message ?: "Failed to save QR code"
-                    )
+                    ScannerUiEvent.ShowError(message = exception.message ?: "Failed to save QR code")
                 )
             }
         }
