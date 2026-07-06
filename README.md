@@ -18,7 +18,7 @@ Scan • Create • Share
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.x-7F52FF?logo=kotlin)
 ![Compose](https://img.shields.io/badge/Jetpack-Compose-4285F4)
 ![Material3](https://img.shields.io/badge/Material-3-6200EE)
-![CI](https://img.shields.io/github/actions/workflow/status/slawekmazur/QREZZY/android.yml?label=CI)
+![CI](https://img.shields.io/github/actions/workflow/status/mazur-slawek/QREZZY/android.yml?label=CI)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 </p>
@@ -27,13 +27,13 @@ Scan • Create • Share
 
 # 📱 Screenshots
 
-| 📷 Scanner                                                            | 🔍 QR Detected                                                                    | 🎨 Generate                                                              | ✨ Customization                                                                   |
-|-----------------------------------------------------------------------|-----------------------------------------------------------------------------------|--------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
-| <img src="docs/screenshots/scanner.png" width="220" alt="QR Scanner"> | <img src="docs/screenshots/qr_detected.png" width="220" alt="QR Detected Dialog"> | <img src="docs/screenshots/generate.png" width="220" alt="QR Generator"> | <img src="docs/screenshots/customization.png" width="220" alt="QR Customization"> |
+| 📷 Scanner                                                            | 🔍 QR Detected                                                                    | 🎨 Generate                                                              |
+|-----------------------------------------------------------------------|-----------------------------------------------------------------------------------|--------------------------------------------------------------------------|
+| <img src="docs/screenshots/scanner.png" width="220" alt="QR Scanner"> | <img src="docs/screenshots/qr_detected.png" width="220" alt="QR Detected Dialog"> | <img src="docs/screenshots/generate.png" width="220" alt="QR Generator"> |
 
-| 📚 History                                                         | 👁️ Preview QR                                                        | ⚙️ Settings                                                          |
-|--------------------------------------------------------------------|-----------------------------------------------------------------------|----------------------------------------------------------------------|
-| <img src="docs/screenshots/history.png" width="220" alt="History"> | <img src="docs/screenshots/preview.png" width="220" alt="QR Preview"> | <img src="docs/screenshots/settings.png" width="220" alt="Settings"> |
+| ✨ Customization                                                                   | 📚 History                                                         | 👁️ Preview QR                                                        | ⚙️ Settings                                                          |
+|-----------------------------------------------------------------------------------|--------------------------------------------------------------------|-----------------------------------------------------------------------|----------------------------------------------------------------------|
+| <img src="docs/screenshots/customization.png" width="220" alt="QR Customization"> | <img src="docs/screenshots/history.png" width="220" alt="History"> | <img src="docs/screenshots/preview.png" width="220" alt="QR Preview"> | <img src="docs/screenshots/settings.png" width="220" alt="Settings"> |
 
 ---
 
@@ -315,7 +315,7 @@ Android Developer
 ⭐ If you like this project, consider giving it a star!
 
 <p align="center">
-**To be continued...**
+To be continued...
 </p>
 
 <br><br>
