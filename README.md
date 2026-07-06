@@ -41,7 +41,7 @@ Scan • Create • Share
 
 You can try the latest version of QREZZY without building the project.
 
-➡️ **[Download APK](https://github.com/mazur-slawek/QREZZY/releases/latest)**
+➡️ [Download APK](https://github.com/mazur-slawek/qr-scan-generator-android/releases/download/v1.0.1/QREZZY-v1.0.1.apk)
 
 
 ---
