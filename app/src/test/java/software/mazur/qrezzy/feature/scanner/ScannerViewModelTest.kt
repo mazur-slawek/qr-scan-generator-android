@@ -21,6 +21,7 @@ import software.mazur.qrezzy.domain.settings.usecase.GetHistoryLimitStatusUseCas
 import software.mazur.qrezzy.domain.settings.usecase.ObserveAppSettingsUseCase
 import software.mazur.qrezzy.feature.scanner.model.ScannerUiState
 import software.mazur.qrezzy.test.FakeAppSettingsRepository
+import software.mazur.qrezzy.test.FakeCrashReporter
 import software.mazur.qrezzy.test.FakeQrRepository
 import software.mazur.qrezzy.test.FakeTimeProvider
 import software.mazur.qrezzy.test.createQr
@@ -156,6 +157,7 @@ class ScannerViewModelTest {
         )
 
         return ScannerViewModel(
+            crashReporter = FakeCrashReporter(),
             createScannedQrUseCase = CreateScannedQrUseCase(FakeTimeProvider()),
             saveQrUseCase = SaveQrUseCase(qrRepository),
             qrImageDecoder = mockk<QrImageDecoder>(relaxed = true),

@@ -22,6 +22,7 @@ import software.mazur.qrezzy.domain.settings.usecase.ObserveAppSettingsUseCase
 import software.mazur.qrezzy.feature.generator.model.GeneratorUiEvent
 import software.mazur.qrezzy.feature.generator.model.QrInputField
 import software.mazur.qrezzy.test.FakeAppSettingsRepository
+import software.mazur.qrezzy.test.FakeCrashReporter
 import software.mazur.qrezzy.test.FakeQrRepository
 import software.mazur.qrezzy.test.FakeTimeProvider
 import software.mazur.qrezzy.test.createQr
@@ -121,6 +122,7 @@ class GeneratorViewModelTest {
         )
 
         return GeneratorViewModel(
+            crashReporter = FakeCrashReporter(),
             createGeneratedQrUseCase = CreateGeneratedQrUseCase(FakeTimeProvider()),
             qrBitmapGenerator = QrBitmapGenerator(),
             saveQrUseCase = SaveQrUseCase(qrRepository),

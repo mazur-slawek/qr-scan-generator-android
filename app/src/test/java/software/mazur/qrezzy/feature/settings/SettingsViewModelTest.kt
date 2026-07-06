@@ -31,6 +31,7 @@ import software.mazur.qrezzy.domain.settings.usecase.SetHistoryLimitUseCase
 import software.mazur.qrezzy.domain.settings.usecase.SetVibrationEnabledUseCase
 import software.mazur.qrezzy.feature.settings.model.SettingsUiEvent
 import software.mazur.qrezzy.test.FakeAppSettingsRepository
+import software.mazur.qrezzy.test.FakeCrashReporter
 import software.mazur.qrezzy.test.FakeQrRepository
 import software.mazur.qrezzy.test.createQr
 
@@ -200,6 +201,7 @@ class SettingsViewModelTest {
         val observeAppSettingsUseCase = ObserveAppSettingsUseCase(settingsRepository)
 
         return SettingsViewModel(
+            crashReporter = FakeCrashReporter(),
             observeAppSettingsUseCase = observeAppSettingsUseCase,
             setAppLanguageUseCase = SetAppLanguageUseCase(settingsRepository),
             setAppThemeUseCase = SetAppThemeUseCase(settingsRepository),
