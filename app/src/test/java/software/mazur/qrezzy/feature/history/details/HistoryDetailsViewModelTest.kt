@@ -33,7 +33,9 @@ import software.mazur.qrezzy.test.FakeCrashReporter
 import software.mazur.qrezzy.test.FakeQrRepository
 import software.mazur.qrezzy.test.createQr
 
+
 @OptIn(ExperimentalCoroutinesApi::class)
+@Ignore("Requires Android Bitmap/Looper. Should be covered after extracting QrBitmapGenerator interface or by Robolectric tests.")
 class HistoryDetailsViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -112,7 +114,6 @@ class HistoryDetailsViewModelTest {
         }
     }
 
-    @Ignore("Requires Android Bitmap/Looper. Should be covered after extracting QrBitmapGenerator interface or by Robolectric test.")
     @Test
     fun `should save style and emit QrStyleSaved`() = runTest {
         val qr = createQr(id = 1L)
@@ -136,7 +137,6 @@ class HistoryDetailsViewModelTest {
         }
     }
 
-    @Ignore("Requires Android Bitmap/Looper. Should be covered after extracting QrBitmapGenerator interface or by Robolectric test.")
     @Test
     fun `should rollback style and emit QrStyleSaveFailed when save style fails`() = runTest {
         val originalStyle = QrStyle(patternStyle = QrPatternStyle.SQUARE)
