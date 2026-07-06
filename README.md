@@ -18,7 +18,7 @@ Scan • Create • Share
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.x-7F52FF?logo=kotlin)
 ![Compose](https://img.shields.io/badge/Jetpack-Compose-4285F4)
 ![Material3](https://img.shields.io/badge/Material-3-6200EE)
-![CI](https://img.shields.io/github/actions/workflow/status/mazur-slawek/QREZZY/android.yml?label=CI)
+![CI](https://img.shields.io/github/actions/workflow/status/mazur-slawek/qr-scan-generator-android/android-ci.yml?label=CI)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 </p>
@@ -310,12 +310,16 @@ Android Developer
 
 🌐 Portfolio: https://mazur.software
 
----
-
 ⭐ If you like this project, consider giving it a star!
 
-<p align="center">
-To be continued...
-</p>
+---
+
+## 📄 Copyright
+
+© 2026 QREZZY. All rights reserved.
+
+This repository is published for portfolio and educational purposes.
+
+### Unauthorized redistribution or publication of this application under another name is prohibited.
 
 <br><br>
