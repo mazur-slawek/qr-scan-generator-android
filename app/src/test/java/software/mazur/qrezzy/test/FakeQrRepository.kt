@@ -6,7 +6,7 @@ import software.mazur.qrezzy.domain.qr.model.Qr
 import software.mazur.qrezzy.domain.qr.model.style.QrStyle
 import software.mazur.qrezzy.domain.qr.repository.QrRepository
 
-class FakeQrRepository(initialItems: List<Qr> = emptyList()) : QrRepository {
+open class FakeQrRepository(initialItems: List<Qr> = emptyList()) : QrRepository {
     private val items = MutableStateFlow(initialItems)
     var savedItems = mutableListOf<Qr>()
     var deletedIds: List<Long> = emptyList()
