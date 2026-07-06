@@ -8,13 +8,17 @@ import software.mazur.qrezzy.domain.settings.model.AppTheme
 import software.mazur.qrezzy.domain.settings.model.HistoryLimit
 import software.mazur.qrezzy.domain.settings.repository.AppSettingsRepository
 
-class FakeAppSettingsRepository(initialSettings: AppSettings = AppSettings()) : AppSettingsRepository {
-    private val settings = MutableStateFlow(initialSettings)
+class FakeAppSettingsRepository(initialSettings: AppSettings? = AppSettings()) : AppSettingsRepository {
+    private val settings = MutableStateFlow(initialSettings ?: AppSettings())
+    private var hasSettings = initialSettings != null
 
     override fun observeSettings(): Flow<AppSettings> = settings
 
     override suspend fun initializeSettingsIfNeeded(language: AppLanguage) {
-        settings.value = settings.value.copy(language = language)
+        if (!hasSettings) {
+            settings.value = AppSettings(language = language)
+            hasSettings = true
+        }
     }
 
     override suspend fun setOnboardingCompleted(value: Boolean) {
