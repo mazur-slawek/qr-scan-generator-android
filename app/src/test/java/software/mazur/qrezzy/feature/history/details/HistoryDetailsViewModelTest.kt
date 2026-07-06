@@ -5,6 +5,7 @@ import app.cash.turbine.test
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -38,9 +39,13 @@ class HistoryDetailsViewModelTest {
     @Test
     fun `should load qr by id`() = runTest {
         val qr = createQr(id = 1L, content = "QREZZY")
-        val viewModel = createViewModel(qrRepository = FakeQrRepository(initialItems = listOf(qr)), historyId = 1L)
+        val viewModel = createViewModel(
+            qrRepository = FakeQrRepository(initialItems = listOf(qr)),
+            historyId = 1L
+        )
+
         collectUiState(viewModel)
-        advanceUntilIdle()
+        viewModel.awaitLoaded()
         assertFalse(viewModel.uiState.value.isLoading)
         assertEquals(qr, viewModel.uiState.value.qr)
         assertFalse(viewModel.uiState.value.isMissing)
@@ -134,16 +139,11 @@ class HistoryDetailsViewModelTest {
         val qr = createQr(id = 1L, style = originalStyle)
         val viewModel = createViewModel(qrRepository = FailingStyleQrRepository(initialItems = listOf(qr)))
 
-        advanceUntilIdle()
-
+        collectUiState(viewModel)
+        viewModel.awaitLoaded()
         viewModel.events.test {
-            viewModel.onCustomizeQrClick()
-            viewModel.onPatternStyleSelected(QrPatternStyle.DOTS)
-            advanceUntilIdle()
-
             viewModel.onSaveQrStyleClick()
             advanceUntilIdle()
-
             assertEquals(HistoryDetailsUiEvent.QrStyleSaveFailed, awaitItem())
             assertEquals(originalStyle, viewModel.uiState.value.qr!!.style)
             assertFalse(viewModel.uiState.value.qrStyleEditor.isDialogVisible)
@@ -155,12 +155,13 @@ class HistoryDetailsViewModelTest {
         historyId: Long = 1L
     ): HistoryDetailsViewModel {
         val qrBitmapGenerator = mockk<QrBitmapGenerator>()
-        every { qrBitmapGenerator.generate(any(), any(), any()) } returns null
+
+        every {
+            qrBitmapGenerator.generate(content = any(), size = any(), style = any())
+        } returns null
 
         return HistoryDetailsViewModel(
-            savedStateHandle = SavedStateHandle(
-                mapOf(HistoryRoute.Details.HISTORY_ID_ARG to historyId)
-            ),
+            savedStateHandle = SavedStateHandle(mapOf(HistoryRoute.Details.HISTORY_ID_ARG to historyId)),
             getQrByIdUseCase = GetQrByIdUseCase(qrRepository),
             qrBitmapGenerator = qrBitmapGenerator,
             deleteQrItemsUseCase = DeleteQrItemsUseCase(qrRepository),
@@ -182,5 +183,9 @@ class HistoryDetailsViewModelTest {
         backgroundScope.launch {
             viewModel.uiState.collect {}
         }
+    }
+
+    private suspend fun HistoryDetailsViewModel.awaitLoaded() {
+        uiState.first { state -> !state.isLoading }
     }
 }
