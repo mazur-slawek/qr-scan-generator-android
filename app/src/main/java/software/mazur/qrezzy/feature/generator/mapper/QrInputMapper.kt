@@ -1,7 +1,5 @@
 package software.mazur.qrezzy.feature.generator.mapper
 
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 import software.mazur.qrezzy.domain.qr.model.QrType
 import software.mazur.qrezzy.feature.generator.model.QrInput
 import software.mazur.qrezzy.feature.generator.model.WifiEncryption
@@ -128,7 +126,7 @@ private fun String.escapeWifi(): String = buildString(length) {
                 append(char)
             }
 
-            else -> append(char)
+            else                     -> append(char)
         }
     }
 }
@@ -141,7 +139,7 @@ private fun String.escapeMatMsg(): String = buildString(length) {
                 append(char)
             }
 
-            else -> append(char)
+            else           -> append(char)
         }
     }
 }
