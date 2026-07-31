@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -19,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.EntryPointAccessors
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.common.di.QrSharingEntryPoint
@@ -38,7 +38,7 @@ import software.mazur.qrezzy.feature.history.details.model.HistoryDetailsUiEvent
 fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val qrSharingService = rememberQrSharingService()
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val saveSuccessMessage = stringResource(R.string.history_details_save_success)
     val saveErrorMessage = stringResource(R.string.history_details_save_error)
     val qrStyleSavedMessage = stringResource(R.string.history_details_qr_style_saved)
@@ -47,7 +47,7 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                is HistoryDetailsUiEvent.ShareQrCode -> {
+                is HistoryDetailsUiEvent.ShareQrCode    -> {
                     qrSharingService.shareBitmap(bitmap = event.bitmap, fileName = event.title)
                 }
 
@@ -57,7 +57,7 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
                     Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
                 }
 
-                HistoryDetailsUiEvent.QrStyleSaved -> {
+                HistoryDetailsUiEvent.QrStyleSaved      -> {
                     Toast.makeText(context, qrStyleSavedMessage, Toast.LENGTH_SHORT).show()
                 }
 
@@ -65,7 +65,7 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
                     Toast.makeText(context, qrStyleSaveFailedMessage, Toast.LENGTH_SHORT).show()
                 }
 
-                HistoryDetailsUiEvent.OnBack -> {
+                HistoryDetailsUiEvent.OnBack            -> {
                     onBackClick()
                 }
             }

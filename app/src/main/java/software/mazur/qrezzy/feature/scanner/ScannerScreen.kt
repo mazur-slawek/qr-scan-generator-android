@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,6 +28,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyHistoryLimitPopup
@@ -48,7 +48,7 @@ import software.mazur.qrezzy.feature.scanner.model.ScannerUiState.Mode
 fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val qrSavedMessage = stringResource(R.string.scanner_qr_saved)
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
@@ -72,7 +72,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                ScannerUiEvent.QrSaved ->
+                ScannerUiEvent.QrSaved      ->
                     Toast.makeText(context, qrSavedMessage, Toast.LENGTH_SHORT).show()
 
                 is ScannerUiEvent.ShowError ->
@@ -84,11 +84,11 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
-                Lifecycle.Event.ON_RESUME ->
+                Lifecycle.Event.ON_RESUME                         ->
                     if (context.hasCameraPermission()) viewModel.onPermissionRestored()
 
                 Lifecycle.Event.ON_PAUSE, Lifecycle.Event.ON_STOP -> viewModel.onStopScanning()
-                else -> Unit
+                else                                              -> Unit
             }
         }
 

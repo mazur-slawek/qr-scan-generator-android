@@ -15,7 +15,6 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -25,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import software.mazur.qrezzy.feature.generator.GeneratorScreen
 import software.mazur.qrezzy.feature.history.HistoryNavHost
 import software.mazur.qrezzy.feature.history.components.HistoryEmptyAction
@@ -33,7 +33,7 @@ import software.mazur.qrezzy.feature.settings.navigation.SettingsNavHost
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
-    val selectedTab by viewModel.selectedTab.collectAsState()
+    val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
 
     Scaffold(
         bottomBar = {
@@ -66,15 +66,15 @@ private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (Home
                     selected = isSelected,
                     onClick = { onTabSelected(tab) },
                     colors =
-                    NavigationBarItemDefaults.colors(
-                        selectedIconColor = tab.selectedIconColor,
-                        selectedTextColor = MaterialTheme.colorScheme.onSurface,
-                        indicatorColor = tab.indicatorColor,
-                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        disabledIconColor = MaterialTheme.colorScheme.surfaceTint,
-                        disabledTextColor = MaterialTheme.colorScheme.surfaceTint
-                    ),
+                        NavigationBarItemDefaults.colors(
+                            selectedIconColor = tab.selectedIconColor,
+                            selectedTextColor = MaterialTheme.colorScheme.onSurface,
+                            indicatorColor = tab.indicatorColor,
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            disabledIconColor = MaterialTheme.colorScheme.surfaceTint,
+                            disabledTextColor = MaterialTheme.colorScheme.surfaceTint
+                        ),
                     icon = {
                         Icon(imageVector = tab.icon, contentDescription = title)
                     },
@@ -98,12 +98,12 @@ private fun QrezzyBottomNavigationBar(selectedTab: HomeTab, onTabSelected: (Home
 private fun QrezzyHomeScreenContent(modifier: Modifier, selectedTab: HomeTab, onTabSelected: (HomeTab) -> Unit) {
     Box(modifier = modifier) {
         when (selectedTab) {
-            HomeTab.SCAN -> ScannerScreen()
+            HomeTab.SCAN     -> ScannerScreen()
             HomeTab.GENERATE -> GeneratorScreen()
-            HomeTab.HISTORY -> HistoryNavHost(
+            HomeTab.HISTORY  -> HistoryNavHost(
                 onEmptyActionClick = { action ->
                     when (action) {
-                        HistoryEmptyAction.Scan -> onTabSelected(HomeTab.SCAN)
+                        HistoryEmptyAction.Scan     -> onTabSelected(HomeTab.SCAN)
                         HistoryEmptyAction.Generate -> onTabSelected(HomeTab.GENERATE)
                     }
                 }

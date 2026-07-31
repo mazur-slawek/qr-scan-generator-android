@@ -8,12 +8,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -36,28 +36,28 @@ import software.mazur.qrezzy.feature.settings.screens.ThemeScreen
 fun SettingsNavHost() {
     val navController = rememberNavController()
     val settingsViewModel: SettingsViewModel = hiltViewModel()
-    val settingsUiState by settingsViewModel.uiState.collectAsState()
+    val settingsUiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         settingsViewModel.events.collect { event ->
             when (event) {
-                SettingsUiEvent.AutoSaveEnabled ->
+                SettingsUiEvent.AutoSaveEnabled     ->
                     Toast.makeText(context, R.string.settings_auto_save_enabled, Toast.LENGTH_SHORT).show()
 
-                SettingsUiEvent.AutoSaveDisabled ->
+                SettingsUiEvent.AutoSaveDisabled    ->
                     Toast.makeText(context, R.string.settings_auto_save_disabled, Toast.LENGTH_SHORT).show()
 
-                SettingsUiEvent.VibrationEnabled ->
+                SettingsUiEvent.VibrationEnabled    ->
                     Toast.makeText(context, R.string.settings_vibration_enabled, Toast.LENGTH_SHORT).show()
 
-                SettingsUiEvent.VibrationDisabled ->
+                SettingsUiEvent.VibrationDisabled   ->
                     Toast.makeText(context, R.string.settings_vibration_disabled, Toast.LENGTH_SHORT).show()
 
                 SettingsUiEvent.HistoryLimitChanged ->
                     Toast.makeText(context, R.string.history_limit_changed, Toast.LENGTH_SHORT).show()
 
-                SettingsUiEvent.HistoryCleared ->
+                SettingsUiEvent.HistoryCleared      ->
                     Toast.makeText(context, R.string.history_cleared, Toast.LENGTH_SHORT).show()
             }
         }
