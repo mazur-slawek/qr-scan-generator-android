@@ -187,9 +187,12 @@ QREZZY is designed to work **entirely offline**.
 ### Privacy First
 
 - 🔒 All QR codes are processed entirely on-device.
-- 🚫 No Internet connection is required.
-- ☁️ No QR data is transmitted to external servers.
-- 🛡️ No personal data is collected or shared.
+- 🚫 Core QR scanning and generation work without an Internet connection.
+- ☁️ QR code content is never transmitted to external servers.
+- 🛡️ No personal data or QR code content is collected or shared.
+- 🩺 Anonymous crash diagnostics are collected via Firebase Crashlytics to help improve app
+  stability.
+-
 
 ---
 

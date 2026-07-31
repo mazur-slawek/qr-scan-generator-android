@@ -2,8 +2,8 @@ package software.mazur.qrezzy
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
-import software.mazur.qrezzy.core.common.crash.CrashReporter
 import javax.inject.Inject
+import software.mazur.qrezzy.core.common.crash.CrashReporter
 
 @HiltAndroidApp
 class QrezzyApplication : Application() {

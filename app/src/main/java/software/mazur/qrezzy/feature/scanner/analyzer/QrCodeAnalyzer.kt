@@ -8,22 +8,27 @@ import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 
-class QrCodeAnalyzer(private val onQrCodeScanned: (String) -> Unit) : ImageAnalysis.Analyzer {
-    private val scanner =
-        BarcodeScanning.getClient(
-            BarcodeScannerOptions
-                .Builder()
-                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-                .build()
-        )
+class QrCodeAnalyzer(private val onQrCodeScanned: (String) -> Unit) :
+    ImageAnalysis.Analyzer,
+    AutoCloseable {
+    private val scanner = BarcodeScanning.getClient(
+        BarcodeScannerOptions.Builder()
+            .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+            .build()
+    )
     private var isProcessing = false
+    private var isClosed = false
 
     @OptIn(ExperimentalGetImage::class)
     @androidx.annotation.OptIn(ExperimentalGetImage::class)
     override fun analyze(imageProxy: ImageProxy) {
+        if (isClosed || isProcessing) {
+            imageProxy.close()
+            return
+        }
         val mediaImage = imageProxy.image
 
-        if (mediaImage == null || isProcessing) {
+        if (mediaImage == null) {
             imageProxy.close()
             return
         }
@@ -31,19 +36,28 @@ class QrCodeAnalyzer(private val onQrCodeScanned: (String) -> Unit) : ImageAnaly
         isProcessing = true
         val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
 
-        scanner
-            .process(image)
+        scanner.process(image)
             .addOnSuccessListener { barcodes ->
-                val content =
-                    barcodes
-                        .firstOrNull()
-                        ?.rawValue
-                        ?.trim()
-                        .orEmpty()
-                if (content.isNotBlank()) onQrCodeScanned(content)
-            }.addOnCompleteListener {
+                val content = barcodes
+                    .firstOrNull()
+                    ?.rawValue
+                    ?.trim()
+                    .orEmpty()
+
+                if (content.isNotBlank()) {
+                    onQrCodeScanned(content)
+                }
+            }
+            .addOnCompleteListener {
                 isProcessing = false
                 imageProxy.close()
             }
+    }
+
+    override fun close() {
+        if (isClosed) return
+
+        isClosed = true
+        scanner.close()
     }
 }
