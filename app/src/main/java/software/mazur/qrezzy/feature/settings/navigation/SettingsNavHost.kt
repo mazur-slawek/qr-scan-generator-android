@@ -42,22 +42,22 @@ fun SettingsNavHost() {
     LaunchedEffect(Unit) {
         settingsViewModel.events.collect { event ->
             when (event) {
-                SettingsUiEvent.AutoSaveEnabled     ->
+                SettingsUiEvent.AutoSaveEnabled ->
                     Toast.makeText(context, R.string.settings_auto_save_enabled, Toast.LENGTH_SHORT).show()
 
-                SettingsUiEvent.AutoSaveDisabled    ->
+                SettingsUiEvent.AutoSaveDisabled ->
                     Toast.makeText(context, R.string.settings_auto_save_disabled, Toast.LENGTH_SHORT).show()
 
-                SettingsUiEvent.VibrationEnabled    ->
+                SettingsUiEvent.VibrationEnabled ->
                     Toast.makeText(context, R.string.settings_vibration_enabled, Toast.LENGTH_SHORT).show()
 
-                SettingsUiEvent.VibrationDisabled   ->
+                SettingsUiEvent.VibrationDisabled ->
                     Toast.makeText(context, R.string.settings_vibration_disabled, Toast.LENGTH_SHORT).show()
 
                 SettingsUiEvent.HistoryLimitChanged ->
                     Toast.makeText(context, R.string.history_limit_changed, Toast.LENGTH_SHORT).show()
 
-                SettingsUiEvent.HistoryCleared      ->
+                SettingsUiEvent.HistoryCleared ->
                     Toast.makeText(context, R.string.history_cleared, Toast.LENGTH_SHORT).show()
             }
         }

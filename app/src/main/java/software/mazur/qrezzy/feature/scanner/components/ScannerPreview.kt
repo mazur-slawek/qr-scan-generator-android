@@ -31,10 +31,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import java.util.concurrent.atomic.AtomicBoolean
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyAnimatedStars
 import software.mazur.qrezzy.feature.scanner.analyzer.QrCodeAnalyzer
-import java.util.concurrent.atomic.AtomicBoolean
 
 @Composable
 fun ScannerPreview(isScanning: Boolean, isTorchEnabled: Boolean, onQrCodeScanned: (String) -> Unit, modifier: Modifier = Modifier) {
@@ -65,11 +65,7 @@ fun ScannerPreview(isScanning: Boolean, isTorchEnabled: Boolean, onQrCodeScanned
 }
 
 @Composable
-fun LiveCameraPreview(
-    isTorchEnabled: Boolean,
-    onQrCodeScanned: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
+fun LiveCameraPreview(isTorchEnabled: Boolean, onQrCodeScanned: (String) -> Unit, modifier: Modifier = Modifier) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val currentOnQrCodeScanned by rememberUpdatedState(onQrCodeScanned)
     var camera by remember {

@@ -47,7 +47,7 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                is HistoryDetailsUiEvent.ShareQrCode    -> {
+                is HistoryDetailsUiEvent.ShareQrCode -> {
                     qrSharingService.shareBitmap(bitmap = event.bitmap, fileName = event.title)
                 }
 
@@ -57,7 +57,7 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
                     Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
                 }
 
-                HistoryDetailsUiEvent.QrStyleSaved      -> {
+                HistoryDetailsUiEvent.QrStyleSaved -> {
                     Toast.makeText(context, qrStyleSavedMessage, Toast.LENGTH_SHORT).show()
                 }
 
@@ -65,7 +65,7 @@ fun HistoryDetailsScreen(onBackClick: () -> Unit, viewModel: HistoryDetailsViewM
                     Toast.makeText(context, qrStyleSaveFailedMessage, Toast.LENGTH_SHORT).show()
                 }
 
-                HistoryDetailsUiEvent.OnBack            -> {
+                HistoryDetailsUiEvent.OnBack -> {
                     onBackClick()
                 }
             }
