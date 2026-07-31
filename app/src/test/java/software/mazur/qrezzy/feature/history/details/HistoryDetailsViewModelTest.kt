@@ -33,7 +33,6 @@ import software.mazur.qrezzy.test.FakeCrashReporter
 import software.mazur.qrezzy.test.FakeQrRepository
 import software.mazur.qrezzy.test.createQr
 
-
 @OptIn(ExperimentalCoroutinesApi::class)
 @Ignore("Requires Android Bitmap/Looper. Should be covered after extracting QrBitmapGenerator interface or by Robolectric tests.")
 class HistoryDetailsViewModelTest {

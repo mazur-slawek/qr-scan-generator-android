@@ -132,22 +132,22 @@ private fun HistoryTopBar(
             targetState = isDeleteModeEnabled,
             transitionSpec = {
                 (
-                        fadeIn(
-                            animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.FADE_IN_DURATION_MILLIS)
-                        ) + scaleIn(
-                            initialScale = HistoryScreenDefaults.TopBarAnimation.INITIAL_SCALE,
-                            animationSpec = tween(
-                                HistoryScreenDefaults.TopBarAnimation.SCALE_IN_DURATION_MILLIS
-                            )
+                    fadeIn(
+                        animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.FADE_IN_DURATION_MILLIS)
+                    ) + scaleIn(
+                        initialScale = HistoryScreenDefaults.TopBarAnimation.INITIAL_SCALE,
+                        animationSpec = tween(
+                            HistoryScreenDefaults.TopBarAnimation.SCALE_IN_DURATION_MILLIS
                         )
-                        ).togetherWith(
-                        fadeOut(
-                            animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.FADE_OUT_DURATION_MILLIS)
-                        ) + scaleOut(
-                            targetScale = HistoryScreenDefaults.TopBarAnimation.TARGET_SCALE,
-                            animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.SCALE_OUT_DURATION_MILLIS)
-                        )
-                    ).using(SizeTransform(clip = false))
+                    )
+                    ).togetherWith(
+                    fadeOut(
+                        animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.FADE_OUT_DURATION_MILLIS)
+                    ) + scaleOut(
+                        targetScale = HistoryScreenDefaults.TopBarAnimation.TARGET_SCALE,
+                        animationSpec = tween(HistoryScreenDefaults.TopBarAnimation.SCALE_OUT_DURATION_MILLIS)
+                    )
+                ).using(SizeTransform(clip = false))
             },
             label = "history_top_bar_actions_animation"
         ) { isDeleteMode ->
@@ -216,11 +216,11 @@ private fun HistoryContent(
                 CircularProgressIndicator()
             }
 
-            !uiState.hasItems        -> {
+            !uiState.hasItems -> {
                 HistoryListEmpty(selectedTab = selectedTab, onEmptyActionClick = onEmptyActionClick)
             }
 
-            else                     -> {
+            else -> {
                 HistoryList(
                     uiState = uiState,
                     searchQuery = searchQuery,
