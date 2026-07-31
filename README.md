@@ -39,10 +39,15 @@ Scan • Create • Share
 
 # 📥 Download
 
-You can try the latest version of QREZZY without building the project.
+QREZZY is available on Google Play.
 
-➡️ [Download APK](https://github.com/mazur-slawek/qr-scan-generator-android/releases/download/v1.0.1/QREZZY-v1.0.1.apk)
+<a href="https://play.google.com/store/apps/details?id=software.mazur.qrezzy">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play" height="60">
+</a>
 
+Or download the APK directly from GitHub Releases.
+
+➡️ https://github.com/mazur-slawek/qr-scan-generator-android/releases/latest
 
 ---
 
