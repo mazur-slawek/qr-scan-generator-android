@@ -1,5 +1,8 @@
 package software.mazur.qrezzy.feature.scanner
 
+import android.net.Uri
+import app.cash.turbine.test
+import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -10,6 +13,7 @@ import org.junit.Test
 import software.mazur.qrezzy.MainDispatcherRule
 import software.mazur.qrezzy.core.common.vibration.VibrationService
 import software.mazur.qrezzy.core.qr.decoder.QrImageDecoder
+import software.mazur.qrezzy.domain.qr.model.Qr
 import software.mazur.qrezzy.domain.qr.model.QrSource
 import software.mazur.qrezzy.domain.qr.model.QrType
 import software.mazur.qrezzy.domain.qr.usecase.CreateScannedQrUseCase
@@ -19,6 +23,7 @@ import software.mazur.qrezzy.domain.settings.model.HistoryLimit
 import software.mazur.qrezzy.domain.settings.usecase.CanSaveQrUseCase
 import software.mazur.qrezzy.domain.settings.usecase.GetHistoryLimitStatusUseCase
 import software.mazur.qrezzy.domain.settings.usecase.ObserveAppSettingsUseCase
+import software.mazur.qrezzy.feature.scanner.model.ScannerUiEvent
 import software.mazur.qrezzy.feature.scanner.model.ScannerUiState
 import software.mazur.qrezzy.test.FakeAppSettingsRepository
 import software.mazur.qrezzy.test.FakeCrashReporter
@@ -145,10 +150,63 @@ class ScannerViewModelTest {
         assertEquals(0, vibrationService.vibrationCount)
     }
 
+    @Test
+    fun `should emit NoQrFoundInImage when no qr found in selected image`() = runTest {
+        val qrImageDecoder = mockk<QrImageDecoder> {
+            coEvery { decode(any()) } returns null
+        }
+        val viewModel = createViewModel(qrImageDecoder = qrImageDecoder)
+
+        viewModel.events.test {
+            viewModel.onImageSelected(mockk<Uri>(relaxed = true))
+            assertEquals(ScannerUiEvent.NoQrFoundInImage, awaitItem())
+        }
+    }
+
+    @Test
+    fun `should emit QrSaveFailed and record exception when auto save fails`() = runTest {
+        val qrRepository = FailingQrRepository()
+        val settingsRepository = FakeAppSettingsRepository(
+            initialSettings = AppSettings(autoSaveScans = true)
+        )
+        val crashReporter = FakeCrashReporter()
+        val viewModel = createViewModel(
+            qrRepository = qrRepository,
+            settingsRepository = settingsRepository,
+            crashReporter = crashReporter
+        )
+
+        viewModel.events.test {
+            viewModel.onStartScanning()
+            viewModel.onQrCodeScanned("https://qrezzy.app")
+
+            assertEquals(ScannerUiEvent.QrSaveFailed, awaitItem())
+        }
+        assertEquals(1, crashReporter.exceptions.size)
+    }
+
+    @Test
+    fun `should emit QrSaveFailed and record exception when manual save fails`() = runTest {
+        val qrRepository = FailingQrRepository()
+        val crashReporter = FakeCrashReporter()
+        val viewModel = createViewModel(qrRepository = qrRepository, crashReporter = crashReporter)
+
+        viewModel.onStartScanning()
+        viewModel.onQrCodeScanned("https://qrezzy.app")
+
+        viewModel.events.test {
+            viewModel.onSaveScannedQrClick()
+            assertEquals(ScannerUiEvent.QrSaveFailed, awaitItem())
+        }
+        assertEquals(1, crashReporter.exceptions.size)
+    }
+
     private fun createViewModel(
         qrRepository: FakeQrRepository = FakeQrRepository(),
         settingsRepository: FakeAppSettingsRepository = FakeAppSettingsRepository(),
-        vibrationService: FakeVibrationService = FakeVibrationService()
+        vibrationService: FakeVibrationService = FakeVibrationService(),
+        qrImageDecoder: QrImageDecoder = mockk<QrImageDecoder>(relaxed = true),
+        crashReporter: FakeCrashReporter = FakeCrashReporter()
     ): ScannerViewModel {
         val observeAppSettingsUseCase = ObserveAppSettingsUseCase(settingsRepository)
         val getHistoryLimitStatusUseCase = GetHistoryLimitStatusUseCase(
@@ -157,10 +215,10 @@ class ScannerViewModelTest {
         )
 
         return ScannerViewModel(
-            crashReporter = FakeCrashReporter(),
+            crashReporter = crashReporter,
             createScannedQrUseCase = CreateScannedQrUseCase(FakeTimeProvider()),
             saveQrUseCase = SaveQrUseCase(qrRepository),
-            qrImageDecoder = mockk<QrImageDecoder>(relaxed = true),
+            qrImageDecoder = qrImageDecoder,
             observeAppSettingsUseCase = observeAppSettingsUseCase,
             canSaveQrUseCase = CanSaveQrUseCase(getHistoryLimitStatusUseCase),
             vibrationService = vibrationService,
@@ -175,5 +233,9 @@ class ScannerViewModelTest {
         override fun vibrateShort() {
             vibrationCount++
         }
+    }
+
+    private class FailingQrRepository : FakeQrRepository() {
+        override suspend fun save(item: Qr): Long = throw IllegalStateException("Save failed")
     }
 }

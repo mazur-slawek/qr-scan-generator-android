@@ -192,6 +192,10 @@ private fun QrTextField(
     title: String? = null
 ) {
     val error = fieldErrors[field]
+    val errorText = when (error) {
+        is QrFieldError.MaxLength -> stringResource(R.string.qr_input_field_error_max_length, error.maxLength)
+        null -> null
+    }
     QrezzyTextInput(
         value = value,
         title = title,
@@ -201,6 +205,6 @@ private fun QrTextField(
         singleLine = field !== QrInputField.Text && field !== QrInputField.EmailBody,
         maxLength = field.maxLength,
         keyboardOptions = field.keyboardOptions,
-        errorText = error?.message
+        errorText = errorText
     )
 }

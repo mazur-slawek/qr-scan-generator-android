@@ -125,7 +125,7 @@ class ScannerViewModel @Inject constructor(
 
             if (content.isNullOrBlank()) {
                 crashReporter.log("Scanner: no QR found in selected image")
-                _events.emit(ScannerUiEvent.ShowError("No QR code found in this image"))
+                _events.emit(ScannerUiEvent.NoQrFoundInImage)
                 return@launch
             }
 
@@ -181,11 +181,8 @@ class ScannerViewModel @Inject constructor(
                     _events.emit(ScannerUiEvent.QrSaved)
                 }.onFailure { exception ->
                     crashReporter.log("Scanner: auto-save failed")
-                    _events.emit(
-                        ScannerUiEvent.ShowError(
-                            message = exception.message ?: "Failed to save QR code"
-                        )
-                    )
+                    crashReporter.recordException(exception)
+                    _events.emit(ScannerUiEvent.QrSaveFailed)
                 }
             } else {
                 _uiState.update { state ->
@@ -222,9 +219,8 @@ class ScannerViewModel @Inject constructor(
                 _events.emit(ScannerUiEvent.QrSaved)
             }.onFailure { exception ->
                 crashReporter.log("Scanner: manual save failed")
-                _events.emit(
-                    ScannerUiEvent.ShowError(message = exception.message ?: "Failed to save QR code")
-                )
+                crashReporter.recordException(exception)
+                _events.emit(ScannerUiEvent.QrSaveFailed)
             }
         }
     }

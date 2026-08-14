@@ -246,7 +246,7 @@ class GeneratorViewModel @Inject constructor(
     }
 
     private fun validateField(field: QrInputField, value: String): QrFieldError? = when {
-        value.length > field.maxLength -> QrFieldError("Maximum length is ${field.maxLength} characters")
+        value.length > field.maxLength -> QrFieldError.MaxLength(field.maxLength)
         else -> null
     }
 

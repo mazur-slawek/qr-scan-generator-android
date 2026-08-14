@@ -19,7 +19,9 @@ import software.mazur.qrezzy.domain.settings.model.HistoryLimit
 import software.mazur.qrezzy.domain.settings.usecase.CanSaveQrUseCase
 import software.mazur.qrezzy.domain.settings.usecase.GetHistoryLimitStatusUseCase
 import software.mazur.qrezzy.domain.settings.usecase.ObserveAppSettingsUseCase
+import software.mazur.qrezzy.feature.generator.mapper.maxLength
 import software.mazur.qrezzy.feature.generator.model.GeneratorUiEvent
+import software.mazur.qrezzy.feature.generator.model.QrFieldError
 import software.mazur.qrezzy.feature.generator.model.QrInputField
 import software.mazur.qrezzy.test.FakeAppSettingsRepository
 import software.mazur.qrezzy.test.FakeCrashReporter
@@ -84,6 +86,19 @@ class GeneratorViewModelTest {
         assertTrue(viewModel.uiState.value.isSaveBlockedByHistoryLimit)
         assertTrue(viewModel.uiState.value.showHistoryLimitReachedPopup)
         assertTrue(qrRepository.savedItems.isEmpty())
+    }
+
+    @Test
+    fun `should set max length field error when input exceeds max length`() = runTest {
+        val viewModel = createViewModel()
+        val tooLong = "a".repeat(QrInputField.Text.maxLength + 1)
+
+        viewModel.onFormEvent(QrInputField.Text, tooLong)
+
+        assertEquals(
+            QrFieldError.MaxLength(QrInputField.Text.maxLength),
+            viewModel.uiState.value.fieldErrors[QrInputField.Text]
+        )
     }
 
     @Test

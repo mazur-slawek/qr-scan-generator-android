@@ -50,6 +50,8 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val qrSavedMessage = stringResource(R.string.scanner_qr_saved)
+    val qrSaveFailedMessage = stringResource(R.string.scanner_qr_save_failed_message)
+    val noQrFoundMessage = stringResource(R.string.scanner_no_qr_found_in_image)
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -75,8 +77,11 @@ fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
                 ScannerUiEvent.QrSaved ->
                     Toast.makeText(context, qrSavedMessage, Toast.LENGTH_SHORT).show()
 
-                is ScannerUiEvent.ShowError ->
-                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                ScannerUiEvent.QrSaveFailed ->
+                    Toast.makeText(context, qrSaveFailedMessage, Toast.LENGTH_SHORT).show()
+
+                ScannerUiEvent.NoQrFoundInImage ->
+                    Toast.makeText(context, noQrFoundMessage, Toast.LENGTH_SHORT).show()
             }
         }
     }

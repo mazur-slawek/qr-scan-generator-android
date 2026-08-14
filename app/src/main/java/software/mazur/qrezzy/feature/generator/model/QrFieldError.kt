@@ -1,3 +1,5 @@
 package software.mazur.qrezzy.feature.generator.model
 
-data class QrFieldError(val message: String)
+sealed interface QrFieldError {
+    data class MaxLength(val maxLength: Int) : QrFieldError
+}
