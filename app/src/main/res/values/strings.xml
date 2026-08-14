@@ -65,6 +65,8 @@
     <string name="scanner_popup_permission_denied_title">Camera access required</string>
     <string name="scanner_popup_permission_denied_desc">Please allow camera access in Settings to scan QR codes.</string>
     <string name="scanner_qr_saved">QR code saved to history</string>
+    <string name="scanner_no_qr_found_in_image">No QR code found in this image</string>
+    <string name="scanner_qr_save_failed_message">Failed to save QR code</string>
 
     <string name="scanner_dialog_title">QR code detected!</string>
     <string name="scanner_dialog_subtitle">Here\'s a preview of what\'s inside.</string>
@@ -75,6 +77,7 @@
     <string name="generator_qr_saved_message">QR code saved</string>
     <string name="generator_qr_save_failed_message">Could not save QR code</string>
 
+    <string name="qr_input_field_error_max_length">Maximum length is %1$d characters</string>
     <string name="qr_input_field_placeholder_text">Text</string>
     <string name="qr_input_field_placeholder_url">URL</string>
     <string name="qr_input_field_placeholder_phone">Phone number</string>

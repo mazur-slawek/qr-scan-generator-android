@@ -53,6 +53,8 @@
     <string name="scanner_popup_permission_denied_title">Потрібен доступ до камери</string>
     <string name="scanner_popup_permission_denied_desc">Дозвольте доступ до камери в налаштуваннях, щоб сканувати QR-коди.</string>
     <string name="scanner_qr_saved">QR-код збережено в історії</string>
+    <string name="scanner_no_qr_found_in_image">На цьому зображенні не знайдено QR-коду</string>
+    <string name="scanner_qr_save_failed_message">Не вдалося зберегти QR-код</string>
     <string name="scanner_dialog_title">QR-код виявлено!</string>
     <string name="scanner_dialog_subtitle">Ось попередній перегляд вмісту.</string>
     <string name="generator_select_qr_type">Виберіть тип QR-коду</string>
@@ -60,6 +62,7 @@
     <string name="generator_save_qr_code">Зберегти QR-код</string>
     <string name="generator_qr_saved_message">QR-код збережено</string>
     <string name="generator_qr_save_failed_message">Не вдалося зберегти QR-код</string>
+    <string name="qr_input_field_error_max_length">Максимальна довжина — %1$d символів</string>
     <string name="qr_input_field_placeholder_text">Текст</string>
     <string name="qr_input_field_placeholder_url">URL</string>
     <string name="qr_input_field_placeholder_phone">Номер телефону</string>
