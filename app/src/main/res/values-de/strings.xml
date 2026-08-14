@@ -238,6 +238,10 @@
     <string name="donate_buy_coffee_title">Spendiere mir einen Kaffee</string>
     <string name="donate_buy_coffee_subtitle">Deine Unterstützung hilft, die App kostenlos zu halten und neue Funktionen zu entwickeln!</string>
     <string name="donate_other_support_title">Weitere Möglichkeiten zur Unterstützung</string>
+    <string name="settings_auto_save_enabled">Automatisches Speichern aktiviert</string>
+    <string name="settings_auto_save_disabled">Automatisches Speichern deaktiviert</string>
+    <string name="settings_vibration_enabled">Vibration aktiviert</string>
+    <string name="settings_vibration_disabled">Vibration deaktiviert</string>
     <string name="history_limit_changed">Verlaufslimit geändert</string>
     <string name="history_limit_reached_title">Verlaufslimit erreicht</string>
     <string name="history_limit_reached_description">Erhöhe das Limit oder lösche ältere Einträge, um weitere QR-Codes zu speichern.</string>

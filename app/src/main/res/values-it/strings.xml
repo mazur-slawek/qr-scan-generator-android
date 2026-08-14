@@ -131,10 +131,12 @@
     <string name="qr_details_copy_content">Copia contenuto</string>
     <plurals name="delete_confirmation_dialog_title">
         <item quantity="one">Eliminare il codice QR?</item>
+        <item quantity="many">Eliminare %d codici QR?</item>
         <item quantity="other">Eliminare %d codici QR?</item>
     </plurals>
     <plurals name="delete_confirmation_dialog_subtitle">
         <item quantity="one">Questo codice QR verrà rimosso definitivamente dalla cronologia.</item>
+        <item quantity="many">%d codici QR verranno rimossi definitivamente dalla cronologia.</item>
         <item quantity="other">%d codici QR verranno rimossi definitivamente dalla cronologia.</item>
     </plurals>
     <string name="history_section_favorites">Preferiti</string>
@@ -238,6 +240,10 @@
     <string name="donate_buy_coffee_title">Offrimi un caffè</string>
     <string name="donate_buy_coffee_subtitle">Il tuo supporto aiuta a mantenere l’app gratuita e a introdurre nuove funzionalità!</string>
     <string name="donate_other_support_title">Altri modi per supportare</string>
+    <string name="settings_auto_save_enabled">Salvataggio automatico attivato</string>
+    <string name="settings_auto_save_disabled">Salvataggio automatico disattivato</string>
+    <string name="settings_vibration_enabled">Vibrazione attivata</string>
+    <string name="settings_vibration_disabled">Vibrazione disattivata</string>
     <string name="history_limit_changed">Limite della cronologia aggiornato</string>
     <string name="history_limit_reached_title">Limite della cronologia raggiunto</string>
     <string name="history_limit_reached_description">Aumenta il limite o elimina gli elementi meno recenti per salvare altri codici QR.</string>

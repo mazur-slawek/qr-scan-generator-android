@@ -130,13 +130,13 @@
     <string name="qr_details_open_link">Відкрити посилання</string>
     <string name="qr_details_copy_content">Копіювати вміст</string>
     <plurals name="delete_confirmation_dialog_title">
-        <item quantity="one">Видалити QR-код?</item>
+        <item quantity="one">Видалити %d QR-код?</item>
         <item quantity="few">Видалити %d QR-коди?</item>
         <item quantity="many">Видалити %d QR-кодів?</item>
         <item quantity="other">Видалити %d QR-коду?</item>
     </plurals>
     <plurals name="delete_confirmation_dialog_subtitle">
-        <item quantity="one">Цей QR-код буде назавжди видалено з історії.</item>
+        <item quantity="one">%d QR-код буде назавжди видалено з історії.</item>
         <item quantity="few">%d QR-коди буде назавжди видалено з історії.</item>
         <item quantity="many">%d QR-кодів буде назавжди видалено з історії.</item>
         <item quantity="other">%d QR-коду буде назавжди видалено з історії.</item>
@@ -242,6 +242,10 @@
     <string name="donate_buy_coffee_title">Пригостити мене кавою</string>
     <string name="donate_buy_coffee_subtitle">Ваша підтримка допомагає залишати застосунок безкоштовним і додавати нові функції!</string>
     <string name="donate_other_support_title">Інші способи підтримки</string>
+    <string name="settings_auto_save_enabled">Автозбереження увімкнено</string>
+    <string name="settings_auto_save_disabled">Автозбереження вимкнено</string>
+    <string name="settings_vibration_enabled">Вібрацію увімкнено</string>
+    <string name="settings_vibration_disabled">Вібрацію вимкнено</string>
     <string name="history_limit_changed">Ліміт історії змінено</string>
     <string name="history_limit_reached_title">Досягнуто ліміту історії</string>
     <string name="history_limit_reached_description">Збільште ліміт або видаліть старі записи, щоб зберігати більше QR-кодів.</string>

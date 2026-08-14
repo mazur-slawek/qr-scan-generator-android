@@ -242,6 +242,10 @@
     <string name="donate_buy_coffee_title">Postaw mi kawę</string>
     <string name="donate_buy_coffee_subtitle">Twoje wsparcie pomaga utrzymać aplikację darmową i rozwijać nowe funkcje!</string>
     <string name="donate_other_support_title">Inne sposoby wsparcia</string>
+    <string name="settings_auto_save_enabled">Automatyczny zapis został włączony</string>
+    <string name="settings_auto_save_disabled">Automatyczny zapis został wyłączony</string>
+    <string name="settings_vibration_enabled">Wibracja została włączona</string>
+    <string name="settings_vibration_disabled">Wibracja została wyłączona</string>
     <string name="history_limit_changed">Limit historii został zmieniony</string>
     <string name="history_limit_reached_title">Osiągnięto limit historii</string>
     <string name="history_limit_reached_description">Zwiększ limit lub usuń starsze elementy, aby móc zapisać więcej kodów QR.</string>
