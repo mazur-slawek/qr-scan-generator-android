@@ -62,6 +62,8 @@
     <string name="generator_save_qr_code">QR-Code speichern</string>
     <string name="generator_qr_saved_message">QR-Code gespeichert</string>
     <string name="generator_qr_save_failed_message">QR-Code konnte nicht gespeichert werden</string>
+    <string name="generator_qr_cannot_encode">QR-Code konnte für diesen Inhalt nicht erstellt werden. Kürze den Inhalt oder senke die Fehlerkorrekturstufe.</string>
+    <string name="generator_qr_generation_failed">Beim Erstellen dieses QR-Codes ist ein Fehler aufgetreten.</string>
     <string name="qr_input_field_error_max_length">Maximale Länge beträgt %1$d Zeichen</string>
     <string name="qr_input_field_placeholder_text">Text</string>
     <string name="qr_input_field_placeholder_url">URL</string>

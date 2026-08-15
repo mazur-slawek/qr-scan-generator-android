@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import software.mazur.qrezzy.core.common.crash.CrashReporter
 import software.mazur.qrezzy.core.qr.renderer.QrBitmapGenerator
+import software.mazur.qrezzy.core.qr.renderer.QrGenerationResult
 import software.mazur.qrezzy.core.qr.style.QrStyleEditorState
 import software.mazur.qrezzy.domain.qr.model.style.QrErrorCorrection
 import software.mazur.qrezzy.domain.qr.model.style.QrPatternStyle
@@ -137,7 +138,7 @@ class HistoryDetailsViewModel @Inject constructor(
         }
         val qrBitmap = withContext(Dispatchers.Default) {
             qrBitmapGenerator.generate(content = qr.content, style = qr.style)
-        }
+        }.toBitmapOrNull()
 
         _uiState.update { it.copy(qrBitmap = qrBitmap, isLoading = false) }
     }
@@ -231,9 +232,19 @@ class HistoryDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             val bitmap = withContext(Dispatchers.Default) {
                 qrBitmapGenerator.generate(content = content, style = draftStyle)
-            }
+            }.toBitmapOrNull()
             _uiState.update { state -> state.copy(editPreviewBitmap = bitmap) }
         }
+    }
+
+    private fun QrGenerationResult?.toBitmapOrNull(): Bitmap? = when (this) {
+        is QrGenerationResult.Success -> bitmap
+        QrGenerationResult.CannotEncode -> null
+        is QrGenerationResult.Failed -> {
+            crashReporter.recordException(throwable)
+            null
+        }
+        null -> null
     }
 
     private fun getShareData(): QrShareData? {

@@ -1,15 +1,30 @@
 package software.mazur.qrezzy.feature.generator
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import software.mazur.qrezzy.core.common.crash.CrashReporter
 import software.mazur.qrezzy.core.qr.renderer.QrBitmapGenerator
+import software.mazur.qrezzy.core.qr.renderer.QrGenerationResult
 import software.mazur.qrezzy.core.qr.style.QrStyleEditorState
 import software.mazur.qrezzy.domain.qr.model.style.QrErrorCorrection
 import software.mazur.qrezzy.domain.qr.model.style.QrPatternStyle
@@ -25,9 +40,12 @@ import software.mazur.qrezzy.feature.generator.mapper.toQrType
 import software.mazur.qrezzy.feature.generator.model.GeneratorUiEvent
 import software.mazur.qrezzy.feature.generator.model.GeneratorUiState
 import software.mazur.qrezzy.feature.generator.model.QrFieldError
+import software.mazur.qrezzy.feature.generator.model.QrGenerationError
 import software.mazur.qrezzy.feature.generator.model.QrInput
 import software.mazur.qrezzy.feature.generator.model.QrInputField
+import software.mazur.qrezzy.feature.generator.model.QrPreviewState
 import software.mazur.qrezzy.feature.generator.model.isSameTypeAs
+import software.mazur.qrezzy.feature.generator.model.toPendingState
 
 @HiltViewModel
 class GeneratorViewModel @Inject constructor(
@@ -39,19 +57,66 @@ class GeneratorViewModel @Inject constructor(
     private val canSaveQrUseCase: CanSaveQrUseCase,
     private val getHistoryLimitStatusUseCase: GetHistoryLimitStatusUseCase
 ) : ViewModel() {
-    var uiState = mutableStateOf(createInitialState())
-        private set
+    private val _uiState = MutableStateFlow(createInitialState())
+    val uiState = _uiState.asStateFlow()
     private val _events = MutableSharedFlow<GeneratorUiEvent>()
     val events = _events.asSharedFlow()
 
     init {
         observeHistoryLimit()
+        observeQrPreview()
+        observeEditPreview()
     }
 
     private fun observeHistoryLimit() {
         viewModelScope.launch {
             observeAppSettingsUseCase().collect {
                 refreshHistoryLimitState()
+            }
+        }
+    }
+
+    /**
+     * Zmiana treści jest debounce'owana (pisanie w formularzu), zmiana zastosowanego stylu (Apply)
+     * reaguje natychmiast — mapLatest i tak anuluje nieaktualną generację niezależnie od źródła.
+     */
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+    private fun observeQrPreview() {
+        val debouncedContent = uiState
+            .map { it.qrContent }
+            .distinctUntilChanged()
+            .debounce(QR_CONTENT_DEBOUNCE_MS)
+        val style = uiState.map { it.qrStyle }.distinctUntilChanged()
+
+        combine(debouncedContent, style) { content, qrStyle -> content to qrStyle }
+            .distinctUntilChanged()
+            .mapLatest { (content, qrStyle) -> renderPreview(content, qrStyle) }
+            .onEach { preview -> updateUiState { it.copy(qrPreview = preview) } }
+            .launchIn(viewModelScope)
+    }
+
+    /** Zmiany w edytorze stylu (kolor/wzór/korekcja błędów) to dyskretne kliknięcia — bez debounce. */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private fun observeEditPreview() {
+        uiState
+            .filter { it.qrStyleEditor.isDialogVisible }
+            .map { it.qrContent to it.qrStyleEditor.draftStyle }
+            .distinctUntilChanged()
+            .mapLatest { (content, style) -> renderPreview(content, style) }
+            .onEach { preview -> updateUiState { it.copy(editPreview = preview) } }
+            .launchIn(viewModelScope)
+    }
+
+    private suspend fun renderPreview(content: String, style: QrStyle): QrPreviewState {
+        if (content.isBlank()) return QrPreviewState.Idle
+
+        return when (val result = withContext(Dispatchers.Default) { qrBitmapGenerator.generate(content = content, style = style) }) {
+            null -> QrPreviewState.Idle
+            is QrGenerationResult.Success -> QrPreviewState.Ready(result.bitmap)
+            QrGenerationResult.CannotEncode -> QrPreviewState.Error(QrGenerationError.CannotEncode)
+            is QrGenerationResult.Failed -> {
+                crashReporter.recordException(result.throwable)
+                QrPreviewState.Error(QrGenerationError.Unknown)
             }
         }
     }
@@ -101,10 +166,6 @@ class GeneratorViewModel @Inject constructor(
         updateSelectedQrInput(qrInput = existingInput)
     }
 
-    fun generateQrBitmap(content: String) = qrBitmapGenerator.generate(content = content, style = uiState.value.qrStyle)
-
-    fun generatePreviewQrBitmap(content: String, style: QrStyle) = qrBitmapGenerator.generate(content = content, style = style)
-
     fun onCustomizeQrClick() {
         updateQrStyleEditor { editor -> editor.open() }
     }
@@ -149,10 +210,7 @@ class GeneratorViewModel @Inject constructor(
             if (!canSaveQrUseCase()) {
                 crashReporter.log("Generator: save blocked by history limit")
 
-                uiState.value = uiState.value.copy(
-                    isSaveBlockedByHistoryLimit = true,
-                    showHistoryLimitReachedPopup = true
-                )
+                updateUiState { it.copy(isSaveBlockedByHistoryLimit = true, showHistoryLimitReachedPopup = true) }
                 return@launch
             }
             val qr = createGeneratedQrUseCase(
@@ -229,15 +287,17 @@ class GeneratorViewModel @Inject constructor(
     }
 
     private fun updateQrStyleEditor(update: (QrStyleEditorState) -> QrStyleEditorState) {
-        uiState.value = uiState.value.copy(qrStyleEditor = update(uiState.value.qrStyleEditor))
+        updateUiState { state -> state.copy(qrStyleEditor = update(state.qrStyleEditor)) }
     }
 
     private suspend fun resetForm() {
         val status = getHistoryLimitStatusUseCase()
-        uiState.value = createInitialState().copy(
-            isSaveBlockedByHistoryLimit = status.isLimitReached,
-            showHistoryLimitReachedPopup = status.isLimitReached
-        )
+        updateUiState {
+            createInitialState().copy(
+                isSaveBlockedByHistoryLimit = status.isLimitReached,
+                showHistoryLimitReachedPopup = status.isLimitReached
+            )
+        }
     }
 
     private fun createInitialState(): GeneratorUiState {
@@ -256,14 +316,16 @@ class GeneratorViewModel @Inject constructor(
     }
 
     private fun updateSelectedQrInput(qrInput: QrInput, fieldErrors: Map<QrInputField, QrFieldError> = uiState.value.fieldErrors) {
-        uiState.value = uiState.value.copy(
-            selectedQrInput = qrInput,
-            qrContent = qrInput.toQrContent(),
-            fieldErrors = fieldErrors,
-            qrInputs = uiState.value.qrInputs.map { currentInput ->
-                if (currentInput.isSameTypeAs(qrInput)) qrInput else currentInput
-            }
-        )
+        updateUiState { state ->
+            state.copy(
+                selectedQrInput = qrInput,
+                qrContent = qrInput.toQrContent(),
+                fieldErrors = fieldErrors,
+                qrInputs = state.qrInputs.map { currentInput ->
+                    if (currentInput.isSameTypeAs(qrInput)) qrInput else currentInput
+                }
+            )
+        }
     }
 
     fun onScreenOpened() {
@@ -274,9 +336,40 @@ class GeneratorViewModel @Inject constructor(
 
     private suspend fun refreshHistoryLimitState() {
         val status = getHistoryLimitStatusUseCase()
-        uiState.value = uiState.value.copy(
-            isSaveBlockedByHistoryLimit = status.isLimitReached,
-            showHistoryLimitReachedPopup = status.isLimitReached
-        )
+        updateUiState {
+            it.copy(
+                isSaveBlockedByHistoryLimit = status.isLimitReached,
+                showHistoryLimitReachedPopup = status.isLimitReached
+            )
+        }
+    }
+
+    /**
+     * Jedyny punkt mutacji stanu. Gdy zmienia się treść/styl (zastosowany lub roboczy), odpowiedni
+     * podgląd jest natychmiast oznaczany jako nieaktualny (Generating) w tej samej aktualizacji —
+     * canSave nigdy nie odnosi się do przeterminowanej treści/stylu.
+     */
+    private fun updateUiState(transform: (GeneratorUiState) -> GeneratorUiState) {
+        _uiState.update { state ->
+            val next = transform(state)
+            val qrPreview = if (next.qrContent != state.qrContent || next.qrStyle != state.qrStyle) {
+                next.qrPreview.toPendingState(next.qrContent)
+            } else {
+                next.qrPreview
+            }
+
+            val dialogJustOpened = next.qrStyleEditor.isDialogVisible && !state.qrStyleEditor.isDialogVisible
+            val draftChanged = next.qrContent != state.qrContent || next.qrStyleEditor.draftStyle != state.qrStyleEditor.draftStyle
+            val editPreview = if (next.qrStyleEditor.isDialogVisible && (dialogJustOpened || draftChanged)) {
+                next.editPreview.toPendingState(next.qrContent)
+            } else {
+                next.editPreview
+            }
+            next.copy(qrPreview = qrPreview, editPreview = editPreview)
+        }
+    }
+
+    private companion object {
+        const val QR_CONTENT_DEBOUNCE_MS = 300L
     }
 }

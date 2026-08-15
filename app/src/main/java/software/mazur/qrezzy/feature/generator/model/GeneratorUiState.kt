@@ -20,11 +20,13 @@ data class GeneratorUiState(
         ),
     val fieldErrors: Map<QrInputField, QrFieldError> = emptyMap(),
     val qrStyleEditor: QrStyleEditorState = QrStyleEditorState(),
+    val qrPreview: QrPreviewState = QrPreviewState.Idle,
+    val editPreview: QrPreviewState = QrPreviewState.Idle,
     val isSaveBlockedByHistoryLimit: Boolean = false,
     val showHistoryLimitReachedPopup: Boolean = false
 ) {
     val canSave: Boolean
-        get() = qrContent.isNotBlank() && currentFieldErrors.isEmpty() && !isSaveBlockedByHistoryLimit
+        get() = currentFieldErrors.isEmpty() && !isSaveBlockedByHistoryLimit && qrPreview is QrPreviewState.Ready
     val currentFieldErrors: Map<QrInputField, QrFieldError>
         get() = fieldErrors.filterKeys { field -> field in selectedQrInput.fields }
     val qrStyle: QrStyle
