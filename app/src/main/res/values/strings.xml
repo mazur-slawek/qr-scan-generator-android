@@ -76,6 +76,8 @@
     <string name="generator_save_qr_code">Save QR Code</string>
     <string name="generator_qr_saved_message">QR code saved</string>
     <string name="generator_qr_save_failed_message">Could not save QR code</string>
+    <string name="generator_qr_cannot_encode">Couldn\'t generate a QR code for this content. Try shortening it or lowering the error correction level.</string>
+    <string name="generator_qr_generation_failed">Something went wrong while generating this QR code.</string>
 
     <string name="qr_input_field_error_max_length">Maximum length is %1$d characters</string>
     <string name="qr_input_field_placeholder_text">Text</string>

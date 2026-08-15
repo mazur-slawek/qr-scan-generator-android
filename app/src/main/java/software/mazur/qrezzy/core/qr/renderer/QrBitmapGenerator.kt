@@ -6,22 +6,34 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
 import com.google.zxing.EncodeHintType
+import com.google.zxing.WriterException
 import com.google.zxing.qrcode.encoder.ByteMatrix
 import com.google.zxing.qrcode.encoder.Encoder
 import java.util.EnumMap
 import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
 import software.mazur.qrezzy.domain.qr.model.style.QrPatternStyle
 import software.mazur.qrezzy.domain.qr.model.style.QrStyle
 
 class QrBitmapGenerator @Inject constructor() {
-    fun generate(content: String, size: Int = DEFAULT_SIZE, style: QrStyle = QrStyle()): Bitmap? {
+    fun generate(content: String, size: Int = DEFAULT_SIZE, style: QrStyle = QrStyle()): QrGenerationResult? {
         val trimmedContent = content.trim()
         if (trimmedContent.isBlank()) return null
-        val hints = EnumMap<EncodeHintType, Any>(EncodeHintType::class.java).apply {
-            put(EncodeHintType.CHARACTER_SET, DEFAULT_CHARACTER_SET)
+
+        return try {
+            val hints = EnumMap<EncodeHintType, Any>(EncodeHintType::class.java).apply {
+                put(EncodeHintType.CHARACTER_SET, DEFAULT_CHARACTER_SET)
+            }
+            val qrCode = Encoder.encode(trimmedContent, style.errorCorrection.toZxingLevel(), hints)
+            QrGenerationResult.Success(drawQrCode(matrix = qrCode.matrix, size = size, style = style))
+        } catch (@Suppress("SwallowedException") exception: WriterException) {
+            // Przyczyny WriterException nie da się niezawodnie rozróżnić bez parsowania message — oczekiwany wynik, nie błąd.
+            QrGenerationResult.CannotEncode
+        } catch (exception: CancellationException) {
+            throw exception
+        } catch (exception: Exception) {
+            QrGenerationResult.Failed(exception)
         }
-        val qrCode = Encoder.encode(trimmedContent, style.errorCorrection.toZxingLevel(), hints)
-        return drawQrCode(matrix = qrCode.matrix, size = size, style = style)
     }
 
     @SuppressLint("UseKtx")

@@ -62,6 +62,8 @@
     <string name="generator_save_qr_code">Зберегти QR-код</string>
     <string name="generator_qr_saved_message">QR-код збережено</string>
     <string name="generator_qr_save_failed_message">Не вдалося зберегти QR-код</string>
+    <string name="generator_qr_cannot_encode">Не вдалося створити QR-код для цього вмісту. Спробуйте скоротити текст або знизити рівень корекції помилок.</string>
+    <string name="generator_qr_generation_failed">Під час створення цього QR-коду сталася помилка.</string>
     <string name="qr_input_field_error_max_length">Максимальна довжина — %1$d символів</string>
     <string name="qr_input_field_placeholder_text">Текст</string>
     <string name="qr_input_field_placeholder_url">URL</string>

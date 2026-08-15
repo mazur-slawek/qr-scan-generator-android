@@ -1,5 +1,6 @@
 package software.mazur.qrezzy.feature.generator
 
+import android.graphics.Bitmap
 import android.widget.Toast
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -10,9 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -21,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import software.mazur.qrezzy.R
 import software.mazur.qrezzy.core.designsystem.components.QrezzyButton
 import software.mazur.qrezzy.core.designsystem.components.QrezzyHistoryLimitPopup
@@ -28,21 +32,21 @@ import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBar
 import software.mazur.qrezzy.core.designsystem.components.QrezzyTopBarButton
 import software.mazur.qrezzy.core.designsystem.components.qrezzyQr.QrezzyCustomizeQrDialog
 import software.mazur.qrezzy.core.designsystem.components.qrezzyQr.QrezzyQrPreview
+import software.mazur.qrezzy.core.designsystem.theme.QrezzyPinkDark
 import software.mazur.qrezzy.feature.generator.components.QrTypeForm
 import software.mazur.qrezzy.feature.generator.components.QrTypeTabs
 import software.mazur.qrezzy.feature.generator.model.GeneratorUiEvent
 import software.mazur.qrezzy.feature.generator.model.GeneratorUiState
+import software.mazur.qrezzy.feature.generator.model.QrGenerationError
+import software.mazur.qrezzy.feature.generator.model.QrPreviewState
 
 @Composable
 fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
-    val uiState = viewModel.uiState.value
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val qrSavedMessage = stringResource(R.string.generator_qr_saved_message)
     val qrSaveFailedMessage = stringResource(R.string.generator_qr_save_failed_message)
-    val qrBitmap = remember(uiState.qrContent, uiState.qrStyle) {
-        viewModel.generateQrBitmap(content = uiState.qrContent)
-    }
     LaunchedEffect(Unit) {
         viewModel.onScreenOpened()
     }
@@ -72,7 +76,16 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
                 onClick = viewModel::onCustomizeQrClick
             )
         }
-        QrezzyQrPreview(qrBitmap = qrBitmap)
+        QrezzyQrPreview(qrBitmap = uiState.qrPreview.displayBitmap())
+        val previewError = (uiState.qrPreview as? QrPreviewState.Error)?.error
+        if (previewError != null) {
+            Text(
+                text = stringResource(previewError.toMessageResId()),
+                color = QrezzyPinkDark,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(top = GeneratorScreenDefaults.errorTopPadding)
+            )
+        }
         GeneratorContent(
             uiState = uiState,
             onQrInputSelected = viewModel::onQrInputSelected,
@@ -86,12 +99,9 @@ fun GeneratorScreen(viewModel: GeneratorViewModel = hiltViewModel()) {
 @Composable
 private fun GeneratorCustomizeQrDialog(uiState: GeneratorUiState, viewModel: GeneratorViewModel) {
     if (!uiState.qrStyleEditor.isDialogVisible) return
-    val previewBitmap = remember(uiState.qrContent, uiState.qrStyleEditor.draftStyle) {
-        viewModel.generatePreviewQrBitmap(content = uiState.qrContent, style = uiState.qrStyleEditor.draftStyle)
-    }
 
     QrezzyCustomizeQrDialog(
-        qrBitmap = previewBitmap,
+        qrBitmap = uiState.editPreview.displayBitmap(),
         style = uiState.qrStyleEditor.draftStyle,
         onQrColorSelected = viewModel::onQrColorSelected,
         onBackgroundColorSelected = viewModel::onBackgroundColorSelected,
@@ -149,10 +159,22 @@ private fun GeneratorContent(
     }
 }
 
+private fun QrPreviewState.displayBitmap(): Bitmap? = when (this) {
+    is QrPreviewState.Ready -> bitmap
+    is QrPreviewState.Generating -> staleBitmap
+    QrPreviewState.Idle, is QrPreviewState.Error -> null
+}
+
+private fun QrGenerationError.toMessageResId(): Int = when (this) {
+    QrGenerationError.CannotEncode -> R.string.generator_qr_cannot_encode
+    QrGenerationError.Unknown -> R.string.generator_qr_generation_failed
+}
+
 private object GeneratorScreenDefaults {
     val screenHorizontalPadding = 16.dp
     val sectionSpacing = 16.dp
     val saveButtonTopPadding = 10.dp
     val saveButtonBottomPadding = 16.dp
     val saveButtonElevation = 0.dp
+    val errorTopPadding = 8.dp
 }
